@@ -6,10 +6,21 @@
     "check-types": "turbo run check-types",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
+    "prepare": "simple-git-hooks",
     "test": "turbo run test"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec lint-staged"
+  },
+  "lint-staged": {
+    "*.{css,js,json,jsx,ts,tsx}": "biome check --write --unsafe --no-errors-on-unmatched --files-ignore-unknown=true",
+    "package.json": "sort-package-json"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0-beta.5",
+    "lint-staged": "^16.0.0",
+    "simple-git-hooks": "^2.13.0",
+    "sort-package-json": "^3.2.1",
     "turbo": "^2.5.3"
   },
   "packageManager": "pnpm@10.11.0",

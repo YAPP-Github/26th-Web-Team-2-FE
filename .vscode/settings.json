@@ -6,6 +6,10 @@
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["(?:twMerge|twJoin)\\(([^;]*)[\\);]", "[`'\"`]([^'\"`;]*)[`'\"`]"]
   ],
+  "tailwindCSS.experimental.configFile": {
+    "apps/web/src/app/app.css": "apps/web/**",
+    "packages/ui/src/app.css": "packages/ui/**"
+  },
   "[javascript][typescript][javascriptreact][typescriptreact]": {
     "editor.codeActionsOnSave": {
       "quickfix.biome": "explicit",

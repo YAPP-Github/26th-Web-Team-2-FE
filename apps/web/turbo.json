@@ -1,0 +1,11 @@
+{
+  "$schema": "../../node_modules/turbo/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "dev": {
+      "cache": false,
+      "dependsOn": ["@yapp-github/26th-web-team-2-fe-ui#build"],
+      "persistent": true
+    }
+  }
+}

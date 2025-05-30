@@ -1,0 +1,94 @@
+name: Create Jira issue
+on:
+  issues:
+    types:
+      - opened
+jobs:
+  create-issue:
+    name: Create Jira issue
+    runs-on: ubuntu-latest
+    steps:
+      ### Jira 로그인
+      - name: Login
+        uses: atlassian/gajira-login@v3
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+
+      ### main 브랜치 체크아웃 (필요한 파일들을 가져오기 위함)
+      - name: Checkout main code
+        uses: actions/checkout@v4
+        with:
+          # ref: main
+          ref: ${{ github.ref_name }} ### 테스트를 위한 ref
+
+      ### 작성된 GitHub Issue 내용을 파싱 후, Jira에 쓸 데이터 추출
+      - name: Issue Parser
+        uses: stefanbuck/github-issue-parser@v3
+        id: issue-parser
+        with:
+          template-path: .github/ISSUE_TEMPLATE/issue-form.yml
+
+      ### (디버깅용) 파싱된 결과 로그 출력
+      - name: Log Issue Parser
+        run: |
+          echo '${{ steps.issue-parser.outputs.jsonString }}'
+          echo '${{ steps.issue-parser.outputs.issueparser_parentKey  }}'
+
+      ### Issue의 마크다운을 Jira에서 지원하는 형식으로 변환
+      - name: Convert markdown to Jira Syntax
+        uses: peter-evans/jira2md@v1
+        id: md2jira
+        with:
+          input-text: |
+            ### Github Issue Link
+            - ${{ github.event.issue.html_url }}
+
+            ${{ github.event.issue.body }}
+          mode: md2jira
+
+      ### 변환된 내용을 기반으로 Jira Task 이슈 생성
+      - name: Create Issue
+        id: create
+        uses: atlassian/gajira-create@v3
+        with:
+          project: Y26W2
+          issuetype: Task
+          summary: '${{ github.event.issue.title }}'
+          description: '${{ steps.md2jira.outputs.output-text }}'
+          fields: |
+            {
+              "parent": {
+                "key": "${{ steps.issue-parser.outputs.issueparser_parentKey }}"
+              }
+            }
+
+      ### 생성된 Jira 이슈 정보를 로그에 출력
+      - name: Log created issue
+        run: echo "Jira 이슈 ${{ steps.issue-parser.outputs.parentKey }}/${{ steps.create.outputs.issue }} 가 만들어짐"
+
+      ## Jira 에서 생성된 티켓번호 기반 브랜치 생성
+      - name: Create branch with Ticket number
+        run: |
+          ISSUE_NUMBER="${{ steps.create.outputs.issue }}"
+          BRANCH_NAME="feature/${ISSUE_NUMBER}"
+          git checkout -b "${BRANCH_NAME}"
+          git push origin "${BRANCH_NAME}"
+
+      ## GitHub 이슈 제목에 티켓번호 명시
+      - name: Update issue title
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: 'update-issue'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: '[${{ steps.create.outputs.issue }}] ${{ github.event.issue.title }}'
+
+      ## GitHub 이슈에 Jira 이슈 링크를 댓글로 추가
+      - name: Add comment with Jira issue link
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: 'create-comment'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: 'Jira Issue 생성: [${{ steps.create.outputs.issue }}](${{ secrets.JIRA_BASE_URL }}/browse/${{ steps.create.outputs.issue }})'

@@ -1,0 +1,40 @@
+name: '이슈 생성'
+description: 'Repo에 이슈를 생성하며, 생성된 이슈는 Jira와 연동됩니다.'
+labels: [order]
+title: '이슈 이름을 작성해주세요'
+body:
+  - type: input
+    id: parentKey
+    attributes:
+      label: '🎫 Ticket Number'
+      description: '상위 작업의 Ticket Number를 기입해주세요'
+      placeholder: 'Y26W2-00'
+    validations:
+      required: true
+
+  - type: input
+    id: description
+    attributes:
+      label: '📝 무엇에 대한 내용인가요?'
+      description: '이슈에 대한 간략한 설명을 적어주세요.'
+    validations:
+      required: true
+
+  - type: textarea
+    id: tasks
+    attributes:
+      label: '🛠️ 해야 할 일'
+      description: '기대하는 동작을 명확하게 작성해주세요.'
+      value: |
+        - [ ] Task1
+        - [ ] Task2
+    validations:
+      required: true
+
+  - type: textarea
+    id: reference
+    attributes:
+      label: '📎 추가 참고 사항'
+      description: '관련된 스크린샷, 링크, 로그 등을 자유롭게 첨부해주세요. '
+    validations:
+      required: false

@@ -5,11 +5,12 @@
   "scripts": {
     "build": "next build",
     "check-types": "tsc --noEmit",
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "lint": "biome check .",
     "start": "next start"
   },
   "dependencies": {
+    "@sentry/nextjs": "^9.25.1",
     "@yapp-github/26th-web-team-2-fe-ui": "workspace:*",
     "next": "^15.3.2",
     "react": "^19.1.0",

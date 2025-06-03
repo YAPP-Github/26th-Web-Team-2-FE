@@ -4,20 +4,31 @@
   "scripts": {
     "build": "turbo run build",
     "check-types": "turbo run check-types",
+    "commit": "git-cz",
     "dev": "turbo run dev",
+    "postinstall": "husky install",
     "lint": "turbo run lint",
-    "prepare": "simple-git-hooks",
     "test": "turbo run test"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "pnpm exec lint-staged"
   },
   "lint-staged": {
     "*.{css,js,json,jsx,ts,tsx}": "biome check --write --unsafe --no-errors-on-unmatched --files-ignore-unknown=true",
     "package.json": "sort-package-json"
   },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
+  },
+  "dependencies": {
+    "@commitlint/cz-commitlint": "^19.8.1"
+  },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0-beta.5",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@commitlint/prompt": "^19.8.1",
+    "commitizen": "^4.3.1",
+    "commitlint": "^19.8.1",
     "lint-staged": "^16.0.0",
     "simple-git-hooks": "^2.13.0",
     "sort-package-json": "^3.2.1",

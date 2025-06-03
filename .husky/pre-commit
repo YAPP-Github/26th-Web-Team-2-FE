@@ -1,0 +1,3 @@
+echo "허스키 돌아가는중🐶"
+
+pnpm exec lint-staged

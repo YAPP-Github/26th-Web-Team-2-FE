@@ -10,12 +10,17 @@ jobs:
     steps:
       - name: Comment Jira ticket link
         uses: actions/github-script@v7
+        env:
+          JIRA_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
         with:
           script: |
             const jiraPrefix = 'Y26W2-';
+            const jiraDomain = 'yapp26thweb2.atlassian.net';
             const jiraBaseUrl = 'https://yapp26thweb2.atlassian.net/jira/software/projects/Y26W2/boards/1/backlog?selectedIssue=';
             const pr = context.payload.pull_request;
             const title = pr.title;
+
 
             const match = title.match(/Y26W2-\d+/);
             if (!match) {
@@ -25,7 +30,33 @@ jobs:
 
             const ticket = match[0];
             const jiraUrl = `${jiraBaseUrl}${ticket}`;
-            const commentBody = `🔗 관련 Jira 티켓: [${ticket}](${jiraUrl})`;
+
+            const res = await fetch(`https://${jiraDomain}/rest/api/3/issue/${ticket}`, {
+              method: 'GET',
+              headers: {
+                'Authorization': `Basic ${Buffer.from(process.env.JIRA_EMAIL + ':' + process.env.JIRA_TOKEN).toString('base64')}`,
+                'Accept': 'application/json'
+              }
+            });
+
+            if (!res.ok) {
+              console.log(`Jira API 요청 실패: ${res.status}`);
+              return;
+            }
+
+            const data = await res.json();
+            const summary = data.fields.summary;
+            const status = data.fields.status.name;
+            const assignee = data.fields.assignee?.displayName ?? '미지정👻';
+
+            const commentBody = `
+            🎫 관련 Jira 티켓 🔗: [${ticket}](${jiraUrl})
+
+            📝 Jira 티켓 정보:
+            - **제목**: ${summary}
+            - **상태**: ${status}
+            - **담당자**: ${assignee}
+            `;
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,

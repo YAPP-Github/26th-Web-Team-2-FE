@@ -1,0 +1,19 @@
+echo "커밋 메시지를 검사하는 중입니다...🐶🐶"
+
+# 현재 브랜치 이름 가져오기
+BRANCH_NAME=$(git symbolic-ref --short HEAD)
+COMMIT_MSG_FILE=$1
+COMMIT_MSG_HEAD=$(head -n1 "$COMMIT_MSG_FILE")
+
+# '/' 기준으로 뒷부분을 이슈키 추출 (ex: feature/Y26W2-6 -> Y26W2-6)
+ISSUE_KEY=$(echo "$BRANCH_NAME" | cut -d '/' -f2)
+
+echo "현재 브랜치 이름: $BRANCH_NAME"
+echo "jira 티켓 넘버: $ISSUE_KEY"
+
+# 이슈키가 있는 경우 메시지 앞에 붙이기
+if [ -n "$ISSUE_KEY" ]; then
+  echo "[$ISSUE_KEY] $COMMIT_MSG_HEAD" > "$COMMIT_MSG_FILE"
+else
+  echo "$COMMIT_MSG_HEAD" > "$COMMIT_MSG_FILE"
+fi

@@ -1,0 +1,62 @@
+name: Auto Label PR
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+jobs:
+  label-by-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto label by PR title
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prTitle = context.payload.pull_request.title.toLowerCase();
+            const labelsToAdd = [];
+
+            const match = prTitle.match(/\[([^\]]+)\]\s+(feat|fix|docs|refactor|test|chore)(\(([^)]+)\))?:/i);
+
+            if (match) {
+              const issueCode = match[1];    // 지라 티켓 번호
+              const type = match[2].toLowerCase();  // label
+              const scope = match[4];         // scope 
+
+              labelsToAdd.push(type); 
+              if (scope) labelsToAdd.push(`scope:${scope}`);
+              if (issueCode) labelsToAdd.push(`issue:${issueCode}`);
+            } else {
+              console.log("PR 제목이 예상된 형식이 아닙니다.");
+              return;
+            }
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              labels: labelsToAdd,
+            });
+
+  label-by-size:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: codelytv/pr-size-labeler@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          xs_label: 'size/xs'
+          xs_max_size: '10'
+          s_label: 'size/s'
+          s_max_size: '100'
+          m_label: 'size/m'
+          m_max_size: '500'
+          l_label: 'size/l'
+          l_max_size: '1000'
+          xl_label: 'size/xl'
+          fail_if_xl: 'false'
+          message_if_xl: >
+            ⚠️ 이 PR은 권장 최대 변경 줄 수인 1000줄을 초과했습니다.
+            하나의 PR에서 여러 이슈를 동시에 해결하고 있지는 않은지 확인해주세요.
+            너무 큰 PR은 리뷰가 어렵기 때문에, 거절될 수 있습니다.
+          files_to_ignore: 'package-lock.json *.lock'

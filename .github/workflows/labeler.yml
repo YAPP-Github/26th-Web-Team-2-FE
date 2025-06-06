@@ -23,8 +23,8 @@ jobs:
               const scope = match[4];         // scope 
 
               labelsToAdd.push(type); 
-              if (scope) labelsToAdd.push(`scope:${scope}`);
-              if (issueCode) labelsToAdd.push(`issue:${issueCode}`);
+              if (scope) labelsToAdd.push(`${scope}`);
+              if (issueCode) labelsToAdd.push(`${issueCode.toUpperCase()}`);
             } else {
               console.log("PR 제목이 예상된 형식이 아닙니다.");
               return;

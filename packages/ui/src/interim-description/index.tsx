@@ -1,4 +1,5 @@
 import type { PropsWithChildren } from "react";
+import { cn } from "@/utils";
 
 export type InterimDescriptionProps = PropsWithChildren<{
   className?: string;
@@ -10,7 +11,7 @@ export const InterimDescription = ({
   ...props
 }: InterimDescriptionProps) => {
   return (
-    <p className={`my-4 text-base ${className}`} {...props}>
+    <p className={cn("my-4 text-base", className)} {...props}>
       {children}
     </p>
   );

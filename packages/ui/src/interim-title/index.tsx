@@ -7,7 +7,7 @@ export type InterimTitleProps = PropsWithChildren<{
 
 export const InterimTitle = ({
   children,
-  className = "",
+  className,
   ...props
 }: InterimTitleProps) => {
   return (

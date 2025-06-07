@@ -7,7 +7,7 @@ export type InterimDescriptionProps = PropsWithChildren<{
 
 export const InterimDescription = ({
   children,
-  className = "",
+  className,
   ...props
 }: InterimDescriptionProps) => {
   return (

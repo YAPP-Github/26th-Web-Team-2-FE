@@ -9,7 +9,7 @@ export type InterimButtonProps = PropsWithChildren<
 
 export const InterimButton = ({
   children,
-  className = "",
+  className,
   ...props
 }: InterimButtonProps) => {
   return (

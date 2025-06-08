@@ -19,6 +19,7 @@
     "storybook": "storybook dev -p 6006"
   },
   "dependencies": {
+    "@storybook/blocks": "^8.6.14",
     "chromatic": "^12.1.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"

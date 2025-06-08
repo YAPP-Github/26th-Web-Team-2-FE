@@ -2,7 +2,7 @@ name: Auto Label PR
 
 on:
   pull_request:
-    types: [opened, edited, reopened, synchronize]
+    types: [opened, edited, reopened, synchronize, ready_for_review]
 
 jobs:
   detect-changes:
@@ -30,7 +30,7 @@ jobs:
         run: |
           export TURBO_PRINT_VERSION_DISABLED=true
           git fetch origin ${{ github.event.pull_request.base.ref }}
-          turbo ls --output json --filter=...[origin/${{ github.event.pull_request.base.ref }}] > turbo_output.json
+          turbo ls --output json --filter="...[origin/${{ github.event.pull_request.base.ref }}]" > turbo_output.json
           cat turbo_output.json
 
       - name: Check if 'packages/ui' changed
@@ -60,13 +60,13 @@ jobs:
       - name: Check if root or other files changed
         id: set-root-label
         run: |
-          git fetch origin ${{ github.event.pull_request.base.ref }}
           CHANGED_FILES=$(git diff --name-only "origin/${{ github.event.pull_request.base.ref }}...HEAD")
 
           ROOT_CHANGED=false
 
           for file in $CHANGED_FILES; do
             if [[ "$file" != packages/ui/* ]] && [[ "$file" != apps/web/* ]]; then
+              [[ "$file" == *.lock ]] && continue
               ROOT_CHANGED=true
               break
             fi
@@ -103,9 +103,9 @@ jobs:
                 issue_number: prNumber,
                 labels: labelsToAdd,
               });
-              console.log('추가될 labels은 바로!', labelsToAdd);
+              console.log('추가될 라벨은 바로!', labelsToAdd);
             } else {
-              console.log('추가될 label이 없습니다!');
+              console.log('추가될 라벨이 없습니다!');
             }
     env:
       CHANGED_UI: ${{ needs.detect-changes.outputs.changed-ui }}

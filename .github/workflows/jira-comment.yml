@@ -61,7 +61,7 @@ jobs:
               comment.body.includes('<!-- jira-comment -->')
             );
 
-            const commentBody = `
+            const commentBody = `<!-- jira-comment -->
             🎫 관련 Jira 티켓 🔗: [${ticket}](${jiraUrl})
 
             📝 Jira 티켓 정보:

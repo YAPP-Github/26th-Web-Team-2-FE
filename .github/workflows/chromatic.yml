@@ -1,0 +1,63 @@
+name: 'Chromatic Auto Deploy on PR to Main'
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  storybook:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install PNPM
+        run: pnpm i -g pnpm
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pnpm-store
+            **/node_modules
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Storybook for Design System
+        run: pnpm --filter @yapp-github/26th-web-team-2-fe-ui run build-storybook
+
+      - name: Publish to Chromatic
+        id: chromatic
+        uses: chromaui/action@v1
+        with:
+          projectToken: ${{ secrets.CHROMATIC_TOKEN }}
+          onlyChanged: true
+          autoAcceptChanges: true
+          storybookBaseDir: packages/ui
+
+      - name: Comment PR with Storybook Link
+        if: github.event_name == 'pull_request'
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          comment_tag: chromatic-preview
+          message: |
+            🛩️Chromatic Storybook 미리보기 확인:
+            👉 [Storybook 보기](${{ steps.chromatic.outputs.storybookUrl }})
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

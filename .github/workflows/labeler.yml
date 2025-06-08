@@ -59,4 +59,4 @@ jobs:
             ⚠️ 이 PR은 권장 최대 변경 줄 수인 1000줄을 초과했습니다.
             하나의 PR에서 여러 이슈를 동시에 해결하고 있지는 않은지 확인해주세요.
             너무 큰 PR은 리뷰가 어렵기 때문에, 거절될 수 있습니다.
-          files_to_ignore: 'package-lock.json *.lock'
+          files_to_ignore: 'pnpm-lock.json *.lock'

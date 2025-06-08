@@ -28,7 +28,7 @@ jobs:
         run: |
           export TURBO_PRINT_VERSION_DISABLED=true
           git fetch origin ${{ github.event.pull_request.base.ref }}
-          turbo ls --output json --filter=...origin/${{ github.event.pull_request.base.ref }} > turbo_output.json
+          turbo ls --output json --filter=...[origin/${{ github.event.pull_request.base.ref }}] > turbo_output.json
           cat turbo_output.json
 
       - name: Check if 'packages/ui' changed

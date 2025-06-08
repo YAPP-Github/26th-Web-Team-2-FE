@@ -27,7 +27,8 @@ jobs:
         id: turbo-ls
         run: |
           export TURBO_PRINT_VERSION_DISABLED=true
-          turbo ls --output json --filter=...[HEAD^] > turbo_output.json
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+          turbo ls --output json --filter=...origin/${{ github.event.pull_request.base.ref }} > turbo_output.json
           cat turbo_output.json
 
       - name: Check if 'packages/ui' changed
@@ -35,11 +36,11 @@ jobs:
         run: |
           PACKAGES=$(jq -r '.packages.items[].path' turbo_output.json)
           if echo "$PACKAGES" | grep -q '^packages/ui$'; then
-            echo "UI 패키지가 변경 감지!" >&2
-            echo "::set-output name=changed::true"
+            echo "packages/ui 변경 감지!" >&2
+            echo "changed=true" >> $GITHUB_OUTPUT
           else
-            echo "UI 패키지 변경 X" >&2
-            echo "::set-output name=changed::false"
+            echo "packages/ui 변경 X" >&2
+            echo "changed=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Check if 'apps/web' changed
@@ -47,17 +48,18 @@ jobs:
         run: |
           PACKAGES=$(jq -r '.packages.items[].path' turbo_output.json)
           if echo "$PACKAGES" | grep -q '^apps/web$'; then
-            echo "app/web 변경 감지!" >&2
-            echo "::set-output name=changed::true"
+            echo "apps/web 변경 감지!" >&2
+            echo "changed=true" >> $GITHUB_OUTPUT
           else
-            echo "app/web 패키지 변경 X" >&2
-            echo "::set-output name=changed::false"
+            echo "apps/web 패키지 변경 X" >&2
+            echo "changed=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Check if root or other files changed
         id: set-root-label
         run: |
-          CHANGED_FILES=$(git diff --name-only HEAD^)
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+          CHANGED_FILES=$(git diff --name-only "origin/${{ github.event.pull_request.base.ref }}...HEAD")
 
           ROOT_CHANGED=false
 
@@ -70,10 +72,10 @@ jobs:
 
           if $ROOT_CHANGED; then
             echo "루트 파일 변경 감지!" >&2
-            echo "::set-output name=changed::true"
+            echo "changed=true" >> $GITHUB_OUTPUT
           else
             echo "루트 또는 기타 파일은 변경 X" >&2
-            echo "::set-output name=changed::false"
+            echo "changed=false" >> $GITHUB_OUTPUT
           fi
 
   add-labels:

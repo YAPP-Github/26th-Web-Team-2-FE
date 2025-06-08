@@ -5,37 +5,108 @@ on:
     types: [opened, edited, reopened, synchronize]
 
 jobs:
-  label-by-title:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      changed-ui: ${{ steps.set-ui-label.outputs.changed }}
+      changed-web: ${{ steps.set-web-label.outputs.changed }}
+      changed-root: ${{ steps.set-root-label.outputs.changed }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install turbo
+        run: npm install -g turbo
+
+      - name: Get changed packages via turbo ls
+        id: turbo-ls
+        run: |
+          export TURBO_PRINT_VERSION_DISABLED=true
+          turbo ls --output json --filter=...[HEAD^] > turbo_output.json
+          cat turbo_output.json
+
+      - name: Check if 'packages/ui' changed
+        id: set-ui-label
+        run: |
+          PACKAGES=$(jq -r '.packages.items[].path' turbo_output.json)
+          if echo "$PACKAGES" | grep -q '^packages/ui$'; then
+            echo "UI 패키지가 변경 감지!" >&2
+            echo "::set-output name=changed::true"
+          else
+            echo "UI 패키지 변경 X" >&2
+            echo "::set-output name=changed::false"
+          fi
+
+      - name: Check if 'apps/web' changed
+        id: set-web-label
+        run: |
+          PACKAGES=$(jq -r '.packages.items[].path' turbo_output.json)
+          if echo "$PACKAGES" | grep -q '^apps/web$'; then
+            echo "app/web 변경 감지!" >&2
+            echo "::set-output name=changed::true"
+          else
+            echo "app/web 패키지 변경 X" >&2
+            echo "::set-output name=changed::false"
+          fi
+
+      - name: Check if root or other files changed
+        id: set-root-label
+        run: |
+          CHANGED_FILES=$(git diff --name-only HEAD^)
+
+          ROOT_CHANGED=false
+
+          for file in $CHANGED_FILES; do
+            if [[ "$file" != packages/ui/* ]] && [[ "$file" != apps/web/* ]]; then
+              ROOT_CHANGED=true
+              break
+            fi
+          done
+
+          if $ROOT_CHANGED; then
+            echo "루트 파일 변경 감지!" >&2
+            echo "::set-output name=changed::true"
+          else
+            echo "루트 또는 기타 파일은 변경 X" >&2
+            echo "::set-output name=changed::false"
+          fi
+
+  add-labels:
+    needs: detect-changes
     runs-on: ubuntu-latest
     steps:
-      - name: Auto label by PR title
-        uses: actions/github-script@v7
+      - uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const prTitle = context.payload.pull_request.title.toLowerCase();
+            const prNumber = context.payload.pull_request.number;
             const labelsToAdd = [];
 
-            const match = prTitle.match(/\[([^\]]+)\]\s+(feat|fix|docs|refactor|test|chore)(\(([^)]+)\))?:/i);
+            if (process.env.CHANGED_UI === 'true') labelsToAdd.push('packages/ui');
+            if (process.env.CHANGED_WEB === 'true') labelsToAdd.push('apps/web');
+            if (process.env.CHANGED_ROOT === 'true') labelsToAdd.push('root');
 
-            if (match) {
-              const issueCode = match[1];    // 지라 티켓 번호
-              const type = match[2].toLowerCase();  // label
-              const scope = match[4];         // scope 
 
-              labelsToAdd.push(type); 
-              if (scope) labelsToAdd.push(`${scope}`);
-              if (issueCode) labelsToAdd.push(`${issueCode.toUpperCase()}`);
+            if (labelsToAdd.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                labels: labelsToAdd,
+              });
+              console.log('추가될 labels은 바로!', labelsToAdd);
             } else {
-              console.log("PR 제목이 예상된 형식이 아닙니다.");
-              return;
+              console.log('추가될 label이 없습니다!');
             }
-
-            await github.rest.issues.addLabels({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.payload.pull_request.number,
-              labels: labelsToAdd,
-            });
+    env:
+      CHANGED_UI: ${{ needs.detect-changes.outputs.changed-ui }}
+      CHANGED_WEB: ${{ needs.detect-changes.outputs.changed-web }}
+      CHANGED_ROOT: ${{ needs.detect-changes.outputs.changed-root }}
 
   label-by-size:
     runs-on: ubuntu-latest

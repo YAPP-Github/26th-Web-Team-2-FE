@@ -22,15 +22,13 @@
       "path": "@commitlint/cz-commitlint"
     }
   },
-  "dependencies": {
-    "@commitlint/cz-commitlint": "^19.8.1",
-    "@commitlint/types": "^19.8.1"
-  },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0-beta.5",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
+    "@commitlint/cz-commitlint": "^19.8.1",
     "@commitlint/prompt": "^19.8.1",
+    "@commitlint/types": "^19.8.1",
     "commitizen": "^4.3.1",
     "commitlint": "^19.8.1",
     "lint-staged": "^16.0.0",

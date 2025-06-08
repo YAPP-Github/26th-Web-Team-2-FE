@@ -51,7 +51,6 @@ jobs:
           onlyChanged: true
           autoAcceptChanges: true
           storybookBaseDir: packages/ui
-          buildScriptName: build-storybook
 
       - name: Comment PR with Storybook Link
         if: github.event_name == 'pull_request'

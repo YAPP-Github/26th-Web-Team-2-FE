@@ -25,7 +25,7 @@ jobs:
           node-version: 20
 
       - name: Install PNPM
-        run: pnpm i -g pnpm
+        run: npm i -g pnpm
 
       - name: Cache node_modules
         uses: actions/cache@v3

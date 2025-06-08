@@ -1,4 +1,4 @@
-import "./globals.css";
+import "./app.css";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import QueryProvider from "@/shared/providers/query-provider";

@@ -2,8 +2,6 @@ import type { SVGProps } from "react";
 
 const SvgIcArrowNext = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    role="img"
-    aria-label="arrow-next-btn"
     xmlns="http://www.w3.org/2000/svg"
     width="1em"
     height="1em"

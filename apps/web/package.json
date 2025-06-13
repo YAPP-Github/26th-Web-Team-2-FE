@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@sentry/nextjs": "^9.25.1",
+    "@tanstack/react-query": "^5.80.6",
+    "@tanstack/react-query-devtools": "^5.80.6",
     "@yapp-github/26th-web-team-2-fe-ui": "workspace:*",
     "jotai": "^2.12.5",
     "next": "^15.3.2",

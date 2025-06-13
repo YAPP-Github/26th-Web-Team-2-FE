@@ -2,6 +2,7 @@ import "./app.css";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { JotaiProvider } from "@/shared/providers/jotai-provider";
+import QueryProvider from "@/shared/providers/query-provider";
 
 const geist = Geist({ subsets: ["latin"] });
 
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={geist.className}>
-        <JotaiProvider>{children}</JotaiProvider>
+        <JotaiProvider>
+          <QueryProvider>{children}</QueryProvider>
+        </JotaiProvider>
       </body>
     </html>
   );

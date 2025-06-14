@@ -1,7 +1,7 @@
 import "./app.css";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
-import QueryProvider from "@/shared/providers/query-provider";
+import Providers from "@/shared/providers";
 
 const geist = Geist({ subsets: ["latin"] });
 
@@ -16,9 +16,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body className={geist.className}>
-        <QueryProvider>{children}</QueryProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

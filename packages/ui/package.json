@@ -24,8 +24,10 @@
   "dependencies": {
     "@storybook/blocks": "^8.6.14",
     "chromatic": "^12.1.1",
+    "clsx": "^2.1.1",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "tailwind-merge": "^3.3.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4",
@@ -35,7 +37,6 @@
     "@storybook/addon-vitest": "^9.0.6",
     "@storybook/react-vite": "^9.0.6",
     "@tailwindcss/cli": "^4.1.7",
-    "@tailwindcss/postcss": "^4.1.7",
     "@tsconfig/vite-react": "^6.3.5",
     "@types/node": "^22",
     "@types/react": "^19",

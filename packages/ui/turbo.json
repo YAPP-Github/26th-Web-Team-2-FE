@@ -1,0 +1,24 @@
+{
+  "$schema": "../../node_modules/turbo/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build:ui": {
+      "dependsOn": ["build:package", "build:storybook"]
+    },
+    "build:package": {
+      "outputs": ["dist/**"]
+    },
+    "build:storybook": {
+      "outputs": [".storybook-static/**"]
+    },
+    "dev:ui": {
+      "dependsOn": ["dev:package", "dev:storybook"]
+    },
+    "dev:package": {
+      "outputs": []
+    },
+    "dev:storybook": {
+      "outputs": []
+    }
+  }
+}

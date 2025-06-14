@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "build:storybook": "pnpm --filter @yapp-github/26th-web-team-2-fe-ui run build:storybook",
     "check-types": "turbo run check-types",
     "commit": "git-cz",
     "dev": "turbo run dev",

@@ -6,6 +6,7 @@ const plugins = [
     ...config,
     webpack(config, options) {
       if (!config.module) config.module = { rules: [] };
+      if (!config.module.rules) config.module.rules = [];
 
       config.module.rules.push({
         test: /\.svg$/,

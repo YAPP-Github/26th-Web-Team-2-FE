@@ -23,9 +23,6 @@
             "functions": ["clsx", "cn", "cva", "tw", "tw.*"]
           }
         }
-      },
-      "a11y": {
-        "noSvgWithoutTitle": "off"
       }
     }
   },

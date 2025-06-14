@@ -18,7 +18,8 @@
     "dev": "turbo run dev:ui",
     "dev:package": "tsdown --watch",
     "dev:storybook": "storybook dev -p 6006",
-    "lint": "biome check ."
+    "lint": "biome check .",
+    "test": "vitest run"
   },
   "dependencies": {
     "@storybook/blocks": "^8.6.14",

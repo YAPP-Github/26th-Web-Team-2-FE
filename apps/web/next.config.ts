@@ -5,10 +5,15 @@ const plugins = [
   (config: NextConfig): NextConfig => ({
     ...config,
     webpack(config, options) {
-      if (!config.module) config.module = { rules: [] };
-      if (!config.module.rules) config.module.rules = [];
+      const nextConfig =
+        typeof config.webpack === "function"
+          ? config.webpack(config, options)
+          : config;
 
-      config.module.rules.push({
+      nextConfig.module ||= {};
+      nextConfig.module.rules ||= [];
+
+      nextConfig.module.rules.push({
         test: /\.svg$/,
         issuer: /\.(js|ts)x?$/,
         use: [
@@ -22,11 +27,7 @@ const plugins = [
         ],
       });
 
-      if (typeof config.webpack === "function") {
-        return config.webpack(config, options);
-      }
-
-      return config;
+      return nextConfig;
     },
   }),
 ];

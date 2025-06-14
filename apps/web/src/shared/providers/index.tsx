@@ -1,3 +1,5 @@
+"use client";
+
 import type { PropsWithChildren } from "react";
 import JotaiProvider from "./modules/jotai-provider";
 import QueryProvider from "./modules/query-provider";

@@ -8,7 +8,6 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "prepare": "simple-git-hooks",
-    "svgr": "turbo run svgr --filter @yapp-github/26th-web-team-2-fe-ui",
     "test": "turbo run test"
   },
   "simple-git-hooks": {

@@ -102,9 +102,6 @@ importers:
 
   packages/ui:
     dependencies:
-      '@svgr/cli':
-        specifier: ^8.1.0
-        version: 8.1.0(typescript@5.8.3)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -1200,11 +1197,6 @@ packages:
     engines: {node: '>=14'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
-
-  '@svgr/cli@8.1.0':
-    resolution: {integrity: sha512-SnlaLspB610XFXvs3PmhzViHErsXp0yIy4ERyZlHDlO1ro2iYtHMWYk2mztdLD/lBjiA4ZXe4RePON3qU/Tc4A==}
-    engines: {node: '>=14'}
-    hasBin: true
 
   '@svgr/core@8.1.0':
     resolution: {integrity: sha512-8QqtOQT5ACVlmsvKOJNEaWmRPmcojMOzCz4Hs2BGG/toAp/K38LcsMRyLp349glq5AzJbCEeimEoxaX6v/fLrA==}
@@ -4369,22 +4361,6 @@ snapshots:
       '@svgr/babel-plugin-svg-em-dimensions': 8.0.0(@babel/core@7.27.4)
       '@svgr/babel-plugin-transform-react-native-svg': 8.1.0(@babel/core@7.27.4)
       '@svgr/babel-plugin-transform-svg-component': 8.0.0(@babel/core@7.27.4)
-
-  '@svgr/cli@8.1.0(typescript@5.8.3)':
-    dependencies:
-      '@svgr/core': 8.1.0(typescript@5.8.3)
-      '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(typescript@5.8.3))
-      '@svgr/plugin-prettier': 8.1.0(@svgr/core@8.1.0(typescript@5.8.3))
-      '@svgr/plugin-svgo': 8.1.0(@svgr/core@8.1.0(typescript@5.8.3))(typescript@5.8.3)
-      camelcase: 6.3.0
-      chalk: 4.1.2
-      commander: 9.5.0
-      dashify: 2.0.0
-      glob: 8.1.0
-      snake-case: 3.0.4
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
 
   '@svgr/core@8.1.0(typescript@5.8.3)':
     dependencies:

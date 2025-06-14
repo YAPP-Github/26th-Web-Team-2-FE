@@ -10,13 +10,15 @@
     "./app.css": "./dist/app.css"
   },
   "scripts": {
-    "build": "tsdown",
-    "build-storybook": "storybook build",
+    "build": "turbo run build:ui",
+    "build:package": "tsdown",
+    "build:storybook": "storybook build",
     "check-types": "tsc --noEmit",
-    "chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",
-    "dev": "tsdown --watch",
-    "lint": "biome check .",
-    "storybook": "storybook dev -p 6006"
+    "deploy:chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",
+    "dev": "turbo run dev:ui",
+    "dev:package": "tsdown --watch",
+    "dev:storybook": "storybook dev -p 6006",
+    "lint": "biome check ."
   },
   "dependencies": {
     "@storybook/blocks": "^8.6.14",

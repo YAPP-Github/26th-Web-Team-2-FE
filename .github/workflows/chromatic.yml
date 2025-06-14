@@ -43,7 +43,7 @@ jobs:
             ${{ runner.os }}-pnpm-
 
       - name: Build Storybook for Design System
-        run: pnpm --filter @yapp-github/26th-web-team-2-fe-ui run build-storybook
+        run: pnpm --filter @yapp-github/26th-web-team-2-fe-ui run build:storybook
 
       - name: Publish to Chromatic
         id: chromatic

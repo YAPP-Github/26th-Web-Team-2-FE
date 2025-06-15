@@ -3,11 +3,12 @@
 import { InterimButton } from "@yapp-github/26th-web-team-2-fe-ui/interim-button";
 import { InterimDescription } from "@yapp-github/26th-web-team-2-fe-ui/interim-description";
 import { InterimTitle } from "@yapp-github/26th-web-team-2-fe-ui/interim-title";
+import { useAtom } from "jotai";
 import Image from "next/image";
-import { useState } from "react";
+import { counterAtom } from "@/shared/atoms/counter";
 
 export default function Home() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useAtom(counterAtom);
 
   return (
     <main className="flex h-screen flex-col justify-center">

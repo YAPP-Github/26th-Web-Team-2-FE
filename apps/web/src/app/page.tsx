@@ -4,7 +4,7 @@ import { InterimButton } from "@yapp-github/26th-web-team-2-fe-ui/interim-button
 import { InterimDescription } from "@yapp-github/26th-web-team-2-fe-ui/interim-description";
 import { InterimTitle } from "@yapp-github/26th-web-team-2-fe-ui/interim-title";
 import { useAtom } from "jotai";
-import Image from "next/image";
+import IcCheckBlack from "@/shared/assets/svg/ic_check_black_22.svg";
 import { counterAtom } from "@/shared/atoms/counter";
 
 export default function Home() {
@@ -13,15 +13,13 @@ export default function Home() {
   return (
     <main className="flex h-screen flex-col justify-center">
       <div className="text-center">
-        <a href="https://nextjs.org/docs" target="_blank" rel="noopener">
-          <Image
-            src="/next.svg"
-            alt="Next.js logo"
-            width={180}
-            height={38}
-            priority
-            className="mx-auto dark:invert"
-          />
+        <a
+          className="flex justify-center"
+          href="https://nextjs.org/docs"
+          target="_blank"
+          rel="noopener"
+        >
+          <IcCheckBlack className="text-red-500" width="150px" height="150px" />
         </a>
       </div>
       <InterimTitle className="text-center">Next.js</InterimTitle>

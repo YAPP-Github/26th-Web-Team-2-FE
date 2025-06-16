@@ -20,6 +20,7 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@tailwindcss/postcss": "^4.1.7",
     "@tsconfig/next": "^2.0.3",
     "@types/node": "^22",

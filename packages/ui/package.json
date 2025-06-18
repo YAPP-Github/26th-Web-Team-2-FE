@@ -10,13 +10,11 @@
     "./app.css": "./dist/app.css"
   },
   "scripts": {
-    "build": "turbo run build:ui",
-    "build:package": "tsdown",
+    "build": "tsdown",
     "build:storybook": "storybook build",
     "check-types": "tsc --noEmit",
     "deploy:chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",
-    "dev": "turbo run dev:ui",
-    "dev:package": "tsdown --watch",
+    "dev": "tsdown --watch",
     "dev:storybook": "storybook dev -p 6006",
     "lint": "biome check .",
     "test": "vitest run"

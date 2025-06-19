@@ -19,10 +19,6 @@
     },
     "test": {
       "dependsOn": ["^test"]
-    },
-    "svgr": {
-      "dependsOn": ["^svgr"],
-      "cache": false
     }
   }
 }

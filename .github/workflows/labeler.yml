@@ -66,7 +66,7 @@ jobs:
 
           for file in $CHANGED_FILES; do
             if [[ "$file" != packages/ui/* ]] && [[ "$file" != apps/web/* ]]; then
-              [[ "$file" == "pnpm-lock.json" ]] && continue
+              [[ "$file" == "pnpm-lock.yaml" ]] && continue
               ROOT_CHANGED=true
               break
             fi

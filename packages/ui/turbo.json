@@ -9,7 +9,7 @@
       "outputs": ["storybook-static/**"]
     },
     "dev": {
-      "with": ["dev:storybook"]
+      "with": ["dev:storybook", "test:watch"]
     },
     "dev:storybook": {
       "cache": false,

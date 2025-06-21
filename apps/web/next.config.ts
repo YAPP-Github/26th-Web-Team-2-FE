@@ -1,5 +1,6 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
+import withSvgr from "next-plugin-svgr";
 
 const plugins = [
   (config: NextConfig) =>
@@ -21,8 +22,10 @@ const plugins = [
       tunnelRoute: "/monitoring",
       widenClientFileUpload: true,
     }),
+  (config: NextConfig): NextConfig =>
+    withSvgr({ ...config, svgrOptions: { dimensions: false, icon: true } }),
 ];
 
 export default plugins.reduce((acc, plugin) => plugin(acc), {
-  /* config options here */
-} satisfies NextConfig);
+  reactStrictMode: true,
+} as NextConfig);

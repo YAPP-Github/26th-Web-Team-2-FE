@@ -9,6 +9,7 @@
     "lint": "biome check .",
     "start": "next start",
     "test": "vitest run",
+    "test:e2e": "magnitude",
     "test:watch": "vitest watch"
   },
   "dependencies": {
@@ -33,6 +34,7 @@
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^4.5.2",
     "jsdom": "^26.1.0",
+    "magnitude-test": "^0.2.6",
     "next-plugin-svgr": "^1.1.12",
     "postcss": "^8",
     "postcss-load-config": "*",

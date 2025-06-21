@@ -1,3 +1,10 @@
+publicHoistPattern:
+  - "@playwright/*"
+  - playwright
+
+onlyBuiltDependencies:
+  - sharp
+
 packages:
-  - "apps/*"
-  - "packages/*"
+  - apps/*
+  - packages/*

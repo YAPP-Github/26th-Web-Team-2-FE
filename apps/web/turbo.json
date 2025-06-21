@@ -5,6 +5,7 @@
     "dev": {
       "cache": false,
       "dependsOn": ["@yapp-github/26th-web-team-2-fe-ui#build"],
+      "with": ["test:watch"],
       "persistent": true
     }
   }

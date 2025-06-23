@@ -38,6 +38,10 @@
 }
 
 @layer base {
+  html {
+    font-size: 62.5%;
+  }
+
   body {
     font-family: var(--font-family-pretendard);
   }

@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "pretendard/dist/web/variable/pretendardvariable.css";
+/* TODO: woff2 폰트 설치 후 import */
+@import url("https://fonts.googleapis.com/css2?family=Pretendard+Variable:wght@400..700&display=swap");
 
 @theme {
   --font-family-pretendard: "Pretendard Variable", sans-serif;

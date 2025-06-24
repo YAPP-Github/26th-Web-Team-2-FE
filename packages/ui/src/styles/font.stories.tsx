@@ -45,9 +45,10 @@ export const Typography = () => (
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
+          height: "4rem",
         }}
       >
-        <span style={{ fontSize: "1rem", color: "#666" }}>{style}</span>
+        <span style={{ fontSize: "1.5rem", color: "#666" }}>{style}</span>
         <p className={style}>여행 비교표를 만들어요</p>
       </div>
     ))}

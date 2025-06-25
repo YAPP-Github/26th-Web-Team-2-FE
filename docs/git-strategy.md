@@ -1,18 +1,31 @@
+[[toc]]
+
 # Git 전략
 
-- TODO: trunk based 관련 내용
-- TODO: git branch 이름에 JIRA 티켓 넣기
-- TODO: git commit할 때는 컨벤션 & pnpm commit 내용
+##  브랜치 전략
+> Trunk-based Development
 
-<type>(optional scope): <description>  
+- main 브랜치에서 파생된, 짧은 수명의 feature 브랜치를 생성해 작업한다. 
+- squash merge를 기본으로 하며, PR 병합 후 작업한 feature 브랜치는 삭제한다. 
 
-또는 [YW-000] <type>(optional scope): <description>
 
-`TODO :` 
+## feature 브랜치 네이밍 
 
-- linear나 툴 설정 보고 더 생각  (티켓 넘버 쓸지 말지 )
-- optional scope 정하기 (FSD 또는 app router 최상위 path?)
+- 형식 : feature/Y26W2-`<티켓번호>`-`<상세기능>`
+- 예시 : `feature/Y26W2-5-login`, `feature/Y26W2-32-dashboard-error`
 
+
+## 커밋 메시지 컨벤션
+
+- pnpm commit을 사용하여 commit 메시지를 prompt에 따라 구성하거나,
+
+- spr을 활용할 경우, 하단의 컨벤션을 준수하여 커밋 메시지를 작성한다. 
+
+
+형식: `[Y26W2-000] <type>(optional scope): <description>`
+
+
+**커밋 타입**
 | 타입 | 설명 |
 | --- | --- |
 | `feat` | 새로운 기능 추가 |

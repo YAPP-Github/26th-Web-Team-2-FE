@@ -7,6 +7,9 @@
     "check-types": "turbo run check-types",
     "commit": "git-cz",
     "dev": "turbo run dev",
+    "docs:build": "vitepress build docs",
+    "docs:dev": "vitepress dev docs",
+    "docs:preview": "vitepress preview docs",
     "lint": "turbo run lint",
     "prepare": "simple-git-hooks",
     "test": "turbo run test"
@@ -22,6 +25,9 @@
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
     }
+  },
+  "dependencies": {
+    "vitepress": "^1.6.3"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0-beta.5",

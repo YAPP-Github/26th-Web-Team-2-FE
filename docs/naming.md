@@ -1,7 +1,7 @@
 [[toc]]
 
 # 코드 네이밍 가이드
-## 1. Props 타입 → `컴포넌트명 + Props`
+## Props 타입 → `컴포넌트명 + Props`
         
 ```jsx
 interface PostPageProps {
@@ -18,11 +18,11 @@ const PostPage = (props: PostPageProps) => {
 }
 ```
 
-## 2. 스타일 (Style)
+## 스타일 (Style)
 1. 컴포넌트 네이밍 규칙 : `Wrapper` → `Container` → `Item` → `Box` 순으로 사용한다.
 2. HTML5 시멘틱 태그(section, article, nav 등)를 적극적으로 활용한다.
 
-## 3. 함수 네이밍
+## 함수 네이밍
 
 1. 이벤트 핸들러 네이밍 **`on + 기능 + 이벤트`**
     - 예시
@@ -52,7 +52,7 @@ const PostPage = (props: PostPageProps) => {
         const [isLogined, setIsLogined] = useState(false);
         ```
 
-## 4. 기타
+## 기타
 1. assets 네이밍(Icon이나 Img)의 경우 피그마 네이밍을 적극 활용한다 
 
      **→ `피그마 네이밍 + Icon`** or **`Img`**

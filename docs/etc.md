@@ -1,18 +1,22 @@
-[[toc]]
-
 #  ETC (기타 코드 스타일 규칙)
+
+이 문서는 기타 코드 스타일 규칙을 정의하여 팀 내의 코드 작성 방식을 통일하는 것을 목표로 합니다.
+함수 선언 시 화살표 함수 사용, 암시적 반환 및 조기 반환 패턴을 권장함으로써 간결하고 가독성 높은 코드를 유지할 수 있도록 합니다.
+
+[[toc]]
 
 ## 컴포넌트와 함수는 화살표 함수(Arrow Function) 사용
 
 - 일관된 함수 선언 방식을 위해 일반 함수(function)보다 화살표 함수(`const fn = () => {}`) 를 기본으로 사용합니다.
 
-:: tip 권장방식 
-```jsx
-const UserCard = ({ user }) => {
-  return <div>{user.name}</div>;
-};
-```
-::
+
+::: tip 권장방식 
+  ```jsx
+  const UserCard = ({ user }) => { // [!code focus]
+    return <div>{user.name}</div>;
+  };
+  ```
+:::
 
 ## `암시적 반환`과 `조기반환`을 최대한 활용
     
@@ -30,7 +34,7 @@ const UserCard = ({ user }) => {
   ```jsx
     // 조기반환
     function processUser(user) {
-      if (!user || !user.isActive) return; // 조건이 맞지 않으면 일찍 반환
+      if (!user || !user.isActive) return; // 조건이 맞지 않으면 일찍 반환  // [!code focus]
       // 나머지 처리 코드...
     }
     ```

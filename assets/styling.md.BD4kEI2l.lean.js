@@ -1,0 +1,1 @@
+import{_ as i,c as a,o as l,ae as t}from"./chunks/framework.Dgg8-8ov.js";const c=JSON.parse('{"title":"스타일링 & Props 컨벤션","description":"","frontmatter":{},"headers":[],"relativePath":"styling.md","filePath":"styling.md"}'),p={name:"styling.md"};function e(n,s,h,k,r,o){return l(),a("div",null,s[0]||(s[0]=[t("",9)]))}const y=i(p,[["render",e]]);export{c as __pageData,y as default};

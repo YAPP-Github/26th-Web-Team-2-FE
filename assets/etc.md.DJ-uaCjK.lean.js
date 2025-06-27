@@ -1,0 +1,1 @@
+import{_ as i,c as a,o as t,ae as n}from"./chunks/framework.BLa4S9S3.js";const o=JSON.parse('{"title":"ETC (기타 코드 스타일 규칙)","description":"","frontmatter":{},"headers":[],"relativePath":"etc.md","filePath":"etc.md"}'),l={name:"etc.md"};function e(h,s,p,k,r,d){return t(),a("div",null,s[0]||(s[0]=[n("",8)]))}const E=i(l,[["render",e]]);export{o as __pageData,E as default};

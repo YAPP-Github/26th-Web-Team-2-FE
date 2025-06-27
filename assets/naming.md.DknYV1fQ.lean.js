@@ -1,0 +1,1 @@
+import{_ as i,c as a,o as n,ae as t}from"./chunks/framework.BLa4S9S3.js";const E=JSON.parse('{"title":"코드 네이밍 가이드","description":"","frontmatter":{},"headers":[],"relativePath":"naming.md","filePath":"naming.md"}'),h={name:"naming.md"};function l(k,s,p,e,r,d){return n(),a("div",null,s[0]||(s[0]=[t("",10)]))}const o=i(h,[["render",l]]);export{E as __pageData,o as default};

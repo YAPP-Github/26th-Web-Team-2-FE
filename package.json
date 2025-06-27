@@ -8,6 +8,7 @@
     "commit": "git-cz",
     "dev": "turbo run dev",
     "docs:build": "vitepress build docs",
+    "docs:deploy": "pnpm run docs:build && gh-pages -d docs/.vitepress/dist",
     "docs:dev": "vitepress dev docs",
     "docs:preview": "vitepress preview docs",
     "lint": "turbo run lint",
@@ -27,6 +28,7 @@
     }
   },
   "dependencies": {
+    "gh-pages": "^6.3.0",
     "vitepress": "^1.6.3"
   },
   "devDependencies": {

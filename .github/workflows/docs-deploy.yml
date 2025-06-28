@@ -2,7 +2,7 @@ name: docs-deploy
 
 on:
   push:
-    branches: [main, feature/Y26W2-39-docs] # TODO(sudosubin): Remove `feature/Y26W2-39-docs`
+    branches: [main]
     paths: [docs/**]
 
 permissions:
@@ -16,7 +16,6 @@ concurrency:
 
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,7 +33,6 @@ jobs:
           path: docs/.vitepress/dist
 
   deploy:
-    name: Deploy
     runs-on: ubuntu-latest
     needs: build
     environment:

@@ -17,7 +17,8 @@
     "dev": "tsdown --watch",
     "dev:storybook": "storybook dev -p 6006",
     "lint": "biome check .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:watch": "vitest watch"
   },
   "dependencies": {
     "@storybook/blocks": "^8.6.14",
@@ -35,12 +36,16 @@
     "@storybook/addon-vitest": "^9.0.6",
     "@storybook/react-vite": "^9.0.6",
     "@tailwindcss/cli": "^4.1.7",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.3.0",
     "@tsconfig/vite-react": "^6.3.5",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^4.5.2",
     "@vitest/browser": "^3.2.2",
     "@vitest/coverage-v8": "^3.2.2",
+    "jsdom": "^26.1.0",
     "playwright": "^1.52.0",
     "postcss": "^8",
     "postcss-load-config": "*",
@@ -48,6 +53,7 @@
     "tailwindcss": "^4.1.7",
     "tsdown": "^0.12.3",
     "typescript": "^5.8.3",
-    "vitest": "^3.2.2"
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4"
   }
 }

@@ -7,7 +7,10 @@
     "check-types": "tsc --noEmit",
     "dev": "next dev",
     "lint": "biome check .",
-    "start": "next start"
+    "start": "next start",
+    "test": "vitest run",
+    "test:e2e": "magnitude",
+    "test:watch": "vitest watch"
   },
   "dependencies": {
     "@sentry/nextjs": "^9.25.1",
@@ -22,15 +25,22 @@
   "devDependencies": {
     "@svgr/core": "^8.1.0",
     "@tailwindcss/postcss": "^4.1.7",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.3.0",
     "@tsconfig/next": "^2.0.3",
     "@types/file-loader": "^5.0.4",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^4.5.2",
+    "jsdom": "^26.1.0",
+    "magnitude-test": "^0.2.6",
     "next-plugin-svgr": "^1.1.12",
     "postcss": "^8",
     "postcss-load-config": "*",
     "tailwindcss": "^4.1.7",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4"
   }
 }

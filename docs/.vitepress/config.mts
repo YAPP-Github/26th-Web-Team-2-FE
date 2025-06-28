@@ -1,7 +1,7 @@
 import { defineConfig } from "vitepress";
 
 export default defineConfig({
-  base: "/26th-web-team-2-fe/",
+  base: "/26th-Web-Team-2-FE/",
   title: "Trip with Hul-zzuk",
   description: "YAPP 26th WEB 2 Team",
   themeConfig: {

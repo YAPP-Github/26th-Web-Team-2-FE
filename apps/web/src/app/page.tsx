@@ -24,6 +24,7 @@ export default function Home() {
       </div>
       <InterimTitle className="text-center">Next.js</InterimTitle>
       <div className="p-8 text-center">
+        <p className="title3-bold24">흩어진 여행정보를 빠르고 쉽게 ✈️</p>
         <InterimButton
           type="button"
           onClick={() => setCount((count) => count + 1)}

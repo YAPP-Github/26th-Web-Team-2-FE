@@ -1,6 +1,13 @@
 @import "tailwindcss";
 @import "@yapp-github/26th-web-team-2-fe-ui/app.css";
 
+@font-face {
+  font-family: "Pretendard Variable";
+  src: url("/font/PretendardVariable.woff2") format("woff2");
+  font-weight: 400 700;
+  font-display: swap;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -16,5 +23,5 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-family-pretendard);
 }

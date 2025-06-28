@@ -1,0 +1,15 @@
+{
+  "name": "@yapp-github/26th-web-team-2-fe-docs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "docs:build": "vitepress build",
+    "docs:deploy": "pnpm run docs:build && gh-pages -d .vitepress/dist",
+    "docs:dev": "vitepress dev",
+    "docs:preview": "vitepress preview"
+  },
+  "dependencies": {
+    "gh-pages": "^6.3.0",
+    "vitepress": "^1.6.3"
+  }
+}

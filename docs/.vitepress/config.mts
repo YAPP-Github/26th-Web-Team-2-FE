@@ -1,14 +1,11 @@
 import { defineConfig } from "vitepress";
 
-// https://vitepress.dev/reference/site-config
 export default defineConfig({
-  base: "/26th-Web-Team-2-FE/",
+  base: "/26th-web-team-2-fe/",
   title: "Trip with Hul-zzuk",
-  description: "Yapp 26th WEB 2 Team ",
+  description: "YAPP 26th WEB 2 Team",
   themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
     nav: [{ text: "Home", link: "/" }],
-
     sidebar: [
       {
         text: "Conventions",
@@ -22,7 +19,6 @@ export default defineConfig({
         ],
       },
     ],
-
     socialLinks: [
       {
         icon: "github",

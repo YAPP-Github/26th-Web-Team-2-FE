@@ -18,6 +18,5 @@ const preview: Preview = {
     },
   },
 };
-import "@/app.css";
 
 export default preview;

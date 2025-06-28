@@ -2,7 +2,13 @@
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!**/dist", "!**/.direnv", "!**/.next"]
+    "includes": [
+      "**",
+      "!**/dist",
+      "!**/storybook-static",
+      "!**/.direnv",
+      "!**/.next"
+    ]
   },
   "linter": {
     "domains": {
@@ -23,6 +29,12 @@
             "functions": ["clsx", "cn", "cva", "tw", "tw.*"]
           }
         }
+      },
+      "style": {
+        "useSelfClosingElements": "error"
+      },
+      "suspicious": {
+        "noVar": "error"
       }
     }
   },

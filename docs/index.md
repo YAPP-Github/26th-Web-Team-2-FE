@@ -4,14 +4,14 @@ layout: home
 
 hero:
   name: "Trip with Hul-zzuk ✈️"
-  text: "Yapp 26th WEB 2 "
-  tagline: 프로젝트 진행을 위한 컨벤션에 대한 내용을 담고 있습니다 
+  text: "YAPP 26th WEB 2"
+  tagline: 프로젝트 진행을 위한 컨벤션에 대한 내용을 담고 있습니다
   actions:
     - theme: brand
-      text: 네이밍 컨벤션 
+      text: 네이밍 컨벤션
       link: /naming
     - theme: alt
-      text: Git 전략 
+      text: Git 전략
       link: /git-strategy
     - theme: alt
       text: 프로젝트 폴더 구조

@@ -1,27 +1,27 @@
 const styles = [
   // Title
-  "title1-semi36",
-  "title2-medi28",
-  "title3-bold24",
+  "text-title1-semi36",
+  "text-title2-medi28",
+  "text-title3-bold24",
   // Heading
-  "heading1-semi20",
-  "heading2-semi18",
-  "heading2-medi18",
+  "text-heading1-semi20",
+  "text-heading2-semi18",
+  "text-heading2-medi18",
   // Body
-  "body1-semi16",
-  "body1-medi16",
-  "body1-regular16",
-  "body2-medi14",
-  "body2-regular14",
+  "text-body1-semi16",
+  "text-body1-medi16",
+  "text-body1-regular16",
+  "text-body2-medi14",
+  "text-body2-regular14",
   // Caption
-  "caption1-semi12",
-  "caption1-medi12",
-  "caption2-medi11",
-  "caption2-regular11",
+  "text-caption1-semi12",
+  "text-caption1-medi12",
+  "text-caption2-medi11",
+  "text-caption2-regular11",
 ];
 
 export default {
-  title: "Foundataions/Typography",
+  title: "Foundations/Typography",
   parameters: {
     layout: "centered",
   },

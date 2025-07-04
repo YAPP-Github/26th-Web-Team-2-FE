@@ -28,6 +28,18 @@ const config: StorybookConfig = {
       ...(config.resolve.alias || {}),
       "@": join(__dirname, "../src"),
     };
+
+    if (!config.css) config.css = {};
+
+    if (!config.css.postcss || typeof config.css.postcss === "string") {
+      config.css.postcss = { plugins: [] };
+    }
+
+    config.css.postcss.plugins = [
+      ...(config.css.postcss.plugins || []),
+      require("tailwindcss"),
+    ];
+
     return config;
   },
 };

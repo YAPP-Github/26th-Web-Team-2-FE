@@ -1,5 +1,157 @@
-@layer base, components, theme, utilities;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
-@import "./styles/theme.css";
+@layer base {
+  html {
+    font-size: 62.5%;
+  }
+
+  body {
+    font-family: var(--font-pretendard);
+  }
+
+  :root {
+    --font-pretendard: "Pretendard Variable", sans-serif;
+
+    /* font-weight  */
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* letter-spacing  */
+    --letter-spacing-tight: -0.06em;
+    --letter-spacing-normal: -0.04em;
+    --letter-spacing-wide: 0rem;
+
+    /* line-height  */
+    --line-height-normal: 1.5;
+    --line-height-loose: 1.8;
+
+    /* font-size */
+    --text-title1-semi36: 3.6rem;
+    --text-title2-medi28: 2.8rem;
+    --text-title3-bold24: 2.4rem;
+    --text-heading1-semi20: 2rem;
+    --text-heading2-semi18: 1.8rem;
+    --text-heading2-medi18: 1.8rem;
+    --text-body1-semi16: 1.6rem;
+    --text-body1-medi16: 1.6rem;
+    --text-body1-regular16: 1.6rem;
+    --text-body2-medi14: 1.4rem;
+    --text-body2-regular14: 1.4rem;
+    --text-caption1-semi12: 1.2rem;
+    --text-caption1-medi12: 1.2rem;
+    --text-caption2-medi11: 1.1rem;
+    --text-caption2-regular11: 1.1rem;
+
+    .text-title1-semi36 {
+      font-size: var(--text-title1-semi36);
+      font-weight: var(--font-weight-semibold);
+      line-height: var(--line-height-normal);
+      letter-spacing: var(--letter-spacing-tight);
+    }
+
+    .text-title2-medi28 {
+      font-size: var(--text-title2-medi28);
+      font-weight: var(--font-weight-medium);
+      line-height: var(--line-height-normal);
+      letter-spacing: var(--letter-spacing-tight);
+    }
+
+    .text-title3-bold24 {
+      font-size: var(--text-title3-bold24);
+      font-weight: var(--font-weight-bold);
+      line-height: var(--line-height-normal);
+      letter-spacing: var(--letter-spacing-wide);
+    }
+
+    /* Heading */
+    .text-heading1-semi20 {
+      font-size: var(--text-heading1-semi20);
+      font-weight: var(--font-weight-semibold);
+      line-height: var(--line-height-normal);
+      letter-spacing: var(--letter-spacing-wide);
+    }
+
+    .text-heading2-semi18 {
+      font-size: var(--text-heading2-semi18);
+      font-weight: var(--font-weight-semibold);
+      line-height: var(--line-height-normal);
+      letter-spacing: var(--letter-spacing-wide);
+    }
+
+    .text-heading2-medi18 {
+      font-size: var(--text-heading2-medi18);
+      font-weight: var(--font-weight-medium);
+      line-height: var(--line-height-normal);
+      letter-spacing: var(--letter-spacing-wide);
+    }
+
+    /* Body */
+    .text-body1-semi16 {
+      font-size: var(--text-body1-semi16);
+      font-weight: var(--font-weight-semibold);
+      line-height: var(--line-height-normal);
+      letter-spacing: var(--letter-spacing-wide);
+    }
+
+    .text-body1-medi16 {
+      font-size: var(--text-body1-medi16);
+      font-weight: var(--font-weight-medium);
+      line-height: var(--line-height-normal);
+      letter-spacing: var(--letter-spacing-wide);
+    }
+
+    .text-body1-regular16 {
+      font-size: var(--text-body1-regular16);
+      font-weight: var(--font-weight-regular);
+      line-height: var(--line-height-normal);
+      letter-spacing: var(--letter-spacing-normal);
+    }
+
+    .text-body2-medi14 {
+      font-size: var(--text-body2-medi14);
+      font-weight: var(--font-weight-medium);
+      line-height: var(--line-height-normal);
+      letter-spacing: var(--letter-spacing-normal);
+    }
+
+    .text-body2-regular14 {
+      font-size: var(--text-body2-regular14);
+      font-weight: var(--font-weight-regular);
+      line-height: var(--line-height-loose);
+      letter-spacing: var(--letter-spacing-normal);
+    }
+
+    /* Caption */
+    .text-caption1-semi12 {
+      font-size: var(--text-caption1-semi12);
+      font-weight: var(--font-weight-semibold);
+      line-height: var(--line-height-normal);
+      letter-spacing: var(--letter-spacing-normal);
+    }
+
+    .text-caption1-medi12 {
+      font-size: var(--text-caption1-medi12);
+      font-weight: var(--font-weight-medium);
+      line-height: var(--line-height-normal);
+      letter-spacing: var(--letter-spacing-normal);
+    }
+
+    .text-caption2-medi11 {
+      font-size: var(--text-caption2-medi11);
+      font-weight: var(--font-weight-medium);
+      line-height: var(--line-height-normal);
+      letter-spacing: var(--letter-spacing-normal);
+    }
+
+    .text-caption2-regular11 {
+      font-size: var(--text-caption2-regular11);
+      font-weight: var(--font-weight-regular);
+      line-height: var(--line-height-normal);
+      letter-spacing: var(--letter-spacing-normal);
+    }
+  }
+}

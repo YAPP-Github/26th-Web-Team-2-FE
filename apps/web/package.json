@@ -30,7 +30,7 @@
     "next-plugin-svgr": "^1.1.12",
     "postcss": "^8",
     "postcss-load-config": "*",
-    "tailwindcss": "^4.1.7",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3"
   }
 }

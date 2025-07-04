@@ -3,4 +3,5 @@ onlyBuiltDependencies:
 
 packages:
   - apps/*
+  - docs
   - packages/*

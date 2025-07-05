@@ -1,9 +1,15 @@
 import "./app.css";
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import localFont from "next/font/local";
 import Providers from "@/shared/providers";
 
-const geist = Geist({ subsets: ["latin"] });
+const Pretendard = localFont({
+  src: "../../node_modules/pretendard/dist/web/variable/woff2/PretendardVariable.woff2",
+  display: "swap",
+  weight: "45 920",
+  adjustFontFallback: false,
+  variable: "--font-pretendard",
+});
 
 export const metadata: Metadata = {
   title: "Create Turborepo",
@@ -17,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className={geist.className}>
+      <body className={Pretendard.variable}>
         <Providers>{children}</Providers>
       </body>
     </html>

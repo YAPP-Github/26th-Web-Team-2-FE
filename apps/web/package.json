@@ -19,6 +19,7 @@
     "@yapp-github/26th-web-team-2-fe-ui": "workspace:*",
     "jotai": "^2.12.5",
     "next": "^15.3.2",
+    "pretendard": "^1.3.9",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },

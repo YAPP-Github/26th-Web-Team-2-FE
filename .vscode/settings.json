@@ -1,5 +1,8 @@
 {
   "editor.tabSize": 2,
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
   "tailwindCSS.classFunctions": ["clsx", "cn", "cva", "tw"],
   "tailwindCSS.experimental.classRegex": [
     ["clsx\\(.*?\\)(?!\\])", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"],

@@ -1,11 +1,6 @@
 @import "tailwindcss";
 @import "@yapp-github/26th-web-team-2-fe-ui/app.css";
 
-@theme {
-  --font-sans: var(--font-pretendard), ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-}
-
 :root {
   --background: #ffffff;
   --foreground: #171717;

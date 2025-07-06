@@ -2,3 +2,83 @@
 
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
+
+@theme {
+  --font-sans: var(--font-pretendard), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --text-title1-semi36: 3.6rem;
+  --text-title1-semi36--font-weight: 600;
+  --text-title1-semi36--line-height: 1.5;
+  --text-title1-semi36--letter-spacing: -0.06em;
+
+  --text-title2-medi28: 2.8rem;
+  --text-title2-medi28--font-weight: 500;
+  --text-title2-medi28--line-height: 1.5;
+  --text-title2-medi28--letter-spacing: -0.06em;
+
+  --text-title3-bold24: 2.4rem;
+  --text-title3-bold24--font-weight: 700;
+  --text-title3-bold24--line-height: 1.5;
+  --text-title3-bold24--letter-spacing: 0rem;
+
+  --text-heading1-semi20: 2rem;
+  --text-heading1-semi20--font-weight: 600;
+  --text-heading1-semi20--line-height: 1.5;
+  --text-heading1-semi20--letter-spacing: 0rem;
+
+  --text-heading2-semi18: 1.8rem;
+  --text-heading2-semi18--font-weight: 600;
+  --text-heading2-semi18--line-height: 1.5;
+  --text-heading2-semi18--letter-spacing: 0rem;
+
+  --text-heading2-medi18: 1.8rem;
+  --text-heading2-medi18--font-weight: 500;
+  --text-heading2-medi18--line-height: 1.5;
+  --text-heading2-medi18--letter-spacing: 0rem;
+
+  --text-body1-semi16: 1.6rem;
+  --text-body1-semi16--font-weight: 600;
+  --text-body1-semi16--line-height: 1.5;
+  --text-body1-semi16--letter-spacing: 0rem;
+
+  --text-body1-medi16: 1.6rem;
+  --text-body1-medi16--font-weight: 500;
+  --text-body1-medi16--line-height: 1.5;
+  --text-body1-medi16--letter-spacing: 0rem;
+
+  --text-body1-regular16: 1.6rem;
+  --text-body1-regular16--font-weight: 400;
+  --text-body1-regular16--line-height: 1.5;
+  --text-body1-regular16--letter-spacing: -0.04em;
+
+  --text-body2-medi14: 1.4rem;
+  --text-body2-medi14--font-weight: 500;
+  --text-body2-medi14--line-height: 1.5;
+  --text-body2-medi14--letter-spacing: -0.04em;
+
+  --text-body2-regular14: 1.4rem;
+  --text-body2-regular14--font-weight: 400;
+  --text-body2-regular14--line-height: 1.8;
+  --text-body2-regular14--letter-spacing: -0.04em;
+
+  --text-caption1-semi12: 1.2rem;
+  --text-caption1-semi12--font-weight: 600;
+  --text-caption1-semi12--line-height: 1.5;
+  --text-caption1-semi12--letter-spacing: -0.04em;
+
+  --text-caption1-medi12: 1.2rem;
+  --text-caption1-medi12--font-weight: 500;
+  --text-caption1-medi12--line-height: 1.5;
+  --text-caption1-medi12--letter-spacing: -0.04em;
+
+  --text-caption2-medi11: 1.1rem;
+  --text-caption2-medi11--font-weight: 500;
+  --text-caption2-medi11--line-height: 1.5;
+  --text-caption2-medi11--letter-spacing: -0.04em;
+
+  --text-caption2-regular11: 1.1rem;
+  --text-caption2-regular11--font-weight: 400;
+  --text-caption2-regular11--line-height: 1.5;
+  --text-caption2-regular11--letter-spacing: -0.04em;
+}

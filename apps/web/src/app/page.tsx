@@ -30,11 +30,11 @@ export default function Home() {
         >
           count is {count}
         </InterimButton>
-        <InterimDescription>
+        <InterimDescription className="text-caption1-medi12">
           Edit <code>src/app/page.tsx</code> and save to test HMR
         </InterimDescription>
       </div>
-      <InterimDescription className="text-center text-gray-400">
+      <InterimDescription className="text-center text-caption2-regular11 text-gray-400">
         Click on the Next.js logo to learn more
       </InterimDescription>
     </main>

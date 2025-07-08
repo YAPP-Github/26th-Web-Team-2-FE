@@ -28,27 +28,13 @@ export default {
 };
 
 export const Typography = () => (
-  <div
-    style={{
-      width: "50rem",
-      display: "flex",
-      flexDirection: "column",
-      gap: "1.5rem",
-      padding: "2rem",
-    }}
-  >
+  <div className="flex w-[50rem] flex-col gap-6 p-8">
     {styles.map((style) => (
       <div
         key={style}
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          height: "4rem",
-        }}
+        className="flex h-16 flex-row items-center justify-between"
       >
-        <span style={{ fontSize: "1.5rem", color: "#666" }}>{style}</span>
+        <span className="text-2xl text-gray-500">{style}</span>
         <p className={style}>여행 비교표를 만들어요</p>
       </div>
     ))}

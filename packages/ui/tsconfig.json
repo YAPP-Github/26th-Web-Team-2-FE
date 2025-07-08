@@ -11,8 +11,7 @@
     "**/*.tsx",
     "vite.config.mts",
     "./global.d.ts",
-    "vitest.config.mts",
-    "tsdown.config.mts"
+    "vitest.config.mts"
   ],
   "exclude": ["node_modules"]
 }

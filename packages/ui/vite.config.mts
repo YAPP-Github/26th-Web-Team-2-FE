@@ -1,7 +1,6 @@
-import { basename, dirname, resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react";
-import fg from "fast-glob";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import svgr from "vite-plugin-svgr";
@@ -29,24 +28,18 @@ function tailwindBuildPlugin() {
   };
 }
 
-const entryFiles = fg.sync("src/*/index.{ts,tsx}", { absolute: true });
-
-const _entryObj = Object.fromEntries(
-  entryFiles.map((file) => {
-    const name = basename(dirname(file)); // 폴더명
-    return [name, file];
-  }),
-);
-
 export default defineConfig({
   plugins: [
     react(),
     svgr(),
     tailwindBuildPlugin(),
     dts({
+      include: ["src"],
       insertTypesEntry: true, // package.json에 "types" 필드 자동 추가
-      outDir: "dist/types", // 타입 선언 출력 경로 (dist/types)
+      outDir: "dist", // 타입 선언 출력 경로 (dist/types)
       entryRoot: "src",
+      rollupTypes: true, // Rollup을 사용하여 타입 선언 생성
+      tsconfigPath: "./tsconfig.json",
     }),
   ],
   resolve: {
@@ -56,8 +49,8 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: _entryObj,
-      fileName: (_format, entryName) => `${entryName}/index.js`,
+      entry: resolve(__dirname, "src/index.ts"),
+      fileName: "index",
       formats: ["es"],
     },
     rollupOptions: {
@@ -67,7 +60,7 @@ export default defineConfig({
           react: "React",
           "react-dom": "ReactDOM",
         },
-        entryFileNames: "[name]/index.js",
+        entryFileNames: "index.js",
       },
     },
     sourcemap: true,

@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "exports": {
-    "./*": {
-      "import": "./dist/*/index.mjs",
-      "types": "./dist/*/index.d.mts"
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     },
     "./app.css": "./dist/app.css"
   },
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "vite build",
     "build:storybook": "storybook build",
@@ -24,7 +25,6 @@
     "@storybook/blocks": "^8.6.14",
     "chromatic": "^12.1.1",
     "clsx": "^2.1.1",
-    "fast-glob": "^3.3.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tailwind-merge": "^3.3.0",

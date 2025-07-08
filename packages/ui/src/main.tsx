@@ -18,7 +18,7 @@ const App = () => (
     </p>
     <p style={{ fontSize: "0.9rem", color: "#6b7280" }}>
       <code>pnpm dev:storybook</code> 명령어로 시작해보세요!
-      <WalkerIcon width="30px" height="30px" />
+      <WalkerIcon />
     </p>
   </div>
 );

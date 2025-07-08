@@ -3,8 +3,16 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
+@layer base {
+  body {
+    padding: 0;
+    margin: 0;
+  }
+}
+
 @theme {
-  --font-sans: var(--font-pretendard), ui-sans-serif, system-ui, sans-serif,
+  --font-sans:
+    var(--font-pretendard), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
   --text-title1-semi36: 3.6rem;

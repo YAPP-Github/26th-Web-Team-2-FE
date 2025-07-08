@@ -1,10 +1,18 @@
 {
   "extends": "@tsconfig/vite-react/tsconfig.json",
   "compilerOptions": {
+    "types": ["vite-plugin-svgr/client"],
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "vite.config.mts",
+    "./global.d.ts",
+    "vitest.config.mts",
+    "tsdown.config.mts"
+  ],
   "exclude": ["node_modules"]
 }

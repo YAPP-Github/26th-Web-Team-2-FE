@@ -9,9 +9,13 @@
       "outputs": ["storybook-static/**"]
     },
     "dev": {
-      "with": ["dev:storybook", "test:watch"]
+      "with": ["dev:storybook", "test:watch", "dev:tsdown"]
     },
     "dev:storybook": {
+      "cache": false,
+      "persistent": true
+    },
+    "dev:tsdown": {
       "cache": false,
       "persistent": true
     },

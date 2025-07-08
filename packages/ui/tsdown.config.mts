@@ -1,12 +1,19 @@
 import { exec } from "node:child_process";
 import { appendFile, readFile } from "node:fs/promises";
 import { promisify } from "node:util";
+import { globby } from "globby";
 import { defineConfig } from "tsdown";
 
 const execAsync = promisify(exec);
 
+const entries = await globby([
+  "./src/*/*",
+  "!src/**/*.stories.ts",
+  "!src/**/*.stories.tsx",
+]);
+
 export default defineConfig({
-  entry: "./src/*/*",
+  entry: entries,
   clean: true,
   dts: true,
   format: "esm",

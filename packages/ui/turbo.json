@@ -8,10 +8,10 @@
     "build:storybook": {
       "outputs": ["storybook-static/**"]
     },
-    "dev:vite": {
-      "cache": false,
-      "persistent": true
+    "dev": {
+      "with": ["dev:storybook", "test:watch"]
     },
+
     "dev:storybook": {
       "cache": false,
       "persistent": true

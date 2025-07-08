@@ -15,7 +15,7 @@
     "build:storybook": "storybook build",
     "check-types": "tsc --noEmit",
     "deploy:chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",
-    "dev": "turbo run dev:storybook dev:tsdown dev:vite",
+    "dev": "vite",
     "dev:storybook": "storybook dev -p 6006",
     "dev:tsdown": "tsdown --watch",
     "dev:vite": "vite",

@@ -4,6 +4,9 @@
 @import "tailwindcss/utilities.css" layer(utilities);
 
 @layer base {
+  html {
+    font-size: 62.5%;
+  }
   body {
     padding: 0;
     margin: 0;

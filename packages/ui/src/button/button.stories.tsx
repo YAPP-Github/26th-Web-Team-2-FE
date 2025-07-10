@@ -25,7 +25,7 @@ export default {
 
 const Template: StoryFn<ButtonProps> = (args) => <Button {...args} />;
 
-export const Default = Template.bind({});
+export const Default: StoryFn<ButtonProps> = Template.bind({});
 Default.args = {
   children: "메인 버튼",
   size: "lg",
@@ -34,7 +34,7 @@ Default.args = {
   disabled: false,
 };
 
-export const IconSecondary = Template.bind({});
+export const IconSecondary: StoryFn<ButtonProps> = Template.bind({});
 IconSecondary.args = {
   children: "메인 버튼",
   size: "lg",
@@ -42,7 +42,7 @@ IconSecondary.args = {
   icon: true,
 };
 
-export const MediumButton = Template.bind({});
+export const MediumButton: StoryFn<ButtonProps> = Template.bind({});
 MediumButton.args = {
   children: "메인 버튼",
   size: "md",

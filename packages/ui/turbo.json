@@ -11,10 +11,12 @@
     "dev": {
       "with": ["dev:storybook", "test:watch"]
     },
+
     "dev:storybook": {
       "cache": false,
       "persistent": true
     },
+
     "test:watch": {
       "cache": false,
       "persistent": true

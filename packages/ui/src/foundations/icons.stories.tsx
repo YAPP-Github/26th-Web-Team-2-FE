@@ -1,3 +1,4 @@
+import IcAdd from "@/assets/icons/ic_add.svg?react";
 import IcAddMemo from "@/assets/icons/ic_add_memo.svg?react";
 import IcAlert from "@/assets/icons/ic_alert.svg?react";
 import IcArrowDown from "@/assets/icons/ic_arrow_down.svg?react";
@@ -5,6 +6,7 @@ import IcArrowLeft from "@/assets/icons/ic_arrow_left.svg?react";
 import IcArrowRight from "@/assets/icons/ic_arrow_right.svg?react";
 import IcArrowUp from "@/assets/icons/ic_arrow_up.svg?react";
 import IcCar from "@/assets/icons/ic_car.svg?react";
+import IcClose from "@/assets/icons/ic_close.svg?react";
 import IcCollapse from "@/assets/icons/ic_collapse.svg?react";
 import IcDelete from "@/assets/icons/ic_delete.svg?react";
 import IcEdit from "@/assets/icons/ic_edit.svg?react";
@@ -46,6 +48,8 @@ const icons = {
   IcStarHalf: IcStarHalf,
   IcTable: IcTable,
   IcVariant: IcVariant,
+  IcClose: IcClose,
+  IcAdd: IcAdd,
 };
 
 export default {
@@ -53,20 +57,25 @@ export default {
 };
 
 export const Icons = () => (
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fill, minmax(90px, 1fr))",
-      gap: "24px",
-      alignItems: "center",
-      justifyItems: "center",
-    }}
-  >
-    {Object.entries(icons).map(([name, Icon]) => (
-      <div key={name} style={{ textAlign: "center" }}>
-        <Icon width={32} height={32} />
-        <div style={{ marginTop: 8, fontSize: 12, color: "#888" }}>{name}</div>
+  <div className="flex flex-col gap-16 p-8">
+    <section>
+      <h2 className="mb-6 font-bold text-3xl text-gray-800">
+        Ssok Icon Library 🚀
+      </h2>
+
+      <div className="grid grid-cols-3 gap-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7">
+        {Object.entries(icons).map(([name, Icon]) => (
+          <div
+            key={name}
+            className="flex flex-col items-center gap-2 rounded-md bg-gray-50 p-4 shadow-sm"
+          >
+            <Icon width={32} height={32} />
+            <code className="break-words text-center text-gray-700 text-xs">
+              {name}
+            </code>
+          </div>
+        ))}
       </div>
-    ))}
+    </section>
   </div>
 );

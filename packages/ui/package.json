@@ -17,7 +17,6 @@
     "deploy:chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",
     "dev": "vite",
     "dev:storybook": "storybook dev -p 6006",
-    "dev:tsdown": "tsdown --watch",
     "dev:vite": "vite",
     "lint": "biome check .",
     "test": "vitest run",

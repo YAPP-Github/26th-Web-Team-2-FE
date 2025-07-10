@@ -123,13 +123,13 @@ const colorGroups = {
 };
 
 const opacityVariables = [
-  "--opacity-5",
-  "--opacity-12",
-  "--opacity-22",
-  "--opacity-35",
-  "--opacity-52",
-  "--opacity-74",
-  "--opacity-100",
+  "opacity-5",
+  "opacity-12",
+  "opacity-22",
+  "opacity-35",
+  "opacity-52",
+  "opacity-74",
+  "opacity-100",
 ];
 
 export default {
@@ -179,8 +179,7 @@ export const Colors = () => (
         {opacityVariables.map((variable) => (
           <div key={variable} className="flex flex-col items-center gap-2">
             <div
-              className="h-20 w-20 rounded-lg bg-black shadow-inner"
-              style={{ opacity: `var(${variable})` }}
+              className={`h-20 w-20 rounded-lg bg-black shadow-inner ${variable}`}
             />
             <code className="text-center text-gray-600 text-xs">
               {variable}

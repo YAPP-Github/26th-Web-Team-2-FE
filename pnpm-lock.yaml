@@ -56,7 +56,7 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: ^5.80.6
         version: 5.81.5(@tanstack/react-query@5.81.5(react@19.1.0))(react@19.1.0)
-      '@yapp-github/26th-web-team-2-fe-ui':
+      '@ssok/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       jotai:

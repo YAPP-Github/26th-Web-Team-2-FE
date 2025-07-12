@@ -1,9 +1,9 @@
 {
-  "name": "@yapp-github/26th-web-team-2-fe",
+  "name": "@ssok/root",
   "private": true,
   "scripts": {
     "build": "turbo run build",
-    "build:storybook": "pnpm --filter @yapp-github/26th-web-team-2-fe-ui run build:storybook",
+    "build:storybook": "pnpm --filter @ssok/ui run build:storybook",
     "check-types": "turbo run check-types",
     "commit": "git-cz",
     "dev": "turbo run dev",

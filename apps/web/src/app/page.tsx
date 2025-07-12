@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  InterimButton,
-  InterimDescription,
-  InterimTitle,
-} from "@yapp-github/26th-web-team-2-fe-ui";
+import { InterimButton, InterimDescription, InterimTitle } from "@ssok/ui";
 import { useAtom } from "jotai";
 import IcCheckBlack from "@/shared/assets/svg/ic_check_black_22.svg";
 import { counterAtom } from "@/shared/atoms/counter";

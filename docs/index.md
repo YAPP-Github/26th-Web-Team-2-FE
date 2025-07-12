@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: "Trip with Hul-zzuk ✈️"
+  name: "Trip with Ssok ✈️"
   text: "YAPP 26th WEB 2"
   tagline: 프로젝트 진행을 위한 컨벤션에 대한 내용을 담고 있습니다
   actions:

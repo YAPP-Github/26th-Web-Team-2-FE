@@ -1,10 +1,10 @@
-name: 'Chromatic Auto Deploy on PR to Main'
+name: "Chromatic Auto Deploy on PR to Main"
 
 on:
   pull_request:
     types: [synchronize, labeled]
     branches:
-      - '**' 
+      - "**"
 
 permissions:
   contents: write
@@ -43,7 +43,7 @@ jobs:
             ${{ runner.os }}-pnpm-
 
       - name: Build Storybook for Design System
-        run: pnpm --filter @yapp-github/26th-web-team-2-fe-ui run build:storybook
+        run: pnpm --filter @ssok/ui run build:storybook
 
       - name: Publish to Chromatic
         id: chromatic

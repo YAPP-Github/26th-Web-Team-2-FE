@@ -2,7 +2,7 @@ import { defineConfig } from "vitepress";
 
 export default defineConfig({
   base: "/26th-Web-Team-2-FE/",
-  title: "Trip with Hul-zzuk",
+  title: "Trip with Ssok",
   description: "YAPP 26th WEB 2 Team",
   themeConfig: {
     nav: [{ text: "Home", link: "/" }],

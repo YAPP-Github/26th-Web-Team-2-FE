@@ -140,6 +140,10 @@ const twMerge = extendTailwindMerge({
         "tertiary-10",
         "tertiary-5",
         "tertiary-0",
+
+        "opacity-3-75",
+        "opacity-7",
+        "opacity-12",
       ],
     },
   },

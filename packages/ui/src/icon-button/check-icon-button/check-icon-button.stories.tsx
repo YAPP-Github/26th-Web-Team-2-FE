@@ -1,0 +1,48 @@
+import type { Meta, StoryFn } from "@storybook/react-vite";
+import { CheckIconButton } from "./index";
+
+export default {
+  title: "Components/IconButton/Check",
+  component: CheckIconButton,
+  tags: ["autodocs"],
+  argTypes: {
+    selected: {
+      control: { type: "boolean" },
+      description: "선택된 상태일 경우 체크 아이콘이 나타납니다.",
+    },
+    size: {
+      control: { type: "radio" },
+      options: ["sm", "md"],
+      description: "버튼의 사이즈",
+    },
+    disabled: {
+      control: { type: "boolean" },
+    },
+    onClick: { action: "clicked" },
+  },
+  parameters: {
+    layout: "centered",
+  },
+} as Meta<typeof CheckIconButton>;
+
+const Template: StoryFn<typeof CheckIconButton> = (args) => (
+  <CheckIconButton {...args} />
+);
+
+export const Default = Template.bind({});
+Default.args = {
+  selected: false,
+  size: "md",
+};
+
+export const Selected = Template.bind({});
+Selected.args = {
+  selected: true,
+  size: "md",
+};
+
+export const Small = Template.bind({});
+Small.args = {
+  selected: true,
+  size: "sm",
+};

@@ -11,7 +11,8 @@
     "**/*.tsx",
     "vite.config.mts",
     "./global.d.ts",
-    "vitest.config.mts"
+    "vitest.config.mts",
+    "src/icon-button/delete-icon-button/delete-icon-button.stories.tsx"
   ],
   "exclude": ["node_modules"]
 }

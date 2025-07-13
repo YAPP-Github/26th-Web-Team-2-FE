@@ -6,6 +6,7 @@ import IcArrowLeft from "@/assets/icons/ic_arrow_left.svg?react";
 import IcArrowRight from "@/assets/icons/ic_arrow_right.svg?react";
 import IcArrowUp from "@/assets/icons/ic_arrow_up.svg?react";
 import IcCar from "@/assets/icons/ic_car.svg?react";
+import IcCheckFill from "@/assets/icons/ic_check_fill.svg?react";
 import IcClose from "@/assets/icons/ic_close.svg?react";
 import IcCollapse from "@/assets/icons/ic_collapse.svg?react";
 import IcDelete from "@/assets/icons/ic_delete.svg?react";
@@ -50,6 +51,7 @@ const icons = {
   IcVariant: IcVariant,
   IcClose: IcClose,
   IcAdd: IcAdd,
+  IcCheckFill: IcCheckFill,
 };
 
 export default {

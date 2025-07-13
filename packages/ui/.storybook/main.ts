@@ -10,6 +10,7 @@ function _getAbsolutePath(value: string): any {
 }
 const config: StorybookConfig = {
   stories: ["../src/*.mdx", "../src/*/*.stories.@(js|jsx|mjs|ts|tsx)"],
+  staticDirs: [{ from: "../public/fonts", to: "/fonts" }],
   addons: [
     "@storybook/addon-onboarding",
     "@chromatic-com/storybook",

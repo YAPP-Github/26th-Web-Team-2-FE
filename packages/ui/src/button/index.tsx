@@ -1,50 +1,49 @@
-import type { ButtonHTMLAttributes, PropsWithChildren } from "react";
-import IcVariant from "@/assets/icons/ic_variant.svg?react";
+import type { ButtonHTMLAttributes } from "react";
 import { cn } from "@/utils";
-import { buttonClasses } from "./button.variant";
+import { button, buttonText } from "./button.variant";
 
-export type ButtonProps = PropsWithChildren<
-  {
-    className?: string;
-    size: "md" | "lg";
-    icon?: boolean;
-    color?: "primary" | "secondary";
-  } & ButtonHTMLAttributes<HTMLButtonElement>
->;
+type CommonProps = {
+  className?: string;
+  icon?: React.ReactNode;
+  children: React.ReactNode;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
+
+type ButtonBaseProps = {
+  size: "sm" | "md" | "lg" | "sticky";
+  variant: "primary" | "secondary" | "text";
+  selected?: never;
+  additionalText?: string;
+} & CommonProps;
+
+type ButtonRoundProps = {
+  size: "sm" | "md" | "lg";
+  variant: "round";
+  selected: boolean;
+  additionalText?: never;
+} & CommonProps;
+
+export type ButtonProps = ButtonBaseProps | ButtonRoundProps;
 
 export const Button = ({
   children,
   className,
   size,
-  icon = false,
-  color = "primary",
+  icon,
+  selected,
+  variant = "primary",
+  additionalText,
   ...props
 }: ButtonProps) => {
   return (
     <button
-      className={cn(
-        "flex gap-2 rounded-[1.2rem] border-none transition-colors duration-200",
-        buttonClasses.size[size],
-        buttonClasses.variant[color].base,
-        buttonClasses.variant[color].hover,
-        buttonClasses.variant[color].focus,
-        buttonClasses.variant[color].active,
-        buttonClasses.variant[color].disabled,
-        className,
-      )}
+      className={cn(button({ size, variant, selected: selected }), className)}
       {...props}
     >
-      {icon && (
-        <span className="flex items-center justify-center">
-          <IcVariant
-            className="text-neutral-100"
-            width={20}
-            height={20}
-            fill="currentColor"
-          />
-        </span>
+      {icon && icon}
+      <p className={buttonText({ size })}>{children}</p>
+      {additionalText && (
+        <span className="text-body2-medi14">{additionalText}</span>
       )}
-      {children}
     </button>
   );
 };

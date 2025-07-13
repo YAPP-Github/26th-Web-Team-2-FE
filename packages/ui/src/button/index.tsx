@@ -16,7 +16,7 @@ type ButtonBaseProps = {
 } & CommonProps;
 
 type ButtonRoundProps = {
-  size: "sm" | "md" | "lg";
+  size?: never;
   variant: "round";
   selected: boolean;
   additionalText?: never;

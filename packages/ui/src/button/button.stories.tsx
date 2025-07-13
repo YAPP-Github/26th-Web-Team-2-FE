@@ -10,10 +10,11 @@ export default {
     size: {
       control: { type: "radio" },
       options: ["sm", "md", "lg"],
+      if: { arg: "variant", neq: "round" },
     },
     variant: {
       control: { type: "radio" },
-      options: ["primary", "secondary", "text", "round"],
+      options: ["primary", "secondary", "text"],
     },
     icon: {
       control: false,
@@ -81,7 +82,6 @@ StickyButton.args = {
 export const RoundButton: StoryFn<ButtonProps> = Template.bind({});
 RoundButton.args = {
   children: "메인 버튼",
-  size: "sm",
   variant: "round",
   selected: false,
 };

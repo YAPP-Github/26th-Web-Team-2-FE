@@ -235,4 +235,8 @@
   --opacity-3-75: 0.0375;
   --opacity-7: 0.07;
   --opacity-12: 0.12;
+
+  --shadow-floating:
+    0px -0.5px 1px 0px #fff inset, 0px 0.5px 1px 0px
+    var(--neutral-variant-100, #fff) inset;
 }

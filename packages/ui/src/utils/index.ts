@@ -144,6 +144,8 @@ const twMerge = extendTailwindMerge({
         "opacity-3-75",
         "opacity-7",
         "opacity-12",
+
+        "shadow-floating",
       ],
     },
   },

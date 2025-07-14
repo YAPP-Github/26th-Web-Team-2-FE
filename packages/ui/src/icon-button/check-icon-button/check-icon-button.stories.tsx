@@ -34,15 +34,3 @@ Default.args = {
   selected: false,
   size: "md",
 };
-
-export const Selected = Template.bind({});
-Selected.args = {
-  selected: true,
-  size: "md",
-};
-
-export const Small = Template.bind({});
-Small.args = {
-  selected: true,
-  size: "sm",
-};

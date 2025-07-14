@@ -37,7 +37,7 @@ export const button = cva(
         variant: "round",
         selected: false,
         class:
-          "border-[0.1rem] border-neutral-90 bg-neutral-100 text-neutral-35 hover:border-neutral-90 hover:bg-neutral-95 hover:text-neutral-40",
+          "border-[0.1rem] border-neutral-90 bg-neutral-100 text-neutral-35 hover:border-neutral-90 hover:bg-neutral-95 hover:text-neutral-40 focus:bg-neutral-90",
       },
       {
         variant: "text",

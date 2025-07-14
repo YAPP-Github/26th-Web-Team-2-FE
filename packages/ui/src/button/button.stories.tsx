@@ -79,12 +79,16 @@ StickyButton.args = {
   variant: "primary",
 };
 
-export const RoundButton: StoryFn<ButtonProps> = Template.bind({});
-RoundButton.args = {
-  children: "메인 버튼",
-  variant: "round",
-  selected: false,
-};
+export const RoundButton: StoryFn = () => (
+  <div className="flex gap-4">
+    <Button variant="round" selected={false}>
+      텍스트
+    </Button>
+    <Button variant="round" selected={true}>
+      텍스트
+    </Button>
+  </div>
+);
 
 export const TextButton: StoryFn<ButtonProps> = Template.bind({});
 TextButton.args = {

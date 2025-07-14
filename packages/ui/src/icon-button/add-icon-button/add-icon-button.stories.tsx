@@ -1,10 +1,10 @@
 import type { Meta, StoryFn } from "@storybook/react-vite";
 import { useState } from "react";
-import { IconButtonAdd } from ".";
+import { AddIconButton } from ".";
 
 export default {
   title: "Components/IconButton/Solid/Add",
-  component: IconButtonAdd,
+  component: AddIconButton,
   tags: ["autodocs"],
   argTypes: {
     selected: {
@@ -16,13 +16,13 @@ export default {
   parameters: {
     layout: "centered",
   },
-} as Meta<typeof IconButtonAdd>;
+} as Meta<typeof AddIconButton>;
 
 export const Interactive: StoryFn = () => {
   const [selected, setSelected] = useState(false);
 
   return (
-    <IconButtonAdd
+    <AddIconButton
       selected={selected}
       onClick={() => setSelected((prev) => !prev)}
     />

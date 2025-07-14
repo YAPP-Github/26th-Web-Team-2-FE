@@ -14,7 +14,6 @@ const config: StorybookConfig = {
     "../src/*/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
-  staticDirs: [{ from: "../public/fonts", to: "/fonts" }],
   addons: [
     "@storybook/addon-onboarding",
     "@chromatic-com/storybook",

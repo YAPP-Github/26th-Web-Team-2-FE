@@ -3,13 +3,6 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
-@font-face {
-  font-family: "Pretendard";
-  src: url("/fonts/PretendardVariable.woff2") format("woff2-variations");
-  font-weight: 45 920;
-  font-display: swap;
-}
-
 @layer base {
   :root {
     --font-pretendard: "Pretendard";
@@ -20,6 +13,13 @@
   body {
     padding: 0;
     margin: 0;
+    font-family: var(--font-pretendard);
+  }
+
+  button,
+  input,
+  select,
+  textarea {
     font-family: var(--font-pretendard);
   }
 }

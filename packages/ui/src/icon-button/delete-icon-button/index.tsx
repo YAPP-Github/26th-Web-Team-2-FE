@@ -6,7 +6,7 @@ type IconButtonProps = {
   className?: string;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const IconButtonDelete = ({ className, ...props }: IconButtonProps) => {
+export const DeleteIconButton = ({ className, ...props }: IconButtonProps) => {
   return (
     <button
       aria-label="삭제 버튼"

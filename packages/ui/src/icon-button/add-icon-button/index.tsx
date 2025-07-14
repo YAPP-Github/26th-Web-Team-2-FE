@@ -9,7 +9,7 @@ type IconButtonProps = {
   selected: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const IconButtonAdd = ({
+export const AddIconButton = ({
   className,
   selected,
   ...props

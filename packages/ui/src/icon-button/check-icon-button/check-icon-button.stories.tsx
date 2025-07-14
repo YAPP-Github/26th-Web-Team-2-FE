@@ -2,7 +2,7 @@ import type { Meta, StoryFn } from "@storybook/react-vite";
 import { CheckIconButton } from "./index";
 
 export default {
-  title: "Components/IconButton/Check",
+  title: "Components/IconButton/Solid/Check",
   component: CheckIconButton,
   tags: ["autodocs"],
   argTypes: {

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { IconButtonAdd } from ".";
 
 export default {
-  title: "Components/IconButton/Add",
+  title: "Components/IconButton/Solid/Add",
   component: IconButtonAdd,
   tags: ["autodocs"],
   argTypes: {

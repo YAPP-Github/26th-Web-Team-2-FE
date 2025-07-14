@@ -3,7 +3,7 @@ import { useState } from "react";
 import { SolidExpand } from "./index";
 
 export default {
-  title: "Components/IconButton/SolidExpand",
+  title: "Components/IconButton/Solid/SolidExpand",
   component: SolidExpand,
   tags: ["autodocs"],
   argTypes: {

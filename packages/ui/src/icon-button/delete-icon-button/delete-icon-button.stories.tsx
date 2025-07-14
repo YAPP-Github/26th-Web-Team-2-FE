@@ -2,7 +2,7 @@ import type { Meta, StoryFn } from "@storybook/react-vite";
 import { IconButtonDelete } from "./index";
 
 export default {
-  title: "Components/IconButton/Delete",
+  title: "Components/IconButton/Solid/Delete",
   component: IconButtonDelete,
   tags: ["autodocs"],
   parameters: {

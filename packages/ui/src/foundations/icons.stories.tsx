@@ -12,7 +12,9 @@ import IcCollapse from "@/assets/icons/ic_collapse.svg?react";
 import IcDelete from "@/assets/icons/ic_delete.svg?react";
 import IcEdit from "@/assets/icons/ic_edit.svg?react";
 import IcExpand from "@/assets/icons/ic_expand.svg?react";
+import IcHasMemo from "@/assets/icons/ic_has_memo.svg?react";
 import IcInfo from "@/assets/icons/ic_info.svg?react";
+import IcKm from "@/assets/icons/ic_km.svg?react";
 import IcLink from "@/assets/icons/ic_link.svg?react";
 import IcLocation from "@/assets/icons/ic_location.svg?react";
 import IcMap from "@/assets/icons/ic_map.svg?react";
@@ -52,6 +54,8 @@ const icons = {
   IcClose: IcClose,
   IcAdd: IcAdd,
   IcCheckFill: IcCheckFill,
+  IcKm: IcKm,
+  IcHasMemo: IcHasMemo,
 };
 
 export default {

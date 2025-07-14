@@ -1,4 +1,5 @@
 import type { Meta, StoryFn } from "@storybook/react-vite";
+import { useState } from "react";
 import { SolidExpand } from "./index";
 
 export default {
@@ -25,9 +26,20 @@ Default.args = {
   expand: false,
 };
 
-export const AllStates: StoryFn = () => (
-  <div className="flex gap-10">
-    <SolidExpand expand={false} />
-    <SolidExpand expand={true} />
-  </div>
-);
+export const PressAndHold: StoryFn = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <p className="text-lg text-neutral-70">
+        버튼을 누르고 있으면 확장됩니다. 떼면 축소됩니다.{" "}
+      </p>
+      <SolidExpand
+        expand={isExpanded}
+        onMouseDown={() => setIsExpanded(true)}
+        onMouseUp={() => setIsExpanded(false)}
+        onMouseLeave={() => setIsExpanded(false)}
+      />
+    </div>
+  );
+};

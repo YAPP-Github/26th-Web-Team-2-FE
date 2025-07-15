@@ -1,4 +1,5 @@
 import type { Meta, StoryFn } from "@storybook/react-vite";
+import { useEffect, useState } from "react";
 import { CheckIconButton } from "./index";
 
 export default {
@@ -15,9 +16,6 @@ export default {
       options: ["sm", "md"],
       description: "버튼의 사이즈",
     },
-    disabled: {
-      control: { type: "boolean" },
-    },
     onClick: { action: "clicked" },
   },
   parameters: {
@@ -25,9 +23,23 @@ export default {
   },
 } as Meta<typeof CheckIconButton>;
 
-const Template: StoryFn<typeof CheckIconButton> = (args) => (
-  <CheckIconButton {...args} />
-);
+const Template: StoryFn<typeof CheckIconButton> = (args) => {
+  const [selected, setSelected] = useState(false);
+
+  useEffect(() => {
+    setSelected(args.selected ?? false);
+  }, [args.selected]);
+
+  return (
+    <CheckIconButton
+      {...args}
+      selected={selected}
+      onClick={() => {
+        setSelected((prev) => !prev);
+      }}
+    />
+  );
+};
 
 export const Default = Template.bind({});
 Default.args = {

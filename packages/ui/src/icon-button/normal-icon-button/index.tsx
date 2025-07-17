@@ -28,23 +28,17 @@ export const IconButton = ({
 }: IconButtonProps) => {
   const iconSize = iconSizeMap[size];
 
-  const styledChild = isValidElement(children)
-    ? cloneElement(children as ReactElement<SVGProps<SVGSVGElement>>, {
-        width: iconSize,
-        height: iconSize,
-        style: { width: iconSize, height: iconSize },
-      })
-    : children;
+  const styledChild =
+    isValidElement(children) && children.type === "svg"
+      ? cloneElement(children as ReactElement<SVGProps<SVGSVGElement>>, {
+          width: iconSize,
+          height: iconSize,
+          style: { width: iconSize, height: iconSize },
+        })
+      : children;
 
   return (
-    <button
-      className={cn(
-        NormalIconButton({ size }),
-        "bg-transparent hover:bg-neutral-98 focus:bg-neutral-95",
-        className,
-      )}
-      {...props}
-    >
+    <button className={cn(NormalIconButton({ size }), className)} {...props}>
       {styledChild || children}
     </button>
   );

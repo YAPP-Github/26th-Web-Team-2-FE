@@ -17,16 +17,18 @@ export const FloatingIconButton = ({
   children,
   ...props
 }: IconButtonProps) => {
-  const styledChild = isValidElement(children)
-    ? cloneElement(children as ReactElement<SVGProps<SVGSVGElement>>, {
-        width: "3.2rem",
-        height: "3.2rem",
-        style: { width: "3.2rem", height: "3.2rem" },
-      })
-    : children;
+  const styledChild =
+    isValidElement(children) && children.type === "svg"
+      ? cloneElement(children as ReactElement<SVGProps<SVGSVGElement>>, {
+          width: "3.2rem",
+          height: "3.2rem",
+          style: { width: "3.2rem", height: "3.2rem" },
+        })
+      : children;
 
   return (
     <button
+      aria-label="플로팅 아이콘 버튼"
       className={cn(
         "absolute z-1 flex items-center justify-center rounded-[0.8rem] border-none p-[0.8rem] shadow-floating backdrop-blur-[1rem]",
         "bg-[rgba(199,199,199,0.20)] text-neutral-40",

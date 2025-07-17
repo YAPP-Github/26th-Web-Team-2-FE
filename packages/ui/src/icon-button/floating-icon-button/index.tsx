@@ -17,14 +17,13 @@ export const FloatingIconButton = ({
   children,
   ...props
 }: IconButtonProps) => {
-  const styledChild =
-    isValidElement(children) && children.type === "svg"
-      ? cloneElement(children as ReactElement<SVGProps<SVGSVGElement>>, {
-          width: "3.2rem",
-          height: "3.2rem",
-          style: { width: "3.2rem", height: "3.2rem" },
-        })
-      : children;
+  const styledChild = isValidElement(children)
+    ? cloneElement(children as ReactElement<SVGProps<SVGSVGElement>>, {
+        width: "3.2rem",
+        height: "3.2rem",
+        style: { width: "3.2rem", height: "3.2rem" },
+      })
+    : children;
 
   return (
     <button

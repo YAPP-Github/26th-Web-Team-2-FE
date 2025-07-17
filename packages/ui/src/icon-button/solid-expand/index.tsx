@@ -24,7 +24,7 @@ export const SolidExpand = ({
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseLeave}
-      aria-label="보드 확장 버튼"
+      aria-label={props["aria-label"] || "보드 확장 버튼"}
       className={cn(
         "inline-flex rounded-tr-[16px] rounded-br-[16px] py-[1.6rem] pr-[0.6rem] pl-[0.2rem]",
         "border-t border-r border-b border-l-0",
@@ -34,8 +34,8 @@ export const SolidExpand = ({
       )}
       {...props}
     >
-      {!expand && <IcArrowLeft width="32px" height="32px" role="button" />}
-      {expand && <IcArrowRight width="32px" height="32px" role="button" />}
+      {!expand && <IcArrowLeft width="32px" height="32px" />}
+      {expand && <IcArrowRight width="32px" height="32px" />}
     </button>
   );
 };

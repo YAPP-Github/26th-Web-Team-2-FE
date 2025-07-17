@@ -31,7 +31,7 @@ export const button = cva(
       {
         variant: "round",
         selected: true,
-        class: "bg-primary-5 text-primary-100",
+        class: "border-[0.1rem] bg-primary-5 text-primary-100",
       },
       {
         variant: "round",

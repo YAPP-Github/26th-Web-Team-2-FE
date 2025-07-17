@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import type { InputHTMLAttributes, ReactNode, Ref } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/utils";
 
 export interface TextFieldProps
@@ -53,6 +53,10 @@ export const TextField = ({
   ...props
 }: TextFieldProps) => {
   const [inputValue, setInputValue] = useState(value || "");
+
+  useEffect(() => {
+    setInputValue(value || "");
+  }, [value]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;

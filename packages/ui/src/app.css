@@ -16,6 +16,14 @@
     font-family: var(--font-pretendard);
   }
 
+  button {
+    cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
   button,
   input,
   select,

@@ -16,7 +16,7 @@
     "check-types": "tsc --noEmit",
     "deploy:chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",
     "dev": "vite",
-    "dev:storybook": "storybook dev -p 6006",
+    "dev:storybook": "storybook dev -p 6006 --no-open",
     "dev:vite": "vite",
     "lint": "biome check .",
     "test": "vitest run",
@@ -25,6 +25,7 @@
   "dependencies": {
     "@storybook/blocks": "^8.6.14",
     "chromatic": "^12.1.1",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "globby": "^14.1.0",
     "react": "^19.1.0",

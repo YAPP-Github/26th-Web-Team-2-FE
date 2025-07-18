@@ -17,6 +17,7 @@ const variants = cva(
     "flex",
     "relative",
     "items-center",
+    "w-full",
     "rounded-[1.2rem]",
     "border",
     "outline-none",
@@ -27,11 +28,11 @@ const variants = cva(
     variants: {
       hasError: {
         true: cn(
-          "[&>[data-slot=end-icon]]:text-error-60",
+          "[&>[data-slot=icon]]:text-error-60",
           "border-error-70 focus-within:border-transparent focus-within:shadow-[0_0_0_2px_theme(colors.error.70)]",
         ),
         false: cn(
-          "[&>[data-slot=end-icon]]:text-neutral-50",
+          "[&>[data-slot=icon]]:text-neutral-50",
           "border-neutral-90 focus-within:border-transparent focus-within:shadow-[0_0_0_2px_theme(colors.neutral.80)]",
         ),
       },
@@ -70,6 +71,7 @@ export const TextField = ({
     <div className={cn(variants({ hasError }), className)}>
       {icon && (
         <div
+          data-slot="icon"
           className={cn(
             "absolute left-[1.6rem] flex h-[2.4rem] w-[2.4rem] items-center justify-center",
             "text-neutral-50 transition-opacity duration-200",
@@ -95,7 +97,7 @@ export const TextField = ({
       />
       {endIcon && (
         <div
-          data-slot="end-icon"
+          data-slot="icon"
           className="absolute right-[1.6rem] flex h-[2.4rem] w-[2.4rem] items-center justify-center"
         >
           {endIcon}

@@ -7,7 +7,7 @@ export default {
   title: "Components/TextField",
   component: TextField,
   parameters: {
-    layout: "centered",
+    layout: "padded",
   },
   tags: ["autodocs"],
   argTypes: {
@@ -29,7 +29,11 @@ export default {
   },
 } as Meta<TextFieldProps>;
 
-const Template: StoryFn<TextFieldProps> = (args) => <TextField {...args} />;
+const Template: StoryFn<TextFieldProps> = (args) => (
+  <div className="mx-auto w-full max-w-[35.9rem]">
+    <TextField {...args} />
+  </div>
+);
 
 export const Default: StoryFn<TextFieldProps> = Template.bind({});
 Default.args = {

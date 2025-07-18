@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const addbutton = cva(
-  "flex items-center rounded-[1.2rem] border-none transition-colors duration-200",
+  "flex cursor-pointer items-center rounded-[1.2rem] border-none transition-colors duration-200 disabled:cursor-not-allowed",
   {
     variants: {
       selected: {

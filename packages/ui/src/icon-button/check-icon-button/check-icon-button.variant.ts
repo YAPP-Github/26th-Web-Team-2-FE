@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const checkButton = cva(
-  "flex items-center transition-colors duration-200",
+  "flex cursor-pointer items-center transition-colors duration-200 disabled:cursor-not-allowed",
   {
     variants: {
       size: {

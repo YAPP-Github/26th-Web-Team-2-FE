@@ -11,7 +11,7 @@ export const DeleteIconButton = ({ className, ...props }: IconButtonProps) => {
     <button
       aria-label="삭제 버튼"
       className={cn(
-        "flex justify-center rounded-[1.2rem] border-none bg-transparent p-[1.2rem]",
+        "flex cursor-pointer justify-center rounded-[1.2rem] border-none bg-transparent p-[1.2rem] disabled:cursor-not-allowed",
         " text-neutral-variant-50",
         "hover:bg-neutral-95 hover:text-neutral-variant-35",
         "focus:bg-neutral-90 focus:text-neutral-variant-35",

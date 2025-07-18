@@ -2,7 +2,7 @@ import { cva } from "class-variance-authority";
 
 export const NormalIconButton = cva(
   [
-    "flex items-center border-none",
+    "flex cursor-pointer items-center border-none disabled:cursor-not-allowed",
     "bg-transparent hover:bg-neutral-98 focus:bg-neutral-95",
   ],
   {

@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const button = cva(
-  "flex items-center gap-[0.8rem] rounded-[1.2rem] transition-colors duration-200",
+  "flex cursor-pointer items-center gap-[0.8rem] rounded-[1.2rem] transition-colors duration-200 disabled:cursor-not-allowed",
   {
     variants: {
       size: {

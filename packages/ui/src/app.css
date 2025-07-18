@@ -16,19 +16,11 @@
     font-family: var(--font-pretendard);
   }
 
-  button {
-    cursor: pointer;
-
-    &:disabled {
-      cursor: not-allowed;
-    }
-  }
-
   button,
   input,
   select,
   textarea {
-    font-family: var(--font-pretendard);
+    font: inherit;
   }
 }
 
@@ -239,10 +231,6 @@
   --color-tertiary-10: #001f28;
   --color-tertiary-5: #00131a;
   --color-tertiary-0: #000000;
-
-  --opacity-3-75: 0.0375;
-  --opacity-7: 0.07;
-  --opacity-12: 0.12;
 
   --shadow-floating:
     0px -0.5px 1px 0px #fff inset, 0px 0.5px 1px 0px

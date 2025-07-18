@@ -22,7 +22,8 @@ const twMerge = extendTailwindMerge({
         "caption1-medi12",
         "caption2-medi11",
         "caption2-regular11",
-
+      ],
+      color: [
         "white",
         "black",
         "primary",
@@ -140,13 +141,8 @@ const twMerge = extendTailwindMerge({
         "tertiary-10",
         "tertiary-5",
         "tertiary-0",
-
-        "opacity-3-75",
-        "opacity-7",
-        "opacity-12",
-
-        "shadow-floating",
       ],
+      shadow: ["shadow-floating"],
     },
   },
 });

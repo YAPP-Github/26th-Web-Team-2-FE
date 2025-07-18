@@ -29,7 +29,7 @@ export const FloatingIconButton = ({
     <button
       aria-label="플로팅 아이콘 버튼"
       className={cn(
-        "absolute z-1 flex items-center justify-center rounded-[0.8rem] border-none p-[0.8rem] shadow-floating backdrop-blur-[1rem]",
+        "absolute z-1 flex cursor-pointer items-center justify-center rounded-[0.8rem] border-none p-[0.8rem] shadow-floating backdrop-blur-[1rem] disabled:cursor-not-allowed",
         "bg-[rgba(199,199,199,0.20)] text-neutral-40",
         "hover:bg-neutral-20 hover:text-primary-100",
         "focus:bg-[rgba(145,145,145,0.20)] focus:text-neutral-40",

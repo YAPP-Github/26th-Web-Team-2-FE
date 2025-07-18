@@ -36,10 +36,7 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <button
-      className={cn(
-        button({ size, variant, ...(variant === "round" && { selected }) }),
-        className,
-      )}
+      className={cn(button({ size, variant, selected }), className)}
       {...props}
     >
       {icon && icon}

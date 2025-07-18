@@ -4,12 +4,23 @@
 @import "tailwindcss/utilities.css" layer(utilities);
 
 @layer base {
+  :root {
+    --font-pretendard: "Pretendard";
+  }
   html {
     font-size: 62.5%;
   }
   body {
     padding: 0;
     margin: 0;
+    font-family: var(--font-pretendard);
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
   }
 }
 
@@ -53,6 +64,11 @@
   --text-body1-semi16--line-height: 1.5;
   --text-body1-semi16--letter-spacing: 0rem;
 
+  --text-body1-bold16: 1.6rem;
+  --text-body1-bold16--font-weight: 700;
+  --text-body1-bold16--line-height: 1.6;
+  --text-body1-bold16--letter-spacing: 0rem;
+
   --text-body1-medi16: 1.6rem;
   --text-body1-medi16--font-weight: 500;
   --text-body1-medi16--line-height: 1.5;
@@ -72,6 +88,11 @@
   --text-body2-regular14--font-weight: 400;
   --text-body2-regular14--line-height: 1.8;
   --text-body2-regular14--letter-spacing: -0.04em;
+
+  --text-body3-semi15: 1.5rem;
+  --text-body3-semi15--font-weight: 600;
+  --text-body3-semi15--line-height: 1.5;
+  --text-body3-semi15--letter-spacing: -0.04em;
 
   --text-caption1-semi12: 1.2rem;
   --text-caption1-semi12--font-weight: 600;
@@ -210,4 +231,8 @@
   --color-tertiary-10: #001f28;
   --color-tertiary-5: #00131a;
   --color-tertiary-0: #000000;
+
+  --shadow-floating:
+    0px -0.5px 1px 0px #fff inset, 0px 0.5px 1px 0px
+    var(--neutral-variant-100, #fff) inset;
 }

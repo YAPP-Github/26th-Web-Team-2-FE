@@ -13,16 +13,14 @@ export type IconTextProps = {
 const IconText = ({
   text,
   icon,
-  gap = "8px",
   typo,
   color,
   className = "",
 }: IconTextProps) => {
-  const textColor = `text-${color}`;
   return (
-    <div className={`flex items-center gap-[${gap}px] ${className}`}>
+    <div className={`flex items-center ${className}`}>
       {icon}
-      <span className={`${typo} ${textColor}`}>{text}</span>
+      <span className={`${typo} ${color} w-full truncate`}>{text}</span>
     </div>
   );
 };

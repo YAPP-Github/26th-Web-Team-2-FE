@@ -1,38 +1,80 @@
 import type { PropsWithChildren } from "react";
+import IcAddMemo from "@/assets/icons/ic_add_memo.svg?react";
 import IcInfo from "@/assets/icons/ic_info.svg?react";
 import IcLocation from "@/assets/icons/ic_location.svg?react";
 import IcMemo from "@/assets/icons/ic_memo.svg?react";
 import IcWalker from "@/assets/icons/ic_walker.svg?react";
+import { Button } from "@/button";
+import { AddIconButton } from "@/icon-button/add-icon-button";
+import { DeleteIconButton } from "@/icon-button/delete-icon-button";
 import IconText from "@/icon-text";
+import { cn } from "@/utils";
+import { chip } from "./card.variant";
 
 export type CardProps = PropsWithChildren<{
   className?: string;
   selected: boolean;
+  onAddClick: () => void;
+  onDeleteClick: () => void;
+
+  // TODO: 데이터 타입 정의 필요
   imgSrc: string;
+  platform: {
+    name: string;
+    logoSrc: string;
+    href: string;
+  };
+  placeName: string;
+  price: number;
+  address: string;
+  attractions?: {
+    placeName: string;
+    distance: number;
+    id: string;
+  }[];
+  savedByText?: string;
+  memoContent?: string;
 }>;
 
-export const Card = ({ className, imgSrc, ...props }: CardProps) => {
+export const Card = ({
+  className,
+  selected,
+  onAddClick,
+  onDeleteClick,
+  imgSrc,
+  platform,
+  placeName,
+  price,
+  address,
+  attractions,
+  savedByText,
+  memoContent,
+  ...props
+}: CardProps) => {
   return (
-    <section className="inline-flex gap-[1.6rem] rounded-[1.6rem] bg-neutral-100 p-[1.6rem]">
+    <section className={cn(chip({ selected }), className)} {...props}>
       {/* 카드 좌측 호텔 썸네일 */}
       <div className="relative h-[16.4rem] w-[19.9rem] rounded-[1.2rem] border-[rgba(152,152,152,0.10)]">
         <img
           className="h-full w-full rounded-[1.2rem] object-cover"
-          src="https://pix8.agoda.net/hotelImages/942/942521/942521_17021009050050901364.jpg?ca=6&ce=1&s=312x235&ar=16x9"
+          src={imgSrc}
           alt="thumb-nail-img"
         />
         <span className="absolute top-[0.8rem] right-[0.8rem] z-1 rounded-[0.4rem] bg-[rgba(21,29,25,0.70)] px-[0.6rem] py-[0.4rem] text-caption1-medi12 text-primary-100">
-          저장한 사람
+          {savedByText}
         </span>
-        <div className="absolute bottom-0 z-1 flex w-[-webkit-fill-available] gap-[0.8rem] rounded-br-[1.2rem] rounded-bl-[1.2rem] bg-[linear-gradient(87deg,_rgba(0,0,0,0.6)_0%,_rgba(72,72,72,0.6)_100%)] px-[1.2rem] py-[0.8rem]">
+        <div className="absolute bottom-0 z-1 flex w-[-webkit-fill-available] items-center gap-[0.8rem] rounded-br-[1.2rem] rounded-bl-[1.2rem] bg-[linear-gradient(87deg,_rgba(0,0,0,0.6)_0%,_rgba(72,72,72,0.6)_100%)] px-[1.2rem] py-[0.8rem]">
           <img
             className="h-[3.2rem] w-[3.2rem] rounded-full"
-            src="https://cdn6.agoda.net/images/kite-js/logo/agoda/color-default.svg"
-            alt="출처 사이트명"
+            src={platform.logoSrc}
+            alt={platform.name}
           />
-          <p className="text-caption1-semi12 text-primary-100">
-            출처 사이트명 (리디렉션)
-          </p>
+          <a
+            href={platform.href}
+            className="text-caption1-semi12 text-primary-100 no-underline"
+          >
+            {platform.name}
+          </a>
         </div>
       </div>
       {/* 카드 중앙 호텔 info */}
@@ -40,60 +82,75 @@ export const Card = ({ className, imgSrc, ...props }: CardProps) => {
         <header>
           {/* 호텔명/ 가격 정보 */}
           <div className="flex flex-col gap-[0.4rem]">
-            <h1 className="m-0 overflow-hidden text-ellipsis whitespace-nowrap text-heading2-semi18 text-neutral-30">
-              호텔명 호텔명 호텔명 호텔명
+            <h1 className="m-0 w-[30.3rem] overflow-hidden truncate text-ellipsis whitespace-nowrap text-heading2-semi18 text-neutral-30">
+              {placeName}
             </h1>
             <div className="flex flex-row items-center gap-[0.8rem]">
               <p className="m-0 text-heading1-semi20 text-neutral-variant-20">
-                000,000,000,000원
+                {`${price.toLocaleString()}원`}
               </p>
               <IconText
                 text="1박 당 요금"
                 color="text-neutral-60"
                 typo="text-caption2-regular11"
                 icon={<IcInfo width="20px" height="20px" />}
-                gap="2px"
-                className="flex-row-reverse"
+                className="flex-row-reverse gap-[0.2rem]"
               />
             </div>
           </div>
           <div className="mt-[8px] flex flex-col gap-[0.8rem]">
             <IconText
-              text="주소 주소 주소 주소 주소 주소"
+              text={address}
               color="text-neutral-40"
               typo="text-caption1-medi12"
               icon={<IcLocation width="20px" height="20px" />}
-              gap="2px"
+              className="w-[30.3rem] gap-[0.2rem]"
             />
             {/* 인근 관광지 정보 */}
-            <div className="flex flex-row items-center gap-[0.8rem]">
-              <IconText
-                text="인근 관광지 00분"
-                color="text-neutral-40"
-                typo="text-caption1-medi12"
-                icon={<IcWalker width="12px" height="12px" />}
-                gap="2px"
-                className="p-[0.4rem]"
-              />
-              <IconText
-                text="인근 관광지 00분"
-                color="text-neutral-40"
-                typo="text-caption1-medi12"
-                icon={<IcWalker width="12px" height="12px" />}
-                gap="2px"
-                className="p-[0.4rem]"
-              />
-            </div>
+            <ul className="m-0 flex list-none flex-row items-center gap-[0.8rem] p-0">
+              {attractions?.map((attraction, _index) => (
+                // TODO: chip 컴포넌트로 대체 필요
+                <li key={attraction.id}>
+                  <IconText
+                    text={`${attraction.placeName} ${attraction.distance}분`}
+                    color="text-neutral-40"
+                    typo="text-caption1-medi12"
+                    icon={<IcWalker width="12px" height="12px" />}
+                  />
+                </li>
+              ))}
+            </ul>
           </div>
         </header>
-        <IconText
-          text="메모 메모 메모 메모 메모 메모 메모 메모 메모 메모"
-          color="text-secondary-50"
-          typo="text-body2-medi14"
-          icon={<IcMemo width="16px" height="16px" />}
-          gap="4px"
-        />
+        {/* 메모 내용 */}
+        {memoContent && (
+          <IconText
+            text={memoContent}
+            color="text-secondary-50"
+            typo="text-body2-medi14"
+            icon={<IcMemo width="16px" height="16px" />}
+            className="w-[30.3rem] gap-[0.4rem]"
+          />
+        )}
+        {!memoContent && (
+          <Button
+            variant="text"
+            size="sm"
+            icon={<IcAddMemo width="16px" height="16px" />}
+            className="w-[6rem]"
+          >
+            메모
+          </Button>
+        )}
       </article>
+      <div className="flex flex-col gap-[1.6rem]">
+        <AddIconButton selected={selected} onClick={onAddClick} />
+        {!selected && (
+          <div className="hidden group-hover:block">
+            <DeleteIconButton />
+          </div>
+        )}
+      </div>
     </section>
   );
 };

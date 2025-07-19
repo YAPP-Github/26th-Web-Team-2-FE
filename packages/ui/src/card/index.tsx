@@ -153,10 +153,10 @@ export const Card = ({
         )}
       </article>
       <div className="flex flex-col gap-[1.6rem]">
-        <AddIconButton selected={selected} onClick={onAddClick} />
+        <AddIconButton type="button" selected={selected} onClick={onAddClick} />
         {!selected && (
           <div className="hidden group-hover:block">
-            <DeleteIconButton />
+            <DeleteIconButton type="button" onClick={onDeleteClick} />
           </div>
         )}
       </div>

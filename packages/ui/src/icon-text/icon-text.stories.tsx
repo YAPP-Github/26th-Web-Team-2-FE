@@ -12,11 +12,11 @@ const meta: Meta<typeof IconText> = {
   argTypes: {
     color: {
       control: "select",
-      options: typoOptions,
+      options: textColorOptions,
     },
     typo: {
       control: "select",
-      options: textColorOptions,
+      options: typoOptions,
     },
     gap: {
       control: "text",

@@ -37,13 +37,13 @@ export const AllKinds = () => {
       <div>
         <h3 className="mb-2 font-semibold text-lg">Example Texts</h3>
         <div className="flex gap-4">
-          <Pin>지수</Pin>
-          <Pin>경민</Pin>
-          <Pin>시언</Pin>
-          <Pin>수빈</Pin>
-          <Pin>고은</Pin>
-          <Pin>세환</Pin>
-          <Pin>성연</Pin>
+          <Pin>Ssok 지수</Pin>
+          <Pin>Ssok 경민</Pin>
+          <Pin>Ssok 시언</Pin>
+          <Pin>Ssok 수빈</Pin>
+          <Pin>Ssok 고은</Pin>
+          <Pin>Ssok 세환</Pin>
+          <Pin>Ssok 성연</Pin>
         </div>
       </div>
     </div>

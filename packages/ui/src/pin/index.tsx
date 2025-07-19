@@ -18,7 +18,7 @@ export const Pin = ({ children, className, ...props }: PinProps) => {
         // 꼬리 테두리 (before)
         "before:-translate-x-1/2 before:absolute before:bottom-[-10px] before:left-1/2",
         "before:z-0 before:h-0 before:w-0 before:content-['']",
-        "before:border-x-[9px] before:border-t-[10px] before:border-b-0 before:border-solid",
+        "before:border-x-[6px] before:border-t-[10px] before:border-b-0 before:border-solid",
         "before:border-x-transparent before:border-t-neutral-70",
         "hover:before:border-t-neutral-60",
         "focus:before:border-t-primary-5",
@@ -26,7 +26,7 @@ export const Pin = ({ children, className, ...props }: PinProps) => {
         // 꼬리 배경 (after)
         "after:-translate-x-1/2 after:absolute after:bottom-[-8px] after:left-1/2",
         "after:z-10 after:h-0 after:w-0 after:content-['']",
-        "after:border-x-[8px] after:border-t-[9px] after:border-b-0 after:border-solid",
+        "after:border-x-[5px] after:border-t-[9px] after:border-b-0 after:border-solid",
         "after:border-x-transparent after:border-t-neutral-100",
         "hover:after:border-t-neutral-100",
         "focus:after:border-t-primary-5",

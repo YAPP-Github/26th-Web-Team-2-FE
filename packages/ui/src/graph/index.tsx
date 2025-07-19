@@ -1,0 +1,114 @@
+import { cva, type VariantProps } from "class-variance-authority";
+import {
+  type ChangeEventHandler,
+  type ComponentProps,
+  type ReactNode,
+  useMemo,
+} from "react";
+import { TextField } from "@/text-field";
+import { cn } from "@/utils";
+
+export interface GraphProps
+  extends Omit<ComponentProps<"div">, "onChange">,
+    VariantProps<typeof variants> {
+  value: number;
+  label: string;
+  showGraph?: boolean;
+  icon?: ReactNode;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+}
+
+const variants = cva(
+  [
+    "flex w-[calc(100%-3.2rem)] flex-col gap-[0.8rem] rounded-[1.2rem] p-[1.6rem]",
+    "transition-colors duration-200",
+  ],
+  {
+    variants: {
+      state: {
+        default: "bg-neutral-98",
+        active: "bg-neutral-95",
+        edit: "bg-neutral-95",
+      },
+    },
+    defaultVariants: {
+      state: "default",
+    },
+  },
+);
+
+export const Graph = ({
+  state = "default",
+  value,
+  label,
+  icon,
+  showGraph = true,
+  onChange,
+  className,
+  ...props
+}: GraphProps) => {
+  const [bar, text] = useMemo(() => {
+    if (value >= 9) {
+      return state === "default"
+        ? [cn("bg-tertiary-50"), cn("text-tertiary-50")]
+        : [cn("bg-tertiary-40"), cn("text-tertiary-40")];
+    } else if (value >= 7) {
+      return state === "default"
+        ? [cn("bg-tertiary-60"), cn("text-tertiary-60")]
+        : [cn("bg-tertiary-50"), cn("text-tertiary-50")];
+    } else if (value >= 5) {
+      return state === "default"
+        ? [cn("bg-tertiary-80"), cn("text-tertiary-80")]
+        : [cn("bg-tertiary-60"), cn("text-tertiary-60")];
+    } else if (value >= 3) {
+      return state === "default"
+        ? [cn("bg-neutral-variant-70"), cn("text-neutral-variant-70")]
+        : [cn("bg-neutral-variant-60"), cn("text-neutral-variant-60")];
+    } else {
+      return state === "default"
+        ? [cn("bg-neutral-variant-50"), cn("text-neutral-variant-50")]
+        : [cn("bg-neutral-variant-40"), cn("text-neutral-variant-40")];
+    }
+  }, [value, state]);
+
+  return (
+    <div className={cn(variants({ state }), className)} {...props}>
+      <div className="flex items-center justify-between">
+        <span className={cn("text-body1-semi16", text)}>{label}</span>
+        <div className="flex items-center gap-[0.8rem]">
+          {icon && <div className={cn("h-[2rem] w-[2rem]", text)}>{icon}</div>}
+          {state === "edit" ? (
+            <TextField
+              type="number"
+              value={value.toFixed(1)}
+              onChange={onChange}
+              className={cn(
+                "w-[4.8rem] rounded-[0.8rem] bg-white p-0",
+                "[&>input]:px-[1.2rem] [&>input]:py-[0.8rem] [&>input]:text-center [&>input]:text-body1-semi16",
+                "[&>input]:[-moz-appearance:_textfield] [&>input]:[&::-webkit-inner-spin-button]:appearance-none [&>input]:[&::-webkit-outer-spin-button]:appearance-none",
+                text,
+              )}
+            />
+          ) : (
+            <span className={cn("text-body1-semi16", text)}>
+              {value.toFixed(1)}
+            </span>
+          )}
+          <span className="text-body1-medi16 text-neutral-35">/ 10</span>
+        </div>
+      </div>
+
+      {showGraph && (
+        <div className="rounded-full bg-neutral-90">
+          <div
+            className={cn(
+              "h-[0.8rem] rounded-full transition-all duration-200",
+              bar,
+            )}
+            style={{ width: `${Math.min(value * 10, 100)}%` }}
+          />
+        </div>
+      )}
+    </div>
+  );
+};

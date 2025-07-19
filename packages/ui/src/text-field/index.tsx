@@ -14,15 +14,9 @@ export interface TextFieldProps
 
 const variants = cva(
   [
-    "flex",
-    "relative",
-    "items-center",
-    "w-full",
-    "rounded-[1.2rem]",
-    "border",
-    "outline-none",
-    "transition-all",
-    "duration-200",
+    "relative flex w-full items-center rounded-[1.2rem] border outline-none",
+    "text-body1-regular16 text-neutral-20",
+    "transition-all duration-200",
   ],
   {
     variants: {
@@ -85,7 +79,7 @@ export const TextField = ({
         className={cn(
           "w-full px-[1.6rem] py-[1.2rem]",
           "border-none bg-transparent outline-none",
-          "text-body1-regular16 text-neutral-20 placeholder:text-neutral-70",
+          "text-inherit placeholder:text-neutral-70",
           "transition-all duration-200",
           icon && !hasValue && "indent-[3.2rem]",
           endIcon && "pr-[4.8rem]",

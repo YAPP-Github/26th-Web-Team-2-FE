@@ -2,6 +2,7 @@ export { default as IcList } from "@/assets/icons/ic_list.svg?react";
 export { default as IcTable } from "@/assets/icons/ic_table.svg?react";
 export { Button } from "@/button";
 export { Chip } from "@/chip";
+export { Graph } from "@/graph";
 export { AddIconButton } from "@/icon-button/add-icon-button";
 export { CheckIconButton } from "@/icon-button/check-icon-button";
 export { DeleteIconButton } from "@/icon-button/delete-icon-button";

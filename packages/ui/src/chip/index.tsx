@@ -40,7 +40,7 @@ export const Chip = ({
 
   return (
     <button
-      className={cn(chip({ size, icon: !!icon }), className)}
+      className={cn(chip({ size, hasIcon: !!icon }), className)}
       aria-label={additionalText ? `${text} ${additionalText}` : text}
       {...props}
     >

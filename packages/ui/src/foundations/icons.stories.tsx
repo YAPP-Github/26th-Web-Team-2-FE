@@ -16,6 +16,7 @@ import IcHasMemo from "@/assets/icons/ic_has_memo.svg?react";
 import IcInfo from "@/assets/icons/ic_info.svg?react";
 import IcKm from "@/assets/icons/ic_km.svg?react";
 import IcLink from "@/assets/icons/ic_link.svg?react";
+import IcList from "@/assets/icons/ic_list.svg?react";
 import IcLocation from "@/assets/icons/ic_location.svg?react";
 import IcMap from "@/assets/icons/ic_map.svg?react";
 import IcMemo from "@/assets/icons/ic_memo.svg?react";
@@ -41,6 +42,7 @@ const icons = {
   IcExpand: IcExpand,
   IcInfo: IcInfo,
   IcLink: IcLink,
+  IcList: IcList,
   IcLocation: IcLocation,
   IcMap: IcMap,
   IcMemo: IcMemo,

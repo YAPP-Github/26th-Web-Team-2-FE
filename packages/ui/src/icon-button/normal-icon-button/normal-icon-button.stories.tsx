@@ -1,6 +1,6 @@
 import type { Meta, StoryFn } from "@storybook/react-vite";
 import IcAddMemo from "@/assets/icons/ic_add_memo.svg?react";
-import IcStar from "@/assets/icons/ic_star_full.svg?react";
+import IcStarFull from "@/assets/icons/ic_star_full.svg?react";
 import IcVariant from "@/assets/icons/ic_variant.svg?react";
 import { IconButton } from "./index";
 
@@ -31,7 +31,7 @@ export const Interactive: StoryFn<typeof IconButton> = (args) => {
         <IcAddMemo key="memo" />
       </IconButton>
       <IconButton {...args}>
-        <IcStar key="star" />
+        <IcStarFull key="star" />
       </IconButton>
     </div>
   );

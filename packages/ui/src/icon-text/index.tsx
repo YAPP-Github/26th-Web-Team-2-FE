@@ -18,7 +18,7 @@ const IconText = ({
   className = "",
 }: IconTextProps) => {
   return (
-    <div className={`flex items-center ${className}`}>
+    <div className={`flex max-w-fit items-center ${className}`}>
       {icon}
       <span className={`${typo} ${color} w-full truncate`}>{text}</span>
     </div>

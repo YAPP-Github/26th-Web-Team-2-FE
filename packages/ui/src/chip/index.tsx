@@ -39,9 +39,15 @@ export const Chip = ({
     : icon;
 
   return (
-    <button className={cn(chip({ size, icon: !!icon }), className)} {...props}>
+    <button
+      className={cn(chip({ size, icon: !!icon }), className)}
+      aria-label={additionalText ? `${text} ${additionalText}` : text}
+      {...props}
+    >
       {icon && (
-        <span className="flex items-center justify-center">{styledIcon}</span>
+        <span className="flex items-center justify-center" aria-hidden="true">
+          {styledIcon}
+        </span>
       )}
       <span>{text}</span>
       {additionalText && (

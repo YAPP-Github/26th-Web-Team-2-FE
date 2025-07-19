@@ -87,12 +87,12 @@ export const AllVariants: StoryFn = () => {
       {/* md + icon + additionalText */}
       <div>
         <h2 className="mb-2 font-semibold text-lg">
-          Size: md + Icon + AdditionalText
+          Size: xs + Icon + AdditionalText
         </h2>
         <div className="flex flex-wrap gap-4">
           {names.map((name, idx) => (
             <Chip
-              key={`md-icon-add-${name}`}
+              key={`xs-icon-add-${name}`}
               size="xs"
               text={name}
               additionalText={additionalText[idx]}

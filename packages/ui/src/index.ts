@@ -9,6 +9,8 @@ export { DeleteIconButton } from "@/icon-button/delete-icon-button";
 export { FloatingIconButton } from "@/icon-button/floating-icon-button";
 export { IconButton } from "@/icon-button/normal-icon-button";
 export { SolidExpand } from "@/icon-button/solid-expand";
+export type { IconTabsOption, IconTabsProps } from "@/icon-tabs";
+export { IconTabs } from "@/icon-tabs";
 export { InterimButton } from "@/interim-button";
 export { InterimDescription } from "@/interim-description";
 export { InterimTitle } from "@/interim-title";

@@ -5,6 +5,7 @@ import IcLocation from "@/assets/icons/ic_location.svg?react";
 import IcMemo from "@/assets/icons/ic_memo.svg?react";
 import IcWalker from "@/assets/icons/ic_walker.svg?react";
 import { Button } from "@/button";
+import Divider from "@/divider/divider";
 import { AddIconButton } from "@/icon-button/add-icon-button";
 import { DeleteIconButton } from "@/icon-button/delete-icon-button";
 import IconText from "@/icon-text";
@@ -107,16 +108,24 @@ export const Card = ({
               className="w-[30.3rem] gap-[0.2rem]"
             />
             {/* 인근 관광지 정보 */}
-            <ul className="m-0 flex list-none flex-row items-center gap-[0.8rem] p-0">
+            <ul className="m-0 flex list-none flex-row items-center p-0">
               {attractions?.map((attraction, _index) => (
                 // TODO: chip 컴포넌트로 대체 필요
-                <li key={attraction.id}>
+                <li key={attraction.id} className="flex flex-row items-center">
                   <IconText
                     text={`${attraction.placeName} ${attraction.distance}분`}
                     color="text-neutral-40"
                     typo="text-caption1-medi12"
                     icon={<IcWalker width="12px" height="12px" />}
                   />
+                  {_index !== attractions.length - 1 && (
+                    <Divider
+                      width="w-[0.2rem]"
+                      height="h-[0.2rem]"
+                      color="bg-neutral-80"
+                      className="mx-[0.4rem] rounded-[50%]"
+                    />
+                  )}
                 </li>
               ))}
             </ul>

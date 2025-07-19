@@ -2,8 +2,8 @@ import type { BgColor } from "@/constant";
 
 export type DividerProps = {
   color: BgColor;
-  width: string;
-  height: string;
+  width: string; // w-[npx] 형식
+  height: string; // h-[npx] 형식
   className?: string;
 };
 

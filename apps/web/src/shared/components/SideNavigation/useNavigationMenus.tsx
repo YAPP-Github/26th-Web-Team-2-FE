@@ -32,7 +32,7 @@ const NAVIGATION_ROUTES: NavigationRouteConfig[] = [
     type: "compare",
     icon: <IcTable className="h-[2.8rem] w-[2.8rem]" />,
     label: "비교표",
-    route: (id) => `/boards/${id}/compares/`,
+    route: (id) => `/boards/${id}/compares`,
     active: (pathname) => /^\/boards\/[^/]+\/compares(?:\/|$)/.test(pathname),
   },
 ];

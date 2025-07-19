@@ -38,15 +38,69 @@ Default.args = {
   icon: <IcVariant />,
 };
 
-export const WithIcon = Template.bind({});
-WithIcon.args = {
-  text: "텍스트",
-  size: "md",
-  icon: <IcVariant />,
-};
+export const AllVariants: StoryFn = () => {
+  const names = ["지수", "경민", "시언", "수빈", "고은", "세환", "성연"];
+  const additionalText = ["PM", "Design", "Design", "FE", "FE", "BE", "BE"];
 
-export const OnlyText = Template.bind({});
-OnlyText.args = {
-  text: "텍스트",
-  size: "md",
+  return (
+    <div className="flex flex-col gap-8">
+      {/* xs + icon */}
+      <div>
+        <h2 className="mb-2 font-semibold text-lg">Size: xs + Icon</h2>
+        <div className="flex flex-wrap gap-4">
+          {names.map((name) => (
+            <Chip
+              key={`xs-icon-${name}`}
+              size="xs"
+              text={name}
+              icon={<IcVariant />}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* md + icon */}
+      <div>
+        <h2 className="mb-2 font-semibold text-lg">Size: md + Icon</h2>
+        <div className="flex flex-wrap gap-4">
+          {names.map((name) => (
+            <Chip
+              key={`md-icon-${name}`}
+              size="md"
+              text={name}
+              icon={<IcVariant />}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* md only text */}
+      <div>
+        <h2 className="mb-2 font-semibold text-lg">Size: md (Only Text)</h2>
+        <div className="flex flex-wrap gap-4">
+          {names.map((name) => (
+            <Chip key={`md-text-${name}`} size="md" text={name} />
+          ))}
+        </div>
+      </div>
+
+      {/* md + icon + additionalText */}
+      <div>
+        <h2 className="mb-2 font-semibold text-lg">
+          Size: md + Icon + AdditionalText
+        </h2>
+        <div className="flex flex-wrap gap-4">
+          {names.map((name, idx) => (
+            <Chip
+              key={`md-icon-add-${name}`}
+              size="xs"
+              text={name}
+              additionalText={additionalText[idx]}
+              icon={<IcVariant />}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 };

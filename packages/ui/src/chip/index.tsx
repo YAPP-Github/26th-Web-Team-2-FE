@@ -24,7 +24,7 @@ export const Chip = ({
   text,
   className,
   size,
-  icon = false,
+  icon = null,
   additionalText,
   ...props
 }: ChipProps) => {

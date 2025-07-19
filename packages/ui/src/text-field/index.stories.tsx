@@ -3,7 +3,7 @@ import IcAlert from "@/assets/icons/ic_alert.svg?react";
 import IcLink from "@/assets/icons/ic_link.svg?react";
 import { TextField, type TextFieldProps } from "@/text-field";
 
-export default {
+const meta: Meta<TextFieldProps> = {
   title: "Components/TextField",
   component: TextField,
   parameters: {
@@ -27,13 +27,16 @@ export default {
       control: "text",
     },
   },
-} as Meta<TextFieldProps>;
+  decorators: [
+    (Story) => (
+      <div className="mx-auto w-full max-w-[35.9rem]">
+        <Story />
+      </div>
+    ),
+  ],
+};
 
-const Template: StoryFn<TextFieldProps> = (args) => (
-  <div className="mx-auto w-full max-w-[35.9rem]">
-    <TextField {...args} />
-  </div>
-);
+const Template: StoryFn<TextFieldProps> = (args) => <TextField {...args} />;
 
 export const Default: StoryFn<TextFieldProps> = Template.bind({});
 Default.args = {
@@ -47,3 +50,5 @@ WithError.args = {
   endIcon: <IcAlert width={24} height={24} />,
   hasError: true,
 };
+
+export default meta;

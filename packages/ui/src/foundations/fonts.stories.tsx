@@ -8,11 +8,13 @@ const styles = [
   "text-heading2-semi18",
   "text-heading2-medi18",
   // Body
+  "text-body1-bold16",
   "text-body1-semi16",
   "text-body1-medi16",
   "text-body1-regular16",
   "text-body2-medi14",
   "text-body2-regular14",
+  "text-body3-semi15",
   // Caption
   "text-caption1-semi12",
   "text-caption1-medi12",

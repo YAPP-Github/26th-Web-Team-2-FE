@@ -1,3 +1,5 @@
+export { default as IcList } from "@/assets/icons/ic_list.svg?react";
+export { default as IcTable } from "@/assets/icons/ic_table.svg?react";
 export { Button } from "@/button";
 export { AddIconButton } from "@/icon-button/add-icon-button";
 export { CheckIconButton } from "@/icon-button/check-icon-button";
@@ -9,3 +11,4 @@ export { InterimButton } from "@/interim-button";
 export { InterimDescription } from "@/interim-description";
 export { InterimTitle } from "@/interim-title";
 export { TextField } from "@/text-field";
+export { cn } from "@/utils";

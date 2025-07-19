@@ -17,13 +17,13 @@ export const AddIconButton = ({
   return (
     <button
       aria-label="추가 버튼"
-      className={cn(addbutton({ selected }), className)}
+      className={cn(addbutton({ selected: !selected }), className)}
       {...props}
     >
-      {!selected && (
+      {selected && (
         <IcCheckFill width="40px" height="40px" role="img" aria-label="확인" />
       )}
-      {selected && (
+      {!selected && (
         <IcAdd width="40px" height="40px" role="img" aria-label="추가" />
       )}
     </button>

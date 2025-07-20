@@ -1,7 +1,7 @@
 import type { Meta, StoryFn } from "@storybook/react-vite";
 import { useState } from "react";
 import IcStarFull from "@/assets/icons/ic_star_full.svg?react";
-import { Graph, type GraphProps } from "@/graph";
+import { Graph, type GraphProps } from "@/components/graph";
 
 const meta: Meta<typeof Graph> = {
   title: "Components/Graph",

@@ -5,7 +5,7 @@ import {
   type ReactNode,
   useMemo,
 } from "react";
-import { TextField } from "@/text-field";
+import { TextField } from "@/components/text-field";
 import { cn } from "@/utils";
 
 export interface GraphProps

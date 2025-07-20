@@ -1,7 +1,7 @@
 import type { Meta, StoryFn } from "@storybook/react-vite";
 import IcAlert from "@/assets/icons/ic_alert.svg?react";
 import IcLink from "@/assets/icons/ic_link.svg?react";
-import { TextField, type TextFieldProps } from "@/text-field";
+import { TextField, type TextFieldProps } from "@/components/text-field";
 
 const meta: Meta<TextFieldProps> = {
   title: "Components/TextField",

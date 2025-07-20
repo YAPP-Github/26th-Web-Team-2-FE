@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       changed-ui: ${{ steps.set-ui-label.outputs.changed }}
+      changed-tailwind-config: ${{ steps.set-tailwind-config-label.outputs.changed }}
       changed-web: ${{ steps.set-web-label.outputs.changed }}
       changed-root: ${{ steps.set-root-label.outputs.changed }}
 
@@ -32,6 +33,18 @@ jobs:
           git fetch origin ${{ github.event.pull_request.base.ref }}
           turbo ls --output json --filter="...[origin/${{ github.event.pull_request.base.ref }}]" > turbo_output.json
           cat turbo_output.json
+
+      - name: Check if 'packages/tailwind-config' changed
+        id: set-tailwind-config-label
+        run: |
+          PACKAGES=$(jq -r '.packages.items[].path' turbo_output.json)
+          if echo "$PACKAGES" | grep -q '^packages/tailwind-config$'; then
+            echo "packages/tailwind-config 변경 감지!" >&2
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "packages/tailwind-config 변경 X" >&2
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Check if 'packages/ui' changed
         id: set-ui-label
@@ -65,7 +78,7 @@ jobs:
           ROOT_CHANGED=false
 
           for file in $CHANGED_FILES; do
-            if [[ "$file" != packages/ui/* ]] && [[ "$file" != apps/web/* ]]; then
+            if [[ "$file" != apps/web/* ]] && [[ "$file" != packages/tailwind-config/* ]] && [[ "$file" != packages/ui/* ]]; then
               [[ "$file" == "pnpm-lock.yaml" ]] && continue
               ROOT_CHANGED=true
               break
@@ -91,10 +104,10 @@ jobs:
             const prNumber = context.payload.pull_request.number;
             const labelsToAdd = [];
 
-            if (process.env.CHANGED_UI === 'true') labelsToAdd.push('packages/ui');
             if (process.env.CHANGED_WEB === 'true') labelsToAdd.push('apps/web');
+            if (process.env.CHANGED_TAILWIND_CONFIG === 'true') labelsToAdd.push('packages/tailwind-config');
+            if (process.env.CHANGED_UI === 'true') labelsToAdd.push('packages/ui');
             if (process.env.CHANGED_ROOT === 'true') labelsToAdd.push('root');
-
 
             if (labelsToAdd.length > 0) {
               await github.rest.issues.addLabels({
@@ -108,8 +121,9 @@ jobs:
               console.log('추가될 라벨이 없습니다!');
             }
     env:
-      CHANGED_UI: ${{ needs.detect-changes.outputs.changed-ui }}
       CHANGED_WEB: ${{ needs.detect-changes.outputs.changed-web }}
+      CHANGED_TAILWIND_CONFIG: ${{ needs.detect-changes.outputs.changed-tailwind-config }}
+      CHANGED_UI: ${{ needs.detect-changes.outputs.changed-ui }}
       CHANGED_ROOT: ${{ needs.detect-changes.outputs.changed-root }}
 
   label-by-size:
@@ -146,18 +160,18 @@ jobs:
       - uses: codelytv/pr-size-labeler@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          xs_label: 'size/xs'
-          xs_max_size: '10'
-          s_label: 'size/s'
-          s_max_size: '100'
-          m_label: 'size/m'
-          m_max_size: '500'
-          l_label: 'size/l'
-          l_max_size: '1000'
-          xl_label: 'size/xl'
-          fail_if_xl: 'false'
+          xs_label: "size/xs"
+          xs_max_size: "10"
+          s_label: "size/s"
+          s_max_size: "100"
+          m_label: "size/m"
+          m_max_size: "500"
+          l_label: "size/l"
+          l_max_size: "1000"
+          xl_label: "size/xl"
+          fail_if_xl: "false"
           message_if_xl: >
             ⚠️ 이 PR은 권장 최대 변경 줄 수인 1000줄을 초과했습니다.
             하나의 PR에서 여러 이슈를 동시에 해결하고 있지는 않은지 확인해주세요.
             너무 큰 PR은 리뷰가 어렵기 때문에, 거절될 수 있습니다.
-          files_to_ignore: 'pnpm-lock.json,*.lock'
+          files_to_ignore: "pnpm-lock.json,*.lock"

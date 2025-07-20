@@ -6,7 +6,6 @@ import IcMemo from "@/assets/icons/ic_memo.svg?react";
 import IcWalker from "@/assets/icons/ic_walker.svg?react";
 import { Button } from "@/button";
 import { Chip } from "@/chip";
-import Divider from "@/divider/divider";
 import { AddIconButton } from "@/icon-button/add-icon-button";
 import { DeleteIconButton } from "@/icon-button/delete-icon-button";
 import { ImageCard } from "@/image-card";
@@ -132,12 +131,7 @@ export const Card = ({
                     additionalText={`${attraction.distance}분`}
                   />
                   {_index !== attractions.length - 1 && (
-                    <Divider
-                      width="w-[0.2rem]"
-                      height="h-[0.2rem]"
-                      color="bg-neutral-80"
-                      className="mx-[0.4rem] rounded-[50%]"
-                    />
+                    <hr className="mx-[0.4rem] h-[0.2rem] w-[0.2rem] rounded-full border-none bg-neutral-80" />
                   )}
                 </li>
               ))}

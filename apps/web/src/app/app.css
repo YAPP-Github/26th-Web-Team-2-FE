@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "@ssok/ui/app.css";
+@plugin "@ssok/tailwind-config";
 
 :root {
   --background: #ffffff;

@@ -35,12 +35,21 @@
       },
       "suspicious": {
         "noVar": "error"
-      },
-      "performance": {
-        "noImgElement": "off"
       }
     }
   },
+  "overrides": [
+    {
+      "includes": ["packages/ui/**"],
+      "linter": {
+        "rules": {
+          "performance": {
+            "noImgElement": "off"
+          }
+        }
+      }
+    }
+  ],
   "formatter": {
     "enabled": true,
     "formatWithErrors": true,

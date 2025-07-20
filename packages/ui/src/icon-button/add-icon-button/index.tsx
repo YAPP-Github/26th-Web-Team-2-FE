@@ -17,7 +17,7 @@ export const AddIconButton = ({
   return (
     <button
       aria-label="추가 버튼"
-      className={cn(addbutton({ selected: !selected }), className)}
+      className={cn(addbutton({ selected }), className)}
       {...props}
     >
       {selected && (

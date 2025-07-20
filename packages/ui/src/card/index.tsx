@@ -9,8 +9,8 @@ import { Chip } from "@/chip";
 import Divider from "@/divider/divider";
 import { AddIconButton } from "@/icon-button/add-icon-button";
 import { DeleteIconButton } from "@/icon-button/delete-icon-button";
-import IconText from "@/icon-text";
 import { ImageCard } from "@/image-card";
+import TextWithIcon from "@/text-with-icon";
 import { cn } from "@/utils";
 import { chip } from "./card.variant";
 
@@ -102,23 +102,25 @@ export const Card = ({
               <p className="m-0 text-heading1-semi20 text-neutral-variant-20">
                 {`${price.toLocaleString()}원`}
               </p>
-              <IconText
-                text="1박 당 요금"
-                color="text-neutral-60"
-                typo="text-caption2-regular11"
+              <TextWithIcon
                 icon={<IcInfo width="20px" height="20px" />}
                 className="flex-row-reverse gap-[0.2rem]"
-              />
+              >
+                <TextWithIcon.Text className="text-caption2-regular11 text-neutral-60">
+                  1박 당 요금
+                </TextWithIcon.Text>
+              </TextWithIcon>
             </div>
           </div>
           <div className="mt-[8px] flex flex-col gap-[0.8rem]">
-            <IconText
-              text={address}
-              color="text-neutral-40"
-              typo="text-caption1-medi12"
+            <TextWithIcon
               icon={<IcLocation width="20px" height="20px" />}
               className="w-[30.3rem] gap-[0.2rem]"
-            />
+            >
+              <TextWithIcon.Text className="text-caption1-medi12 text-neutral-40">
+                {address}
+              </TextWithIcon.Text>
+            </TextWithIcon>
             {/* 인근 관광지 정보 */}
             <ul className="m-0 flex list-none flex-row items-center p-0">
               {attractions?.map((attraction, _index) => (
@@ -144,13 +146,14 @@ export const Card = ({
         </header>
         {/* 메모 내용 */}
         {memoContent && (
-          <IconText
-            text={memoContent}
-            color="text-secondary-50"
-            typo="text-body2-medi14"
+          <TextWithIcon
             icon={<IcMemo width="16px" height="16px" />}
             className="w-[30.3rem] gap-[0.4rem]"
-          />
+          >
+            <TextWithIcon.Text className="text-body2-medi14 text-secondary-50">
+              {memoContent}
+            </TextWithIcon.Text>
+          </TextWithIcon>
         )}
         {!memoContent && (
           <Button

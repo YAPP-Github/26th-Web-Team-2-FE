@@ -17,12 +17,12 @@
     "deploy:chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",
     "dev": "vite",
     "dev:storybook": "storybook dev -p 6006 --no-open",
-    "dev:vite": "vite",
     "lint": "biome check .",
     "test": "vitest run",
     "test:watch": "vitest watch"
   },
   "dependencies": {
+    "@ssok/tailwind-config": "workspace:*",
     "@storybook/blocks": "^8.6.14",
     "chromatic": "^12.1.1",
     "class-variance-authority": "^0.7.1",

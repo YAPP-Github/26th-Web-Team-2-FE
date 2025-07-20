@@ -20,10 +20,10 @@ export const AddIconButton = ({
       className={cn(addbutton({ selected }), className)}
       {...props}
     >
-      {!selected && (
+      {selected && (
         <IcCheckFill width="40px" height="40px" role="img" aria-label="확인" />
       )}
-      {selected && (
+      {!selected && (
         <IcAdd width="40px" height="40px" role="img" aria-label="추가" />
       )}
     </button>

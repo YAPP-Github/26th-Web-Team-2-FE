@@ -4,12 +4,12 @@ import IcInfo from "@/assets/icons/ic_info.svg?react";
 import IcLocation from "@/assets/icons/ic_location.svg?react";
 import IcMemo from "@/assets/icons/ic_memo.svg?react";
 import IcWalker from "@/assets/icons/ic_walker.svg?react";
-import { Button } from "@/button";
-import { Chip } from "@/chip";
-import { AddIconButton } from "@/icon-button/add-icon-button";
-import { DeleteIconButton } from "@/icon-button/delete-icon-button";
-import { ImageCard } from "@/image-card";
-import TextWithIcon from "@/text-with-icon";
+import { Button } from "@/components/button";
+import { Chip } from "@/components/chip";
+import { AddIconButton } from "@/components/icon-button/add-icon-button";
+import { DeleteIconButton } from "@/components/icon-button/delete-icon-button";
+import { ImageCard } from "@/components/image-card";
+import TextWithIcon from "@/components/text-with-icon";
 import { cn } from "@/utils";
 import { chip } from "./card.variant";
 

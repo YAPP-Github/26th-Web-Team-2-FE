@@ -10,7 +10,7 @@ export const Pin = ({ children, className, ...props }: PinProps) => {
     <button
       className={cn(
         // 본체 스타일
-        "relative inline-flex items-center justify-center text-heading2-semi18 text-primary-5 shadow-[2px_4px_6px_0px_rgba(0,0,0,0.2)]",
+        "relative inline-flex w-max items-center justify-center text-heading2-semi18 text-primary-5 shadow-[2px_4px_6px_0px_rgba(0,0,0,0.2)]",
         "rounded-[4.8rem] border border-neutral-70 bg-neutral-100 px-[1.6rem] py-[0.8rem]",
         "hover:border-neutral-60 focus:border-primary-5",
         "focus:bg-primary-5 focus:text-primary-100",

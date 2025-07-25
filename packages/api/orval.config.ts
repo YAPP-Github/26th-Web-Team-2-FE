@@ -19,7 +19,7 @@ export default defineConfig({
         enumGenerationType: "union",
         mock: { arrayMin: 4, arrayMax: 4 },
         mutator: { path: "./src/api/http.ts", name: "http" },
-        query: { usePrefetch: true },
+        query: { usePrefetch: true, useSuspenseQuery: true },
         useDates: true,
       },
       target: "./src/index.ts",

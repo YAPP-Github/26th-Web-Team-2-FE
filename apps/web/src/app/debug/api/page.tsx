@@ -1,9 +1,18 @@
 "use client";
-import { useSuccess } from "@ssok/api";
+import { useSuccessSuspense } from "@ssok/api";
+import { Suspense } from "react";
 
 const DebugAPIPage = () => {
-  const { data } = useSuccess();
-  return <div>{JSON.stringify(data)}</div>;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <DebugAPIContent />
+    </Suspense>
+  );
+};
+
+const DebugAPIContent = () => {
+  const { data } = useSuccessSuspense();
+  return <div className="text-body1-medi16">{JSON.stringify(data)}</div>;
 };
 
 export default DebugAPIPage;

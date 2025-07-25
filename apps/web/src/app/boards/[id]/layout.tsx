@@ -1,4 +1,5 @@
 import type { PropsWithChildren } from "react";
+import MapComponent from "@/shared/components/Map";
 import SideNavigation from "@/shared/components/SideNavigation";
 
 const BoardsIdLayout = ({ children }: PropsWithChildren) => {
@@ -6,6 +7,7 @@ const BoardsIdLayout = ({ children }: PropsWithChildren) => {
     <div className="flex h-screen">
       <SideNavigation />
       {children}
+      <MapComponent />
     </div>
   );
 };

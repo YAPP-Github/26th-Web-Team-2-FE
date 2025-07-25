@@ -1,0 +1,385 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "YAPP26 WEB2",
+    "description": "SSOK 서비스 API 명세",
+    "version": "v1"
+  },
+  "servers": [
+    { "url": "https://api.ssok.info", "description": "Generated server url" }
+  ],
+  "tags": [
+    { "name": "숙소 API", "description": "숙소 관련 API" },
+    { "name": "OAUTH API", "description": "소셜 로그인 API" },
+    { "name": "HEALTH CHECK API", "description": "헬스 체크 테스트 API" }
+  ],
+  "paths": {
+    "/api/oauth/kakao": {
+      "get": {
+        "tags": ["OAUTH API"],
+        "summary": "KAKAO",
+        "description": "KAKAO 소셜 로그인 요청 URI",
+        "operationId": "kakaoLoginRedirect",
+        "responses": {
+          "302": {
+            "description": "카카오 로그인 인가 페이지로 리다이렉트되고, 인가 성공시 Cookie에 ACCESS TOKEN과 REFRESH TOKEN이 발급됩니다."
+          }
+        }
+      }
+    },
+    "/api/mock/user/{id}": {
+      "get": {
+        "tags": ["mock-api-controller"],
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseUserResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/mock/success": {
+      "get": {
+        "tags": ["mock-api-controller"],
+        "operationId": "success",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/mock/exception-error": {
+      "get": {
+        "tags": ["mock-api-controller"],
+        "operationId": "exceptionError",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/mock/custom-error": {
+      "get": {
+        "tags": ["mock-api-controller"],
+        "operationId": "customError",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "tags": ["HEALTH CHECK API"],
+        "summary": "연결 테스트",
+        "description": "...",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "string" } } }
+          }
+        }
+      }
+    },
+    "/api/accommodations/search": {
+      "get": {
+        "tags": ["숙소 API"],
+        "summary": "숙소 목록 조회",
+        "description": "숙소 목록을 조회합니다.",
+        "operationId": "getAccommodationByTableIdAndUserId",
+        "parameters": [
+          {
+            "name": "tableId",
+            "in": "query",
+            "description": "숙소가 포함된 테이블의 ID",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "페이지 번호",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "페이지 크기",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "유저 ID, 없는 경우 모든 유저가 생성한 숙소 목록을 반환합니다.",
+            "required": false,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseAccommodationPageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/accommodations/count": {
+      "get": {
+        "tags": ["숙소 API"],
+        "summary": "테이블 숙소 개수 조회",
+        "description": "테이블에 포함된 숙소의 개수를 조회합니다.",
+        "operationId": "getAccommodationCountByTableId",
+        "parameters": [
+          {
+            "name": "tableId",
+            "in": "query",
+            "description": "숙소가 포함된 테이블의 ID",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "유저 ID, 없는 경우 모든 유저가 생성한 숙소 목록을 반환합니다.",
+            "required": false,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseAccommodationCountResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "StandardResponseUserResponse": {
+        "type": "object",
+        "description": "API 응답의 표준 형식을 정의하는 클래스",
+        "properties": {
+          "responseType": {
+            "type": "string",
+            "description": "응답 유형",
+            "enum": ["SUCCESS", "ERROR"],
+            "example": "SUCCESS"
+          },
+          "result": {
+            "$ref": "#/components/schemas/UserResponse",
+            "description": "응답 결과 데이터"
+          }
+        }
+      },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "name": { "type": "string" }
+        }
+      },
+      "StandardResponseString": {
+        "type": "object",
+        "description": "API 응답의 표준 형식을 정의하는 클래스",
+        "properties": {
+          "responseType": {
+            "type": "string",
+            "description": "응답 유형",
+            "enum": ["SUCCESS", "ERROR"],
+            "example": "SUCCESS"
+          },
+          "result": { "type": "string", "description": "응답 결과 데이터" }
+        }
+      },
+      "AccommodationPageResponse": {
+        "type": "object",
+        "properties": {
+          "accommodations": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AccommodationResponse" }
+          },
+          "hasNext": { "type": "boolean" }
+        }
+      },
+      "AccommodationResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "userId": { "type": "integer", "format": "int64" },
+          "urlTest": { "type": "string" },
+          "siteName": { "type": "string" },
+          "memo": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date" },
+          "updatedAt": { "type": "string", "format": "date" },
+          "createdBy": { "type": "integer", "format": "int64" },
+          "tableId": { "type": "integer", "format": "int64" },
+          "accommodationName": { "type": "string" },
+          "images": { "type": "array", "items": { "type": "string" } },
+          "address": { "type": "string" },
+          "latitude": { "type": "number", "format": "double" },
+          "longitude": { "type": "number", "format": "double" },
+          "lowestPrice": { "type": "integer", "format": "int32" },
+          "highestPrice": { "type": "integer", "format": "int32" },
+          "currency": { "type": "string" },
+          "reviewScore": { "type": "number", "format": "double" },
+          "cleanlinessScore": { "type": "number", "format": "double" },
+          "reviewSummary": { "type": "string" },
+          "hotelId": { "type": "integer", "format": "int64" },
+          "nearbyAttractions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Attraction" }
+          },
+          "nearbyTransportation": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Transportation" }
+          },
+          "amenities": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Amenity" }
+          },
+          "checkInTime": { "$ref": "#/components/schemas/CheckTime" },
+          "checkOutTime": { "$ref": "#/components/schemas/CheckTime" }
+        }
+      },
+      "Amenity": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "available": { "type": "boolean" },
+          "description": { "type": "string" }
+        }
+      },
+      "Attraction": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "type": "string" },
+          "latitude": { "type": "number", "format": "double" },
+          "longitude": { "type": "number", "format": "double" },
+          "distance": { "type": "string" },
+          "byFoot": { "$ref": "#/components/schemas/DistanceInfo" },
+          "byCar": { "$ref": "#/components/schemas/DistanceInfo" }
+        }
+      },
+      "CheckTime": {
+        "type": "object",
+        "properties": {
+          "checkInTimeFrom": { "type": "string" },
+          "checkInTimeTo": { "type": "string" }
+        }
+      },
+      "DistanceInfo": {
+        "type": "object",
+        "properties": {
+          "distance": { "type": "string" },
+          "time": { "type": "string" }
+        }
+      },
+      "StandardResponseAccommodationPageResponse": {
+        "type": "object",
+        "description": "API 응답의 표준 형식을 정의하는 클래스",
+        "properties": {
+          "responseType": {
+            "type": "string",
+            "description": "응답 유형",
+            "enum": ["SUCCESS", "ERROR"],
+            "example": "SUCCESS"
+          },
+          "result": {
+            "$ref": "#/components/schemas/AccommodationPageResponse",
+            "description": "응답 결과 데이터"
+          }
+        }
+      },
+      "Transportation": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "type": "string" },
+          "latitude": { "type": "number", "format": "double" },
+          "longitude": { "type": "number", "format": "double" },
+          "distance": { "type": "string" },
+          "byFoot": { "$ref": "#/components/schemas/DistanceInfo" },
+          "byCar": { "$ref": "#/components/schemas/DistanceInfo" }
+        }
+      },
+      "AccommodationCountResponse": {
+        "type": "object",
+        "properties": {
+          "accommodationCount": { "type": "integer", "format": "int64" }
+        }
+      },
+      "StandardResponseAccommodationCountResponse": {
+        "type": "object",
+        "description": "API 응답의 표준 형식을 정의하는 클래스",
+        "properties": {
+          "responseType": {
+            "type": "string",
+            "description": "응답 유형",
+            "enum": ["SUCCESS", "ERROR"],
+            "example": "SUCCESS"
+          },
+          "result": {
+            "$ref": "#/components/schemas/AccommodationCountResponse",
+            "description": "응답 결과 데이터"
+          }
+        }
+      }
+    }
+  }
+}

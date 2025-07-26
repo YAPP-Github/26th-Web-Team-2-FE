@@ -20,6 +20,7 @@ import IcList from "@/assets/icons/ic_list.svg?react";
 import IcLocation from "@/assets/icons/ic_location.svg?react";
 import IcMap from "@/assets/icons/ic_map.svg?react";
 import IcMemo from "@/assets/icons/ic_memo.svg?react";
+import IcRoundPlus from "@/assets/icons/ic_round-plus.svg?react";
 import IcSave from "@/assets/icons/ic_save.svg?react";
 import IcShare from "@/assets/icons/ic_share.svg?react";
 import IcStarEmpty from "@/assets/icons/ic_star_empty.svg?react";
@@ -27,25 +28,32 @@ import IcStarFull from "@/assets/icons/ic_star_full.svg?react";
 import IcStarHalf from "@/assets/icons/ic_star_half.svg?react";
 import IcTable from "@/assets/icons/ic_table.svg?react";
 import IcVariant from "@/assets/icons/ic_variant.svg?react";
+import IcWalker from "@/assets/icons/ic_walker.svg?react";
 
 const icons = {
   ArrowLeft: IcArrowLeft,
   ArrowRight: IcArrowRight,
+  IcAdd: IcAdd,
   IcAddMemo: IcAddMemo,
   IcAlert: IcAlert,
   IcArrowDown: IcArrowDown,
   IcArrowUp: IcArrowUp,
   IcCar: IcCar,
+  IcCheckFill: IcCheckFill,
+  IcClose: IcClose,
   IcCollapse: IcCollapse,
   IcDelete: IcDelete,
   IcEdit: IcEdit,
   IcExpand: IcExpand,
+  IcHasMemo: IcHasMemo,
   IcInfo: IcInfo,
+  IcKm: IcKm,
   IcLink: IcLink,
   IcList: IcList,
   IcLocation: IcLocation,
   IcMap: IcMap,
   IcMemo: IcMemo,
+  IcRoundPlus: IcRoundPlus,
   IcSave: IcSave,
   IcShare: IcShare,
   IcStarEmpty: IcStarEmpty,
@@ -53,11 +61,7 @@ const icons = {
   IcStarHalf: IcStarHalf,
   IcTable: IcTable,
   IcVariant: IcVariant,
-  IcClose: IcClose,
-  IcAdd: IcAdd,
-  IcCheckFill: IcCheckFill,
-  IcKm: IcKm,
-  IcHasMemo: IcHasMemo,
+  IcWalker: IcWalker,
 };
 
 export default {

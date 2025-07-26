@@ -80,7 +80,7 @@ const BoardsIdListsPage = () => {
               <TextField placeholder="링크를 입력해주세요" />
             </div>
             {/* 링크 저장_버튼 */}
-            <div className="flex flex-row justify-end">
+            <div className="flex flex-row justify-end gap-[0.8rem]">
               <Button
                 variant="text"
                 size="md"

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { calculateCenter } from "@/shared/utils/map-utils";
+import { calculateCenter } from "@/shared/utils/map";
 
 describe("calculateCenter", () => {
   // 여러 좌표가 있을 때 평균 좌표를 반환

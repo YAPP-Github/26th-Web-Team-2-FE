@@ -1,8 +1,8 @@
 "use client";
 
 import GoogleMapReact from "google-map-react";
-import { calculateCenter } from "@/shared/utils/map-utils";
-import MapPin from "./MapPin";
+import MapPin from "@/shared/components/map-component/map-pin";
+import { calculateCenter } from "@/shared/utils/map";
 
 // TODO: mock 데이터 삭제 후 실제 데이터로 교체
 const locMock = [

@@ -39,7 +39,7 @@ export const Button = ({
       className={cn(button({ size, variant, selected }), className)}
       {...props}
     >
-      {icon && icon}
+      {icon && <>{icon}</>}
       <span className={buttonText({ size })}>{children}</span>
       {additionalText && (
         <span className="text-body2-medi14">{additionalText}</span>

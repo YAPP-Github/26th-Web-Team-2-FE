@@ -39,10 +39,12 @@ export { default as IcStarEmpty } from "@/assets/icons/ic_star_empty.svg?react";
 export { default as IcStarFull } from "@/assets/icons/ic_star_full.svg?react";
 export { default as IcStarHalf } from "@/assets/icons/ic_star_half.svg?react";
 export { default as IcTable } from "@/assets/icons/ic_table.svg?react";
+export { default as IcUpload } from "@/assets/icons/ic_upload.svg?react";
 export { default as IcVariant } from "@/assets/icons/ic_variant.svg?react";
 export { default as IcWalker } from "@/assets/icons/ic_walker.svg?react";
 export { default as IcWifi } from "@/assets/icons/ic_wifi.svg?react";
 export { Button } from "@/components/button";
+export { Card } from "@/components/card";
 export { Chip } from "@/components/chip";
 export { Graph } from "@/components/graph";
 export { AddIconButton } from "@/components/icon-button/add-icon-button";
@@ -59,3 +61,5 @@ export { InterimTitle } from "@/components/interim-title";
 export { Pin } from "@/components/pin";
 export { TextField } from "@/components/text-field";
 export { cn } from "@/utils";
+
+export { default as TextWithIcon } from "./components/text-with-icon";

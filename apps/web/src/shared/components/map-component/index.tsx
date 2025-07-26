@@ -20,7 +20,7 @@ const locMock = [
 
 const MapComponent = () => {
   return (
-    <div className=" h-screen w-full">
+    <div className="relative h-screen w-full">
       <GoogleMapReact
         bootstrapURLKeys={{
           key: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY,
@@ -38,6 +38,8 @@ const MapComponent = () => {
           </MapPin>
         ))}
       </GoogleMapReact>
+      {/* 지도 opacity 조정을 위한 div */}
+      <div className="pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-2 bg-neutral-70 opacity-20" />
     </div>
   );
 };

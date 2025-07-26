@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
-import MapComponent from "@/shared/components/Map";
-import SideNavigation from "@/shared/components/SideNavigation";
+import MapComponent from "@/shared/components/map-component";
+import SideNavigation from "@/shared/components/side-navigation";
 
 const BoardsIdLayout = ({ children }: PropsWithChildren) => {
   return (

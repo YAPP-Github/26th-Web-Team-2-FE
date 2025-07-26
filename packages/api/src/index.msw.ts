@@ -12,9 +12,21 @@ import { delay, HttpResponse, http } from "msw";
 import type {
   StandardResponseAccommodationCountResponse,
   StandardResponseAccommodationPageResponse,
+  StandardResponseAccommodationRegisterResponse,
   StandardResponseString,
   StandardResponseUserResponse,
 } from "./index.schemas";
+
+export const getRegisterAccommodationCardResponseMock = (
+  overrideResponse: Partial<StandardResponseAccommodationRegisterResponse> = {},
+): StandardResponseAccommodationRegisterResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([{}, undefined]),
+  ...overrideResponse,
+});
 
 export const getGetUserResponseMock = (
   overrideResponse: Partial<StandardResponseUserResponse> = {},
@@ -438,19 +450,28 @@ export const getGetAccommodationCountByTableIdResponseMock = (
   ...overrideResponse,
 });
 
-export const getKakaoLoginRedirectMockHandler = (
+export const getRegisterAccommodationCardMockHandler = (
   overrideResponse?:
-    | unknown
+    | StandardResponseAccommodationRegisterResponse
     | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<unknown> | unknown),
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) =>
+        | Promise<StandardResponseAccommodationRegisterResponse>
+        | StandardResponseAccommodationRegisterResponse),
 ) => {
-  return http.get("*/api/oauth/kakao", async (info) => {
+  return http.post("*/api/accommodations/register", async (info) => {
     await delay(500);
-    if (typeof overrideResponse === "function") {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 200 });
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getRegisterAccommodationCardResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
   });
 };
 
@@ -621,7 +642,7 @@ export const getGetAccommodationCountByTableIdMockHandler = (
   });
 };
 export const getYapp26Web2Mock = () => [
-  getKakaoLoginRedirectMockHandler(),
+  getRegisterAccommodationCardMockHandler(),
   getGetUserMockHandler(),
   getSuccessMockHandler(),
   getExceptionErrorMockHandler(),

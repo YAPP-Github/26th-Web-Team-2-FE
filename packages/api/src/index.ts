@@ -10,22 +10,27 @@ import type {
   DataTag,
   DefinedInitialDataOptions,
   DefinedUseQueryResult,
+  MutationFunction,
   QueryClient,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
   UseSuspenseQueryOptions,
   UseSuspenseQueryResult,
 } from "@tanstack/react-query";
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { http } from "./api/http";
 import type {
+  AccommodationRegisterRequest,
   GetAccommodationByTableIdAndUserIdParams,
   GetAccommodationCountByTableIdParams,
   StandardResponseAccommodationCountResponse,
   StandardResponseAccommodationPageResponse,
+  StandardResponseAccommodationRegisterResponse,
   StandardResponseString,
   StandardResponseUserResponse,
 } from "./index.schemas";
@@ -33,322 +38,113 @@ import type {
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 /**
- * KAKAO 소셜 로그인 요청 URI
- * @summary KAKAO
+ * 링크를 첨부하여 숙소 카드를 등록합니다.
+ * @summary 숙소 카드 등록
  */
-export type kakaoLoginRedirectResponse302 = {
-  data: undefined;
-  status: 302;
+export type registerAccommodationCardResponse200 = {
+  data: StandardResponseAccommodationRegisterResponse;
+  status: 200;
 };
 
-export type kakaoLoginRedirectResponseComposite = kakaoLoginRedirectResponse302;
+export type registerAccommodationCardResponseComposite =
+  registerAccommodationCardResponse200;
 
-export type kakaoLoginRedirectResponse = kakaoLoginRedirectResponseComposite & {
-  headers: Headers;
-};
-
-export const getKakaoLoginRedirectUrl = () => {
-  return `https://api.ssok.info/api/oauth/kakao`;
-};
-
-export const kakaoLoginRedirect = async (
-  options?: RequestInit,
-): Promise<kakaoLoginRedirectResponse> => {
-  return http<kakaoLoginRedirectResponse>(getKakaoLoginRedirectUrl(), {
-    ...options,
-    method: "GET",
-  });
-};
-
-export const getKakaoLoginRedirectQueryKey = () => {
-  return [`https://api.ssok.info/api/oauth/kakao`] as const;
-};
-
-export const getKakaoLoginRedirectQueryOptions = <
-  TData = Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-  TError = void,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-      TError,
-      TData
-    >
-  >;
-  request?: SecondParameter<typeof http>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
-
-  const queryKey = queryOptions?.queryKey ?? getKakaoLoginRedirectQueryKey();
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof kakaoLoginRedirect>>
-  > = ({ signal }) => kakaoLoginRedirect({ signal, ...requestOptions });
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
-
-export type KakaoLoginRedirectQueryResult = NonNullable<
-  Awaited<ReturnType<typeof kakaoLoginRedirect>>
->;
-export type KakaoLoginRedirectQueryError = undefined;
-
-export function useKakaoLoginRedirect<
-  TData = Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-  TError = void,
->(
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-          TError,
-          Awaited<ReturnType<typeof kakaoLoginRedirect>>
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useKakaoLoginRedirect<
-  TData = Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-  TError = void,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-          TError,
-          Awaited<ReturnType<typeof kakaoLoginRedirect>>
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useKakaoLoginRedirect<
-  TData = Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-  TError = void,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-/**
- * @summary KAKAO
- */
-
-export function useKakaoLoginRedirect<
-  TData = Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-  TError = void,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
-  const queryOptions = getKakaoLoginRedirectQueryOptions(options);
-
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}
-
-/**
- * @summary KAKAO
- */
-export const prefetchKakaoLoginRedirectQuery = async <
-  TData = Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-  TError = void,
->(
-  queryClient: QueryClient,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-): Promise<QueryClient> => {
-  const queryOptions = getKakaoLoginRedirectQueryOptions(options);
-
-  await queryClient.prefetchQuery(queryOptions);
-
-  return queryClient;
-};
-
-export const getKakaoLoginRedirectSuspenseQueryOptions = <
-  TData = Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-  TError = void,
->(options?: {
-  query?: Partial<
-    UseSuspenseQueryOptions<
-      Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-      TError,
-      TData
-    >
-  >;
-  request?: SecondParameter<typeof http>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
-
-  const queryKey = queryOptions?.queryKey ?? getKakaoLoginRedirectQueryKey();
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof kakaoLoginRedirect>>
-  > = ({ signal }) => kakaoLoginRedirect({ signal, ...requestOptions });
-
-  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
-    Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
-
-export type KakaoLoginRedirectSuspenseQueryResult = NonNullable<
-  Awaited<ReturnType<typeof kakaoLoginRedirect>>
->;
-export type KakaoLoginRedirectSuspenseQueryError = undefined;
-
-export function useKakaoLoginRedirectSuspense<
-  TData = Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-  TError = void,
->(
-  options: {
-    query: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useKakaoLoginRedirectSuspense<
-  TData = Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-  TError = void,
->(
-  options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useKakaoLoginRedirectSuspense<
-  TData = Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-  TError = void,
->(
-  options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-/**
- * @summary KAKAO
- */
-
-export function useKakaoLoginRedirectSuspense<
-  TData = Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-  TError = void,
->(
-  options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof kakaoLoginRedirect>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
-  const queryOptions = getKakaoLoginRedirectSuspenseQueryOptions(options);
-
-  const query = useSuspenseQuery(
-    queryOptions,
-    queryClient,
-  ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
+export type registerAccommodationCardResponse =
+  registerAccommodationCardResponseComposite & {
+    headers: Headers;
   };
 
-  query.queryKey = queryOptions.queryKey;
+export const getRegisterAccommodationCardUrl = () => {
+  return `https://api.ssok.info/api/accommodations/register`;
+};
 
-  return query;
-}
+export const registerAccommodationCard = async (
+  accommodationRegisterRequest: AccommodationRegisterRequest,
+  options?: RequestInit,
+): Promise<registerAccommodationCardResponse> => {
+  return http<registerAccommodationCardResponse>(
+    getRegisterAccommodationCardUrl(),
+    {
+      ...options,
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(accommodationRegisterRequest),
+    },
+  );
+};
+
+export const getRegisterAccommodationCardMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof registerAccommodationCard>>,
+    TError,
+    { data: AccommodationRegisterRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof registerAccommodationCard>>,
+  TError,
+  { data: AccommodationRegisterRequest },
+  TContext
+> => {
+  const mutationKey = ["registerAccommodationCard"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof registerAccommodationCard>>,
+    { data: AccommodationRegisterRequest }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return registerAccommodationCard(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type RegisterAccommodationCardMutationResult = NonNullable<
+  Awaited<ReturnType<typeof registerAccommodationCard>>
+>;
+export type RegisterAccommodationCardMutationBody =
+  AccommodationRegisterRequest;
+export type RegisterAccommodationCardMutationError = unknown;
+
+/**
+ * @summary 숙소 카드 등록
+ */
+export const useRegisterAccommodationCard = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof registerAccommodationCard>>,
+      TError,
+      { data: AccommodationRegisterRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof registerAccommodationCard>>,
+  TError,
+  { data: AccommodationRegisterRequest },
+  TContext
+> => {
+  const mutationOptions = getRegisterAccommodationCardMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
 
 export type getUserResponse200 = {
   data: StandardResponseUserResponse;

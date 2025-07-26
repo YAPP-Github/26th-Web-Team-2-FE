@@ -7,6 +7,7 @@ import {
   IcCollapse,
   IcExpand,
   IcInfo,
+  IcLink,
   IcUpload,
   TextField,
   TextWithIcon,
@@ -103,7 +104,10 @@ const BoardsIdListsPage = () => {
           <>
             {/* 링크 저장_입력란 */}
             <div>
-              <TextField placeholder="링크를 입력해주세요" />
+              <TextField
+                placeholder="숙소의 상세 페이지 링크를 복사해서 붙여넣거나, 드래그해 추가해 주세요"
+                icon={<IcLink width="24" height="24" />}
+              />
             </div>
             {/* 링크 저장_버튼 */}
             <div className="flex flex-row justify-end gap-[0.8rem]">
@@ -154,7 +158,9 @@ const BoardsIdListsPage = () => {
         )}
       </section>
       {/* 숙소 리스트 */}
-      <section className={cn(_roundedBorder, "w-max p-[2.4rem]")}>
+      <section
+        className={cn(_roundedBorder, "w-max overflow-y-scroll p-[2.4rem]")}
+      >
         {/* 숙소 리스트_제목 */}
         <div className="flex flex-col gap-[1.6rem]">
           <h1 className="text-heading1-semi20"> 저장된 숙소</h1>
@@ -172,8 +178,9 @@ const BoardsIdListsPage = () => {
             ))}
           </ul>
           <div className="flex justify-between text-body2-regular14 text-neutral-40">
-            <span>4곳 저장됨</span>
-            <span>드롭다운</span>
+            <span>{`${_MOCK_DATA.places.length}곳 저장됨`}</span>
+            {/* TODO: 드롭다운 구현  */}
+            <span>최저가 순</span>
           </div>
         </div>
         {/* 숙소 리스트_카드목록 */}

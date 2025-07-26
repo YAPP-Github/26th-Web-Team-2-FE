@@ -1,4 +1,4 @@
-import { IcList, IcTable } from "@ssok/ui";
+import { IcBookmark, IcTable } from "@ssok/ui";
 import { useParams, usePathname } from "next/navigation";
 import type { ReactElement } from "react";
 
@@ -23,14 +23,14 @@ interface NavigationRouteConfig {
 const NAVIGATION_ROUTES: NavigationRouteConfig[] = [
   {
     type: "list",
-    icon: <IcList className="h-[2.8rem] w-[2.8rem]" />,
+    icon: <IcBookmark width="34" height="34" />,
     label: "리스트",
     route: (id) => `/boards/${id}/lists`,
     active: (pathname) => /^\/boards\/[^/]+\/lists(?:\/|$)/.test(pathname),
   },
   {
     type: "compare",
-    icon: <IcTable className="h-[2.8rem] w-[2.8rem]" />,
+    icon: <IcTable width="34" height="34" />,
     label: "비교표",
     route: (id) => `/boards/${id}/compares`,
     active: (pathname) => /^\/boards\/[^/]+\/compares(?:\/|$)/.test(pathname),

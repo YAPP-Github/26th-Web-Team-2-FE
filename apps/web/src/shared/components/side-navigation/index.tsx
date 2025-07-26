@@ -3,7 +3,7 @@
 import { cn } from "@ssok/ui";
 import Link from "next/link";
 import Logo from "@/shared/components/Logo";
-import useNavigationMenus from "@/shared/components/SideNavigation/useNavigationMenus";
+import useNavigationMenus from "@/shared/components/side-navigation/use-navigation-menus";
 
 const SideNavigation = () => {
   const menus = useNavigationMenus();

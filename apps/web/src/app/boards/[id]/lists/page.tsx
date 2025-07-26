@@ -17,17 +17,10 @@ import BubbleInfo from "@/domains/lists/components/bubble-info";
 import useRegisterUrlInput from "@/domains/lists/hooks/use-register-url-input";
 import { _MOCK_DATA } from "./_mock";
 
-// TODO: 중복되는 스타일 분리
-const _roundedBorder = "rounded-2xl border border-neutral-90";
-
 const BoardsIdListsPage = () => {
   const [selectedPerson, setSelectedPerson] = useState(0);
   const [isInputExpanded, setIsInputExpanded] = useState(true);
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
-
-  const _handleTooltipToggle = () => {
-    setIsTooltipVisible(!isTooltipVisible);
-  };
 
   const toggleInputExpansion = () => {
     setIsInputExpanded(!isInputExpanded);
@@ -63,7 +56,7 @@ const BoardsIdListsPage = () => {
       {/* 링크 저장 */}
       <section
         className={cn(
-          _roundedBorder,
+          "rounded-2xl border border-neutral-90",
           "flex w-full flex-col gap-[1.6rem] p-[2.4rem]",
         )}
       >
@@ -159,7 +152,10 @@ const BoardsIdListsPage = () => {
       </section>
       {/* 숙소 리스트 */}
       <section
-        className={cn(_roundedBorder, "w-max overflow-y-scroll p-[2.4rem]")}
+        className={cn(
+          "rounded-2xl border border-neutral-90",
+          "w-max overflow-y-scroll p-[2.4rem]",
+        )}
       >
         {/* 숙소 리스트_제목 */}
         <div className="flex flex-col gap-[1.6rem]">

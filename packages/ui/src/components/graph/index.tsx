@@ -20,7 +20,7 @@ export interface GraphProps
 
 const variants = cva(
   [
-    "flex w-[calc(100%-3.2rem)] flex-col gap-[0.8rem] rounded-[1.2rem] p-[1.6rem]",
+    "flex w-full flex-col gap-[0.8rem] rounded-[1.2rem] p-[1.6rem]",
     "transition-colors duration-200",
   ],
   {

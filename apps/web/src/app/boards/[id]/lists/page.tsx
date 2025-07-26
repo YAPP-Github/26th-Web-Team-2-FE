@@ -13,8 +13,8 @@ import {
   TextWithIcon,
 } from "@ssok/ui";
 import { useState } from "react";
-import BubbleInfo from "@/domains/lists/components/bubble-info";
-import useRegisterUrlInput from "@/domains/lists/hooks/use-register-url-input";
+import BubbleInfo from "@/domains/list/components/bubble-info";
+import useRegisterUrlInput from "@/domains/list/hooks/use-register-url-input";
 import { _MOCK_DATA } from "./_mock";
 
 const BoardsIdListsPage = () => {

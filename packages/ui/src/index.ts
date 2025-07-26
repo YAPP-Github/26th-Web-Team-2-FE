@@ -27,6 +27,7 @@ export { default as IcStarEmpty } from "@/assets/icons/ic_star_empty.svg?react";
 export { default as IcStarFull } from "@/assets/icons/ic_star_full.svg?react";
 export { default as IcStarHalf } from "@/assets/icons/ic_star_half.svg?react";
 export { default as IcTable } from "@/assets/icons/ic_table.svg?react";
+export { default as IcUpload } from "@/assets/icons/ic_upload.svg?react";
 export { default as IcVariant } from "@/assets/icons/ic_variant.svg?react";
 export { default as IcWalker } from "@/assets/icons/ic_walker.svg?react";
 export { Button } from "@/components/button";

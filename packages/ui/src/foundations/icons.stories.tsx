@@ -6,6 +6,7 @@ import IcArrowDown from "@/assets/icons/ic_arrow_down.svg?react";
 import IcArrowLeft from "@/assets/icons/ic_arrow_left.svg?react";
 import IcArrowRight from "@/assets/icons/ic_arrow_right.svg?react";
 import IcArrowUp from "@/assets/icons/ic_arrow_up.svg?react";
+import IcBookmark from "@/assets/icons/ic_bookmark.svg?react";
 import IcCar from "@/assets/icons/ic_car.svg?react";
 import IcCheckFill from "@/assets/icons/ic_check_fill.svg?react";
 import IcCleaningServices from "@/assets/icons/ic_cleaning_services.svg?react";
@@ -20,7 +21,6 @@ import IcHomeRepairService from "@/assets/icons/ic_home_repair_service.svg?react
 import IcInfo from "@/assets/icons/ic_info.svg?react";
 import IcKm from "@/assets/icons/ic_km.svg?react";
 import IcLink from "@/assets/icons/ic_link.svg?react";
-import IcList from "@/assets/icons/ic_list.svg?react";
 import IcLocalBar from "@/assets/icons/ic_local_bar.svg?react";
 import IcLocalParking from "@/assets/icons/ic_local_parking.svg?react";
 import IcLocation from "@/assets/icons/ic_location.svg?react";
@@ -51,6 +51,7 @@ const icons = {
   IcArrowLeft,
   IcArrowRight,
   IcArrowUp,
+  IcBookmark,
   IcCar,
   IcCheckFill,
   IcCleaningServices,
@@ -65,7 +66,6 @@ const icons = {
   IcInfo,
   IcKm,
   IcLink,
-  IcList,
   IcLocalBar,
   IcLocalParking,
   IcLocation,

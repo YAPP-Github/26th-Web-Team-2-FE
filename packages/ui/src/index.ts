@@ -6,6 +6,7 @@ export { default as IcArrowDown } from "@/assets/icons/ic_arrow_down.svg?react";
 export { default as IcArrowLeft } from "@/assets/icons/ic_arrow_left.svg?react";
 export { default as IcArrowRight } from "@/assets/icons/ic_arrow_right.svg?react";
 export { default as IcArrowUp } from "@/assets/icons/ic_arrow_up.svg?react";
+export { default as IcBookmark } from "@/assets/icons/ic_bookmark.svg?react";
 export { default as IcCar } from "@/assets/icons/ic_car.svg?react";
 export { default as IcCheckFill } from "@/assets/icons/ic_check_fill.svg?react";
 export { default as IcCleaningServices } from "@/assets/icons/ic_cleaning_services.svg?react";
@@ -20,7 +21,6 @@ export { default as IcHomeRepairService } from "@/assets/icons/ic_home_repair_se
 export { default as IcInfo } from "@/assets/icons/ic_info.svg?react";
 export { default as IcKm } from "@/assets/icons/ic_km.svg?react";
 export { default as IcLink } from "@/assets/icons/ic_link.svg?react";
-export { default as IcList } from "@/assets/icons/ic_list.svg?react";
 export { default as IcLocalBar } from "@/assets/icons/ic_local_bar.svg?react";
 export { default as IcLocalParking } from "@/assets/icons/ic_local_parking.svg?react";
 export { default as IcLocation } from "@/assets/icons/ic_location.svg?react";

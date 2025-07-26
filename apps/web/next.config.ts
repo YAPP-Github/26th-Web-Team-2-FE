@@ -27,5 +27,11 @@ const plugins = [
 ];
 
 export default plugins.reduce((acc, plugin) => plugin(acc), {
+  images: {
+    remotePatterns: [
+      { protocol: "http", hostname: "*" },
+      { protocol: "https", hostname: "*" },
+    ],
+  },
   reactStrictMode: true,
 } as NextConfig);

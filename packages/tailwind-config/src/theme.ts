@@ -11,6 +11,10 @@ export const theme: Config["theme"] = {
       "2.8rem",
       { fontWeight: "500", lineHeight: "1.5", letterSpacing: "-0.06em" },
     ],
+    "title3-semi24": [
+      "2.4rem",
+      { fontWeight: "600", lineHeight: "1.5", letterSpacing: "0rem" },
+    ],
     "title3-bold24": [
       "2.4rem",
       { fontWeight: "700", lineHeight: "1.5", letterSpacing: "0rem" },

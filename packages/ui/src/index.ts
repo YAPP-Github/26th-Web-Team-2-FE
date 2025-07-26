@@ -10,6 +10,7 @@ export { default as IcBookmark } from "@/assets/icons/ic_bookmark.svg?react";
 export { default as IcCar } from "@/assets/icons/ic_car.svg?react";
 export { default as IcCheckFill } from "@/assets/icons/ic_check_fill.svg?react";
 export { default as IcCleaningServices } from "@/assets/icons/ic_cleaning_services.svg?react";
+export { default as IcClock } from "@/assets/icons/ic_clock.svg?react";
 export { default as IcClose } from "@/assets/icons/ic_close.svg?react";
 export { default as IcCollapse } from "@/assets/icons/ic_collapse.svg?react";
 export { default as IcDelete } from "@/assets/icons/ic_delete.svg?react";

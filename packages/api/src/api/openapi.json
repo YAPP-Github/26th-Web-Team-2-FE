@@ -10,19 +10,36 @@
   ],
   "tags": [
     { "name": "숙소 API", "description": "숙소 관련 API" },
-    { "name": "OAUTH API", "description": "소셜 로그인 API" },
     { "name": "HEALTH CHECK API", "description": "헬스 체크 테스트 API" }
   ],
   "paths": {
-    "/api/oauth/kakao": {
-      "get": {
-        "tags": ["OAUTH API"],
-        "summary": "KAKAO",
-        "description": "KAKAO 소셜 로그인 요청 URI",
-        "operationId": "kakaoLoginRedirect",
+    "/api/accommodations/register": {
+      "post": {
+        "tags": ["숙소 API"],
+        "summary": "숙소 카드 등록",
+        "description": "링크를 첨부하여 숙소 카드를 등록합니다.",
+        "operationId": "registerAccommodationCard",
+        "requestBody": {
+          "description": "숙소 등록 요청 데이터",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccommodationRegisterRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "302": {
-            "description": "카카오 로그인 인가 페이지로 리다이렉트되고, 인가 성공시 Cookie에 ACCESS TOKEN과 REFRESH TOKEN이 발급됩니다."
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseAccommodationRegisterResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -210,6 +227,27 @@
   },
   "components": {
     "schemas": {
+      "AccommodationRegisterRequest": {
+        "type": "object",
+        "properties": { "url": { "type": "string" } }
+      },
+      "AccommodationRegisterResponse": { "type": "object" },
+      "StandardResponseAccommodationRegisterResponse": {
+        "type": "object",
+        "description": "API 응답의 표준 형식을 정의하는 클래스",
+        "properties": {
+          "responseType": {
+            "type": "string",
+            "description": "응답 유형",
+            "enum": ["SUCCESS", "ERROR"],
+            "example": "SUCCESS"
+          },
+          "result": {
+            "$ref": "#/components/schemas/AccommodationRegisterResponse",
+            "description": "응답 결과 데이터"
+          }
+        }
+      },
       "StandardResponseUserResponse": {
         "type": "object",
         "description": "API 응답의 표준 형식을 정의하는 클래스",

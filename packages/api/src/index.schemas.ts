@@ -5,6 +5,30 @@
  * SSOK 서비스 API 명세
  * OpenAPI spec version: v1
  */
+export interface AccommodationRegisterRequest {
+  url?: string;
+}
+
+export interface AccommodationRegisterResponse {
+  [key: string]: unknown;
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseAccommodationRegisterResponseResponseType =
+  | "SUCCESS"
+  | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseAccommodationRegisterResponse {
+  /** 응답 유형 */
+  responseType?: StandardResponseAccommodationRegisterResponseResponseType;
+  /** 응답 결과 데이터 */
+  result?: AccommodationRegisterResponse;
+}
+
 /**
  * 응답 유형
  */

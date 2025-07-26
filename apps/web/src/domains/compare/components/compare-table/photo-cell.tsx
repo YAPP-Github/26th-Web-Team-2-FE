@@ -1,4 +1,5 @@
 import { IcInfo } from "@ssok/ui";
+import Image from "next/image";
 
 interface PhotoCellProps {
   images?: string[];
@@ -13,11 +14,22 @@ const PhotoCell = ({ images, name, price }: PhotoCellProps) => {
 
   return (
     <section className="w-full">
-      <div className="mb-[1.6rem] flex h-[24.4rem] w-full items-center justify-center rounded-[1.2rem] bg-neutral-90">
-        <span className="text-body2-regular14 text-neutral-40">
-          {images?.[0] || "이미지 없음"}
-        </span>
-      </div>
+      {images?.[0] && (
+        <Image
+          src={images[0]}
+          alt="숙소 이미지"
+          width={100}
+          height={100}
+          className="mb-[1.6rem] h-[24.4rem] w-full rounded-[1.2rem]"
+        />
+      )}
+      {!images?.[0] && (
+        <div className="mb-[1.6rem] flex h-[24.4rem] w-full items-center justify-center rounded-[1.2rem] bg-neutral-90">
+          <span className="text-body2-regular14 text-neutral-40">
+            {"이미지 없음"}
+          </span>
+        </div>
+      )}
 
       <div>
         <p className="mb-[0.8rem] text-neutral-30 text-title3-semi24">

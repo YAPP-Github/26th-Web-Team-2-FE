@@ -5,7 +5,9 @@ const mockCompareData: Accommodation[] = [
     id: 1,
     accommodationName: "파크 하이엇 도쿄",
     lowestPrice: 250000,
-    images: ["photo1.jpg"],
+    images: [
+      "https://pix8.agoda.net/hotelImages/9373867/0/d325a6b849fb3bcce909f813ea7adfb8.jpg?ce=2&s=1024x",
+    ],
     reviewScore: 8.5,
     cleanlinessScore: 7.2,
     nearbyAttractions: [
@@ -81,7 +83,9 @@ const mockCompareData: Accommodation[] = [
     id: 2,
     accommodationName: "아사쿠사 류칸",
     lowestPrice: 180000,
-    images: ["photo5.jpg"],
+    images: [
+      "https://pix8.agoda.net/hotelImages/49986351/0/e311c6d8b735a44ace73b8219d07876d.jpeg?ce=0&s=600x",
+    ],
     reviewScore: 7.8,
     cleanlinessScore: 8.9,
     nearbyAttractions: [
@@ -154,7 +158,9 @@ const mockCompareData: Accommodation[] = [
     id: 3,
     accommodationName: "만다린 오리엔탈 도쿄",
     lowestPrice: 450000,
-    images: ["photo9.jpg"],
+    images: [
+      "https://pix8.agoda.net/hotelImages/692/69287/69287_16060314210043106872.jpg?ca=6&ce=1&s=600x",
+    ],
     reviewScore: 9.2,
     cleanlinessScore: 9.5,
     nearbyAttractions: [
@@ -237,7 +243,9 @@ const mockCompareData: Accommodation[] = [
     id: 4,
     accommodationName: "도쿄 비즈니스 호텔",
     lowestPrice: 120000,
-    images: ["photo13.jpg"],
+    images: [
+      "https://pix8.agoda.net/hotelImages/1723671/-1/47378d14e9f58fdd96ed6f18b4f8f060.jpg?ca=13&ce=1&s=1024x",
+    ],
     reviewScore: 6.8,
     cleanlinessScore: 6.5,
     nearbyAttractions: [

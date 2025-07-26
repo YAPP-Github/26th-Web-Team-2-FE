@@ -1,3 +1,4 @@
+import IcAccessibleForward from "@/assets/icons/ic_accessible_forward.svg?react";
 import IcAdd from "@/assets/icons/ic_add.svg?react";
 import IcAddMemo from "@/assets/icons/ic_add_memo.svg?react";
 import IcAlert from "@/assets/icons/ic_alert.svg?react";
@@ -7,19 +8,29 @@ import IcArrowRight from "@/assets/icons/ic_arrow_right.svg?react";
 import IcArrowUp from "@/assets/icons/ic_arrow_up.svg?react";
 import IcCar from "@/assets/icons/ic_car.svg?react";
 import IcCheckFill from "@/assets/icons/ic_check_fill.svg?react";
+import IcCleaningServices from "@/assets/icons/ic_cleaning_services.svg?react";
 import IcClose from "@/assets/icons/ic_close.svg?react";
 import IcCollapse from "@/assets/icons/ic_collapse.svg?react";
 import IcDelete from "@/assets/icons/ic_delete.svg?react";
 import IcEdit from "@/assets/icons/ic_edit.svg?react";
 import IcExpand from "@/assets/icons/ic_expand.svg?react";
+import IcFitnessCenter from "@/assets/icons/ic_fitness_center.svg?react";
 import IcHasMemo from "@/assets/icons/ic_has_memo.svg?react";
+import IcHomeRepairService from "@/assets/icons/ic_home_repair_service.svg?react";
 import IcInfo from "@/assets/icons/ic_info.svg?react";
 import IcKm from "@/assets/icons/ic_km.svg?react";
 import IcLink from "@/assets/icons/ic_link.svg?react";
 import IcList from "@/assets/icons/ic_list.svg?react";
+import IcLocalBar from "@/assets/icons/ic_local_bar.svg?react";
+import IcLocalParking from "@/assets/icons/ic_local_parking.svg?react";
 import IcLocation from "@/assets/icons/ic_location.svg?react";
+import IcLuggage from "@/assets/icons/ic_luggage.svg?react";
 import IcMap from "@/assets/icons/ic_map.svg?react";
 import IcMemo from "@/assets/icons/ic_memo.svg?react";
+import IcPets from "@/assets/icons/ic_pets.svg?react";
+import IcPointOfSale from "@/assets/icons/ic_point_of_sale.svg?react";
+import IcPool from "@/assets/icons/ic_pool.svg?react";
+import IcRestaurant from "@/assets/icons/ic_restaurant.svg?react";
 import IcRoundPlus from "@/assets/icons/ic_round-plus.svg?react";
 import IcSave from "@/assets/icons/ic_save.svg?react";
 import IcShare from "@/assets/icons/ic_share.svg?react";
@@ -29,39 +40,52 @@ import IcStarHalf from "@/assets/icons/ic_star_half.svg?react";
 import IcTable from "@/assets/icons/ic_table.svg?react";
 import IcVariant from "@/assets/icons/ic_variant.svg?react";
 import IcWalker from "@/assets/icons/ic_walker.svg?react";
+import IcWifi from "@/assets/icons/ic_wifi.svg?react";
 
 const icons = {
-  ArrowLeft: IcArrowLeft,
-  ArrowRight: IcArrowRight,
-  IcAdd: IcAdd,
-  IcAddMemo: IcAddMemo,
-  IcAlert: IcAlert,
-  IcArrowDown: IcArrowDown,
-  IcArrowUp: IcArrowUp,
-  IcCar: IcCar,
-  IcCheckFill: IcCheckFill,
-  IcClose: IcClose,
-  IcCollapse: IcCollapse,
-  IcDelete: IcDelete,
-  IcEdit: IcEdit,
-  IcExpand: IcExpand,
-  IcHasMemo: IcHasMemo,
-  IcInfo: IcInfo,
-  IcKm: IcKm,
-  IcLink: IcLink,
-  IcList: IcList,
-  IcLocation: IcLocation,
-  IcMap: IcMap,
-  IcMemo: IcMemo,
-  IcRoundPlus: IcRoundPlus,
-  IcSave: IcSave,
-  IcShare: IcShare,
-  IcStarEmpty: IcStarEmpty,
-  IcStarFull: IcStarFull,
-  IcStarHalf: IcStarHalf,
-  IcTable: IcTable,
-  IcVariant: IcVariant,
-  IcWalker: IcWalker,
+  IcAccessibleForward,
+  IcAdd,
+  IcAddMemo,
+  IcAlert,
+  IcArrowDown,
+  IcArrowLeft,
+  IcArrowRight,
+  IcArrowUp,
+  IcCar,
+  IcCheckFill,
+  IcCleaningServices,
+  IcClose,
+  IcCollapse,
+  IcDelete,
+  IcEdit,
+  IcExpand,
+  IcFitnessCenter,
+  IcHasMemo,
+  IcHomeRepairService,
+  IcInfo,
+  IcKm,
+  IcLink,
+  IcList,
+  IcLocalBar,
+  IcLocalParking,
+  IcLocation,
+  IcLuggage,
+  IcMap,
+  IcMemo,
+  IcPets,
+  IcPointOfSale,
+  IcPool,
+  IcRestaurant,
+  IcRoundPlus,
+  IcSave,
+  IcShare,
+  IcStarEmpty,
+  IcStarFull,
+  IcStarHalf,
+  IcTable,
+  IcVariant,
+  IcWalker,
+  IcWifi,
 };
 
 export default {

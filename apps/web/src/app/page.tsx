@@ -5,7 +5,7 @@ import { useAtom } from "jotai";
 import IcCheckBlack from "@/shared/assets/svg/ic_check_black_22.svg";
 import { counterAtom } from "@/shared/atoms/counter";
 
-export default function Home() {
+const Home = () => {
   const [count, setCount] = useAtom(counterAtom);
 
   return (
@@ -37,4 +37,6 @@ export default function Home() {
       </InterimDescription>
     </main>
   );
-}
+};
+
+export default Home;

@@ -146,6 +146,334 @@ export const useRegisterAccommodationCard = <
   return useMutation(mutationOptions, queryClient);
 };
 
+/**
+ * 클라이언트 요청 시 카카오 OAuth2 인가 페이지로 리다이렉트하고, 인가 완료 시 쿠키에 ACCESS TOKEN 및 REFRESH TOKEN을 발급합니다.
+ * @summary 카카오 소셜 로그인 리다이렉션
+ */
+export type redirectToKakaoAuthorizationResponse302 = {
+  data: undefined;
+  status: 302;
+};
+
+export type redirectToKakaoAuthorizationResponseComposite =
+  redirectToKakaoAuthorizationResponse302;
+
+export type redirectToKakaoAuthorizationResponse =
+  redirectToKakaoAuthorizationResponseComposite & {
+    headers: Headers;
+  };
+
+export const getRedirectToKakaoAuthorizationUrl = () => {
+  return `https://api.ssok.info/api/oauth/kakao`;
+};
+
+export const redirectToKakaoAuthorization = async (
+  options?: RequestInit,
+): Promise<redirectToKakaoAuthorizationResponse> => {
+  return http<redirectToKakaoAuthorizationResponse>(
+    getRedirectToKakaoAuthorizationUrl(),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getRedirectToKakaoAuthorizationQueryKey = () => {
+  return [`https://api.ssok.info/api/oauth/kakao`] as const;
+};
+
+export const getRedirectToKakaoAuthorizationQueryOptions = <
+  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof http>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getRedirectToKakaoAuthorizationQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof redirectToKakaoAuthorization>>
+  > = ({ signal }) =>
+    redirectToKakaoAuthorization({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type RedirectToKakaoAuthorizationQueryResult = NonNullable<
+  Awaited<ReturnType<typeof redirectToKakaoAuthorization>>
+>;
+export type RedirectToKakaoAuthorizationQueryError = undefined;
+
+export function useRedirectToKakaoAuthorization<
+  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+  TError = void,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+          TError,
+          Awaited<ReturnType<typeof redirectToKakaoAuthorization>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRedirectToKakaoAuthorization<
+  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+          TError,
+          Awaited<ReturnType<typeof redirectToKakaoAuthorization>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRedirectToKakaoAuthorization<
+  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary 카카오 소셜 로그인 리다이렉션
+ */
+
+export function useRedirectToKakaoAuthorization<
+  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getRedirectToKakaoAuthorizationQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary 카카오 소셜 로그인 리다이렉션
+ */
+export const prefetchRedirectToKakaoAuthorizationQuery = async <
+  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+  TError = void,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getRedirectToKakaoAuthorizationQueryOptions(options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getRedirectToKakaoAuthorizationSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof http>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getRedirectToKakaoAuthorizationQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof redirectToKakaoAuthorization>>
+  > = ({ signal }) =>
+    redirectToKakaoAuthorization({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type RedirectToKakaoAuthorizationSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof redirectToKakaoAuthorization>>
+>;
+export type RedirectToKakaoAuthorizationSuspenseQueryError = undefined;
+
+export function useRedirectToKakaoAuthorizationSuspense<
+  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+  TError = void,
+>(
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRedirectToKakaoAuthorizationSuspense<
+  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRedirectToKakaoAuthorizationSuspense<
+  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary 카카오 소셜 로그인 리다이렉션
+ */
+
+export function useRedirectToKakaoAuthorizationSuspense<
+  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getRedirectToKakaoAuthorizationSuspenseQueryOptions(options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
 export type getUserResponse200 = {
   data: StandardResponseUserResponse;
   status: 200;

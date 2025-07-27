@@ -10,6 +10,7 @@
   ],
   "tags": [
     { "name": "숙소 API", "description": "숙소 관련 API" },
+    { "name": "OAUTH API", "description": "소셜 로그인 API" },
     { "name": "HEALTH CHECK API", "description": "헬스 체크 테스트 API" }
   ],
   "paths": {
@@ -40,6 +41,19 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/oauth/kakao": {
+      "get": {
+        "tags": ["OAUTH API"],
+        "summary": "카카오 소셜 로그인 리다이렉션",
+        "description": "클라이언트 요청 시 카카오 OAuth2 인가 페이지로 리다이렉트하고, 인가 완료 시 쿠키에 ACCESS TOKEN 및 REFRESH TOKEN을 발급합니다.",
+        "operationId": "redirectToKakaoAuthorization",
+        "responses": {
+          "302": {
+            "description": "카카오 인가 페이지로 리다이렉트됩니다. 인가 성공 시 쿠키에 ACCESS TOKEN과 REFRESH TOKEN이 설정됩니다."
           }
         }
       }
@@ -150,26 +164,26 @@
             "in": "query",
             "description": "숙소가 포함된 테이블의 ID",
             "required": true,
-            "schema": { "type": "integer" }
+            "schema": { "type": "integer", "minimum": 1 }
           },
           {
             "name": "page",
             "in": "query",
             "description": "페이지 번호",
             "required": true,
-            "schema": { "type": "integer" }
+            "schema": { "type": "integer", "minimum": 0 }
           },
           {
             "name": "size",
             "in": "query",
             "description": "페이지 크기",
             "required": true,
-            "schema": { "type": "integer" }
+            "schema": { "type": "integer", "minimum": 1 }
           },
           {
             "name": "userId",
             "in": "query",
-            "description": "유저 ID, 없는 경우 모든 유저가 생성한 숙소 목록을 반환합니다.",
+            "description": "유저 ID, 없는 경우 모든 유저가 생성한 숙소 목록을 반환합니다. 현재 parameter로 받는 것은 임시 로직입니다.",
             "required": false,
             "schema": { "type": "integer", "format": "int64" }
           }
@@ -200,12 +214,12 @@
             "in": "query",
             "description": "숙소가 포함된 테이블의 ID",
             "required": true,
-            "schema": { "type": "integer" }
+            "schema": { "type": "integer", "format": "int64", "minimum": 1 }
           },
           {
             "name": "userId",
             "in": "query",
-            "description": "유저 ID, 없는 경우 모든 유저가 생성한 숙소 목록을 반환합니다.",
+            "description": "유저 ID, 없는 경우 모든 유저가 생성한 숙소 목록을 반환합니다. 현재 parameter로 받는 것은 임시 로직입니다.",
             "required": false,
             "schema": { "type": "integer", "format": "int64" }
           }
@@ -229,9 +243,20 @@
     "schemas": {
       "AccommodationRegisterRequest": {
         "type": "object",
-        "properties": { "url": { "type": "string" } }
+        "properties": {
+          "url": { "type": "string", "minLength": 1 },
+          "memo": { "type": "string", "maxLength": 50, "minLength": 0 },
+          "tableId": { "type": "integer", "format": "int64" },
+          "userId": { "type": "integer", "format": "int64" }
+        },
+        "required": ["tableId", "userId"]
       },
-      "AccommodationRegisterResponse": { "type": "object" },
+      "AccommodationRegisterResponse": {
+        "type": "object",
+        "properties": {
+          "accommodationId": { "type": "integer", "format": "int64" }
+        }
+      },
       "StandardResponseAccommodationRegisterResponse": {
         "type": "object",
         "description": "API 응답의 표준 형식을 정의하는 클래스",
@@ -299,7 +324,7 @@
         "properties": {
           "id": { "type": "integer", "format": "int64" },
           "userId": { "type": "integer", "format": "int64" },
-          "urlTest": { "type": "string" },
+          "url": { "type": "string" },
           "siteName": { "type": "string" },
           "memo": { "type": "string" },
           "createdAt": { "type": "string", "format": "date" },
@@ -358,7 +383,9 @@
         "type": "object",
         "properties": {
           "checkInTimeFrom": { "type": "string" },
-          "checkInTimeTo": { "type": "string" }
+          "checkInTimeTo": { "type": "string" },
+          "checkOutTimeFrom": { "type": "string" },
+          "checkOutTimeTo": { "type": "string" }
         }
       },
       "DistanceInfo": {

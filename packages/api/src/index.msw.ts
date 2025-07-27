@@ -24,7 +24,19 @@ export const getRegisterAccommodationCardResponseMock = (
     faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
     undefined,
   ]),
-  result: faker.helpers.arrayElement([{}, undefined]),
+  result: faker.helpers.arrayElement([
+    {
+      accommodationId: faker.helpers.arrayElement([
+        faker.number.int({
+          min: undefined,
+          max: undefined,
+          multipleOf: undefined,
+        }),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
   ...overrideResponse,
 });
 
@@ -129,7 +141,7 @@ export const getGetAccommodationByTableIdAndUserIdResponseMock = (
             }),
             undefined,
           ]),
-          urlTest: faker.helpers.arrayElement([
+          url: faker.helpers.arrayElement([
             faker.string.alpha({ length: { min: 10, max: 20 } }),
             undefined,
           ]),
@@ -398,6 +410,14 @@ export const getGetAccommodationByTableIdAndUserIdResponseMock = (
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
               ]),
+              checkOutTimeFrom: faker.helpers.arrayElement([
+                faker.string.alpha({ length: { min: 10, max: 20 } }),
+                undefined,
+              ]),
+              checkOutTimeTo: faker.helpers.arrayElement([
+                faker.string.alpha({ length: { min: 10, max: 20 } }),
+                undefined,
+              ]),
             },
             undefined,
           ]),
@@ -408,6 +428,14 @@ export const getGetAccommodationByTableIdAndUserIdResponseMock = (
                 undefined,
               ]),
               checkInTimeTo: faker.helpers.arrayElement([
+                faker.string.alpha({ length: { min: 10, max: 20 } }),
+                undefined,
+              ]),
+              checkOutTimeFrom: faker.helpers.arrayElement([
+                faker.string.alpha({ length: { min: 10, max: 20 } }),
+                undefined,
+              ]),
+              checkOutTimeTo: faker.helpers.arrayElement([
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
               ]),
@@ -472,6 +500,22 @@ export const getRegisterAccommodationCardMockHandler = (
       ),
       { status: 200, headers: { "Content-Type": "application/json" } },
     );
+  });
+};
+
+export const getRedirectToKakaoAuthorizationMockHandler = (
+  overrideResponse?:
+    | unknown
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<unknown> | unknown),
+) => {
+  return http.get("*/api/oauth/kakao", async (info) => {
+    await delay(500);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
   });
 };
 
@@ -643,6 +687,7 @@ export const getGetAccommodationCountByTableIdMockHandler = (
 };
 export const getYapp26Web2Mock = () => [
   getRegisterAccommodationCardMockHandler(),
+  getRedirectToKakaoAuthorizationMockHandler(),
   getGetUserMockHandler(),
   getSuccessMockHandler(),
   getExceptionErrorMockHandler(),

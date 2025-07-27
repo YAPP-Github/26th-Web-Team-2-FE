@@ -6,11 +6,19 @@
  * OpenAPI spec version: v1
  */
 export interface AccommodationRegisterRequest {
+  /** @minLength 1 */
   url?: string;
+  /**
+   * @minLength 0
+   * @maxLength 50
+   */
+  memo?: string;
+  tableId: number;
+  userId: number;
 }
 
 export interface AccommodationRegisterResponse {
-  [key: string]: unknown;
+  accommodationId?: number;
 }
 
 /**
@@ -70,7 +78,7 @@ export interface AccommodationPageResponse {
 export interface AccommodationResponse {
   id?: number;
   userId?: number;
-  urlTest?: string;
+  url?: string;
   siteName?: string;
   memo?: string;
   createdAt?: Date;
@@ -115,6 +123,8 @@ export interface Attraction {
 export interface CheckTime {
   checkInTimeFrom?: string;
   checkInTimeTo?: string;
+  checkOutTimeFrom?: string;
+  checkOutTimeTo?: string;
 }
 
 export interface DistanceInfo {
@@ -171,18 +181,21 @@ export interface StandardResponseAccommodationCountResponse {
 export type GetAccommodationByTableIdAndUserIdParams = {
   /**
    * 숙소가 포함된 테이블의 ID
+   * @minimum 1
    */
   tableId: number;
   /**
    * 페이지 번호
+   * @minimum 0
    */
   page: number;
   /**
    * 페이지 크기
+   * @minimum 1
    */
   size: number;
   /**
-   * 유저 ID, 없는 경우 모든 유저가 생성한 숙소 목록을 반환합니다.
+   * 유저 ID, 없는 경우 모든 유저가 생성한 숙소 목록을 반환합니다. 현재 parameter로 받는 것은 임시 로직입니다.
    */
   userId?: number;
 };
@@ -190,10 +203,11 @@ export type GetAccommodationByTableIdAndUserIdParams = {
 export type GetAccommodationCountByTableIdParams = {
   /**
    * 숙소가 포함된 테이블의 ID
+   * @minimum 1
    */
   tableId: number;
   /**
-   * 유저 ID, 없는 경우 모든 유저가 생성한 숙소 목록을 반환합니다.
+   * 유저 ID, 없는 경우 모든 유저가 생성한 숙소 목록을 반환합니다. 현재 parameter로 받는 것은 임시 로직입니다.
    */
   userId?: number;
 };

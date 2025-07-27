@@ -13,12 +13,12 @@ export interface IconTabsProps<T extends string> {
   className?: string;
 }
 
-export function IconTabs<T extends string>({
+export const IconTabs = <T extends string>({
   value,
   onChange,
   options,
   className,
-}: IconTabsProps<T>) {
+}: IconTabsProps<T>) => {
   const index = options.findIndex((opt) => opt.value === value);
 
   return (
@@ -53,4 +53,4 @@ export function IconTabs<T extends string>({
       ))}
     </div>
   );
-}
+};

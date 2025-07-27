@@ -33,7 +33,7 @@
   
   ```jsx
     // 조기반환
-    function processUser(user) {
+    const processUser = (user) => {
       if (!user || !user.isActive) return; // 조건이 맞지 않으면 일찍 반환  // [!code focus]
       // 나머지 처리 코드...
     }

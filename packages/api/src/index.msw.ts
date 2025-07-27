@@ -12,9 +12,33 @@ import { delay, HttpResponse, http } from "msw";
 import type {
   StandardResponseAccommodationCountResponse,
   StandardResponseAccommodationPageResponse,
+  StandardResponseAccommodationRegisterResponse,
   StandardResponseString,
   StandardResponseUserResponse,
 } from "./index.schemas";
+
+export const getRegisterAccommodationCardResponseMock = (
+  overrideResponse: Partial<StandardResponseAccommodationRegisterResponse> = {},
+): StandardResponseAccommodationRegisterResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      accommodationId: faker.helpers.arrayElement([
+        faker.number.int({
+          min: undefined,
+          max: undefined,
+          multipleOf: undefined,
+        }),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
 
 export const getGetUserResponseMock = (
   overrideResponse: Partial<StandardResponseUserResponse> = {},
@@ -117,7 +141,7 @@ export const getGetAccommodationByTableIdAndUserIdResponseMock = (
             }),
             undefined,
           ]),
-          urlTest: faker.helpers.arrayElement([
+          url: faker.helpers.arrayElement([
             faker.string.alpha({ length: { min: 10, max: 20 } }),
             undefined,
           ]),
@@ -386,6 +410,14 @@ export const getGetAccommodationByTableIdAndUserIdResponseMock = (
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
               ]),
+              checkOutTimeFrom: faker.helpers.arrayElement([
+                faker.string.alpha({ length: { min: 10, max: 20 } }),
+                undefined,
+              ]),
+              checkOutTimeTo: faker.helpers.arrayElement([
+                faker.string.alpha({ length: { min: 10, max: 20 } }),
+                undefined,
+              ]),
             },
             undefined,
           ]),
@@ -396,6 +428,14 @@ export const getGetAccommodationByTableIdAndUserIdResponseMock = (
                 undefined,
               ]),
               checkInTimeTo: faker.helpers.arrayElement([
+                faker.string.alpha({ length: { min: 10, max: 20 } }),
+                undefined,
+              ]),
+              checkOutTimeFrom: faker.helpers.arrayElement([
+                faker.string.alpha({ length: { min: 10, max: 20 } }),
+                undefined,
+              ]),
+              checkOutTimeTo: faker.helpers.arrayElement([
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
               ]),
@@ -438,7 +478,32 @@ export const getGetAccommodationCountByTableIdResponseMock = (
   ...overrideResponse,
 });
 
-export const getKakaoLoginRedirectMockHandler = (
+export const getRegisterAccommodationCardMockHandler = (
+  overrideResponse?:
+    | StandardResponseAccommodationRegisterResponse
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) =>
+        | Promise<StandardResponseAccommodationRegisterResponse>
+        | StandardResponseAccommodationRegisterResponse),
+) => {
+  return http.post("*/api/accommodations/register", async (info) => {
+    await delay(500);
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getRegisterAccommodationCardResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  });
+};
+
+export const getRedirectToKakaoAuthorizationMockHandler = (
   overrideResponse?:
     | unknown
     | ((
@@ -621,7 +686,8 @@ export const getGetAccommodationCountByTableIdMockHandler = (
   });
 };
 export const getYapp26Web2Mock = () => [
-  getKakaoLoginRedirectMockHandler(),
+  getRegisterAccommodationCardMockHandler(),
+  getRedirectToKakaoAuthorizationMockHandler(),
   getGetUserMockHandler(),
   getSuccessMockHandler(),
   getExceptionErrorMockHandler(),

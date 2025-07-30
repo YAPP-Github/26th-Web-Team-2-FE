@@ -11,7 +11,7 @@ import { DeleteIconButton } from "@/components/icon-button/delete-icon-button";
 import { ImageCard } from "@/components/image-card";
 import TextWithIcon from "@/components/text-with-icon";
 import { cn } from "@/utils";
-import { chip } from "./card.variant";
+import { card } from "./card.variant";
 
 export type CardProps = PropsWithChildren<{
   className?: string;
@@ -60,7 +60,7 @@ export const Card = ({
   ...props
 }: CardProps) => {
   return (
-    <section className={cn(chip({ selected }), className)} {...props}>
+    <section className={cn(card({ selected }), className)} {...props}>
       {/* 카드 좌측 호텔 썸네일 */}
       <div className="relative h-[16.4rem] w-[19.9rem] rounded-[1.2rem] border-[rgba(152,152,152,0.10)]">
         <ImageCard

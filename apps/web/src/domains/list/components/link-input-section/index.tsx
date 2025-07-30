@@ -10,6 +10,7 @@ import {
   TextField,
   TextWithIcon,
 } from "@ssok/ui";
+import { useEffect } from "react";
 import type { UseFormRegister } from "react-hook-form";
 import BubbleInfo from "./bubble-info";
 
@@ -22,6 +23,7 @@ type LinkInputSectionProps = {
   isInputExpanded: boolean;
   isTooltipVisible: boolean;
   isMemoInputVisible: boolean;
+  handleCloseInputExpansion: () => void;
   toggleInputExpansion: () => void;
   handleMemoInputToggle: () => void;
   handleTooltipvisible: (visible: boolean) => void;
@@ -34,6 +36,7 @@ const LinkInputSection = ({
   isInputExpanded,
   isTooltipVisible,
   isMemoInputVisible,
+  handleCloseInputExpansion,
   toggleInputExpansion,
   handleMemoInputToggle,
   handleTooltipvisible,
@@ -41,6 +44,24 @@ const LinkInputSection = ({
   memoText,
   maxChars,
 }: LinkInputSectionProps) => {
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | null = null;
+
+    const handleScroll = () => {
+      if (isInputExpanded) {
+        timer = setTimeout(() => {
+          handleCloseInputExpansion();
+        }, 200);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (timer) clearTimeout(timer);
+    };
+  }, [isInputExpanded, handleCloseInputExpansion]);
   return (
     <section
       className={cn(
@@ -50,7 +71,7 @@ const LinkInputSection = ({
     >
       {/* 링크 저장_제목 */}
       <div className="flex justify-between">
-        <div className="flex items-center gap-[0.8rem] py-[2.4rem]">
+        <div className="flex items-center gap-[0.8rem]">
           <p className="text-heading1-semi20 text-neutral-10">
             숙소 링크 저장하기
           </p>
@@ -84,7 +105,7 @@ const LinkInputSection = ({
         </button>
       </div>
       {isInputExpanded && (
-        <>
+        <div className={cn("flex flex-col gap-[1.6rem]")}>
           {/* 링크 저장_입력란 */}
           <div>
             <TextField
@@ -137,7 +158,7 @@ const LinkInputSection = ({
               저장하기
             </Button>
           </div>
-        </>
+        </div>
       )}
     </section>
   );

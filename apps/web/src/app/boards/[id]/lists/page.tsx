@@ -10,6 +10,10 @@ const BoardsIdListsPage = () => {
   const [isInputExpanded, setIsInputExpanded] = useState(true);
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
+  const handleCloseInputExpansion = () => {
+    setIsInputExpanded(false);
+  };
+
   const toggleInputExpansion = () => {
     setIsInputExpanded(!isInputExpanded);
   };
@@ -41,6 +45,7 @@ const BoardsIdListsPage = () => {
         isInputExpanded={isInputExpanded}
         isMemoInputVisible={isMemoInputVisible}
         isTooltipVisible={isTooltipVisible}
+        handleCloseInputExpansion={handleCloseInputExpansion}
         toggleInputExpansion={toggleInputExpansion}
         handleMemoInputToggle={handleMemoInputToggle}
         handleTooltipvisible={handleTooltipvisible}

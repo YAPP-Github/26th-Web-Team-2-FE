@@ -65,7 +65,7 @@ const LinkInputSection = ({
   return (
     <section
       className={cn(
-        "rounded-2xl border border-neutral-90",
+        "rounded-2xl border border-neutral-90 bg-neutral-100",
         "flex w-full flex-col gap-[1.6rem] p-[2.4rem]",
       )}
     >

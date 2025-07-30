@@ -1,4 +1,5 @@
 import { Button, Card, cn } from "@ssok/ui";
+import { useState } from "react";
 import { _MOCK_DATA } from "@/app/boards/[id]/lists/_mock";
 import DropDown from "./atoms/drop-down";
 
@@ -11,6 +12,20 @@ const PlaceListSection = ({
   selectedPerson,
   handlePersonSelect,
 }: PlaceListSectionProps) => {
+  const [selectedPlaces, setSelectedPlacess] = useState<string[]>([]);
+
+  const handPlaceSelect = (placeName: string) => {
+    setSelectedPlacess((prev) =>
+      prev.includes(placeName)
+        ? prev.filter((name) => name !== placeName)
+        : [...prev, placeName],
+    );
+  };
+
+  const handleDeleteClick = (placeName: string) => {
+    setSelectedPlacess((prev) => prev.filter((name) => name !== placeName));
+  };
+
   return (
     <section
       className={cn(
@@ -36,7 +51,6 @@ const PlaceListSection = ({
         </ul>
         <div className="flex justify-between text-body2-regular14 text-neutral-40">
           <span>{`${_MOCK_DATA.places.length}곳 저장됨`}</span>
-          {/* TODO: 드롭다운 구현  */}
           <DropDown />
         </div>
       </div>
@@ -53,9 +67,13 @@ const PlaceListSection = ({
               attractions={place.attractions}
               savedByText={place.savedByText}
               memoContent={place.memoContent}
-              selected={false}
-              onAddClick={() => {}}
-              onDeleteClick={() => {}}
+              selected={selectedPlaces.includes(place.placeName)}
+              onAddClick={() => {
+                handPlaceSelect(place.placeName);
+              }}
+              onDeleteClick={() => {
+                handleDeleteClick(place.placeName);
+              }}
             />
           </li>
         ))}

@@ -1,6 +1,7 @@
 import "./app.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import MazeUs from "@/shared/components/maze-us";
 import Providers from "@/shared/providers";
 
 const Pretendard = localFont({
@@ -22,6 +23,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       <body className={Pretendard.variable}>
         <Providers>{children}</Providers>
       </body>
+      <MazeUs />
     </html>
   );
 };

@@ -21,10 +21,22 @@ export const AddIconButton = ({
       {...props}
     >
       {selected && (
-        <IcCheckFill width="40px" height="40px" role="img" aria-label="확인" />
+        <IcCheckFill
+          width="40px"
+          height="40px"
+          role="img"
+          aria-label="확인"
+          className="text-neutral-100"
+        />
       )}
       {!selected && (
-        <IcAdd width="40px" height="40px" role="img" aria-label="추가" />
+        <IcAdd
+          width="40px"
+          height="40px"
+          role="img"
+          aria-label="추가"
+          className="text-secondary-60"
+        />
       )}
     </button>
   );

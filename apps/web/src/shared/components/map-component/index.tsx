@@ -18,30 +18,36 @@ const locMock = [
   { id: 5, latitude: 37.4563, longitude: 126.7052, label: "인천 어쩌구 숙소" },
 ];
 
-const MapComponent = () => {
-  return (
-    <div className="relative h-screen w-full">
-      <GoogleMapReact
-        bootstrapURLKeys={{
-          key: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY,
-        }}
-        defaultCenter={calculateCenter(locMock)}
-        defaultZoom={11}
-      >
-        {locMock.map((location) => (
-          <MapPin
-            key={location.id}
-            lat={location.latitude}
-            lng={location.longitude}
-          >
-            {location.label}
-          </MapPin>
-        ))}
-      </GoogleMapReact>
-      {/* 지도 opacity 조정을 위한 div */}
-      <div className="pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-2 bg-neutral-70 opacity-20" />
-    </div>
-  );
-};
+const MapComponent = () => (
+  <div className="relative h-screen w-full">
+    <GoogleMapReact
+      bootstrapURLKeys={{
+        key: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY,
+      }}
+      defaultCenter={calculateCenter(locMock)}
+      defaultZoom={11}
+      // TODO: 지도 스타일링 옵션 변경
+      options={{
+        styles: [
+          {
+            featureType: "all",
+            elementType: "geometry",
+            stylers: [{ lightness: 60 }, { saturation: 70 }],
+          },
+        ],
+      }}
+    >
+      {locMock.map((location) => (
+        <MapPin
+          key={location.id}
+          lat={location.latitude}
+          lng={location.longitude}
+        >
+          {location.label}
+        </MapPin>
+      ))}
+    </GoogleMapReact>
+  </div>
+);
 
 export default MapComponent;

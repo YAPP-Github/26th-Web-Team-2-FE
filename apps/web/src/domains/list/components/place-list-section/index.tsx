@@ -80,7 +80,9 @@ const PlaceListSection = ({
             />
           </li>
         ))}
-        {accommodationData.length === 0 && <EmptyListContainer />}
+        {(!accommodationData || accommodationData.length === 0) && (
+          <EmptyListContainer />
+        )}
       </ul>
     </section>
   );

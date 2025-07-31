@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-type OnBoardStep = "init" | "saveLink" | "finish";
+type OnboardStep = "init" | "saveLink" | "finish";
 
 /**
  * 온보딩 단계를 관리하는 커스텀 훅
@@ -9,73 +9,73 @@ type OnBoardStep = "init" | "saveLink" | "finish";
  * - 컴포넌트에서 온보딩 상태를 UI로 제어할 수 있도록 다양한 상태와 메서드를 제공합니다.
  *
  * @returns {{
- *   onBoardStep: "init" | "saveLink" | "finish";  // 현재 온보딩 단계
+ *   onboardStep: "init" | "saveLink" | "finish";  // 현재 온보딩 단계
  *   isVisible: boolean;                            // 온보딩 버블 표시 여부
  *   close: () => void;                             // 온보딩 버블을 닫습니다 (isVisible을 false로 변경)
- *   handleOnBoardStep: () => void;                 // 현재 단계에서 다음 단계로 이동합니다
+ *   handleOnboardStep: () => void;                 // 현재 단계에서 다음 단계로 이동합니다
  *   handleOnPrevStep: () => void;                  // 현재 단계에서 이전 단계로 이동합니다
- *   resetOnBoardStep: () => void;                  // 온보딩 상태를 초기화하고 1단계(init)로 되돌립니다
+ *   resetOnboardStep: () => void;                  // 온보딩 상태를 초기화하고 1단계(init)로 되돌립니다
  * }}
  */
 const useOnboarding = () => {
-  const [onBoardStep, setOnBoardStep] = useState<OnBoardStep | null>(null);
+  const [onboardStep, setOnboardStep] = useState<OnboardStep | null>(null);
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     try {
       const step =
-        (localStorage.getItem("onBoardStep") as OnBoardStep) || "init";
-      setOnBoardStep(step);
+        (localStorage.getItem("onboardStep") as OnboardStep) || "init";
+      setOnboardStep(step);
       setIsVisible(step !== "finish");
     } catch (_error) {
-      setOnBoardStep("init");
+      setOnboardStep("init");
       setIsVisible(true);
     }
   }, []);
 
-  const handleOnBoardStep = () => {
-    switch (onBoardStep) {
+  const handleOnboardStep = () => {
+    switch (onboardStep) {
       case "init":
-        localStorage.setItem("onBoardStep", "saveLink");
-        setOnBoardStep("saveLink");
+        localStorage.setItem("onboardStep", "saveLink");
+        setOnboardStep("saveLink");
         break;
       case "saveLink":
-        localStorage.setItem("onBoardStep", "finish");
-        setOnBoardStep("finish");
+        localStorage.setItem("onboardStep", "finish");
+        setOnboardStep("finish");
         break;
       default:
-        resetOnBoardStep();
+        resetOnboardingStep();
     }
   };
 
   const handleOnPrevStep = () => {
-    switch (onBoardStep) {
+    switch (onboardStep) {
       case "saveLink":
-        localStorage.setItem("onBoardStep", "init");
-        setOnBoardStep("init");
+        localStorage.setItem("onboardStep", "init");
+        setOnboardStep("init");
         break;
       default:
-        resetOnBoardStep();
+        resetOnboardingStep();
     }
   };
 
-  const resetOnBoardStep = () => {
-    localStorage.removeItem("onBoardStep");
-    setOnBoardStep("init");
+  const resetOnboardingStep = () => {
+    localStorage.removeItem("onboardingStep");
+    setOnboardStep("init");
   };
 
   const handleClose = () => {
     setIsVisible(false);
-    resetOnBoardStep();
+    resetOnboardingStep();
   };
 
   return {
-    onBoardStep,
+    onboardStep,
     isVisible,
     handleClose,
-    handleOnBoardStep,
+    handleOnboardStep,
     handleOnPrevStep,
-    resetOnBoardStep,
+    resetOnboardingStep,
   };
 };
 

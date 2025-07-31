@@ -1,6 +1,6 @@
 import { Button, cn, IcClose } from "@ssok/ui";
 
-import useOnboarding from "@/domains/list/hooks/use-onBoarding";
+import useOnboarding from "@/domains/list/hooks/use-onboarding";
 
 const config = {
   init: {
@@ -32,12 +32,12 @@ const OnboardingBubble = () => {
   const {
     isVisible,
     handleClose,
-    onBoardStep,
-    handleOnBoardStep,
+    onboardStep,
+    handleOnboardStep,
     handleOnPrevStep,
   } = useOnboarding();
-  if (!onBoardStep || onBoardStep === "finish" || !isVisible) return null;
-  const { title, description, index, total, nextBtnText } = config[onBoardStep];
+  if (!onboardStep || onboardStep === "finish" || !isVisible) return null;
+  const { title, description, index, total, nextBtnText } = config[onboardStep];
 
   return (
     <div
@@ -46,8 +46,8 @@ const OnboardingBubble = () => {
       aria-describedby="onboarding-description"
       className={cn(
         "absolute z-10 inline-block",
-        onBoardStep === "init" && "bottom-[-12rem] left-[0rem]",
-        onBoardStep === "saveLink" && "bottom-[-20rem] left-[84%] w-max",
+        onboardStep === "init" && "bottom-[-12rem] left-[0rem]",
+        onboardStep === "saveLink" && "bottom-[-20rem] left-[84%] w-max",
       )}
     >
       <div className="relative rounded-[1.6rem] bg-neutral-variant-5 px-[2.4rem] py-[2rem] after:absolute after:top-[-12px] after:left-10 after:border-x-[8px] after:border-x-transparent after:border-t-0 after:border-b-[12px] after:border-b-neutral-variant-5 after:content-[''] ">
@@ -71,7 +71,7 @@ const OnboardingBubble = () => {
         <div className="flex flex-row items-center justify-between pt-[1.6rem]">
           <p className="text-caption1-medi12 text-neutral-70">{`${index} / ${total}`}</p>
           <div className="flex flex-row gap-[0.8rem]">
-            {onBoardStep === "saveLink" && (
+            {onboardStep === "saveLink" && (
               <Button
                 variant="text"
                 size="sm"
@@ -81,7 +81,7 @@ const OnboardingBubble = () => {
                 이전으로
               </Button>
             )}
-            <Button variant="primary" size="xs" onClick={handleOnBoardStep}>
+            <Button variant="primary" size="xs" onClick={handleOnboardStep}>
               {nextBtnText}
             </Button>
           </div>

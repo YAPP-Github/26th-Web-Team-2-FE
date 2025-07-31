@@ -452,6 +452,7 @@
           "id": { "type": "integer", "format": "int64" },
           "url": { "type": "string" },
           "siteName": { "type": "string" },
+          "logoUrl": { "type": "string" },
           "memo": { "type": "string" },
           "createdAt": { "type": "string", "format": "date-time" },
           "updatedAt": { "type": "string", "format": "date-time" },

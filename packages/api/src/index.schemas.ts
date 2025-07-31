@@ -19,6 +19,7 @@ export interface AccommodationResponse {
   id?: number;
   url?: string;
   siteName?: string;
+  logoUrl?: string;
   memo?: string;
   createdAt?: Date;
   updatedAt?: Date;

@@ -1,6 +1,6 @@
 import { Button, cn, IcClose } from "@ssok/ui";
 
-import useOnboarding from "@/domains/list/hooks/use-onboarding";
+import useOnboarding from "@/domains/list/hooks/use-onboarding-step";
 
 const config = {
   init: {

@@ -26,16 +26,699 @@ import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { http } from "./api/http";
 import type {
   AccommodationRegisterRequest,
-  GetAccommodationByTableIdAndUserIdParams,
-  GetAccommodationCountByTableIdParams,
+  AddAccommodationToComparisonTableParams,
+  CreateComparisonTableRequest,
+  GetAccommodationByBoardIdAndUserIdParams,
+  GetAccommodationCountByBoardIdParams,
   StandardResponseAccommodationCountResponse,
   StandardResponseAccommodationPageResponse,
   StandardResponseAccommodationRegisterResponse,
+  StandardResponseAccommodationResponse,
+  StandardResponseComparisonFactorList,
+  StandardResponseComparisonTableResponse,
+  StandardResponseCreateComparisonTableResponse,
   StandardResponseString,
   StandardResponseUserResponse,
 } from "./index.schemas";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+/**
+ * 비교표 메타 데이터와 포함된 숙소 정보 리스트를 조회합니다.
+ * @summary 비교표 조회
+ */
+export type getComparisonTableResponse200 = {
+  data: StandardResponseComparisonTableResponse;
+  status: 200;
+};
+
+export type getComparisonTableResponseComposite = getComparisonTableResponse200;
+
+export type getComparisonTableResponse = getComparisonTableResponseComposite & {
+  headers: Headers;
+};
+
+export const getGetComparisonTableUrl = (tableId: number) => {
+  return `https://api.ssok.info/api/comparison/${tableId}`;
+};
+
+export const getComparisonTable = async (
+  tableId: number,
+  options?: RequestInit,
+): Promise<getComparisonTableResponse> => {
+  return http<getComparisonTableResponse>(getGetComparisonTableUrl(tableId), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetComparisonTableQueryKey = (tableId: number) => {
+  return [`https://api.ssok.info/api/comparison/${tableId}`] as const;
+};
+
+export const getGetComparisonTableQueryOptions = <
+  TData = Awaited<ReturnType<typeof getComparisonTable>>,
+  TError = unknown,
+>(
+  tableId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTable>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetComparisonTableQueryKey(tableId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getComparisonTable>>
+  > = ({ signal }) =>
+    getComparisonTable(tableId, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!tableId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getComparisonTable>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetComparisonTableQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getComparisonTable>>
+>;
+export type GetComparisonTableQueryError = unknown;
+
+export function useGetComparisonTable<
+  TData = Awaited<ReturnType<typeof getComparisonTable>>,
+  TError = unknown,
+>(
+  tableId: number,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTable>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getComparisonTable>>,
+          TError,
+          Awaited<ReturnType<typeof getComparisonTable>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonTable<
+  TData = Awaited<ReturnType<typeof getComparisonTable>>,
+  TError = unknown,
+>(
+  tableId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTable>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getComparisonTable>>,
+          TError,
+          Awaited<ReturnType<typeof getComparisonTable>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonTable<
+  TData = Awaited<ReturnType<typeof getComparisonTable>>,
+  TError = unknown,
+>(
+  tableId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTable>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary 비교표 조회
+ */
+
+export function useGetComparisonTable<
+  TData = Awaited<ReturnType<typeof getComparisonTable>>,
+  TError = unknown,
+>(
+  tableId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTable>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetComparisonTableQueryOptions(tableId, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary 비교표 조회
+ */
+export const prefetchGetComparisonTableQuery = async <
+  TData = Awaited<ReturnType<typeof getComparisonTable>>,
+  TError = unknown,
+>(
+  queryClient: QueryClient,
+  tableId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTable>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetComparisonTableQueryOptions(tableId, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetComparisonTableSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getComparisonTable>>,
+  TError = unknown,
+>(
+  tableId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTable>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetComparisonTableQueryKey(tableId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getComparisonTable>>
+  > = ({ signal }) =>
+    getComparisonTable(tableId, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getComparisonTable>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetComparisonTableSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getComparisonTable>>
+>;
+export type GetComparisonTableSuspenseQueryError = unknown;
+
+export function useGetComparisonTableSuspense<
+  TData = Awaited<ReturnType<typeof getComparisonTable>>,
+  TError = unknown,
+>(
+  tableId: number,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTable>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonTableSuspense<
+  TData = Awaited<ReturnType<typeof getComparisonTable>>,
+  TError = unknown,
+>(
+  tableId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTable>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonTableSuspense<
+  TData = Awaited<ReturnType<typeof getComparisonTable>>,
+  TError = unknown,
+>(
+  tableId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTable>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary 비교표 조회
+ */
+
+export function useGetComparisonTableSuspense<
+  TData = Awaited<ReturnType<typeof getComparisonTable>>,
+  TError = unknown,
+>(
+  tableId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTable>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetComparisonTableSuspenseQueryOptions(
+    tableId,
+    options,
+  );
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * 비교표 메타 데이터와 비교 기준 항목을 수정합니다.
+ * @summary 비교표 수정
+ */
+export type updateComparisonTableResponse200 = {
+  data: StandardResponseComparisonTableResponse;
+  status: 200;
+};
+
+export type updateComparisonTableResponseComposite =
+  updateComparisonTableResponse200;
+
+export type updateComparisonTableResponse =
+  updateComparisonTableResponseComposite & {
+    headers: Headers;
+  };
+
+export const getUpdateComparisonTableUrl = (tableId: number) => {
+  return `https://api.ssok.info/api/comparison/${tableId}`;
+};
+
+export const updateComparisonTable = async (
+  tableId: number,
+  createComparisonTableRequest: CreateComparisonTableRequest,
+  options?: RequestInit,
+): Promise<updateComparisonTableResponse> => {
+  return http<updateComparisonTableResponse>(
+    getUpdateComparisonTableUrl(tableId),
+    {
+      ...options,
+      method: "PUT",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(createComparisonTableRequest),
+    },
+  );
+};
+
+export const getUpdateComparisonTableMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateComparisonTable>>,
+    TError,
+    { tableId: number; data: CreateComparisonTableRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateComparisonTable>>,
+  TError,
+  { tableId: number; data: CreateComparisonTableRequest },
+  TContext
+> => {
+  const mutationKey = ["updateComparisonTable"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateComparisonTable>>,
+    { tableId: number; data: CreateComparisonTableRequest }
+  > = (props) => {
+    const { tableId, data } = props ?? {};
+
+    return updateComparisonTable(tableId, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpdateComparisonTableMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateComparisonTable>>
+>;
+export type UpdateComparisonTableMutationBody = CreateComparisonTableRequest;
+export type UpdateComparisonTableMutationError = unknown;
+
+/**
+ * @summary 비교표 수정
+ */
+export const useUpdateComparisonTable = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof updateComparisonTable>>,
+      TError,
+      { tableId: number; data: CreateComparisonTableRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof updateComparisonTable>>,
+  TError,
+  { tableId: number; data: CreateComparisonTableRequest },
+  TContext
+> => {
+  const mutationOptions = getUpdateComparisonTableMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * 비교표에 새로운 숙소를 추가합니다.
+ * @summary 비교표 숙소 추가
+ */
+export type addAccommodationToComparisonTableResponse200 = {
+  data: StandardResponseComparisonTableResponse;
+  status: 200;
+};
+
+export type addAccommodationToComparisonTableResponseComposite =
+  addAccommodationToComparisonTableResponse200;
+
+export type addAccommodationToComparisonTableResponse =
+  addAccommodationToComparisonTableResponseComposite & {
+    headers: Headers;
+  };
+
+export const getAddAccommodationToComparisonTableUrl = (
+  tableId: number,
+  params: AddAccommodationToComparisonTableParams,
+) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `https://api.ssok.info/api/comparison/${tableId}?${stringifiedParams}`
+    : `https://api.ssok.info/api/comparison/${tableId}`;
+};
+
+export const addAccommodationToComparisonTable = async (
+  tableId: number,
+  params: AddAccommodationToComparisonTableParams,
+  options?: RequestInit,
+): Promise<addAccommodationToComparisonTableResponse> => {
+  return http<addAccommodationToComparisonTableResponse>(
+    getAddAccommodationToComparisonTableUrl(tableId, params),
+    {
+      ...options,
+      method: "PATCH",
+    },
+  );
+};
+
+export const getAddAccommodationToComparisonTableMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof addAccommodationToComparisonTable>>,
+    TError,
+    { tableId: number; params: AddAccommodationToComparisonTableParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof addAccommodationToComparisonTable>>,
+  TError,
+  { tableId: number; params: AddAccommodationToComparisonTableParams },
+  TContext
+> => {
+  const mutationKey = ["addAccommodationToComparisonTable"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof addAccommodationToComparisonTable>>,
+    { tableId: number; params: AddAccommodationToComparisonTableParams }
+  > = (props) => {
+    const { tableId, params } = props ?? {};
+
+    return addAccommodationToComparisonTable(tableId, params, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AddAccommodationToComparisonTableMutationResult = NonNullable<
+  Awaited<ReturnType<typeof addAccommodationToComparisonTable>>
+>;
+
+export type AddAccommodationToComparisonTableMutationError = unknown;
+
+/**
+ * @summary 비교표 숙소 추가
+ */
+export const useAddAccommodationToComparisonTable = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof addAccommodationToComparisonTable>>,
+      TError,
+      { tableId: number; params: AddAccommodationToComparisonTableParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof addAccommodationToComparisonTable>>,
+  TError,
+  { tableId: number; params: AddAccommodationToComparisonTableParams },
+  TContext
+> => {
+  const mutationOptions =
+    getAddAccommodationToComparisonTableMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * 비교표 이름, 숙소 ID 리스트, 비교 기준 항목을 받아서 비교표 메타 데이터를 생성합니다.
+ * @summary 비교표 생성
+ */
+export type createComparisonTableResponse200 = {
+  data: StandardResponseCreateComparisonTableResponse;
+  status: 200;
+};
+
+export type createComparisonTableResponseComposite =
+  createComparisonTableResponse200;
+
+export type createComparisonTableResponse =
+  createComparisonTableResponseComposite & {
+    headers: Headers;
+  };
+
+export const getCreateComparisonTableUrl = () => {
+  return `https://api.ssok.info/api/comparison/new`;
+};
+
+export const createComparisonTable = async (
+  createComparisonTableRequest: CreateComparisonTableRequest,
+  options?: RequestInit,
+): Promise<createComparisonTableResponse> => {
+  return http<createComparisonTableResponse>(getCreateComparisonTableUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(createComparisonTableRequest),
+  });
+};
+
+export const getCreateComparisonTableMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createComparisonTable>>,
+    TError,
+    { data: CreateComparisonTableRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createComparisonTable>>,
+  TError,
+  { data: CreateComparisonTableRequest },
+  TContext
+> => {
+  const mutationKey = ["createComparisonTable"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createComparisonTable>>,
+    { data: CreateComparisonTableRequest }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return createComparisonTable(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type CreateComparisonTableMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createComparisonTable>>
+>;
+export type CreateComparisonTableMutationBody = CreateComparisonTableRequest;
+export type CreateComparisonTableMutationError = unknown;
+
+/**
+ * @summary 비교표 생성
+ */
+export const useCreateComparisonTable = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof createComparisonTable>>,
+      TError,
+      { data: CreateComparisonTableRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof createComparisonTable>>,
+  TError,
+  { data: CreateComparisonTableRequest },
+  TContext
+> => {
+  const mutationOptions = getCreateComparisonTableMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
 
 /**
  * 링크를 첨부하여 숙소 카드를 등록합니다.
@@ -1908,24 +2591,708 @@ export function useHealthCheckSuspense<
 }
 
 /**
+ * 비교 기준 항목 Enum 리스트를 반환합니다.
+ * @summary 비교표 기준 항목 Enum 리스트
+ */
+export type getComparisonFactorListResponse200 = {
+  data: StandardResponseComparisonFactorList;
+  status: 200;
+};
+
+export type getComparisonFactorListResponseComposite =
+  getComparisonFactorListResponse200;
+
+export type getComparisonFactorListResponse =
+  getComparisonFactorListResponseComposite & {
+    headers: Headers;
+  };
+
+export const getGetComparisonFactorListUrl = () => {
+  return `https://api.ssok.info/api/comparison/factors`;
+};
+
+export const getComparisonFactorList = async (
+  options?: RequestInit,
+): Promise<getComparisonFactorListResponse> => {
+  return http<getComparisonFactorListResponse>(
+    getGetComparisonFactorListUrl(),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getGetComparisonFactorListQueryKey = () => {
+  return [`https://api.ssok.info/api/comparison/factors`] as const;
+};
+
+export const getGetComparisonFactorListQueryOptions = <
+  TData = Awaited<ReturnType<typeof getComparisonFactorList>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof getComparisonFactorList>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof http>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetComparisonFactorListQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getComparisonFactorList>>
+  > = ({ signal }) => getComparisonFactorList({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getComparisonFactorList>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetComparisonFactorListQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getComparisonFactorList>>
+>;
+export type GetComparisonFactorListQueryError = unknown;
+
+export function useGetComparisonFactorList<
+  TData = Awaited<ReturnType<typeof getComparisonFactorList>>,
+  TError = unknown,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonFactorList>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getComparisonFactorList>>,
+          TError,
+          Awaited<ReturnType<typeof getComparisonFactorList>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonFactorList<
+  TData = Awaited<ReturnType<typeof getComparisonFactorList>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonFactorList>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getComparisonFactorList>>,
+          TError,
+          Awaited<ReturnType<typeof getComparisonFactorList>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonFactorList<
+  TData = Awaited<ReturnType<typeof getComparisonFactorList>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonFactorList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary 비교표 기준 항목 Enum 리스트
+ */
+
+export function useGetComparisonFactorList<
+  TData = Awaited<ReturnType<typeof getComparisonFactorList>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonFactorList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetComparisonFactorListQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary 비교표 기준 항목 Enum 리스트
+ */
+export const prefetchGetComparisonFactorListQuery = async <
+  TData = Awaited<ReturnType<typeof getComparisonFactorList>>,
+  TError = unknown,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonFactorList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetComparisonFactorListQueryOptions(options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetComparisonFactorListSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getComparisonFactorList>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof getComparisonFactorList>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof http>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetComparisonFactorListQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getComparisonFactorList>>
+  > = ({ signal }) => getComparisonFactorList({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getComparisonFactorList>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetComparisonFactorListSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getComparisonFactorList>>
+>;
+export type GetComparisonFactorListSuspenseQueryError = unknown;
+
+export function useGetComparisonFactorListSuspense<
+  TData = Awaited<ReturnType<typeof getComparisonFactorList>>,
+  TError = unknown,
+>(
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonFactorList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonFactorListSuspense<
+  TData = Awaited<ReturnType<typeof getComparisonFactorList>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonFactorList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonFactorListSuspense<
+  TData = Awaited<ReturnType<typeof getComparisonFactorList>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonFactorList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary 비교표 기준 항목 Enum 리스트
+ */
+
+export function useGetComparisonFactorListSuspense<
+  TData = Awaited<ReturnType<typeof getComparisonFactorList>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonFactorList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetComparisonFactorListSuspenseQueryOptions(options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * 특정 숙소 ID로 숙소 정보를 조회합니다.
+ * @summary 숙소 단건 조회
+ */
+export type getAccommodationByIdResponse200 = {
+  data: StandardResponseAccommodationResponse;
+  status: 200;
+};
+
+export type getAccommodationByIdResponseComposite =
+  getAccommodationByIdResponse200;
+
+export type getAccommodationByIdResponse =
+  getAccommodationByIdResponseComposite & {
+    headers: Headers;
+  };
+
+export const getGetAccommodationByIdUrl = (accommodationId: number) => {
+  return `https://api.ssok.info/api/accommodations/${accommodationId}`;
+};
+
+export const getAccommodationById = async (
+  accommodationId: number,
+  options?: RequestInit,
+): Promise<getAccommodationByIdResponse> => {
+  return http<getAccommodationByIdResponse>(
+    getGetAccommodationByIdUrl(accommodationId),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getGetAccommodationByIdQueryKey = (accommodationId: number) => {
+  return [
+    `https://api.ssok.info/api/accommodations/${accommodationId}`,
+  ] as const;
+};
+
+export const getGetAccommodationByIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAccommodationById>>,
+  TError = unknown,
+>(
+  accommodationId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getAccommodationById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetAccommodationByIdQueryKey(accommodationId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getAccommodationById>>
+  > = ({ signal }) =>
+    getAccommodationById(accommodationId, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!accommodationId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getAccommodationById>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetAccommodationByIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAccommodationById>>
+>;
+export type GetAccommodationByIdQueryError = unknown;
+
+export function useGetAccommodationById<
+  TData = Awaited<ReturnType<typeof getAccommodationById>>,
+  TError = unknown,
+>(
+  accommodationId: number,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getAccommodationById>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAccommodationById>>,
+          TError,
+          Awaited<ReturnType<typeof getAccommodationById>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetAccommodationById<
+  TData = Awaited<ReturnType<typeof getAccommodationById>>,
+  TError = unknown,
+>(
+  accommodationId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getAccommodationById>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAccommodationById>>,
+          TError,
+          Awaited<ReturnType<typeof getAccommodationById>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetAccommodationById<
+  TData = Awaited<ReturnType<typeof getAccommodationById>>,
+  TError = unknown,
+>(
+  accommodationId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getAccommodationById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary 숙소 단건 조회
+ */
+
+export function useGetAccommodationById<
+  TData = Awaited<ReturnType<typeof getAccommodationById>>,
+  TError = unknown,
+>(
+  accommodationId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getAccommodationById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetAccommodationByIdQueryOptions(
+    accommodationId,
+    options,
+  );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary 숙소 단건 조회
+ */
+export const prefetchGetAccommodationByIdQuery = async <
+  TData = Awaited<ReturnType<typeof getAccommodationById>>,
+  TError = unknown,
+>(
+  queryClient: QueryClient,
+  accommodationId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getAccommodationById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetAccommodationByIdQueryOptions(
+    accommodationId,
+    options,
+  );
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetAccommodationByIdSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAccommodationById>>,
+  TError = unknown,
+>(
+  accommodationId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getAccommodationById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetAccommodationByIdQueryKey(accommodationId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getAccommodationById>>
+  > = ({ signal }) =>
+    getAccommodationById(accommodationId, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getAccommodationById>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetAccommodationByIdSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAccommodationById>>
+>;
+export type GetAccommodationByIdSuspenseQueryError = unknown;
+
+export function useGetAccommodationByIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationById>>,
+  TError = unknown,
+>(
+  accommodationId: number,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getAccommodationById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetAccommodationByIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationById>>,
+  TError = unknown,
+>(
+  accommodationId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getAccommodationById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetAccommodationByIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationById>>,
+  TError = unknown,
+>(
+  accommodationId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getAccommodationById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary 숙소 단건 조회
+ */
+
+export function useGetAccommodationByIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationById>>,
+  TError = unknown,
+>(
+  accommodationId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getAccommodationById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetAccommodationByIdSuspenseQueryOptions(
+    accommodationId,
+    options,
+  );
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * 숙소 목록을 조회합니다.
  * @summary 숙소 목록 조회
  */
-export type getAccommodationByTableIdAndUserIdResponse200 = {
+export type getAccommodationByBoardIdAndUserIdResponse200 = {
   data: StandardResponseAccommodationPageResponse;
   status: 200;
 };
 
-export type getAccommodationByTableIdAndUserIdResponseComposite =
-  getAccommodationByTableIdAndUserIdResponse200;
+export type getAccommodationByBoardIdAndUserIdResponseComposite =
+  getAccommodationByBoardIdAndUserIdResponse200;
 
-export type getAccommodationByTableIdAndUserIdResponse =
-  getAccommodationByTableIdAndUserIdResponseComposite & {
+export type getAccommodationByBoardIdAndUserIdResponse =
+  getAccommodationByBoardIdAndUserIdResponseComposite & {
     headers: Headers;
   };
 
-export const getGetAccommodationByTableIdAndUserIdUrl = (
-  params: GetAccommodationByTableIdAndUserIdParams,
+export const getGetAccommodationByBoardIdAndUserIdUrl = (
+  params: GetAccommodationByBoardIdAndUserIdParams,
 ) => {
   const normalizedParams = new URLSearchParams();
 
@@ -1942,12 +3309,12 @@ export const getGetAccommodationByTableIdAndUserIdUrl = (
     : `https://api.ssok.info/api/accommodations/search`;
 };
 
-export const getAccommodationByTableIdAndUserId = async (
-  params: GetAccommodationByTableIdAndUserIdParams,
+export const getAccommodationByBoardIdAndUserId = async (
+  params: GetAccommodationByBoardIdAndUserIdParams,
   options?: RequestInit,
-): Promise<getAccommodationByTableIdAndUserIdResponse> => {
-  return http<getAccommodationByTableIdAndUserIdResponse>(
-    getGetAccommodationByTableIdAndUserIdUrl(params),
+): Promise<getAccommodationByBoardIdAndUserIdResponse> => {
+  return http<getAccommodationByBoardIdAndUserIdResponse>(
+    getGetAccommodationByBoardIdAndUserIdUrl(params),
     {
       ...options,
       method: "GET",
@@ -1955,8 +3322,8 @@ export const getAccommodationByTableIdAndUserId = async (
   );
 };
 
-export const getGetAccommodationByTableIdAndUserIdQueryKey = (
-  params: GetAccommodationByTableIdAndUserIdParams,
+export const getGetAccommodationByBoardIdAndUserIdQueryKey = (
+  params: GetAccommodationByBoardIdAndUserIdParams,
 ) => {
   return [
     `https://api.ssok.info/api/accommodations/search`,
@@ -1964,15 +3331,15 @@ export const getGetAccommodationByTableIdAndUserIdQueryKey = (
   ] as const;
 };
 
-export const getGetAccommodationByTableIdAndUserIdQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+export const getGetAccommodationByBoardIdAndUserIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByTableIdAndUserIdParams,
+  params: GetAccommodationByBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -1984,43 +3351,43 @@ export const getGetAccommodationByTableIdAndUserIdQueryOptions = <
 
   const queryKey =
     queryOptions?.queryKey ??
-    getGetAccommodationByTableIdAndUserIdQueryKey(params);
+    getGetAccommodationByBoardIdAndUserIdQueryKey(params);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>
+    Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
   > = ({ signal }) =>
-    getAccommodationByTableIdAndUserId(params, { signal, ...requestOptions });
+    getAccommodationByBoardIdAndUserId(params, { signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+    Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAccommodationByTableIdAndUserIdQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>
+export type GetAccommodationByBoardIdAndUserIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
 >;
-export type GetAccommodationByTableIdAndUserIdQueryError = unknown;
+export type GetAccommodationByBoardIdAndUserIdQueryError = unknown;
 
-export function useGetAccommodationByTableIdAndUserId<
-  TData = Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+export function useGetAccommodationByBoardIdAndUserId<
+  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByTableIdAndUserIdParams,
+  params: GetAccommodationByBoardIdAndUserIdParams,
   options: {
     query: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
         TError,
         TData
       >
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+          Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
           TError,
-          Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>
+          Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
         >,
         "initialData"
       >;
@@ -2030,24 +3397,24 @@ export function useGetAccommodationByTableIdAndUserId<
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetAccommodationByTableIdAndUserId<
-  TData = Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+export function useGetAccommodationByBoardIdAndUserId<
+  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByTableIdAndUserIdParams,
+  params: GetAccommodationByBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
         TError,
         TData
       >
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+          Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
           TError,
-          Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>
+          Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
         >,
         "initialData"
       >;
@@ -2057,15 +3424,15 @@ export function useGetAccommodationByTableIdAndUserId<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetAccommodationByTableIdAndUserId<
-  TData = Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+export function useGetAccommodationByBoardIdAndUserId<
+  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByTableIdAndUserIdParams,
+  params: GetAccommodationByBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -2080,15 +3447,15 @@ export function useGetAccommodationByTableIdAndUserId<
  * @summary 숙소 목록 조회
  */
 
-export function useGetAccommodationByTableIdAndUserId<
-  TData = Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+export function useGetAccommodationByBoardIdAndUserId<
+  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByTableIdAndUserIdParams,
+  params: GetAccommodationByBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -2099,7 +3466,7 @@ export function useGetAccommodationByTableIdAndUserId<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetAccommodationByTableIdAndUserIdQueryOptions(
+  const queryOptions = getGetAccommodationByBoardIdAndUserIdQueryOptions(
     params,
     options,
   );
@@ -2117,16 +3484,16 @@ export function useGetAccommodationByTableIdAndUserId<
 /**
  * @summary 숙소 목록 조회
  */
-export const prefetchGetAccommodationByTableIdAndUserIdQuery = async <
-  TData = Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+export const prefetchGetAccommodationByBoardIdAndUserIdQuery = async <
+  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
   TError = unknown,
 >(
   queryClient: QueryClient,
-  params: GetAccommodationByTableIdAndUserIdParams,
+  params: GetAccommodationByBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -2134,7 +3501,7 @@ export const prefetchGetAccommodationByTableIdAndUserIdQuery = async <
     request?: SecondParameter<typeof http>;
   },
 ): Promise<QueryClient> => {
-  const queryOptions = getGetAccommodationByTableIdAndUserIdQueryOptions(
+  const queryOptions = getGetAccommodationByBoardIdAndUserIdQueryOptions(
     params,
     options,
   );
@@ -2144,15 +3511,15 @@ export const prefetchGetAccommodationByTableIdAndUserIdQuery = async <
   return queryClient;
 };
 
-export const getGetAccommodationByTableIdAndUserIdSuspenseQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+export const getGetAccommodationByBoardIdAndUserIdSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByTableIdAndUserIdParams,
+  params: GetAccommodationByBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -2164,34 +3531,34 @@ export const getGetAccommodationByTableIdAndUserIdSuspenseQueryOptions = <
 
   const queryKey =
     queryOptions?.queryKey ??
-    getGetAccommodationByTableIdAndUserIdQueryKey(params);
+    getGetAccommodationByBoardIdAndUserIdQueryKey(params);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>
+    Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
   > = ({ signal }) =>
-    getAccommodationByTableIdAndUserId(params, { signal, ...requestOptions });
+    getAccommodationByBoardIdAndUserId(params, { signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
-    Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+    Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAccommodationByTableIdAndUserIdSuspenseQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>
+export type GetAccommodationByBoardIdAndUserIdSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
 >;
-export type GetAccommodationByTableIdAndUserIdSuspenseQueryError = unknown;
+export type GetAccommodationByBoardIdAndUserIdSuspenseQueryError = unknown;
 
-export function useGetAccommodationByTableIdAndUserIdSuspense<
-  TData = Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+export function useGetAccommodationByBoardIdAndUserIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByTableIdAndUserIdParams,
+  params: GetAccommodationByBoardIdAndUserIdParams,
   options: {
     query: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -2202,15 +3569,15 @@ export function useGetAccommodationByTableIdAndUserIdSuspense<
 ): UseSuspenseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetAccommodationByTableIdAndUserIdSuspense<
-  TData = Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+export function useGetAccommodationByBoardIdAndUserIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByTableIdAndUserIdParams,
+  params: GetAccommodationByBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -2221,15 +3588,15 @@ export function useGetAccommodationByTableIdAndUserIdSuspense<
 ): UseSuspenseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetAccommodationByTableIdAndUserIdSuspense<
-  TData = Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+export function useGetAccommodationByBoardIdAndUserIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByTableIdAndUserIdParams,
+  params: GetAccommodationByBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -2244,15 +3611,15 @@ export function useGetAccommodationByTableIdAndUserIdSuspense<
  * @summary 숙소 목록 조회
  */
 
-export function useGetAccommodationByTableIdAndUserIdSuspense<
-  TData = Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+export function useGetAccommodationByBoardIdAndUserIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByTableIdAndUserIdParams,
+  params: GetAccommodationByBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByTableIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -2264,7 +3631,7 @@ export function useGetAccommodationByTableIdAndUserIdSuspense<
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions =
-    getGetAccommodationByTableIdAndUserIdSuspenseQueryOptions(params, options);
+    getGetAccommodationByBoardIdAndUserIdSuspenseQueryOptions(params, options);
 
   const query = useSuspenseQuery(
     queryOptions,
@@ -2279,24 +3646,24 @@ export function useGetAccommodationByTableIdAndUserIdSuspense<
 }
 
 /**
- * 테이블에 포함된 숙소의 개수를 조회합니다.
- * @summary 테이블 숙소 개수 조회
+ * 여행보드에 포함된 숙소의 개수를 조회합니다.
+ * @summary 여행보드 숙소 개수 조회
  */
-export type getAccommodationCountByTableIdResponse200 = {
+export type getAccommodationCountByBoardIdResponse200 = {
   data: StandardResponseAccommodationCountResponse;
   status: 200;
 };
 
-export type getAccommodationCountByTableIdResponseComposite =
-  getAccommodationCountByTableIdResponse200;
+export type getAccommodationCountByBoardIdResponseComposite =
+  getAccommodationCountByBoardIdResponse200;
 
-export type getAccommodationCountByTableIdResponse =
-  getAccommodationCountByTableIdResponseComposite & {
+export type getAccommodationCountByBoardIdResponse =
+  getAccommodationCountByBoardIdResponseComposite & {
     headers: Headers;
   };
 
-export const getGetAccommodationCountByTableIdUrl = (
-  params: GetAccommodationCountByTableIdParams,
+export const getGetAccommodationCountByBoardIdUrl = (
+  params: GetAccommodationCountByBoardIdParams,
 ) => {
   const normalizedParams = new URLSearchParams();
 
@@ -2313,12 +3680,12 @@ export const getGetAccommodationCountByTableIdUrl = (
     : `https://api.ssok.info/api/accommodations/count`;
 };
 
-export const getAccommodationCountByTableId = async (
-  params: GetAccommodationCountByTableIdParams,
+export const getAccommodationCountByBoardId = async (
+  params: GetAccommodationCountByBoardIdParams,
   options?: RequestInit,
-): Promise<getAccommodationCountByTableIdResponse> => {
-  return http<getAccommodationCountByTableIdResponse>(
-    getGetAccommodationCountByTableIdUrl(params),
+): Promise<getAccommodationCountByBoardIdResponse> => {
+  return http<getAccommodationCountByBoardIdResponse>(
+    getGetAccommodationCountByBoardIdUrl(params),
     {
       ...options,
       method: "GET",
@@ -2326,8 +3693,8 @@ export const getAccommodationCountByTableId = async (
   );
 };
 
-export const getGetAccommodationCountByTableIdQueryKey = (
-  params: GetAccommodationCountByTableIdParams,
+export const getGetAccommodationCountByBoardIdQueryKey = (
+  params: GetAccommodationCountByBoardIdParams,
 ) => {
   return [
     `https://api.ssok.info/api/accommodations/count`,
@@ -2335,15 +3702,15 @@ export const getGetAccommodationCountByTableIdQueryKey = (
   ] as const;
 };
 
-export const getGetAccommodationCountByTableIdQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+export const getGetAccommodationCountByBoardIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByTableIdParams,
+  params: GetAccommodationCountByBoardIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
         TError,
         TData
       >
@@ -2354,43 +3721,43 @@ export const getGetAccommodationCountByTableIdQueryOptions = <
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getGetAccommodationCountByTableIdQueryKey(params);
+    queryOptions?.queryKey ?? getGetAccommodationCountByBoardIdQueryKey(params);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAccommodationCountByTableId>>
+    Awaited<ReturnType<typeof getAccommodationCountByBoardId>>
   > = ({ signal }) =>
-    getAccommodationCountByTableId(params, { signal, ...requestOptions });
+    getAccommodationCountByBoardId(params, { signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+    Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAccommodationCountByTableIdQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAccommodationCountByTableId>>
+export type GetAccommodationCountByBoardIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAccommodationCountByBoardId>>
 >;
-export type GetAccommodationCountByTableIdQueryError = unknown;
+export type GetAccommodationCountByBoardIdQueryError = unknown;
 
-export function useGetAccommodationCountByTableId<
-  TData = Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+export function useGetAccommodationCountByBoardId<
+  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByTableIdParams,
+  params: GetAccommodationCountByBoardIdParams,
   options: {
     query: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
         TError,
         TData
       >
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+          Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
           TError,
-          Awaited<ReturnType<typeof getAccommodationCountByTableId>>
+          Awaited<ReturnType<typeof getAccommodationCountByBoardId>>
         >,
         "initialData"
       >;
@@ -2400,24 +3767,24 @@ export function useGetAccommodationCountByTableId<
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetAccommodationCountByTableId<
-  TData = Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+export function useGetAccommodationCountByBoardId<
+  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByTableIdParams,
+  params: GetAccommodationCountByBoardIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
         TError,
         TData
       >
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+          Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
           TError,
-          Awaited<ReturnType<typeof getAccommodationCountByTableId>>
+          Awaited<ReturnType<typeof getAccommodationCountByBoardId>>
         >,
         "initialData"
       >;
@@ -2427,15 +3794,15 @@ export function useGetAccommodationCountByTableId<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetAccommodationCountByTableId<
-  TData = Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+export function useGetAccommodationCountByBoardId<
+  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByTableIdParams,
+  params: GetAccommodationCountByBoardIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
         TError,
         TData
       >
@@ -2447,18 +3814,18 @@ export function useGetAccommodationCountByTableId<
   queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
- * @summary 테이블 숙소 개수 조회
+ * @summary 여행보드 숙소 개수 조회
  */
 
-export function useGetAccommodationCountByTableId<
-  TData = Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+export function useGetAccommodationCountByBoardId<
+  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByTableIdParams,
+  params: GetAccommodationCountByBoardIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
         TError,
         TData
       >
@@ -2469,7 +3836,7 @@ export function useGetAccommodationCountByTableId<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetAccommodationCountByTableIdQueryOptions(
+  const queryOptions = getGetAccommodationCountByBoardIdQueryOptions(
     params,
     options,
   );
@@ -2485,18 +3852,18 @@ export function useGetAccommodationCountByTableId<
 }
 
 /**
- * @summary 테이블 숙소 개수 조회
+ * @summary 여행보드 숙소 개수 조회
  */
-export const prefetchGetAccommodationCountByTableIdQuery = async <
-  TData = Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+export const prefetchGetAccommodationCountByBoardIdQuery = async <
+  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
   TError = unknown,
 >(
   queryClient: QueryClient,
-  params: GetAccommodationCountByTableIdParams,
+  params: GetAccommodationCountByBoardIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
         TError,
         TData
       >
@@ -2504,7 +3871,7 @@ export const prefetchGetAccommodationCountByTableIdQuery = async <
     request?: SecondParameter<typeof http>;
   },
 ): Promise<QueryClient> => {
-  const queryOptions = getGetAccommodationCountByTableIdQueryOptions(
+  const queryOptions = getGetAccommodationCountByBoardIdQueryOptions(
     params,
     options,
   );
@@ -2514,15 +3881,15 @@ export const prefetchGetAccommodationCountByTableIdQuery = async <
   return queryClient;
 };
 
-export const getGetAccommodationCountByTableIdSuspenseQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+export const getGetAccommodationCountByBoardIdSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByTableIdParams,
+  params: GetAccommodationCountByBoardIdParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
         TError,
         TData
       >
@@ -2533,34 +3900,34 @@ export const getGetAccommodationCountByTableIdSuspenseQueryOptions = <
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getGetAccommodationCountByTableIdQueryKey(params);
+    queryOptions?.queryKey ?? getGetAccommodationCountByBoardIdQueryKey(params);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAccommodationCountByTableId>>
+    Awaited<ReturnType<typeof getAccommodationCountByBoardId>>
   > = ({ signal }) =>
-    getAccommodationCountByTableId(params, { signal, ...requestOptions });
+    getAccommodationCountByBoardId(params, { signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
-    Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+    Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAccommodationCountByTableIdSuspenseQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAccommodationCountByTableId>>
+export type GetAccommodationCountByBoardIdSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAccommodationCountByBoardId>>
 >;
-export type GetAccommodationCountByTableIdSuspenseQueryError = unknown;
+export type GetAccommodationCountByBoardIdSuspenseQueryError = unknown;
 
-export function useGetAccommodationCountByTableIdSuspense<
-  TData = Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+export function useGetAccommodationCountByBoardIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByTableIdParams,
+  params: GetAccommodationCountByBoardIdParams,
   options: {
     query: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
         TError,
         TData
       >
@@ -2571,15 +3938,15 @@ export function useGetAccommodationCountByTableIdSuspense<
 ): UseSuspenseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetAccommodationCountByTableIdSuspense<
-  TData = Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+export function useGetAccommodationCountByBoardIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByTableIdParams,
+  params: GetAccommodationCountByBoardIdParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
         TError,
         TData
       >
@@ -2590,15 +3957,15 @@ export function useGetAccommodationCountByTableIdSuspense<
 ): UseSuspenseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetAccommodationCountByTableIdSuspense<
-  TData = Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+export function useGetAccommodationCountByBoardIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByTableIdParams,
+  params: GetAccommodationCountByBoardIdParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
         TError,
         TData
       >
@@ -2610,18 +3977,18 @@ export function useGetAccommodationCountByTableIdSuspense<
   queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
- * @summary 테이블 숙소 개수 조회
+ * @summary 여행보드 숙소 개수 조회
  */
 
-export function useGetAccommodationCountByTableIdSuspense<
-  TData = Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+export function useGetAccommodationCountByBoardIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByTableIdParams,
+  params: GetAccommodationCountByBoardIdParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByTableId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
         TError,
         TData
       >
@@ -2632,7 +3999,7 @@ export function useGetAccommodationCountByTableIdSuspense<
 ): UseSuspenseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetAccommodationCountByTableIdSuspenseQueryOptions(
+  const queryOptions = getGetAccommodationCountByBoardIdSuspenseQueryOptions(
     params,
     options,
   );

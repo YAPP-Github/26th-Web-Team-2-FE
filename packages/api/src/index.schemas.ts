@@ -5,6 +5,139 @@
  * SSOK 서비스 API 명세
  * OpenAPI spec version: v1
  */
+export interface CreateComparisonTableRequest {
+  boardId: number;
+  /** @minLength 1 */
+  tableName?: string;
+  /** @minItems 1 */
+  accommodationIdList?: number[];
+  /** @minItems 1 */
+  factorList?: string[];
+}
+
+export interface AccommodationResponse {
+  id?: number;
+  url?: string;
+  siteName?: string;
+  memo?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  createdBy?: number;
+  boardId?: number;
+  accommodationName?: string;
+  images?: string[];
+  address?: string;
+  latitude?: number;
+  longitude?: number;
+  lowestPrice?: number;
+  highestPrice?: number;
+  currency?: string;
+  reviewScore?: number;
+  cleanlinessScore?: number;
+  reviewSummary?: string;
+  hotelId?: number;
+  nearbyAttractions?: Attraction[];
+  nearbyTransportation?: Transportation[];
+  amenities?: Amenity[];
+  checkInTime?: CheckTime;
+  checkOutTime?: CheckTime;
+}
+
+export interface Amenity {
+  type?: string;
+  available?: boolean;
+  description?: string;
+}
+
+export interface Attraction {
+  name?: string;
+  type?: string;
+  latitude?: number;
+  longitude?: number;
+  distance?: string;
+  byFoot?: DistanceInfo;
+  byCar?: DistanceInfo;
+}
+
+export interface CheckTime {
+  checkInTimeFrom?: string;
+  checkInTimeTo?: string;
+  checkOutTimeFrom?: string;
+  checkOutTimeTo?: string;
+}
+
+export type ComparisonTableResponseFactorsListItem =
+  | "PARKING"
+  | "BREAKFAST"
+  | "FREE_WIFI"
+  | "POOL"
+  | "FITNESS"
+  | "LUGGAGE_STORAGE"
+  | "BAR_LOUNGE"
+  | "FRONT_DESK_HOURS"
+  | "PET_FRIENDLY"
+  | "BUSINESS_SERVICES"
+  | "CLEANING_SERVICE"
+  | "HANDICAP_FACILITIES";
+export interface ComparisonTableResponse {
+  tableId?: number;
+  tableName?: string;
+  accommodationResponsesList?: AccommodationResponse[];
+  factorsList?: ComparisonTableResponseFactorsListItem[];
+  createdBy?: number;
+}
+
+export interface DistanceInfo {
+  distance?: string;
+  time?: string;
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseComparisonTableResponseResponseType =
+  | "SUCCESS"
+  | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseComparisonTableResponse {
+  /** 응답 유형 */
+  responseType?: StandardResponseComparisonTableResponseResponseType;
+  /** 응답 결과 데이터 */
+  result?: ComparisonTableResponse;
+}
+
+export interface Transportation {
+  name?: string;
+  type?: string;
+  latitude?: number;
+  longitude?: number;
+  distance?: string;
+  byFoot?: DistanceInfo;
+  byCar?: DistanceInfo;
+}
+
+export interface CreateComparisonTableResponse {
+  tableId?: number;
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseCreateComparisonTableResponseResponseType =
+  | "SUCCESS"
+  | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseCreateComparisonTableResponse {
+  /** 응답 유형 */
+  responseType?: StandardResponseCreateComparisonTableResponseResponseType;
+  /** 응답 결과 데이터 */
+  result?: CreateComparisonTableResponse;
+}
+
 export interface AccommodationRegisterRequest {
   /** @minLength 1 */
   url?: string;
@@ -13,7 +146,7 @@ export interface AccommodationRegisterRequest {
    * @maxLength 50
    */
   memo?: string;
-  tableId: number;
+  boardId: number;
   userId: number;
 }
 
@@ -70,66 +203,58 @@ export interface StandardResponseString {
   result?: string;
 }
 
+export type ComparisonFactorListFactorsItem =
+  | "PARKING"
+  | "BREAKFAST"
+  | "FREE_WIFI"
+  | "POOL"
+  | "FITNESS"
+  | "LUGGAGE_STORAGE"
+  | "BAR_LOUNGE"
+  | "FRONT_DESK_HOURS"
+  | "PET_FRIENDLY"
+  | "BUSINESS_SERVICES"
+  | "CLEANING_SERVICE"
+  | "HANDICAP_FACILITIES";
+export interface ComparisonFactorList {
+  factors?: ComparisonFactorListFactorsItem[];
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseComparisonFactorListResponseType =
+  | "SUCCESS"
+  | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseComparisonFactorList {
+  /** 응답 유형 */
+  responseType?: StandardResponseComparisonFactorListResponseType;
+  /** 응답 결과 데이터 */
+  result?: ComparisonFactorList;
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseAccommodationResponseResponseType =
+  | "SUCCESS"
+  | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseAccommodationResponse {
+  /** 응답 유형 */
+  responseType?: StandardResponseAccommodationResponseResponseType;
+  /** 응답 결과 데이터 */
+  result?: AccommodationResponse;
+}
+
 export interface AccommodationPageResponse {
   accommodations?: AccommodationResponse[];
   hasNext?: boolean;
-}
-
-export interface AccommodationResponse {
-  id?: number;
-  userId?: number;
-  url?: string;
-  siteName?: string;
-  memo?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-  createdBy?: number;
-  tableId?: number;
-  accommodationName?: string;
-  images?: string[];
-  address?: string;
-  latitude?: number;
-  longitude?: number;
-  lowestPrice?: number;
-  highestPrice?: number;
-  currency?: string;
-  reviewScore?: number;
-  cleanlinessScore?: number;
-  reviewSummary?: string;
-  hotelId?: number;
-  nearbyAttractions?: Attraction[];
-  nearbyTransportation?: Transportation[];
-  amenities?: Amenity[];
-  checkInTime?: CheckTime;
-  checkOutTime?: CheckTime;
-}
-
-export interface Amenity {
-  type?: string;
-  available?: boolean;
-  description?: string;
-}
-
-export interface Attraction {
-  name?: string;
-  type?: string;
-  latitude?: number;
-  longitude?: number;
-  distance?: string;
-  byFoot?: DistanceInfo;
-  byCar?: DistanceInfo;
-}
-
-export interface CheckTime {
-  checkInTimeFrom?: string;
-  checkInTimeTo?: string;
-  checkOutTimeFrom?: string;
-  checkOutTimeTo?: string;
-}
-
-export interface DistanceInfo {
-  distance?: string;
-  time?: string;
 }
 
 /**
@@ -146,16 +271,6 @@ export interface StandardResponseAccommodationPageResponse {
   responseType?: StandardResponseAccommodationPageResponseResponseType;
   /** 응답 결과 데이터 */
   result?: AccommodationPageResponse;
-}
-
-export interface Transportation {
-  name?: string;
-  type?: string;
-  latitude?: number;
-  longitude?: number;
-  distance?: string;
-  byFoot?: DistanceInfo;
-  byCar?: DistanceInfo;
 }
 
 export interface AccommodationCountResponse {
@@ -178,12 +293,19 @@ export interface StandardResponseAccommodationCountResponse {
   result?: AccommodationCountResponse;
 }
 
-export type GetAccommodationByTableIdAndUserIdParams = {
+export type AddAccommodationToComparisonTableParams = {
   /**
-   * 숙소가 포함된 테이블의 ID
+   * 숙소 ID
+   */
+  accommodationId: number;
+};
+
+export type GetAccommodationByBoardIdAndUserIdParams = {
+  /**
+   * 숙소가 포함된 여행보드의 ID
    * @minimum 1
    */
-  tableId: number;
+  boardId: number;
   /**
    * 페이지 번호
    * @minimum 0
@@ -198,14 +320,18 @@ export type GetAccommodationByTableIdAndUserIdParams = {
    * 유저 ID, 없는 경우 모든 유저가 생성한 숙소 목록을 반환합니다. 현재 parameter로 받는 것은 임시 로직입니다.
    */
   userId?: number;
+  /**
+   * 정렬 기준, 기본 값은 saved_at_desc(최근 등록순)이고, price_asc(최저 가격순)을 제공합니다.
+   */
+  sort?: string;
 };
 
-export type GetAccommodationCountByTableIdParams = {
+export type GetAccommodationCountByBoardIdParams = {
   /**
-   * 숙소가 포함된 테이블의 ID
+   * 숙소가 포함된 여행보드의 ID
    * @minimum 1
    */
-  tableId: number;
+  boardId: number;
   /**
    * 유저 ID, 없는 경우 모든 유저가 생성한 숙소 목록을 반환합니다. 현재 parameter로 받는 것은 임시 로직입니다.
    */

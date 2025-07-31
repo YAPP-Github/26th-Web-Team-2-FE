@@ -79,7 +79,8 @@ const LinkInputSection = ({
         )}
       >
         {isInputExpanded && (
-          <>
+          // TODO: submit 이벤트 핸들러 추가
+          <form className="flex flex-col gap-[1.6rem]" onSubmit={() => {}}>
             {/* 링크 저장_입력란 */}
             <LinkInputContainer register={register} />
             {/* 링크 저장_버튼 */}
@@ -90,7 +91,7 @@ const LinkInputSection = ({
               maxChars={maxChars}
               handleMemoInputToggle={handleMemoInputToggle}
             />
-          </>
+          </form>
         )}
       </div>
     </section>

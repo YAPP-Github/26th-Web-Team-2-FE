@@ -12,7 +12,7 @@ type LinkInputSectionProps = {
 
 const LinkInputContainer = ({ register }: LinkInputSectionProps) => {
   return (
-    <div className="relative">
+    <div>
       <TextField
         placeholder="숙소의 상세 페이지 링크를 복사해서 붙여넣거나, 드래그해 추가해 주세요"
         icon={<IcLink width="24" height="24" />}

@@ -1,5 +1,6 @@
 import { cn, IcArrowDown, IcCheckFill } from "@ssok/ui";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { useOutsideClick } from "@/domains/list/hooks/use-outside-click";
 
 const filter = [
   { id: "saved_at_des", name: "저장순" },
@@ -20,8 +21,11 @@ const DropDown = () => {
     setIsOpen((prev) => !prev);
   };
 
+  const dropDownRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(dropDownRef, handleToggleDropdown, isOpen);
+
   return (
-    <div className="relative">
+    <div ref={dropDownRef} className="relative">
       <button
         type="button"
         onClick={handleToggleDropdown}

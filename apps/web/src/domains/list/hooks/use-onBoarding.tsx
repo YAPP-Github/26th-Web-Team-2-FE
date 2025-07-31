@@ -22,9 +22,15 @@ const useOnboarding = () => {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    const step = (localStorage.getItem("onBoardStep") as OnBoardStep) || "init";
-    setOnBoardStep(step);
-    setIsVisible(step !== "finish");
+    try {
+      const step =
+        (localStorage.getItem("onBoardStep") as OnBoardStep) || "init";
+      setOnBoardStep(step);
+      setIsVisible(step !== "finish");
+    } catch (_error) {
+      setOnBoardStep("init");
+      setIsVisible(true);
+    }
   }, []);
 
   const handleOnBoardStep = () => {

@@ -41,6 +41,9 @@ const OnboardingBubble = () => {
 
   return (
     <div
+      role="tooltip"
+      aria-labelledby="onboarding-title"
+      aria-describedby="onboarding-description"
       className={cn(
         "absolute z-10 inline-block",
         onBoardStep === "init" && "bottom-[-12rem] left-[0rem]",
@@ -49,12 +52,20 @@ const OnboardingBubble = () => {
     >
       <div className="relative rounded-[1.6rem] bg-neutral-variant-5 px-[2.4rem] py-[2rem] after:absolute after:top-[-12px] after:left-10 after:border-x-[8px] after:border-x-transparent after:border-t-0 after:border-b-[12px] after:border-b-neutral-variant-5 after:content-[''] ">
         <header className="flex w-full items-center justify-between">
-          <h1 className="text-heading1-semi20 text-neutral-100">{title}</h1>
-          <button type="button" onClick={handleClose}>
+          <h1
+            id="onboarding-title"
+            className="text-heading1-semi20 text-neutral-100"
+          >
+            {title}
+          </h1>
+          <button aria-label="온보딩 닫기" type="button" onClick={handleClose}>
             <IcClose width={24} height={24} className="text-neutral-100" />
           </button>
         </header>
-        <p className="pt-[0.8rem] text-start text-body1-medi16 text-neutral-90">
+        <p
+          id="onboarding-description"
+          className="pt-[0.8rem] text-start text-body1-medi16 text-neutral-90"
+        >
           {description}
         </p>
         <div className="flex flex-row items-center justify-between pt-[1.6rem]">

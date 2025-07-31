@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 type FormData = {
-  url: string;
+  link: string;
   memo?: string;
 };
 

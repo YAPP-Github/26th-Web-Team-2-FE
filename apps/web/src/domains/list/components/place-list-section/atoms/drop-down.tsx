@@ -19,12 +19,16 @@ const DropDown = () => {
   const handleToggleDropdown = () => {
     setIsOpen((prev) => !prev);
   };
+
   return (
     <div className="relative">
       <button
         type="button"
         onClick={handleToggleDropdown}
         className="flex flex-row gap-[0.4rem]"
+        aria-expanded={isOpen}
+        aria-haspopup="listbox"
+        aria-label="정렬 기준 선택"
       >
         <span className="w-[4.8rem]">
           {filter.find((f) => f.id === selectedFilter)?.name}
@@ -32,7 +36,10 @@ const DropDown = () => {
         <IcArrowDown />
       </button>
       {isOpen && (
-        <ul className="absolute bottom-[-14.8rem] z-100 flex flex-col rounded-[1.2rem] border border-neutral-70 bg-neutral-100 p-[0.8rem]">
+        <ul
+          aria-label="정렬 기준"
+          className="absolute bottom-[-14.8rem] z-100 flex flex-col rounded-[1.2rem] border border-neutral-70 bg-neutral-100 p-[0.8rem]"
+        >
           <span className="px-[1.6rem] py-[0.8rem]">
             <p className="text-body2-regular14 text-neutral-30">정렬 기준</p>
           </span>
@@ -41,6 +48,7 @@ const DropDown = () => {
               key={el.id}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
                   handleFilterSelect(el.id);
                 }
               }}

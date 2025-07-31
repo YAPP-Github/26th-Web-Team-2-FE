@@ -48,10 +48,14 @@ const LinkInputSection = ({
     let timer: ReturnType<typeof setTimeout> | null = null;
 
     const handleScroll = () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+
       if (isInputExpanded) {
         timer = setTimeout(() => {
           handleCloseInputExpansion();
-        }, 200);
+        }, 100);
       }
     };
 
@@ -62,6 +66,7 @@ const LinkInputSection = ({
       if (timer) clearTimeout(timer);
     };
   }, [isInputExpanded, handleCloseInputExpansion]);
+
   return (
     <section
       className={cn(
@@ -115,6 +120,8 @@ const LinkInputSection = ({
           <TextField
             placeholder="숙소의 상세 페이지 링크를 복사해서 붙여넣거나, 드래그해 추가해 주세요"
             icon={<IcLink width="24" height="24" />}
+            // TODO: zod validation 추가
+            {...register("url", { required: "URL을 입력해주세요" })}
           />
         </div>
         {/* 링크 저장_버튼 */}
@@ -125,7 +132,6 @@ const LinkInputSection = ({
               size="md"
               onClick={handleMemoInputToggle}
               icon={<IcAddMemo width="24" height="24" />}
-              {...register("url")}
             >
               메모
             </Button>
@@ -133,6 +139,8 @@ const LinkInputSection = ({
             {isMemoInputVisible && (
               <section className="absolute bottom-[-12.5rem] left-0 z-5 flex w-[33.2rem] flex-col gap-[1.2rem] rounded-[1.2rem] border border-primary-60 bg-neutral-100 px-[1.6rem] py-[1.2rem] focus:outline-none">
                 <textarea
+                  aria-label="메모 입력"
+                  maxLength={50}
                   placeholder="남기고 싶은 간단한 설명을 메모로 남겨보세요."
                   {...register("memo", {
                     maxLength: 50,

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import HeaderSection from "@/domains/list/components/hedaer-section";
+import HeaderSection from "@/domains/list/components/header-section";
 import LinkInputSection from "@/domains/list/components/link-input-section";
 import PlaceListSection from "@/domains/list/components/place-list-section";
 import useRegisterUrlInput from "@/domains/list/hooks/use-register-url-input";

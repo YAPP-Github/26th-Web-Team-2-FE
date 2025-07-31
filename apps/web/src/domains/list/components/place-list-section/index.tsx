@@ -13,11 +13,11 @@ const PlaceListSection = ({
   selectedPerson,
   handlePersonSelect,
 }: PlaceListSectionProps) => {
-  const [selectedPlaces, setSelectedPlacess] = useState<string[]>([]);
+  const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
   const memberData = useMemberData();
   const accommodationData = useAccommodationData();
-  const handPlaceSelect = (placeName: string) => {
-    setSelectedPlacess((prev) =>
+  const handlePlaceSelect = (placeName: string) => {
+    setSelectedPlaces((prev) =>
       prev.includes(placeName)
         ? prev.filter((name) => name !== placeName)
         : [...prev, placeName],
@@ -25,7 +25,7 @@ const PlaceListSection = ({
   };
 
   const handleDeleteClick = (placeName: string) => {
-    setSelectedPlacess((prev) => prev.filter((name) => name !== placeName));
+    setSelectedPlaces((prev) => prev.filter((name) => name !== placeName));
   };
 
   return (
@@ -71,7 +71,7 @@ const PlaceListSection = ({
               memoContent={place.memoContent}
               selected={selectedPlaces.includes(place.placeName)}
               onAddClick={() => {
-                handPlaceSelect(place.placeName);
+                handlePlaceSelect(place.placeName);
               }}
               onDeleteClick={() => {
                 handleDeleteClick(place.placeName);

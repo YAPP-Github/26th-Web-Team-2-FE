@@ -2,8 +2,8 @@ import { Button, Card, cn } from "@ssok/ui";
 import { useState } from "react";
 import { useMemberData } from "../../hooks/use-member-data";
 import { useAccommodationData } from "../../hooks/use-place-data";
-import DropDown from "./atoms/drop-down";
-import EmptyListContainer from "./atoms/empty-list-container";
+import DropDown from "./atom/drop-down";
+import EmptyListContainer from "./atom/empty-list-container";
 
 type PlaceListSectionProps = {
   selectedPerson: number;

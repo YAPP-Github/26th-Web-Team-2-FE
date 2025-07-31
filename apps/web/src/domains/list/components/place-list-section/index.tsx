@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useMemberData } from "../../hooks/use-member-data";
 import { useAccommodationData } from "../../hooks/use-place-data";
 import DropDown from "./atoms/drop-down";
+import EmptyListContainer from "./atoms/empty-list-container";
 
 type PlaceListSectionProps = {
   selectedPerson: number;
@@ -58,7 +59,7 @@ const PlaceListSection = ({
       </div>
       {/* 숙소 리스트_카드목록 */}
       <ul className="flex max-h-[40rem] flex-col gap-[1.2rem] overflow-y-auto">
-        {accommodationData.map((place) => (
+        {accommodationData?.map((place) => (
           <li key={`${place.placeName}-card`}>
             <Card
               imgSrc={place.imgSrc}
@@ -79,6 +80,7 @@ const PlaceListSection = ({
             />
           </li>
         ))}
+        {accommodationData.length === 0 && <EmptyListContainer />}
       </ul>
     </section>
   );

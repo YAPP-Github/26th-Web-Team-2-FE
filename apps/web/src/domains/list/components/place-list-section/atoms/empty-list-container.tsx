@@ -1,6 +1,6 @@
 const EmptyListContainer = () => {
   return (
-    <section className="flex h-full w-full items-center justify-center">
+    <section className="flex h-full w-full items-center justify-center py-[5rem]">
       <div className="flex flex-col gap-[0.8rem]">
         <p className="text-center text-heading2-semi18 text-neutral-60">
           아직 저장된 숙소가 없어요.

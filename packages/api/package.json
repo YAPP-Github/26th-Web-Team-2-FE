@@ -21,7 +21,7 @@
   "scripts": {
     "build": "vite build",
     "check-types": "tsc --noEmit",
-    "codegen:fetch": "curl https://api.ssok.info/v3/api-docs -o ./src/api/openapi.json",
+    "codegen:fetch": "curl https://api.ssok.info/v3/api-docs -f -H \"Authorization: Basic $OPENAPI_BASIC_AUTH\" -o ./src/api/openapi.json",
     "codegen:generate": "orval --config orval.config.ts",
     "dev": "vite",
     "lint": "biome check ."

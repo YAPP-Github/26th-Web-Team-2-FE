@@ -20,10 +20,12 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="ko">
+      <head>
+        <MazeUs />
+      </head>
       <body className={Pretendard.variable}>
         <Providers>{children}</Providers>
       </body>
-      <MazeUs />
     </html>
   );
 };

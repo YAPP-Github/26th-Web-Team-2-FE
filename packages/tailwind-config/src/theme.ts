@@ -55,6 +55,10 @@ export const theme: Config["theme"] = {
       "1.4rem",
       { fontWeight: "500", lineHeight: "1.5", letterSpacing: "-0.04em" },
     ],
+    "body2-semi14": [
+      "1.4rem",
+      { fontWeight: "600", lineHeight: "1.5", letterSpacing: "-0.04em" },
+    ],
     "body2-regular14": [
       "1.4rem",
       { fontWeight: "400", lineHeight: "1.8", letterSpacing: "-0.04em" },

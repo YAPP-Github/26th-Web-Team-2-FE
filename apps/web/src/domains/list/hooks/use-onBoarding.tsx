@@ -18,12 +18,13 @@ type OnBoardStep = "init" | "saveLink" | "finish";
  * }}
  */
 const useOnboarding = () => {
-  const [onBoardStep, setOnBoardStep] = useState<OnBoardStep>("init");
+  const [onBoardStep, setOnBoardStep] = useState<OnBoardStep | null>(null);
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     const step = (localStorage.getItem("onBoardStep") as OnBoardStep) || "init";
     setOnBoardStep(step);
+    setIsVisible(step !== "finish");
   }, []);
 
   const handleOnBoardStep = () => {

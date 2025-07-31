@@ -36,7 +36,7 @@ const OnboardingBubble = () => {
     handleOnBoardStep,
     handleOnPrevStep,
   } = useOnboarding();
-  if (onBoardStep === "finish" || !isVisible) return null;
+  if (!onBoardStep || onBoardStep === "finish" || !isVisible) return null;
   const { title, description, index, total, nextBtnText } = config[onBoardStep];
 
   return (
@@ -70,7 +70,7 @@ const OnboardingBubble = () => {
                 이전으로
               </Button>
             )}
-            <Button variant="primary" size="sm" onClick={handleOnBoardStep}>
+            <Button variant="primary" size="xs" onClick={handleOnBoardStep}>
               {nextBtnText}
             </Button>
           </div>

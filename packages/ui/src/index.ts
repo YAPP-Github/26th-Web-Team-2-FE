@@ -1,5 +1,6 @@
 export { default as IcAccessibleForward } from "@/assets/icons/ic_accessible_forward.svg?react";
 export { default as IcAdd } from "@/assets/icons/ic_add.svg?react";
+export { default as IcAddBox } from "@/assets/icons/ic_add_box.svg?react";
 export { default as IcAddMemo } from "@/assets/icons/ic_add_memo.svg?react";
 export { default as IcAlert } from "@/assets/icons/ic_alert.svg?react";
 export { default as IcArrowDown } from "@/assets/icons/ic_arrow_down.svg?react";

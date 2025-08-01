@@ -1,7 +1,9 @@
 import { Graph } from "@ssok/ui";
+import type { ViewState } from "@/domains/compare/types";
 
 interface CleanlinessScoreCellProps {
   score: number;
+  state?: ViewState;
 }
 
 const CleanlinessScoreCell = ({ score }: CleanlinessScoreCellProps) => {

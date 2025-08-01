@@ -19,7 +19,7 @@ const ComparePageView = ({ compareId }: ComparePageViewProps) => {
     <main
       className={cn(
         "flex h-screen flex-col bg-neutral-98 p-[2.4rem] transition-all duration-500 ease-in-out",
-        currentView === "table" && "w-full [&+div]:w-0",
+        ["table", "edit"].includes(currentView) && "w-full [&+div]:w-0",
         currentView === "map" && "w-[min(71.6rem,100%)] shrink-0",
       )}
     >
@@ -28,16 +28,19 @@ const ComparePageView = ({ compareId }: ComparePageViewProps) => {
         creator="이지수님"
         createdAt={new Date("2025-05-22")}
         count={compareItems.length}
-        className="mb-[1.6rem]"
+        className="mb-[1.6rem] shrink-0"
       />
       <ComparePageTitle
         title="도쿄 숙소"
         currentView={currentView}
         onViewChange={handleViewChange}
-        className="mb-[3.2rem]"
+        className="mb-[3.2rem] shrink-0"
       />
 
-      <CompareTable items={compareItems} />
+      <CompareTable
+        items={compareItems}
+        state={currentView === "edit" ? "edit" : "default"}
+      />
     </main>
   );
 };

@@ -11,15 +11,16 @@ import NearbyTransportationCell from "@/domains/compare/components/compare-table
 import PhotoCell from "@/domains/compare/components/compare-table/photo-cell";
 import ReviewScoreCell from "@/domains/compare/components/compare-table/review-score-cell";
 import ReviewSummaryCell from "@/domains/compare/components/compare-table/review-summary-cell";
-import type { Accommodation } from "@/domains/compare/types";
+import type { Accommodation, ViewState } from "@/domains/compare/types";
 import { isCheckTimeExist } from "@/domains/compare/utils/check-in-out";
 
 interface CompareTableProps {
   items: Accommodation[];
+  state?: ViewState;
   className?: string;
 }
 
-const CompareTable = ({ items, className }: CompareTableProps) => {
+const CompareTable = ({ items, state, className }: CompareTableProps) => {
   const rows = [
     { key: "photo", label: null },
     { key: "reviewScore", label: "리뷰 점수" },
@@ -41,55 +42,65 @@ const CompareTable = ({ items, className }: CompareTableProps) => {
             price={item.lowestPrice}
             siteName={item.siteName || "알 수 없음"}
             logoUrl="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Booking.com_Icon_2022.svg/1200px-Booking.com_Icon_2022.svg.png"
+            state={state}
           />
         );
       case "reviewScore":
         if (!item.reviewScore) {
-          return <AddCell />;
+          return <AddCell state={state} />;
         }
-        return <ReviewScoreCell score={item.reviewScore} />;
+        return <ReviewScoreCell score={item.reviewScore} state={state} />;
       case "cleanlinessScore":
         if (!item.cleanlinessScore) {
-          return <AddCell />;
+          return <AddCell state={state} />;
         }
-        return <CleanlinessScoreCell score={item.cleanlinessScore} />;
+        return (
+          <CleanlinessScoreCell score={item.cleanlinessScore} state={state} />
+        );
       case "nearbyAttractions":
         if (!item.nearbyAttractions) {
-          return <AddCell />;
+          return <AddCell state={state} />;
         }
-        return <NearbyAttractionsCell attractions={item.nearbyAttractions} />;
+        return (
+          <NearbyAttractionsCell
+            attractions={item.nearbyAttractions}
+            state={state}
+          />
+        );
       case "amenities":
         if (!item.amenities) {
-          return <AddCell />;
+          return <AddCell state={state} />;
         }
-        return <AmenitiesCell amenities={item.amenities} />;
+        return <AmenitiesCell amenities={item.amenities} state={state} />;
       case "nearbyTransportation":
         if (!item.nearbyTransportation) {
-          return <AddCell />;
+          return <AddCell state={state} />;
         }
         return (
           <NearbyTransportationCell
             transportation={item.nearbyTransportation}
+            state={state}
           />
         );
       case "checkInOut": {
         const { checkInTime, checkOutTime } = item;
         if (!isCheckTimeExist(checkInTime) || !isCheckTimeExist(checkOutTime)) {
-          return <AddCell />;
+          return <AddCell state={state} />;
         }
 
         return (
           <CheckInOutCell
             checkInTime={checkInTime}
             checkOutTime={checkOutTime}
+            state={state}
           />
         );
       }
       case "reviewSummary":
         if (!item.reviewSummary) {
-          return <AddCell />;
+          return <AddCell state={state} />;
         }
-        return <ReviewSummaryCell summary={item.reviewSummary} />;
+        return <ReviewSummaryCell summary={item.reviewSummary} state={state} />;
       default:
         return null;
     }

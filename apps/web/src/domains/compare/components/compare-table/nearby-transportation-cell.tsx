@@ -1,13 +1,15 @@
 import { IcCar, IcWalker } from "@ssok/ui";
 import TablePlacesContents from "@/domains/compare/components/table-places-contents";
-import type { Accommodation } from "@/domains/compare/types";
+import type { Accommodation, ViewState } from "@/domains/compare/types";
 
 interface NearbyTransportationCellProps {
   transportation: NonNullable<Accommodation["nearbyTransportation"]>;
+  state?: ViewState;
 }
 
 const NearbyTransportationCell = ({
   transportation,
+  state,
 }: NearbyTransportationCellProps) => {
   const contents = transportation.map(({ name, byCar, byFoot }) => {
     return {

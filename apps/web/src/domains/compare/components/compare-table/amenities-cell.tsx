@@ -13,10 +13,11 @@ import {
   IcWifi,
 } from "@ssok/ui";
 import TableAmenitiesContents from "@/domains/compare/components/table-amenities-contents";
-import type { Accommodation } from "@/domains/compare/types";
+import type { Accommodation, ViewState } from "@/domains/compare/types";
 
 interface AmenitiesCellProps {
   amenities: NonNullable<Accommodation["amenities"]>;
+  state?: ViewState;
 }
 
 const AmenitiesCell = ({ amenities }: AmenitiesCellProps) => {

@@ -20,7 +20,7 @@ interface AmenitiesCellProps {
   state?: ViewState;
 }
 
-const AmenitiesCell = ({ amenities }: AmenitiesCellProps) => {
+const AmenitiesCell = ({ amenities, state }: AmenitiesCellProps) => {
   const available = amenities
     .filter((amenity) => amenity.available && amenity.type)
     .map((amenity) => ({
@@ -29,7 +29,7 @@ const AmenitiesCell = ({ amenities }: AmenitiesCellProps) => {
       icon: <AmenityIcon type={amenity.type || ""} />,
     }));
 
-  return <TableAmenitiesContents contents={available || []} />;
+  return <TableAmenitiesContents contents={available || []} state={state} />;
 };
 
 const AmenityIcon = ({ type }: { type: string }) => {

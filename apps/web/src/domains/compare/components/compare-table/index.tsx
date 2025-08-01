@@ -11,6 +11,7 @@ import NearbyTransportationCell from "@/domains/compare/components/compare-table
 import PhotoCell from "@/domains/compare/components/compare-table/photo-cell";
 import ReviewScoreCell from "@/domains/compare/components/compare-table/review-score-cell";
 import ReviewSummaryCell from "@/domains/compare/components/compare-table/review-summary-cell";
+import { useViewMode } from "@/domains/compare/hooks/use-view-mode";
 import type { Accommodation, ViewState } from "@/domains/compare/types";
 import { isCheckTimeExist } from "@/domains/compare/utils/check-in-out";
 
@@ -21,6 +22,8 @@ interface CompareTableProps {
 }
 
 const CompareTable = ({ items, state, className }: CompareTableProps) => {
+  const { handleViewChange } = useViewMode();
+
   const rows = [
     { key: "photo", label: null },
     { key: "reviewScore", label: "리뷰 점수" },
@@ -32,13 +35,15 @@ const CompareTable = ({ items, state, className }: CompareTableProps) => {
     // { key: "reviewSummary", label: "리뷰 요약" },
   ];
 
+  const handleAddCellClick = () => handleViewChange("edit");
+
   const renderCellContent = (item: Accommodation, rowKey: string) => {
     switch (rowKey) {
       case "photo":
         return (
           <PhotoCell
             images={item.images}
-            name={item.accommodationName}
+            name={item.accommodationName || "숙소명 없음"}
             price={item.lowestPrice}
             siteName={item.siteName || "알 수 없음"}
             logoUrl="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Booking.com_Icon_2022.svg/1200px-Booking.com_Icon_2022.svg.png"
@@ -47,19 +52,19 @@ const CompareTable = ({ items, state, className }: CompareTableProps) => {
         );
       case "reviewScore":
         if (!item.reviewScore) {
-          return <AddCell state={state} />;
+          return <AddCell state={state} onClick={handleAddCellClick} />;
         }
         return <ReviewScoreCell score={item.reviewScore} state={state} />;
       case "cleanlinessScore":
         if (!item.cleanlinessScore) {
-          return <AddCell state={state} />;
+          return <AddCell state={state} onClick={handleAddCellClick} />;
         }
         return (
           <CleanlinessScoreCell score={item.cleanlinessScore} state={state} />
         );
       case "nearbyAttractions":
         if (!item.nearbyAttractions) {
-          return <AddCell state={state} />;
+          return <AddCell state={state} onClick={handleAddCellClick} />;
         }
         return (
           <NearbyAttractionsCell
@@ -69,12 +74,12 @@ const CompareTable = ({ items, state, className }: CompareTableProps) => {
         );
       case "amenities":
         if (!item.amenities) {
-          return <AddCell state={state} />;
+          return <AddCell state={state} onClick={handleAddCellClick} />;
         }
         return <AmenitiesCell amenities={item.amenities} state={state} />;
       case "nearbyTransportation":
         if (!item.nearbyTransportation) {
-          return <AddCell state={state} />;
+          return <AddCell state={state} onClick={handleAddCellClick} />;
         }
         return (
           <NearbyTransportationCell
@@ -85,7 +90,7 @@ const CompareTable = ({ items, state, className }: CompareTableProps) => {
       case "checkInOut": {
         const { checkInTime, checkOutTime } = item;
         if (!isCheckTimeExist(checkInTime) || !isCheckTimeExist(checkOutTime)) {
-          return <AddCell state={state} />;
+          return <AddCell state={state} onClick={handleAddCellClick} />;
         }
 
         return (
@@ -98,7 +103,7 @@ const CompareTable = ({ items, state, className }: CompareTableProps) => {
       }
       case "reviewSummary":
         if (!item.reviewSummary) {
-          return <AddCell state={state} />;
+          return <AddCell state={state} onClick={handleAddCellClick} />;
         }
         return <ReviewSummaryCell summary={item.reviewSummary} state={state} />;
       default:

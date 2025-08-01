@@ -6,7 +6,7 @@ interface CleanlinessScoreCellProps {
   state?: ViewState;
 }
 
-const CleanlinessScoreCell = ({ score }: CleanlinessScoreCellProps) => {
+const CleanlinessScoreCell = ({ score, state }: CleanlinessScoreCellProps) => {
   const getLabel = (value: number): string => {
     if (value >= 9) return "매우 깨끗";
     if (value >= 7) return "깨끗";
@@ -15,7 +15,9 @@ const CleanlinessScoreCell = ({ score }: CleanlinessScoreCellProps) => {
     return "매우 나쁨";
   };
 
-  return <Graph value={score} label={getLabel(score)} showGraph />;
+  return (
+    <Graph value={score} label={getLabel(score)} showGraph state={state} />
+  );
 };
 
 export default CleanlinessScoreCell;

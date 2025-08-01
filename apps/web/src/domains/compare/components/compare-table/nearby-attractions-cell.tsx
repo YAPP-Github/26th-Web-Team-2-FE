@@ -7,7 +7,10 @@ interface NearbyAttractionsCellProps {
   state?: ViewState;
 }
 
-const NearbyAttractionsCell = ({ attractions }: NearbyAttractionsCellProps) => {
+const NearbyAttractionsCell = ({
+  attractions,
+  state,
+}: NearbyAttractionsCellProps) => {
   const contents = attractions.map(({ name, byCar, byFoot }) => {
     return {
       text: name || "",
@@ -16,7 +19,7 @@ const NearbyAttractionsCell = ({ attractions }: NearbyAttractionsCellProps) => {
     };
   });
 
-  return <TablePlacesContents contents={contents} />;
+  return <TablePlacesContents contents={contents} state={state} />;
 };
 
 export default NearbyAttractionsCell;

@@ -19,7 +19,7 @@ const NearbyTransportationCell = ({
     };
   });
 
-  return <TablePlacesContents contents={contents} />;
+  return <TablePlacesContents contents={contents} state={state} />;
 };
 
 export default NearbyTransportationCell;

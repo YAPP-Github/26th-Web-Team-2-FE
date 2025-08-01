@@ -38,6 +38,8 @@ const CompareTable = ({ items, className }: CompareTableProps) => {
             images={item.images}
             name={item.accommodationName}
             price={item.lowestPrice}
+            siteName={item.siteName || "알 수 없음"}
+            logoUrl="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Booking.com_Icon_2022.svg/1200px-Booking.com_Icon_2022.svg.png"
           />
         );
       case "reviewScore":

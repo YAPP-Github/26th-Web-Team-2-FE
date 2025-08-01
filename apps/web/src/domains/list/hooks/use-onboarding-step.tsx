@@ -24,7 +24,7 @@ const useOnboarding = () => {
   useEffect(() => {
     try {
       const step =
-        (localStorage.getItem("onboardStep") as OnboardStep) || "init";
+        (localStorage.getItem("onboardingStep") as OnboardStep) || "init";
       setOnboardStep(step);
       setIsVisible(step !== "finish");
     } catch (_error) {
@@ -36,11 +36,11 @@ const useOnboarding = () => {
   const handleOnboardStep = () => {
     switch (onboardStep) {
       case "init":
-        localStorage.setItem("onboardStep", "saveLink");
+        localStorage.setItem("onboardingStep", "saveLink");
         setOnboardStep("saveLink");
         break;
       case "saveLink":
-        localStorage.setItem("onboardStep", "finish");
+        localStorage.setItem("onboardingStep", "finish");
         setOnboardStep("finish");
         break;
       default:
@@ -51,7 +51,7 @@ const useOnboarding = () => {
   const handleOnPrevStep = () => {
     switch (onboardStep) {
       case "saveLink":
-        localStorage.setItem("onboardStep", "init");
+        localStorage.setItem("onboardingStep", "init");
         setOnboardStep("init");
         break;
       default:

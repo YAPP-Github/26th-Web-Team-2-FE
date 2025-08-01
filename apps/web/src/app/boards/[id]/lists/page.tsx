@@ -41,7 +41,6 @@ const BoardsIdListsPage = () => {
 
   const { isDragging, onDragEnter, onDragOver, onDragLeave, onDrop } =
     useDragAndDrop((url) => {
-      console.log("드롭된 URL:", url); // 🔍 찍히는지 확인
       setValue("link", url);
     });
 

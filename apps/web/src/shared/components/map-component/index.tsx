@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@ssok/ui";
 import GoogleMapReact from "google-map-react";
 import MapPin from "@/shared/components/map-component/map-pin";
 import { calculateCenter } from "@/shared/utils/map";
@@ -18,8 +19,8 @@ const locMock = [
   { id: 5, latitude: 37.4563, longitude: 126.7052, label: "인천 어쩌구 숙소" },
 ];
 
-const MapComponent = () => (
-  <div className="relative h-screen w-full">
+const MapComponent = ({ className }: { className?: string }) => (
+  <div className={cn("relative h-screen w-full", className)}>
     <GoogleMapReact
       bootstrapURLKeys={{
         key: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY,

@@ -1,10 +1,12 @@
 "use client";
 import { cn, SolidExpand } from "@ssok/ui";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useAccommodationList from "@/app/api/accomodation/use-accomodation-list";
 import HeaderSection from "@/domains/list/components/header-section";
 import LinkInputSection from "@/domains/list/components/link-input-section";
 import PlaceListSection from "@/domains/list/components/place-list-section";
+import { useAccommodationContext } from "@/domains/list/contexts/accomodation-context";
 import useBoardPanel from "@/domains/list/hooks/use-board-panel";
 import useDragAndDrop from "@/domains/list/hooks/use-drag-and-drop";
 import useInputPanel from "@/domains/list/hooks/use-input-panel";
@@ -43,6 +45,21 @@ const BoardsIdListsPage = () => {
     useDragAndDrop((url) => {
       setValue("link", url);
     });
+
+  const { data } = useAccommodationList({
+    boardId: 1,
+    userId: undefined,
+    size: 10,
+    sort: "saved_at_desc",
+  });
+
+  const { setAccommodations } = useAccommodationContext();
+
+  useEffect(() => {
+    const all =
+      data?.pages.flatMap((page) => page.result?.accommodations || []) ?? [];
+    setAccommodations(all);
+  }, [data, setAccommodations]);
 
   return (
     <main

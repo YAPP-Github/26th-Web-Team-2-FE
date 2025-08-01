@@ -17,6 +17,7 @@ const PlaceListSection = ({
   const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
   const memberData = useMemberData();
   const accommodationData = useAccommodationData();
+
   const handlePlaceSelect = (placeName: string) => {
     setSelectedPlaces((prev) =>
       prev.includes(placeName)

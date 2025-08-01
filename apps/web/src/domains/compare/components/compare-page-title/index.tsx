@@ -1,10 +1,12 @@
 import { Button, cn, IcEdit, IcMap, IcSave, IcShare, IcTable } from "@ssok/ui";
 import type { ViewMode } from "@/domains/compare/hooks/use-view-mode";
+import PageTitle from "./page-title";
 
 interface ComparePageTitleProps {
   title: string;
   currentView: ViewMode;
   onViewChange: (view: ViewMode) => void;
+  onTitleChange?: (newTitle: string) => void;
   className?: string;
 }
 
@@ -12,13 +14,16 @@ const ComparePageTitle = ({
   title,
   currentView,
   onViewChange,
+  onTitleChange,
   className,
 }: ComparePageTitleProps) => {
   return (
-    <div
-      className={cn("flex items-center justify-between px-[0.8rem]", className)}
-    >
-      <h1 className="text-neutral-30 text-title2-medi28">{title}</h1>
+    <div className={cn("flex items-center justify-between", className)}>
+      <PageTitle
+        title={title}
+        isEditingAvailable={currentView === "edit"}
+        onTitleChange={onTitleChange}
+      />
       <div className="flex gap-[0.8rem]">
         {currentView === "table" && (
           <>

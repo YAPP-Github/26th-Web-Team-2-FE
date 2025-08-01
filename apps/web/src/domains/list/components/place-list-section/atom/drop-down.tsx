@@ -1,26 +1,21 @@
 import { cn, IcArrowDown, IcCheckFill } from "@ssok/ui";
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import { filter } from "@/domains/list/hooks/use-dropdown";
 import { useOutsideClick } from "@/domains/list/hooks/use-outside-click";
 
-const filter = [
-  { id: "saved_at_des", name: "저장순" },
-  { id: "price_asc", name: "최저가순" },
-];
+type DropDownProps = {
+  handleFilterSelect: (id: string) => void;
+  handleToggleDropdown: () => void;
+  isOpen: boolean;
+  selectedFilter: string;
+};
 
-const DropDown = () => {
-  const [selectedFilter, setSelectedFilter] =
-    useState<(typeof filter)[number]["id"]>("saved_at_des");
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleFilterSelect = (id: (typeof filter)[number]["id"]) => {
-    setSelectedFilter(id);
-    setIsOpen(false);
-  };
-
-  const handleToggleDropdown = () => {
-    setIsOpen((prev) => !prev);
-  };
-
+const DropDown = ({
+  handleFilterSelect,
+  handleToggleDropdown,
+  isOpen,
+  selectedFilter,
+}: DropDownProps) => {
   const dropDownRef = useRef<HTMLDivElement>(null);
   useOutsideClick(dropDownRef, handleToggleDropdown, isOpen);
 

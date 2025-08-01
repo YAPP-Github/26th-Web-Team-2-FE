@@ -2,9 +2,11 @@
 import type { AccommodationResponse } from "@ssok/api/schemas";
 import { createContext, useContext, useState } from "react";
 
+type NonNullableAccommodation = NonNullable<AccommodationResponse>;
+
 const AccommodationContext = createContext<{
-  accommodations: AccommodationResponse[];
-  setAccommodations: (list: AccommodationResponse[]) => void;
+  accommodations: NonNullableAccommodation[];
+  setAccommodations: (list: NonNullableAccommodation[]) => void;
 }>({
   accommodations: [],
   setAccommodations: () => {},

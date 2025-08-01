@@ -41,6 +41,7 @@ const LinkInputSection = ({
   maxChars,
 }: LinkInputSectionProps) => {
   useEffect(() => {
+    if (localStorage.getItem("onboardingStep") !== "finished") return;
     let timer: ReturnType<typeof setTimeout> | null = null;
 
     const handleScroll = () => {

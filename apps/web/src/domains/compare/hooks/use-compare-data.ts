@@ -165,35 +165,6 @@ const mockCompareData: Accommodation[] = [
     ],
     reviewScore: 9.2,
     cleanlinessScore: 9.5,
-    nearbyAttractions: [
-      {
-        name: "시부야",
-        type: "DISTRICT",
-        latitude: 35.658,
-        longitude: 139.7016,
-        distance: "100m",
-        byFoot: { distance: "100m", time: "1분" },
-        byCar: { distance: "100m", time: "1분" },
-      },
-      {
-        name: "하라주쿠",
-        type: "SHOPPING",
-        latitude: 35.6702,
-        longitude: 139.7038,
-        distance: "1.2km",
-        byFoot: { distance: "1.2km", time: "15분" },
-        byCar: { distance: "1.2km", time: "5분" },
-      },
-      {
-        name: "메이지신궁",
-        type: "SHRINE",
-        latitude: 35.6764,
-        longitude: 139.6993,
-        distance: "2km",
-        byFoot: { distance: "2km", time: "25분" },
-        byCar: { distance: "2km", time: "8분" },
-      },
-    ],
     amenities: [
       {
         type: "무료 와이파이",
@@ -296,8 +267,6 @@ const mockCompareData: Accommodation[] = [
         description: "",
       },
     ],
-    checkInTime: { checkInTimeFrom: "16:00", checkInTimeTo: "24:00" },
-    checkOutTime: { checkInTimeFrom: "00:00", checkInTimeTo: "10:00" },
     nearbyTransportation: [
       {
         name: "신주쿠역",

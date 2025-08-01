@@ -16,12 +16,12 @@ import TableAmenitiesContents from "@/domains/compare/components/table-amenities
 import type { Accommodation } from "@/domains/compare/types";
 
 interface AmenitiesCellProps {
-  amenities: Accommodation["amenities"];
+  amenities: NonNullable<Accommodation["amenities"]>;
 }
 
 const AmenitiesCell = ({ amenities }: AmenitiesCellProps) => {
   const available = amenities
-    ?.filter((amenity) => amenity.available && amenity.type)
+    .filter((amenity) => amenity.available && amenity.type)
     .map((amenity) => ({
       text: amenity.type || "",
       label: amenity.description || "",

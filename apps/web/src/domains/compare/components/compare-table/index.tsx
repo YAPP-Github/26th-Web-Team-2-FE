@@ -2,6 +2,7 @@
 
 import { cn } from "@ssok/ui";
 import { Fragment } from "react";
+import AddCell from "@/domains/compare/components/compare-table/add-cell";
 import AmenitiesCell from "@/domains/compare/components/compare-table/amenities-cell";
 import CheckInOutCell from "@/domains/compare/components/compare-table/check-in-out-cell";
 import CleanlinessScoreCell from "@/domains/compare/components/compare-table/cleanliness-score-cell";
@@ -30,6 +31,19 @@ const CompareTable = ({ items, className }: CompareTableProps) => {
     { key: "reviewSummary", label: "리뷰 요약" },
   ];
 
+  const getGridCols = (itemCount: number) => {
+    switch (itemCount) {
+      case 1:
+        return "grid-cols-1";
+      case 2:
+        return "grid-cols-2";
+      case 3:
+        return "grid-cols-3";
+      default:
+        return "grid-cols-4";
+    }
+  };
+
   const renderCellContent = (item: Accommodation, rowKey: string) => {
     switch (rowKey) {
       case "photo":
@@ -43,14 +57,29 @@ const CompareTable = ({ items, className }: CompareTableProps) => {
           />
         );
       case "reviewScore":
+        if (!item.reviewScore) {
+          return <AddCell />;
+        }
         return <ReviewScoreCell score={item.reviewScore} />;
       case "cleanlinessScore":
+        if (!item.cleanlinessScore) {
+          return <AddCell />;
+        }
         return <CleanlinessScoreCell score={item.cleanlinessScore} />;
       case "nearbyAttractions":
+        if (!item.nearbyAttractions) {
+          return <AddCell />;
+        }
         return <NearbyAttractionsCell attractions={item.nearbyAttractions} />;
       case "amenities":
+        if (!item.amenities) {
+          return <AddCell />;
+        }
         return <AmenitiesCell amenities={item.amenities} />;
       case "nearbyTransportation":
+        if (!item.nearbyTransportation) {
+          return <AddCell />;
+        }
         return (
           <NearbyTransportationCell
             transportation={item.nearbyTransportation}
@@ -59,7 +88,7 @@ const CompareTable = ({ items, className }: CompareTableProps) => {
       case "checkInOut": {
         const { checkInTime, checkOutTime } = item;
         if (!isCheckTimeExist(checkInTime) || !isCheckTimeExist(checkOutTime)) {
-          return null;
+          return <AddCell />;
         }
 
         return (
@@ -70,6 +99,9 @@ const CompareTable = ({ items, className }: CompareTableProps) => {
         );
       }
       case "reviewSummary":
+        if (!item.reviewSummary) {
+          return <AddCell />;
+        }
         return <ReviewSummaryCell summary={item.reviewSummary} />;
       default:
         return null;
@@ -91,9 +123,9 @@ const CompareTable = ({ items, className }: CompareTableProps) => {
               {row.label}
             </h3>
           )}
-          <div className="flex gap-[2.4rem]">
+          <div className={cn("grid gap-[2.4rem]", getGridCols(items.length))}>
             {items.map((item) => (
-              <div key={`${row.key}-${item.id}`} className="flex-1">
+              <div key={`${row.key}-${item.id}`}>
                 {renderCellContent(item, row.key)}
               </div>
             ))}

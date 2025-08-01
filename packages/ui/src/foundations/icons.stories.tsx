@@ -30,6 +30,7 @@ import IcLuggage from "@/assets/icons/ic_luggage.svg?react";
 import IcMap from "@/assets/icons/ic_map.svg?react";
 import IcMemo from "@/assets/icons/ic_memo.svg?react";
 import IcPets from "@/assets/icons/ic_pets.svg?react";
+import IcPlusCircle from "@/assets/icons/ic_plus_circle.svg?react";
 import IcPointOfSale from "@/assets/icons/ic_point_of_sale.svg?react";
 import IcPool from "@/assets/icons/ic_pool.svg?react";
 import IcRestaurant from "@/assets/icons/ic_restaurant.svg?react";
@@ -78,6 +79,7 @@ const icons = {
   IcMemo,
   IcPets,
   IcPointOfSale,
+  IcPlusCircle,
   IcPool,
   IcRestaurant,
   IcRoundPlus,

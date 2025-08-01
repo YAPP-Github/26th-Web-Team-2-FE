@@ -3,6 +3,7 @@ import { useState } from "react";
 import HeaderSection from "@/domains/list/components/header-section";
 import LinkInputSection from "@/domains/list/components/link-input-section";
 import PlaceListSection from "@/domains/list/components/place-list-section";
+import useDragAndDrop from "@/domains/list/hooks/use-drag-and-drop";
 import useRegisterUrlInput from "@/domains/list/hooks/use-register-url-input";
 
 const BoardsIdListsPage = () => {
@@ -34,14 +35,29 @@ const BoardsIdListsPage = () => {
     handleMemoInputToggle,
     memoText,
     maxChars,
+    setValue,
+    watch,
   } = useRegisterUrlInput();
 
+  const { isDragging, onDragEnter, onDragOver, onDragLeave, onDrop } =
+    useDragAndDrop((url) => {
+      console.log("드롭된 URL:", url); // 🔍 찍히는지 확인
+      setValue("link", url);
+    });
+
   return (
-    <main className="flex w-full flex-1 flex-col gap-[1.6rem] bg-neutral-98 p-[2.4rem] ">
+    <main
+      onDragEnter={onDragEnter}
+      onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
+      onDrop={onDrop}
+      className="flex w-full flex-1 flex-col gap-[1.6rem] bg-neutral-98 p-[2.4rem] "
+    >
       {/* 헤더 */}
       <HeaderSection />
       {/* 링크 저장 */}
       <LinkInputSection
+        isDragging={isDragging}
         isInputExpanded={isInputExpanded}
         isMemoInputVisible={isMemoInputVisible}
         isTooltipVisible={isTooltipVisible}
@@ -50,6 +66,7 @@ const BoardsIdListsPage = () => {
         handleMemoInputToggle={handleMemoInputToggle}
         handleTooltipvisible={handleTooltipvisible}
         register={register}
+        watch={watch}
         memoText={memoText}
         maxChars={maxChars}
       />

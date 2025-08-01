@@ -14,7 +14,7 @@ const useRegisterUrlInput = () => {
     setIsMemoInputVisible(!isMemoInputVisible);
   };
 
-  const { register, handleSubmit, watch } = useForm<FormData>();
+  const { register, handleSubmit, watch, setValue } = useForm<FormData>();
 
   const memoText = watch("memo") || "";
 
@@ -25,6 +25,8 @@ const useRegisterUrlInput = () => {
     register,
     handleSubmit,
     memoText,
+    setValue,
+    watch,
   };
 };
 

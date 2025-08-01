@@ -33,7 +33,7 @@ const BoardsIdListsPage = () => {
   const {
     isMemoInputVisible,
     register,
-    // handleSubmit,
+    handleSubmit,
     handleMemoInputToggle,
     memoText,
     maxChars,
@@ -96,6 +96,7 @@ const BoardsIdListsPage = () => {
               handleMemoInputToggle={handleMemoInputToggle}
               handleTooltipvisible={handleTooltipvisible}
               register={register}
+              handleSubmit={handleSubmit}
               memoText={memoText}
               maxChars={maxChars}
             />

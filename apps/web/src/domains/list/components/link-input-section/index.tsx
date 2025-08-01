@@ -1,6 +1,12 @@
+import { useRegisterAccommodationCard } from "@ssok/api";
 import { cn, IcLink } from "@ssok/ui";
 import { useEffect } from "react";
-import type { UseFormRegister, UseFormWatch } from "react-hook-form";
+import type {
+  FieldErrors,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormWatch,
+} from "react-hook-form";
 import ButtonContainer from "./atom/button-container";
 import LinkInputContainer from "./atom/link-input-container";
 import OnboardingBubble from "./atom/onboarding-bubble";
@@ -22,6 +28,7 @@ type LinkInputSectionProps = {
   handleTooltipvisible: (visible: boolean) => void;
   register: UseFormRegister<FormData>;
   watch: UseFormWatch<FormData>;
+  handleSubmit: UseFormHandleSubmit<FormData>;
   memoText: string;
   maxChars: number;
 };
@@ -37,11 +44,13 @@ const LinkInputSection = ({
   handleTooltipvisible,
   register,
   watch,
+  handleSubmit,
   memoText,
   maxChars,
 }: LinkInputSectionProps) => {
+  const { mutate, isPending } = useRegisterAccommodationCard();
   useEffect(() => {
-    if (localStorage.getItem("onboardingStep") !== "finished") return;
+    if (localStorage.getItem("onboardingStep") !== "finish") return;
     let timer: ReturnType<typeof setTimeout> | null = null;
 
     const handleScroll = () => {
@@ -63,6 +72,26 @@ const LinkInputSection = ({
       if (timer) clearTimeout(timer);
     };
   }, [isInputExpanded, handleCloseInputExpansion]);
+
+  const onValid = (data: FormData) => {
+    // TODO: boardId와 userId는 추후에 실제 값으로 변경
+    mutate(
+      {
+        data: { url: data.link, memo: data.memo, boardId: 1, userId: 1 },
+      },
+      {
+        onSuccess: () => {
+          window.location.reload();
+        },
+      },
+    );
+    console.log("폼 제출 성공:", data);
+  };
+
+  const onInvalid = (errors: FieldErrors<FormData>) => {
+    alert("url은 필수로 입력해야 합니다! ✈️");
+    console.error("폼 유효성 오류:", errors);
+  };
 
   return (
     <section
@@ -86,7 +115,10 @@ const LinkInputSection = ({
       >
         {isInputExpanded && (
           // TODO: submit 이벤트 핸들러 추가
-          <form className="flex flex-col gap-[1.6rem]" onSubmit={() => {}}>
+          <form
+            className="flex flex-col gap-[1.6rem]"
+            onSubmit={handleSubmit(onValid, onInvalid)}
+          >
             {/* 링크 저장_입력란 */}
             <LinkInputContainer register={register} watch={watch} />
             {/* 링크 저장_버튼 */}
@@ -126,6 +158,13 @@ const LinkInputSection = ({
             </p>
           </div>
         </>
+      )}
+      {isPending && (
+        <main className="absolute z-10 flex h-full w-full items-center justify-center">
+          <div
+            className={`h-[2.4rem] w-[2.4rem] animate-spin rounded-full border-4 border-t-transparent bg-primary`}
+          />
+        </main>
       )}
     </section>
   );

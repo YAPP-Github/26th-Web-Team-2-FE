@@ -28,6 +28,7 @@ export { default as IcLocation } from "@/assets/icons/ic_location.svg?react";
 export { default as IcLuggage } from "@/assets/icons/ic_luggage.svg?react";
 export { default as IcMap } from "@/assets/icons/ic_map.svg?react";
 export { default as IcMemo } from "@/assets/icons/ic_memo.svg?react";
+export { default as IcMemoFilled } from "@/assets/icons/ic_memo_filled.svg?react";
 export { default as IcPets } from "@/assets/icons/ic_pets.svg?react";
 export { default as IcPointOfSale } from "@/assets/icons/ic_point_of_sale.svg?react";
 export { default as IcPool } from "@/assets/icons/ic_pool.svg?react";

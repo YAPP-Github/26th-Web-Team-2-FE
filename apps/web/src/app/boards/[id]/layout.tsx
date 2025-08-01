@@ -6,7 +6,7 @@ import SideNavigation from "@/shared/components/side-navigation";
 const BoardsIdLayout = async ({ children }: PropsWithChildren) => {
   return (
     <AccommodationProvider>
-      <div className="flex h-screen">
+      <div className="flex h-screen overflow-hidden">
         <SideNavigation />
         {children}
         <MapComponent />

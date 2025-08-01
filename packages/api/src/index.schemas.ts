@@ -171,39 +171,6 @@ export interface StandardResponseAccommodationRegisterResponse {
   result?: AccommodationRegisterResponse;
 }
 
-/**
- * 응답 유형
- */
-export type StandardResponseUserResponseResponseType = "SUCCESS" | "ERROR";
-/**
- * API 응답의 표준 형식을 정의하는 클래스
- */
-export interface StandardResponseUserResponse {
-  /** 응답 유형 */
-  responseType?: StandardResponseUserResponseResponseType;
-  /** 응답 결과 데이터 */
-  result?: UserResponse;
-}
-
-export interface UserResponse {
-  id?: number;
-  name?: string;
-}
-
-/**
- * 응답 유형
- */
-export type StandardResponseStringResponseType = "SUCCESS" | "ERROR";
-/**
- * API 응답의 표준 형식을 정의하는 클래스
- */
-export interface StandardResponseString {
-  /** 응답 유형 */
-  responseType?: StandardResponseStringResponseType;
-  /** 응답 결과 데이터 */
-  result?: string;
-}
-
 export type ComparisonFactorListFactorsItem =
   | "PARKING"
   | "BREAKFAST"

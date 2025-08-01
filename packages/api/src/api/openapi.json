@@ -11,7 +11,6 @@
   "tags": [
     { "name": "숙소 API", "description": "숙소 관련 API" },
     { "name": "OAUTH API", "description": "소셜 로그인 API" },
-    { "name": "HEALTH CHECK API", "description": "헬스 체크 테스트 API" },
     { "name": "비교표 API", "description": "비교표 관련 API" }
   ],
   "paths": {
@@ -185,100 +184,6 @@
         "responses": {
           "302": {
             "description": "카카오 인가 페이지로 리다이렉트됩니다. 인가 성공 시 쿠키에 ACCESS TOKEN과 REFRESH TOKEN이 설정됩니다."
-          }
-        }
-      }
-    },
-    "/api/mock/user/{id}": {
-      "get": {
-        "tags": ["mock-api-controller"],
-        "operationId": "getUser",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/StandardResponseUserResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/mock/success": {
-      "get": {
-        "tags": ["mock-api-controller"],
-        "operationId": "success",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/StandardResponseString"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/mock/exception-error": {
-      "get": {
-        "tags": ["mock-api-controller"],
-        "operationId": "exceptionError",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/StandardResponseString"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/mock/custom-error": {
-      "get": {
-        "tags": ["mock-api-controller"],
-        "operationId": "customError",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/StandardResponseString"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/health": {
-      "get": {
-        "tags": ["HEALTH CHECK API"],
-        "summary": "연결 테스트",
-        "description": "...",
-        "operationId": "healthCheck",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "*/*": { "schema": { "type": "string" } } }
           }
         }
       }
@@ -632,42 +537,6 @@
             "$ref": "#/components/schemas/AccommodationRegisterResponse",
             "description": "응답 결과 데이터"
           }
-        }
-      },
-      "StandardResponseUserResponse": {
-        "type": "object",
-        "description": "API 응답의 표준 형식을 정의하는 클래스",
-        "properties": {
-          "responseType": {
-            "type": "string",
-            "description": "응답 유형",
-            "enum": ["SUCCESS", "ERROR"],
-            "example": "SUCCESS"
-          },
-          "result": {
-            "$ref": "#/components/schemas/UserResponse",
-            "description": "응답 결과 데이터"
-          }
-        }
-      },
-      "UserResponse": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "name": { "type": "string" }
-        }
-      },
-      "StandardResponseString": {
-        "type": "object",
-        "description": "API 응답의 표준 형식을 정의하는 클래스",
-        "properties": {
-          "responseType": {
-            "type": "string",
-            "description": "응답 유형",
-            "enum": ["SUCCESS", "ERROR"],
-            "example": "SUCCESS"
-          },
-          "result": { "type": "string", "description": "응답 결과 데이터" }
         }
       },
       "ComparisonFactorList": {

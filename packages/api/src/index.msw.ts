@@ -17,8 +17,6 @@ import type {
   StandardResponseComparisonFactorList,
   StandardResponseComparisonTableResponse,
   StandardResponseCreateComparisonTableResponse,
-  StandardResponseString,
-  StandardResponseUserResponse,
 } from "./index.schemas";
 
 export const getGetComparisonTableResponseMock = (
@@ -1186,77 +1184,6 @@ export const getRegisterAccommodationCardResponseMock = (
   ...overrideResponse,
 });
 
-export const getGetUserResponseMock = (
-  overrideResponse: Partial<StandardResponseUserResponse> = {},
-): StandardResponseUserResponse => ({
-  responseType: faker.helpers.arrayElement([
-    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
-    undefined,
-  ]),
-  result: faker.helpers.arrayElement([
-    {
-      id: faker.helpers.arrayElement([
-        faker.number.int({
-          min: undefined,
-          max: undefined,
-          multipleOf: undefined,
-        }),
-        undefined,
-      ]),
-      name: faker.helpers.arrayElement([
-        faker.string.alpha({ length: { min: 10, max: 20 } }),
-        undefined,
-      ]),
-    },
-    undefined,
-  ]),
-  ...overrideResponse,
-});
-
-export const getSuccessResponseMock = (
-  overrideResponse: Partial<StandardResponseString> = {},
-): StandardResponseString => ({
-  responseType: faker.helpers.arrayElement([
-    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
-    undefined,
-  ]),
-  result: faker.helpers.arrayElement([
-    faker.string.alpha({ length: { min: 10, max: 20 } }),
-    undefined,
-  ]),
-  ...overrideResponse,
-});
-
-export const getExceptionErrorResponseMock = (
-  overrideResponse: Partial<StandardResponseString> = {},
-): StandardResponseString => ({
-  responseType: faker.helpers.arrayElement([
-    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
-    undefined,
-  ]),
-  result: faker.helpers.arrayElement([
-    faker.string.alpha({ length: { min: 10, max: 20 } }),
-    undefined,
-  ]),
-  ...overrideResponse,
-});
-
-export const getCustomErrorResponseMock = (
-  overrideResponse: Partial<StandardResponseString> = {},
-): StandardResponseString => ({
-  responseType: faker.helpers.arrayElement([
-    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
-    undefined,
-  ]),
-  result: faker.helpers.arrayElement([
-    faker.string.alpha({ length: { min: 10, max: 20 } }),
-    undefined,
-  ]),
-  ...overrideResponse,
-});
-
-export const getHealthCheckResponseMock = (): string => faker.word.sample();
-
 export const getGetComparisonFactorListResponseMock = (
   overrideResponse: Partial<StandardResponseComparisonFactorList> = {},
 ): StandardResponseComparisonFactorList => ({
@@ -2121,123 +2048,6 @@ export const getRedirectToKakaoAuthorizationMockHandler = (
   });
 };
 
-export const getGetUserMockHandler = (
-  overrideResponse?:
-    | StandardResponseUserResponse
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) =>
-        | Promise<StandardResponseUserResponse>
-        | StandardResponseUserResponse),
-) => {
-  return http.get("*/api/mock/user/:id", async (info) => {
-    await delay(500);
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getGetUserResponseMock(),
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } },
-    );
-  });
-};
-
-export const getSuccessMockHandler = (
-  overrideResponse?:
-    | StandardResponseString
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<StandardResponseString> | StandardResponseString),
-) => {
-  return http.get("*/api/mock/success", async (info) => {
-    await delay(500);
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getSuccessResponseMock(),
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } },
-    );
-  });
-};
-
-export const getExceptionErrorMockHandler = (
-  overrideResponse?:
-    | StandardResponseString
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<StandardResponseString> | StandardResponseString),
-) => {
-  return http.get("*/api/mock/exception-error", async (info) => {
-    await delay(500);
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getExceptionErrorResponseMock(),
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } },
-    );
-  });
-};
-
-export const getCustomErrorMockHandler = (
-  overrideResponse?:
-    | StandardResponseString
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<StandardResponseString> | StandardResponseString),
-) => {
-  return http.get("*/api/mock/custom-error", async (info) => {
-    await delay(500);
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getCustomErrorResponseMock(),
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } },
-    );
-  });
-};
-
-export const getHealthCheckMockHandler = (
-  overrideResponse?:
-    | string
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<string> | string),
-) => {
-  return http.get("*/api/health", async (info) => {
-    await delay(500);
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getHealthCheckResponseMock(),
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } },
-    );
-  });
-};
-
 export const getGetComparisonFactorListMockHandler = (
   overrideResponse?:
     | StandardResponseComparisonFactorList
@@ -2344,11 +2154,6 @@ export const getYapp26Web2Mock = () => [
   getCreateComparisonTableMockHandler(),
   getRegisterAccommodationCardMockHandler(),
   getRedirectToKakaoAuthorizationMockHandler(),
-  getGetUserMockHandler(),
-  getSuccessMockHandler(),
-  getExceptionErrorMockHandler(),
-  getCustomErrorMockHandler(),
-  getHealthCheckMockHandler(),
   getGetComparisonFactorListMockHandler(),
   getGetAccommodationByIdMockHandler(),
   getGetAccommodationByBoardIdAndUserIdMockHandler(),

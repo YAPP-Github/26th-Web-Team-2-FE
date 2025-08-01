@@ -1,9 +1,10 @@
 import { IcCar, IcWalker } from "@ssok/ui";
 import TablePlacesContents from "@/domains/compare/components/table-places-contents";
-import type { Accommodation } from "@/domains/compare/types";
+import type { Accommodation, ViewState } from "@/domains/compare/types";
 
 interface NearbyAttractionsCellProps {
   attractions: NonNullable<Accommodation["nearbyAttractions"]>;
+  state?: ViewState;
 }
 
 const NearbyAttractionsCell = ({ attractions }: NearbyAttractionsCellProps) => {

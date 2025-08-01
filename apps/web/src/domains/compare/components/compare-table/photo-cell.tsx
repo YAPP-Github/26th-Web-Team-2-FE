@@ -1,4 +1,5 @@
 import { IcInfo } from "@ssok/ui";
+import type { ViewState } from "@/domains/compare/types";
 import Photo from "@/shared/components/photo";
 
 interface PhotoCellProps {
@@ -7,6 +8,7 @@ interface PhotoCellProps {
   price?: number;
   siteName?: string;
   logoUrl?: string;
+  state?: ViewState;
 }
 
 const PhotoCell = ({

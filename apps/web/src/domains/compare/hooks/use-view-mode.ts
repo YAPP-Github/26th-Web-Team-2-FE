@@ -1,7 +1,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
-export type ViewMode = "table" | "map";
+export type ViewMode = "table" | "map" | "edit";
 
 export const useViewMode = () => {
   const router = useRouter();
@@ -9,7 +9,7 @@ export const useViewMode = () => {
 
   const currentView: ViewMode = useMemo(() => {
     const view = searchParams.get("view");
-    if (view === "table" || view === "map") {
+    if (view === "table" || view === "map" || view === "edit") {
       return view;
     }
     return "table";

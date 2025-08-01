@@ -1,4 +1,4 @@
-import { Button, cn, IcEdit, IcMap, IcShare, IcTable } from "@ssok/ui";
+import { Button, cn, IcEdit, IcMap, IcSave, IcShare, IcTable } from "@ssok/ui";
 import type { ViewMode } from "@/domains/compare/hooks/use-view-mode";
 
 interface ComparePageTitleProps {
@@ -21,41 +21,89 @@ const ComparePageTitle = ({
       <h1 className="text-neutral-30 text-title2-medi28">{title}</h1>
       <div className="flex gap-[0.8rem]">
         {currentView === "table" && (
-          <Button
-            size="lg"
-            variant="text"
-            icon={<IcMap width="20" height="20" />}
-            onClick={() => onViewChange("map")}
-          >
-            지도뷰
-          </Button>
+          <>
+            <MapButton onClick={() => onViewChange("map")} />
+            <EditButton onClick={() => onViewChange("edit")} />
+            <ShareButton onClick={() => {}} />
+          </>
         )}
         {currentView === "map" && (
-          <Button
-            size="lg"
-            variant="text"
-            icon={<IcTable width="20" height="20" />}
-            onClick={() => onViewChange("table")}
-          >
-            표만보기
-          </Button>
+          <>
+            <TableButton onClick={() => onViewChange("table")} />
+            <EditButton onClick={() => onViewChange("edit")} />
+            <ShareButton onClick={() => {}} />
+          </>
         )}
-        <Button
-          size="lg"
-          variant="secondary"
-          icon={<IcEdit width="20" height="20" />}
-        >
-          편집하기
-        </Button>
-        <Button
-          size="lg"
-          variant="primary"
-          icon={<IcShare width="20" height="20" />}
-        >
-          공유하기
-        </Button>
+        {currentView === "edit" && (
+          <SaveButton onClick={() => onViewChange("table")} />
+        )}
       </div>
     </div>
+  );
+};
+
+const MapButton = ({ onClick }: { onClick: () => void }) => {
+  return (
+    <Button
+      size="lg"
+      variant="text"
+      icon={<IcMap width="20" height="20" />}
+      onClick={onClick}
+    >
+      지도뷰
+    </Button>
+  );
+};
+
+const EditButton = ({ onClick }: { onClick: () => void }) => {
+  return (
+    <Button
+      size="lg"
+      variant="secondary"
+      icon={<IcEdit width="20" height="20" />}
+      onClick={onClick}
+    >
+      편집하기
+    </Button>
+  );
+};
+
+const ShareButton = ({ onClick }: { onClick: () => void }) => {
+  return (
+    <Button
+      size="lg"
+      variant="primary"
+      icon={<IcShare width="20" height="20" />}
+      onClick={onClick}
+    >
+      공유하기
+    </Button>
+  );
+};
+
+const TableButton = ({ onClick }: { onClick: () => void }) => {
+  return (
+    <Button
+      size="lg"
+      variant="text"
+      icon={<IcTable width="20" height="20" />}
+      onClick={onClick}
+    >
+      표만보기
+    </Button>
+  );
+};
+
+const SaveButton = ({ onClick }: { onClick: () => void }) => {
+  return (
+    <Button
+      size="lg"
+      variant="primary"
+      icon={<IcSave width="20" height="20" />}
+      onClick={onClick}
+    >
+      저장하기
+    </Button>
   );
 };
 

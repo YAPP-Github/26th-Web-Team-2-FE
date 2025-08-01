@@ -1,5 +1,8 @@
+import type { ViewState } from "@/domains/compare/types";
+
 interface ReviewSummaryCellProps {
   summary: string;
+  state?: ViewState;
 }
 
 const ReviewSummaryCell = ({ summary }: ReviewSummaryCellProps) => {

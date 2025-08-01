@@ -1,7 +1,9 @@
 import { Graph, IcStarFull } from "@ssok/ui";
+import type { ViewState } from "@/domains/compare/types";
 
 interface ReviewScoreCellProps {
   score: number;
+  state?: ViewState;
 }
 
 const ReviewScoreCell = ({ score }: ReviewScoreCellProps) => {

@@ -1,7 +1,9 @@
 import { cn, IcAddBox, IcInfo } from "@ssok/ui";
+import type { ViewState } from "@/domains/compare/types";
 
 interface AddCellProps {
   onClick?: () => void;
+  state?: ViewState;
   className?: string;
 }
 

@@ -1,3 +1,5 @@
+import type { AccommodationResponse } from "@ssok/api/schemas";
+
 /**
  * 여러 위치들의 중심 좌표를 계산하는 함수입니다.
  *
@@ -17,16 +19,17 @@
  * 이 함수는 locations가 비어있을 경우, 기본값으로 서울 시청의 좌표를 반환합니다.
  *
  */
-export const calculateCenter = (
-  locations: { id: number; latitude: number; longitude: number }[],
-) => {
-  if (locations.length === 0) {
+export const calculateCenter = (accommodations: AccommodationResponse[]) => {
+  if (accommodations.length === 0) {
     return { lat: 37.5665, lng: 126.978 };
   }
 
-  const lat =
-    locations.reduce((acc, loc) => acc + loc.latitude, 0) / locations.length;
-  const lng =
-    locations.reduce((acc, loc) => acc + loc.longitude, 0) / locations.length;
+  const valid = accommodations.filter(
+    (a): a is Required<Pick<AccommodationResponse, "latitude" | "longitude">> =>
+      typeof a.latitude === "number" && typeof a.longitude === "number",
+  );
+
+  const lat = valid.reduce((acc, loc) => acc + loc.latitude, 0) / valid.length;
+  const lng = valid.reduce((acc, loc) => acc + loc.longitude, 0) / valid.length;
   return { lat, lng };
 };

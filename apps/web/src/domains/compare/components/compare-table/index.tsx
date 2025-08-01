@@ -31,19 +31,6 @@ const CompareTable = ({ items, className }: CompareTableProps) => {
     { key: "reviewSummary", label: "리뷰 요약" },
   ];
 
-  const getGridCols = (itemCount: number) => {
-    switch (itemCount) {
-      case 1:
-        return "grid-cols-1";
-      case 2:
-        return "grid-cols-2";
-      case 3:
-        return "grid-cols-3";
-      default:
-        return "grid-cols-4";
-    }
-  };
-
   const renderCellContent = (item: Accommodation, rowKey: string) => {
     switch (rowKey) {
       case "photo":
@@ -111,27 +98,31 @@ const CompareTable = ({ items, className }: CompareTableProps) => {
   return (
     <div
       className={cn(
-        "h-full w-full overflow-scroll rounded-[1.6rem] p-[2.4rem]",
-        "border border-neutral-90 bg-white",
+        "relative h-full w-full max-w-full overflow-scroll rounded-[1.6rem] border border-neutral-90 bg-white",
         className,
       )}
     >
-      {rows.map((row) => (
-        <Fragment key={row.key}>
-          {row.label && (
-            <h3 className="mt-[2.4rem] mb-[0.8rem] text-heading2-semi18 text-neutral-35">
-              {row.label}
-            </h3>
-          )}
-          <div className={cn("grid gap-[2.4rem]", getGridCols(items.length))}>
-            {items.map((item) => (
-              <div key={`${row.key}-${item.id}`}>
-                {renderCellContent(item, row.key)}
-              </div>
-            ))}
-          </div>
-        </Fragment>
-      ))}
+      <div className="p-[2.4rem]">
+        {rows.map((row) => (
+          <Fragment key={row.key}>
+            {row.label && (
+              <h3 className="sticky left-[2.4rem] z-10 mt-[2.4rem] mb-[0.8rem] text-heading2-semi18 text-neutral-35">
+                {row.label}
+              </h3>
+            )}
+            <div className="flex gap-[2.4rem]">
+              {items.map((item) => (
+                <div
+                  key={`${row.key}-${item.id}`}
+                  className="min-w-[29.8rem] flex-1"
+                >
+                  {renderCellContent(item, row.key)}
+                </div>
+              ))}
+            </div>
+          </Fragment>
+        ))}
+      </div>
     </div>
   );
 };

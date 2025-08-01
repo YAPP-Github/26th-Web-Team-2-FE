@@ -41,7 +41,7 @@ const BoardsIdListsPage = () => {
     watch,
   } = useRegisterUrlInput();
 
-  const { data } = useAccommodationList({
+  const { data, isLoading } = useAccommodationList({
     boardId: 1,
     userId: selectedPerson === 0 ? undefined : selectedPerson,
     size: 10,
@@ -120,6 +120,13 @@ const BoardsIdListsPage = () => {
           isPanelExpanded ? "right-[-5.5%]" : "right-[-4rem]",
         )}
       />
+      {isLoading && (
+        <main className="absolute z-10 flex h-full w-full items-center justify-center">
+          <div
+            className={`h-[2.4rem] w-[2.4rem] animate-spin rounded-full border-4 border-t-transparent bg-primary`}
+          />
+        </main>
+      )}
     </main>
   );
 };

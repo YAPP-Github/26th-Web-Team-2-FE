@@ -4,10 +4,12 @@ import SideNavigation from "@/shared/components/side-navigation";
 
 const BoardsIdLayout = ({ children }: PropsWithChildren) => {
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen w-full">
       <SideNavigation />
-      {children}
-      <MapComponent />
+      <div className="relative flex flex-1">
+        {children}
+        <MapComponent className="transition-all duration-500 ease-in-out" />
+      </div>
     </div>
   );
 };

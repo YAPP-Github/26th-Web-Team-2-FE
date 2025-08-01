@@ -1,30 +1,30 @@
 "use client";
+import { cn, SolidExpand } from "@ssok/ui";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import HeaderSection from "@/domains/list/components/header-section";
 import LinkInputSection from "@/domains/list/components/link-input-section";
 import PlaceListSection from "@/domains/list/components/place-list-section";
+import useBoardPanel from "@/domains/list/hooks/use-board-panel";
 import useDragAndDrop from "@/domains/list/hooks/use-drag-and-drop";
+import useInputPanel from "@/domains/list/hooks/use-input-panel";
 import useRegisterUrlInput from "@/domains/list/hooks/use-register-url-input";
 
 const BoardsIdListsPage = () => {
+  const {
+    isInputExpanded,
+    isTooltipVisible,
+    handleCloseInputExpansion,
+    toggleInputExpansion,
+    handleTooltipvisible,
+  } = useInputPanel();
+
+  const { isPanelExpanded, handlePanelToggle } = useBoardPanel();
+
   const [selectedPerson, setSelectedPerson] = useState(0);
-  const [isInputExpanded, setIsInputExpanded] = useState(true);
-  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
-
-  const handleCloseInputExpansion = () => {
-    setIsInputExpanded(false);
-  };
-
-  const toggleInputExpansion = () => {
-    setIsInputExpanded(!isInputExpanded);
-  };
 
   const handlePersonSelect = (id: number) => {
     setSelectedPerson(id);
-  };
-
-  const handleTooltipvisible = (visible: boolean) => {
-    setIsTooltipVisible(visible);
   };
 
   // TODO: 메모 입력 관련 로직 커스텀훅 분리
@@ -50,30 +50,58 @@ const BoardsIdListsPage = () => {
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
-      className="flex w-full flex-1 flex-col gap-[1.6rem] bg-neutral-98 p-[2.4rem] "
+      className={cn(
+        "relative flex w-full flex-1 flex-col",
+        isPanelExpanded ? "border border-neutral-70 bg-neutral-98" : "",
+        isPanelExpanded ? "p-[2.4rem]" : "p-0",
+      )}
     >
-      {/* 헤더 */}
-      <HeaderSection />
-      {/* 링크 저장 */}
-      <LinkInputSection
-        isDragging={isDragging}
-        isInputExpanded={isInputExpanded}
-        isMemoInputVisible={isMemoInputVisible}
-        isTooltipVisible={isTooltipVisible}
-        handleCloseInputExpansion={handleCloseInputExpansion}
-        toggleInputExpansion={toggleInputExpansion}
-        handleMemoInputToggle={handleMemoInputToggle}
-        handleTooltipvisible={handleTooltipvisible}
-        register={register}
-        watch={watch}
-        memoText={memoText}
-        maxChars={maxChars}
-      />
-      {/* 숙소 리스트 */}
-      <PlaceListSection
-        selectedPerson={selectedPerson}
-        handlePersonSelect={handlePersonSelect}
-      />
+      <AnimatePresence>
+        {isPanelExpanded && (
+          <motion.div
+            key="panel"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 40 }}
+            transition={{ duration: 0.2 }}
+            className="flex flex-col gap-[1.6rem]"
+          >
+            {/* 헤더 */}
+            <HeaderSection />
+            {/* 링크 저장 */}
+            <LinkInputSection
+              watch={watch}
+              isDragging={isDragging}
+              isInputExpanded={isInputExpanded}
+              isMemoInputVisible={isMemoInputVisible}
+              isTooltipVisible={isTooltipVisible}
+              handleCloseInputExpansion={handleCloseInputExpansion}
+              toggleInputExpansion={toggleInputExpansion}
+              handleMemoInputToggle={handleMemoInputToggle}
+              handleTooltipvisible={handleTooltipvisible}
+              register={register}
+              memoText={memoText}
+              maxChars={maxChars}
+            />
+            {/* 숙소 리스트 */}
+            <PlaceListSection
+              selectedPerson={selectedPerson}
+              handlePersonSelect={handlePersonSelect}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {/* TODO: resize 추가 애니메이션 보강  */}
+      <button
+        type="button"
+        className={cn(
+          "absolute top-[50%] z-2",
+          isPanelExpanded ? "right-[-5.5%]" : "right-[-4rem]",
+        )}
+        onClick={handlePanelToggle}
+      >
+        <SolidExpand expand={isPanelExpanded} />
+      </button>
     </main>
   );
 };

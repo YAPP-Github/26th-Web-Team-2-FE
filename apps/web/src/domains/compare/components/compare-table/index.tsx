@@ -25,10 +25,10 @@ const CompareTable = ({ items, className }: CompareTableProps) => {
     { key: "reviewScore", label: "리뷰 점수" },
     { key: "nearbyAttractions", label: "인근 관광지" },
     { key: "nearbyTransportation", label: "인근 교통편" },
-    { key: "cleanlinessScore", label: "청결도" },
+    // { key: "cleanlinessScore", label: "청결도" },
     { key: "amenities", label: "편의 서비스" },
-    { key: "checkInOut", label: "체크인 / 아웃 시간" },
-    { key: "reviewSummary", label: "리뷰 요약" },
+    // { key: "checkInOut", label: "체크인 / 아웃 시간" },
+    // { key: "reviewSummary", label: "리뷰 요약" },
   ];
 
   const renderCellContent = (item: Accommodation, rowKey: string) => {

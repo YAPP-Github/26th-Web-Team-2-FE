@@ -7,6 +7,7 @@ const mockCompareData: Accommodation[] = [
     lowestPrice: 250000,
     images: [
       "https://pix8.agoda.net/hotelImages/9373867/0/d325a6b849fb3bcce909f813ea7adfb8.jpg?ce=2&s=1024x",
+      "https://pix8.agoda.net/hotelImages/692/69287/69287_16060314210043106872.jpg?ca=6&ce=1&s=600x",
     ],
     reviewScore: 8.5,
     cleanlinessScore: 7.2,
@@ -85,6 +86,7 @@ const mockCompareData: Accommodation[] = [
     lowestPrice: 180000,
     images: [
       "https://pix8.agoda.net/hotelImages/49986351/0/e311c6d8b735a44ace73b8219d07876d.jpeg?ce=0&s=600x",
+      "https://pix8.agoda.net/hotelImages/9373867/0/d325a6b849fb3bcce909f813ea7adfb8.jpg?ce=2&s=1024x",
     ],
     reviewScore: 7.8,
     cleanlinessScore: 8.9,

@@ -1,14 +1,13 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import type { InputHTMLAttributes, ReactNode, Ref } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { cn } from "@/utils";
 
 export interface TextFieldProps
-  extends InputHTMLAttributes<HTMLInputElement>,
+  extends ComponentProps<"input">,
     VariantProps<typeof variants> {
   icon?: ReactNode;
   endIcon?: ReactNode;
   hasError?: boolean;
-  ref?: Ref<HTMLInputElement>;
 }
 
 const variants = cva(
@@ -41,9 +40,7 @@ export const TextField = ({
   icon,
   endIcon,
   hasError = false,
-  ref,
   value,
-  // onChange,
   ...props
 }: TextFieldProps) => {
   const hasValue = String(value).length > 0;
@@ -63,6 +60,7 @@ export const TextField = ({
         </div>
       )}
       <input
+        value={value}
         className={cn(
           "w-full px-[1.6rem] py-[1.2rem]",
           "border-none bg-transparent outline-none",
@@ -71,8 +69,6 @@ export const TextField = ({
           icon && !hasValue && "indent-[3.2rem]",
           endIcon && "pr-[4.8rem]",
         )}
-        ref={ref}
-        // onChange={handleChange}
         {...props}
       />
       {endIcon && (

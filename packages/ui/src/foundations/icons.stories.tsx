@@ -1,5 +1,6 @@
 import IcAccessibleForward from "@/assets/icons/ic_accessible_forward.svg?react";
 import IcAdd from "@/assets/icons/ic_add.svg?react";
+import IcAddBox from "@/assets/icons/ic_add_box.svg?react";
 import IcAddMemo from "@/assets/icons/ic_add_memo.svg?react";
 import IcAlert from "@/assets/icons/ic_alert.svg?react";
 import IcArrowDown from "@/assets/icons/ic_arrow_down.svg?react";
@@ -46,6 +47,7 @@ import IcWifi from "@/assets/icons/ic_wifi.svg?react";
 const icons = {
   IcAccessibleForward,
   IcAdd,
+  IcAddBox,
   IcAddMemo,
   IcAlert,
   IcArrowDown,

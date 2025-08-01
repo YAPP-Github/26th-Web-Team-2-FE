@@ -1,7 +1,7 @@
 import { Graph, IcStarFull } from "@ssok/ui";
 
 interface ReviewScoreCellProps {
-  score?: number;
+  score: number;
 }
 
 const ReviewScoreCell = ({ score }: ReviewScoreCellProps) => {
@@ -13,12 +13,10 @@ const ReviewScoreCell = ({ score }: ReviewScoreCellProps) => {
     return "매우 불만족";
   };
 
-  const safeScore = score || 0;
-
   return (
     <Graph
-      value={safeScore}
-      label={getLabel(safeScore)}
+      value={score}
+      label={getLabel(score)}
       icon={<IcStarFull />}
       showGraph={false}
     />

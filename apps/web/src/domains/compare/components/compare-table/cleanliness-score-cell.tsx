@@ -1,7 +1,7 @@
 import { Graph } from "@ssok/ui";
 
 interface CleanlinessScoreCellProps {
-  score?: number;
+  score: number;
 }
 
 const CleanlinessScoreCell = ({ score }: CleanlinessScoreCellProps) => {
@@ -13,9 +13,7 @@ const CleanlinessScoreCell = ({ score }: CleanlinessScoreCellProps) => {
     return "매우 나쁨";
   };
 
-  const safeScore = score || 0;
-
-  return <Graph value={safeScore} label={getLabel(safeScore)} showGraph />;
+  return <Graph value={score} label={getLabel(score)} showGraph />;
 };
 
 export default CleanlinessScoreCell;

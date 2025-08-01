@@ -3,13 +3,13 @@ import TablePlacesContents from "@/domains/compare/components/table-places-conte
 import type { Accommodation } from "@/domains/compare/types";
 
 interface NearbyTransportationCellProps {
-  transportation: Accommodation["nearbyTransportation"];
+  transportation: NonNullable<Accommodation["nearbyTransportation"]>;
 }
 
 const NearbyTransportationCell = ({
   transportation,
 }: NearbyTransportationCellProps) => {
-  const contents = (transportation || []).map((transport) => ({
+  const contents = transportation.map((transport) => ({
     text: transport.name || "",
     label: transport.byCar?.time || "",
     icon: <IcCar />,

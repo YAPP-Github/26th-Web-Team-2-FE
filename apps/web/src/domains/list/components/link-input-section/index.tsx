@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import type { UseFormRegister } from "react-hook-form";
 import ButtonContainer from "./atom/button-container";
 import LinkInputContainer from "./atom/link-input-container";
+import OnboardingBubble from "./atom/onboarding-bubble";
 import TitleContainer from "./atom/title-section";
 
 type FormData = {
@@ -62,7 +63,7 @@ const LinkInputSection = ({
     <section
       className={cn(
         "rounded-2xl border border-neutral-90 bg-neutral-100",
-        "flex w-full flex-col gap-[1.6rem] p-[2.4rem]",
+        "relative flex w-full flex-col gap-[1.6rem] p-[2.4rem]",
       )}
     >
       {/* 링크 저장_제목 */}
@@ -94,6 +95,7 @@ const LinkInputSection = ({
           </form>
         )}
       </div>
+      <OnboardingBubble />
     </section>
   );
 };

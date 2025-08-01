@@ -5,6 +5,7 @@ export const button = cva(
   {
     variants: {
       size: {
+        xs: "px-[0.8rem] py-[0.6rem]",
         sm: "gap-[0.4rem] px-[0.6rem] py-[0.6rem]",
         md: "px-[1.6rem] py-[0.8rem]",
         lg: "px-[2.4rem] py-[1.2rem]",
@@ -51,6 +52,7 @@ export const button = cva(
 export const buttonText = cva("m-0 text-center", {
   variants: {
     size: {
+      xs: "text-body2-semi14",
       sm: "text-body2-medi14",
       md: "text-body3-semi15",
       lg: "text-body1-bold16",

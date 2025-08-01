@@ -6,6 +6,7 @@ import HeaderSection from "@/domains/list/components/header-section";
 import LinkInputSection from "@/domains/list/components/link-input-section";
 import PlaceListSection from "@/domains/list/components/place-list-section";
 import useBoardPanel from "@/domains/list/hooks/use-board-panel";
+import useDragAndDrop from "@/domains/list/hooks/use-drag-and-drop";
 import useInputPanel from "@/domains/list/hooks/use-input-panel";
 import useRegisterUrlInput from "@/domains/list/hooks/use-register-url-input";
 
@@ -34,10 +35,21 @@ const BoardsIdListsPage = () => {
     handleMemoInputToggle,
     memoText,
     maxChars,
+    setValue,
+    watch,
   } = useRegisterUrlInput();
+
+  const { isDragging, onDragEnter, onDragOver, onDragLeave, onDrop } =
+    useDragAndDrop((url) => {
+      setValue("link", url);
+    });
 
   return (
     <main
+      onDragEnter={onDragEnter}
+      onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
+      onDrop={onDrop}
       className={cn(
         "relative flex w-full flex-1 flex-col",
         isPanelExpanded ? "border border-neutral-70 bg-neutral-98" : "",
@@ -47,18 +59,19 @@ const BoardsIdListsPage = () => {
       <AnimatePresence>
         {isPanelExpanded && (
           <motion.div
-            layout
             key="panel"
-            initial={{ opacity: 0, x: 100 }}
+            initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 100 }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col gap-[1.6rem] overflow-hidden"
+            exit={{ opacity: 0, x: 40 }}
+            transition={{ duration: 0.2 }}
+            className="flex flex-col gap-[1.6rem]"
           >
             {/* 헤더 */}
             <HeaderSection />
             {/* 링크 저장 */}
             <LinkInputSection
+              watch={watch}
+              isDragging={isDragging}
               isInputExpanded={isInputExpanded}
               isMemoInputVisible={isMemoInputVisible}
               isTooltipVisible={isTooltipVisible}

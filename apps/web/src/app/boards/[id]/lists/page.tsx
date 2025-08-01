@@ -112,16 +112,14 @@ const BoardsIdListsPage = () => {
         )}
       </AnimatePresence>
       {/* TODO: resize 추가 애니메이션 보강  */}
-      <button
-        type="button"
+      <SolidExpand
+        expand={isPanelExpanded}
+        onClick={handlePanelToggle}
         className={cn(
           "absolute top-[50%] z-2",
           isPanelExpanded ? "right-[-5.5%]" : "right-[-4rem]",
         )}
-        onClick={handlePanelToggle}
-      >
-        <SolidExpand expand={isPanelExpanded} />
-      </button>
+      />
     </main>
   );
 };

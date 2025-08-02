@@ -1,19 +1,32 @@
 "use client";
 
 import { cn } from "@ssok/ui";
+import { useEffect, useState } from "react";
+import CompareAccommodations from "@/domains/compare/components/compare-accommodations";
 import ComparePageHeader from "@/domains/compare/components/compare-page-header";
 import ComparePageTitle from "@/domains/compare/components/compare-page-title";
 import CompareTable from "@/domains/compare/components/compare-table";
 import { useCompareData } from "@/domains/compare/hooks/use-compare-data";
 import { useViewMode } from "@/domains/compare/hooks/use-view-mode";
+import type { Accommodation } from "@/domains/compare/types";
 
 interface ComparePageViewProps {
   compareId: string;
 }
 
 const ComparePageView = ({ compareId }: ComparePageViewProps) => {
-  const { compareItems } = useCompareData(compareId);
+  const { compareItems: initialItems } = useCompareData(compareId);
+  const [compareItems, setCompareItems] =
+    useState<Accommodation[]>(initialItems);
   const { currentView, handleViewChange } = useViewMode();
+
+  useEffect(() => {
+    setCompareItems(initialItems);
+  }, [initialItems]);
+
+  const handleReorderAccommodations = (reorderedItems: Accommodation[]) => {
+    setCompareItems(reorderedItems);
+  };
 
   return (
     <main
@@ -36,6 +49,14 @@ const ComparePageView = ({ compareId }: ComparePageViewProps) => {
         onViewChange={handleViewChange}
         className="mb-[3.2rem] shrink-0"
       />
+
+      {currentView === "edit" && (
+        <CompareAccommodations
+          accommodations={compareItems}
+          onReorderAccommodations={handleReorderAccommodations}
+          className="mb-[2.4rem]"
+        />
+      )}
 
       <CompareTable
         items={compareItems}

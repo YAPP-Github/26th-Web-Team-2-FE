@@ -5,7 +5,7 @@ import { cn } from "@/utils";
 
 type SolidExpandProps = {
   className?: string;
-  expand: boolean;
+  collapse: boolean;
   onMouseDown?: () => void;
   onMouseUp?: () => void;
   onMouseLeave?: () => void;
@@ -13,7 +13,7 @@ type SolidExpandProps = {
 
 export const SolidExpand = ({
   className,
-  expand,
+  collapse,
   onMouseDown,
   onMouseUp,
   onMouseLeave,
@@ -29,13 +29,13 @@ export const SolidExpand = ({
         "inline-flex cursor-pointer rounded-tr-[16px] rounded-br-[16px] py-[1.6rem] pr-[0.6rem] pl-[0.2rem] disabled:cursor-not-allowed",
         "border-t border-r border-b border-l-0",
         "border-neutral-70 bg-neutral-98", // default
-        !expand && "hover:bg-neutral-95 focus:bg-neutral-90", // hover, focused
+        !collapse && "hover:bg-neutral-95 focus:bg-neutral-90", // hover, focused
         className,
       )}
       {...props}
     >
-      {!expand && <IcArrowLeft width="32px" height="32px" />}
-      {expand && <IcArrowRight width="32px" height="32px" />}
+      {!collapse && <IcArrowLeft width="32px" height="32px" />}
+      {collapse && <IcArrowRight width="32px" height="32px" />}
     </button>
   );
 };

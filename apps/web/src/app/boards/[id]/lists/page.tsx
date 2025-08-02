@@ -1,12 +1,15 @@
 "use client";
 import { cn, SolidExpand } from "@ssok/ui";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useAccommodationList from "@/app/api/accomodation/use-accomodation-list";
 import HeaderSection from "@/domains/list/components/header-section";
 import LinkInputSection from "@/domains/list/components/link-input-section";
 import PlaceListSection from "@/domains/list/components/place-list-section";
+import { useAccommodationContext } from "@/domains/list/contexts/accomodation-context";
 import useBoardPanel from "@/domains/list/hooks/use-board-panel";
 import useDragAndDrop from "@/domains/list/hooks/use-drag-and-drop";
+import useDropdown from "@/domains/list/hooks/use-dropdown";
 import useInputPanel from "@/domains/list/hooks/use-input-panel";
 import useRegisterUrlInput from "@/domains/list/hooks/use-register-url-input";
 
@@ -18,20 +21,19 @@ const BoardsIdListsPage = () => {
     toggleInputExpansion,
     handleTooltipvisible,
   } = useInputPanel();
-
+  const { isOpen, handleToggleDropdown, selectedFilter, handleFilterSelect } =
+    useDropdown();
   const { isPanelExpanded, handlePanelToggle } = useBoardPanel();
-
   const [selectedPerson, setSelectedPerson] = useState(0);
-
-  const handlePersonSelect = (id: number) => {
-    setSelectedPerson(id);
-  };
-
+  const { isDragging, onDragEnter, onDragOver, onDragLeave, onDrop } =
+    useDragAndDrop((url) => {
+      setValue("link", url);
+    });
   // TODO: 메모 입력 관련 로직 커스텀훅 분리
   const {
     isMemoInputVisible,
     register,
-    // handleSubmit,
+    handleSubmit,
     handleMemoInputToggle,
     memoText,
     maxChars,
@@ -39,10 +41,24 @@ const BoardsIdListsPage = () => {
     watch,
   } = useRegisterUrlInput();
 
-  const { isDragging, onDragEnter, onDragOver, onDragLeave, onDrop } =
-    useDragAndDrop((url) => {
-      setValue("link", url);
-    });
+  const { data, isLoading } = useAccommodationList({
+    boardId: 1,
+    userId: selectedPerson === 0 ? undefined : selectedPerson,
+    size: 10,
+    sort: selectedFilter,
+  });
+
+  const { setAccommodations } = useAccommodationContext();
+
+  useEffect(() => {
+    const all =
+      data?.pages.flatMap((page) => page.result?.accommodations || []) ?? [];
+    setAccommodations(all);
+  }, [data, setAccommodations]);
+
+  const handlePersonSelect = (id: number) => {
+    setSelectedPerson(id);
+  };
 
   return (
     <main
@@ -52,7 +68,7 @@ const BoardsIdListsPage = () => {
       onDrop={onDrop}
       className={cn(
         "relative flex w-full flex-1 flex-col",
-        isPanelExpanded ? "border border-neutral-70 bg-neutral-98" : "",
+        isPanelExpanded ? "border-neutral-70 border-r bg-neutral-98" : "",
         isPanelExpanded ? "p-[2.4rem]" : "p-0",
       )}
     >
@@ -80,6 +96,7 @@ const BoardsIdListsPage = () => {
               handleMemoInputToggle={handleMemoInputToggle}
               handleTooltipvisible={handleTooltipvisible}
               register={register}
+              handleSubmit={handleSubmit}
               memoText={memoText}
               maxChars={maxChars}
             />
@@ -87,21 +104,30 @@ const BoardsIdListsPage = () => {
             <PlaceListSection
               selectedPerson={selectedPerson}
               handlePersonSelect={handlePersonSelect}
+              handleFilterSelect={handleFilterSelect}
+              handleToggleDropdown={handleToggleDropdown}
+              isOpen={isOpen}
+              selectedFilter={selectedFilter}
             />
           </motion.div>
         )}
       </AnimatePresence>
       {/* TODO: resize 추가 애니메이션 보강  */}
-      <button
-        type="button"
+      <SolidExpand
+        expand={isPanelExpanded}
+        onClick={handlePanelToggle}
         className={cn(
           "absolute top-[50%] z-2",
           isPanelExpanded ? "right-[-5.5%]" : "right-[-4rem]",
         )}
-        onClick={handlePanelToggle}
-      >
-        <SolidExpand expand={isPanelExpanded} />
-      </button>
+      />
+      {isLoading && (
+        <main className="absolute z-10 flex h-full w-full items-center justify-center">
+          <div
+            className={`h-[2.4rem] w-[2.4rem] animate-spin rounded-full border-4 border-t-transparent bg-primary`}
+          />
+        </main>
+      )}
     </main>
   );
 };

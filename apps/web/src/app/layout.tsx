@@ -1,6 +1,7 @@
 import "./app.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Suspense } from "react";
 import MazeUs from "@/shared/components/maze-us";
 import Providers from "@/shared/providers";
 
@@ -24,7 +25,10 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <MazeUs />
       </head>
       <body className={Pretendard.variable}>
-        <Providers>{children}</Providers>
+        <Providers>
+          {/* TODO: fallback UI 수정 */}
+          <Suspense fallback={<div>로딩 중...</div>}>{children}</Suspense>
+        </Providers>
       </body>
     </html>
   );

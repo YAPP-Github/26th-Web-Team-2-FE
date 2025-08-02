@@ -1,5 +1,5 @@
-import { Button, cn, IcAddMemo, IcUpload } from "@ssok/ui";
-import { useRef } from "react";
+import { Button, cn, IcAddMemo, IcMemoFilled, IcUpload } from "@ssok/ui";
+import { useRef, useState } from "react";
 import type { UseFormRegister } from "react-hook-form";
 import { useOutsideClick } from "@/domains/list/hooks/use-outside-click";
 
@@ -25,15 +25,33 @@ const ButtonContainer = ({
 }: ButtonSectionProps) => {
   const memoRef = useRef<HTMLDivElement>(null);
   useOutsideClick(memoRef, handleMemoInputToggle, isMemoInputVisible);
+  const [isMemoFilled, setIsMemoFilled] = useState(false);
+
+  const handleCheckMemoFilled = () => {
+    if (memoText.length > 0) {
+      setIsMemoFilled(true);
+    } else {
+      setIsMemoFilled(false);
+    }
+    // TODO: handleClose로 바꾸기
+    handleMemoInputToggle();
+  };
 
   return (
     <div className="flex flex-row justify-end gap-[0.8rem]">
       <div className="relative">
         <Button
+          type="button"
           variant="text"
           size="md"
           onClick={handleMemoInputToggle}
-          icon={<IcAddMemo width="24" height="24" />}
+          icon={
+            isMemoFilled ? (
+              <IcMemoFilled width="24" height="24" />
+            ) : (
+              <IcAddMemo width="24" height="24" />
+            )
+          }
         >
           메모
         </Button>
@@ -56,7 +74,11 @@ const ButtonContainer = ({
               <span className="text-caption1-medi12 text-neutral-70">
                 {memoText.length} / {maxChars}
               </span>
-              <button type="submit" className="">
+              <button
+                type="button"
+                className=""
+                onClick={handleCheckMemoFilled}
+              >
                 <IcUpload
                   width="24"
                   height="24"
@@ -71,7 +93,7 @@ const ButtonContainer = ({
           </section>
         )}
       </div>
-      <Button variant="primary" size="md">
+      <Button variant="primary" size="md" type="submit">
         저장하기
       </Button>
     </div>

@@ -1,22 +1,32 @@
 import { Button, Card, cn } from "@ssok/ui";
 import { useState } from "react";
+import { useAccommodationContext } from "../../contexts/accomodation-context";
 import { useMemberData } from "../../hooks/use-member-data";
-import { useAccommodationData } from "../../hooks/use-place-data";
 import DropDown from "./atom/drop-down";
 import EmptyListContainer from "./atom/empty-list-container";
 
 type PlaceListSectionProps = {
   selectedPerson: number;
   handlePersonSelect: (id: number) => void;
+  handleFilterSelect: (id: string) => void;
+  handleToggleDropdown: () => void;
+  isOpen: boolean;
+  selectedFilter: string;
 };
 
 const PlaceListSection = ({
   selectedPerson,
   handlePersonSelect,
+  handleFilterSelect,
+  handleToggleDropdown,
+  isOpen,
+  selectedFilter,
 }: PlaceListSectionProps) => {
   const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
   const memberData = useMemberData();
-  const accommodationData = useAccommodationData();
+  // const accommodationData = useAccommodationData();
+  const { accommodations } = useAccommodationContext();
+
   const handlePlaceSelect = (placeName: string) => {
     setSelectedPlaces((prev) =>
       prev.includes(placeName)
@@ -53,34 +63,50 @@ const PlaceListSection = ({
           ))}
         </ul>
         <div className="flex justify-between text-body2-regular14 text-neutral-40">
-          <span>{`${accommodationData.length}곳 저장됨`}</span>
-          <DropDown />
+          <span>{`${accommodations.length}곳 저장됨`}</span>
+          <DropDown
+            handleFilterSelect={handleFilterSelect}
+            handleToggleDropdown={handleToggleDropdown}
+            isOpen={isOpen}
+            selectedFilter={selectedFilter}
+          />
         </div>
       </div>
       {/* 숙소 리스트_카드목록 */}
       <ul className="flex max-h-[40rem] flex-col gap-[1.2rem] overflow-y-auto">
-        {accommodationData?.map((place) => (
-          <li key={`${place.placeName}-card`}>
+        {accommodations?.map((place) => (
+          <li key={`${place.hotelId}-card`}>
             <Card
-              imgSrc={place.imgSrc}
-              platform={place.platform}
-              placeName={place.placeName}
-              price={place.price}
-              address={place.address}
-              attractions={place.attractions}
-              savedByText={place.savedByText}
-              memoContent={place.memoContent}
-              selected={selectedPlaces.includes(place.placeName)}
+              images={place?.images || []}
+              siteName={place.siteName || "-"}
+              logoUrl={place.logoUrl || ""}
+              url={place.url || ""}
+              currency={place.lowestPrice?.toLocaleString() || ""}
+              accommodationName={place.accommodationName || "-"}
+              address={place.address || "주소정보 없음"}
+              nearbyAttractions={place.nearbyAttractions?.slice(0, 2) || []}
+              savedByText={
+                memberData.find(
+                  (member) => member.id === String(selectedPerson),
+                )?.name || "알 수 없음"
+              }
+              memo={place.memo}
+              selected={selectedPlaces.includes(
+                place.accommodationName as string,
+              )}
+              onClick={() =>
+                handlePlaceSelect(place.accommodationName as string)
+              }
               onAddClick={() => {
-                handlePlaceSelect(place.placeName);
+                handlePlaceSelect(place.accommodationName as string);
               }}
               onDeleteClick={() => {
-                handleDeleteClick(place.placeName);
+                handleDeleteClick(place.accommodationName as string);
               }}
             />
           </li>
         ))}
-        {(!accommodationData || accommodationData.length === 0) && (
+        {(!accommodations || accommodations.length === 0) && (
           <EmptyListContainer />
         )}
       </ul>

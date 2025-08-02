@@ -1,5 +1,6 @@
 import IcAccessibleForward from "@/assets/icons/ic_accessible_forward.svg?react";
 import IcAdd from "@/assets/icons/ic_add.svg?react";
+import IcAddBox from "@/assets/icons/ic_add_box.svg?react";
 import IcAddMemo from "@/assets/icons/ic_add_memo.svg?react";
 import IcAlert from "@/assets/icons/ic_alert.svg?react";
 import IcArrowDown from "@/assets/icons/ic_arrow_down.svg?react";
@@ -29,6 +30,7 @@ import IcLuggage from "@/assets/icons/ic_luggage.svg?react";
 import IcMap from "@/assets/icons/ic_map.svg?react";
 import IcMemo from "@/assets/icons/ic_memo.svg?react";
 import IcPets from "@/assets/icons/ic_pets.svg?react";
+import IcPlusCircle from "@/assets/icons/ic_plus_circle.svg?react";
 import IcPointOfSale from "@/assets/icons/ic_point_of_sale.svg?react";
 import IcPool from "@/assets/icons/ic_pool.svg?react";
 import IcRestaurant from "@/assets/icons/ic_restaurant.svg?react";
@@ -46,6 +48,7 @@ import IcWifi from "@/assets/icons/ic_wifi.svg?react";
 const icons = {
   IcAccessibleForward,
   IcAdd,
+  IcAddBox,
   IcAddMemo,
   IcAlert,
   IcArrowDown,
@@ -76,6 +79,7 @@ const icons = {
   IcMemo,
   IcPets,
   IcPointOfSale,
+  IcPlusCircle,
   IcPool,
   IcRestaurant,
   IcRoundPlus,

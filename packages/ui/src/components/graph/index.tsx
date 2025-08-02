@@ -83,7 +83,7 @@ export const Graph = ({
               value={value.toFixed(1)}
               onChange={onChange}
               className={cn(
-                "w-[4.8rem] rounded-[0.8rem] bg-white p-0",
+                "w-[5rem] rounded-[0.8rem] bg-white p-0",
                 "[&>input]:px-[1.2rem] [&>input]:py-[0.8rem] [&>input]:text-center [&>input]:text-body1-semi16",
                 "[&>input]:[-moz-appearance:_textfield] [&>input]:[&::-webkit-inner-spin-button]:appearance-none [&>input]:[&::-webkit-outer-spin-button]:appearance-none",
                 text,

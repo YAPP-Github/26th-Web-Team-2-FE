@@ -1,19 +1,25 @@
-import { IcCar } from "@ssok/ui";
+import { IcCar, IcWalker } from "@ssok/ui";
 import TablePlacesContents from "@/domains/compare/components/table-places-contents";
-import type { Accommodation } from "@/domains/compare/types";
+import type { Accommodation, ViewState } from "@/domains/compare/types";
 
 interface NearbyAttractionsCellProps {
-  attractions: Accommodation["nearbyAttractions"];
+  attractions: NonNullable<Accommodation["nearbyAttractions"]>;
+  state?: ViewState;
 }
 
-const NearbyAttractionsCell = ({ attractions }: NearbyAttractionsCellProps) => {
-  const contents = (attractions || []).map((attraction) => ({
-    text: attraction.name || "",
-    label: attraction.byCar?.time || "",
-    icon: <IcCar />,
-  }));
+const NearbyAttractionsCell = ({
+  attractions,
+  state,
+}: NearbyAttractionsCellProps) => {
+  const contents = attractions.map(({ name, byCar, byFoot }) => {
+    return {
+      text: name || "",
+      label: byFoot?.time || byCar?.time || "",
+      icon: byFoot?.time ? <IcWalker /> : <IcCar />,
+    };
+  });
 
-  return <TablePlacesContents contents={contents} />;
+  return <TablePlacesContents contents={contents} state={state} />;
 };
 
 export default NearbyAttractionsCell;

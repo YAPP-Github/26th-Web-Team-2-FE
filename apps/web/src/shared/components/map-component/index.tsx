@@ -1,11 +1,12 @@
 "use client";
 
+import { cn } from "@ssok/ui";
 import GoogleMapReact from "google-map-react";
 import { useAccommodationContext } from "@/domains/list/contexts/accomodation-context";
 import MapPin from "@/shared/components/map-component/map-pin";
 import { calculateCenter } from "@/shared/utils/map";
 
-const MapComponent = () => {
+const MapComponent = ({ className }: { className?: string }) => {
   const { accommodations } = useAccommodationContext();
 
   const validLocations = accommodations.filter(
@@ -16,7 +17,7 @@ const MapComponent = () => {
   const center = calculateCenter(validLocations);
 
   return (
-    <div className="relative h-screen w-full">
+    <div className={cn("relative h-screen w-full", className)}>
       <GoogleMapReact
         bootstrapURLKeys={{
           key: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY,

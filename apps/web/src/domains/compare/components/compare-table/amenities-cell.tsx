@@ -13,22 +13,23 @@ import {
   IcWifi,
 } from "@ssok/ui";
 import TableAmenitiesContents from "@/domains/compare/components/table-amenities-contents";
-import type { Accommodation } from "@/domains/compare/types";
+import type { Accommodation, ViewState } from "@/domains/compare/types";
 
 interface AmenitiesCellProps {
-  amenities: Accommodation["amenities"];
+  amenities: NonNullable<Accommodation["amenities"]>;
+  state?: ViewState;
 }
 
-const AmenitiesCell = ({ amenities }: AmenitiesCellProps) => {
+const AmenitiesCell = ({ amenities, state }: AmenitiesCellProps) => {
   const available = amenities
-    ?.filter((amenity) => amenity.available && amenity.type)
+    .filter((amenity) => amenity.available && amenity.type)
     .map((amenity) => ({
       text: amenity.type || "",
       label: amenity.description || "",
       icon: <AmenityIcon type={amenity.type || ""} />,
     }));
 
-  return <TableAmenitiesContents contents={available || []} />;
+  return <TableAmenitiesContents contents={available || []} state={state} />;
 };
 
 const AmenityIcon = ({ type }: { type: string }) => {

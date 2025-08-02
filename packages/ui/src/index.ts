@@ -1,5 +1,6 @@
 export { default as IcAccessibleForward } from "@/assets/icons/ic_accessible_forward.svg?react";
 export { default as IcAdd } from "@/assets/icons/ic_add.svg?react";
+export { default as IcAddBox } from "@/assets/icons/ic_add_box.svg?react";
 export { default as IcAddMemo } from "@/assets/icons/ic_add_memo.svg?react";
 export { default as IcAlert } from "@/assets/icons/ic_alert.svg?react";
 export { default as IcArrowDown } from "@/assets/icons/ic_arrow_down.svg?react";
@@ -30,6 +31,7 @@ export { default as IcMap } from "@/assets/icons/ic_map.svg?react";
 export { default as IcMemo } from "@/assets/icons/ic_memo.svg?react";
 export { default as IcMemoFilled } from "@/assets/icons/ic_memo_filled.svg?react";
 export { default as IcPets } from "@/assets/icons/ic_pets.svg?react";
+export { default as IcPlusCircle } from "@/assets/icons/ic_plus_circle.svg?react";
 export { default as IcPointOfSale } from "@/assets/icons/ic_point_of_sale.svg?react";
 export { default as IcPool } from "@/assets/icons/ic_pool.svg?react";
 export { default as IcRestaurant } from "@/assets/icons/ic_restaurant.svg?react";

@@ -12,7 +12,7 @@ const TableTimeContents = ({
   checkOutAt,
 }: TableTimeContentsProps) => {
   return (
-    <section className="flex items-center overflow-hidden rounded-[1.2rem] bg-neutral-98 p-[1.6rem]">
+    <section className="flex items-center justify-between overflow-hidden rounded-[1.2rem] bg-neutral-98 p-[1.6rem]">
       <Time date={checkInAt} />
       <span className="flex-shrink-0 text-neutral-60">
         <SymbolTableTimeRightArrow width="20" />

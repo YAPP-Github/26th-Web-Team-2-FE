@@ -1,10 +1,12 @@
 import { Graph, IcStarFull } from "@ssok/ui";
+import type { ViewState } from "@/domains/compare/types";
 
 interface ReviewScoreCellProps {
-  score?: number;
+  score: number;
+  state?: ViewState;
 }
 
-const ReviewScoreCell = ({ score }: ReviewScoreCellProps) => {
+const ReviewScoreCell = ({ score, state }: ReviewScoreCellProps) => {
   const getLabel = (value: number): string => {
     if (value >= 9) return "매우 좋음";
     if (value >= 7) return "좋음";
@@ -13,14 +15,13 @@ const ReviewScoreCell = ({ score }: ReviewScoreCellProps) => {
     return "매우 불만족";
   };
 
-  const safeScore = score || 0;
-
   return (
     <Graph
-      value={safeScore}
-      label={getLabel(safeScore)}
+      value={score}
+      label={getLabel(score)}
       icon={<IcStarFull />}
       showGraph={false}
+      state={state}
     />
   );
 };

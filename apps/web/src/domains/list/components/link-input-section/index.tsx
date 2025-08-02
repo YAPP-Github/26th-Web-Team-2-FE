@@ -1,6 +1,5 @@
 import { useRegisterAccommodationCard } from "@ssok/api";
 import { cn, IcLink } from "@ssok/ui";
-import { useEffect } from "react";
 import type {
   FieldErrors,
   UseFormHandleSubmit,
@@ -22,7 +21,6 @@ type LinkInputSectionProps = {
   isInputExpanded: boolean;
   isTooltipVisible: boolean;
   isMemoInputVisible: boolean;
-  handleCloseInputExpansion: () => void;
   toggleInputExpansion: () => void;
   handleMemoInputToggle: () => void;
   handleTooltipvisible: (visible: boolean) => void;
@@ -38,7 +36,6 @@ const LinkInputSection = ({
   isInputExpanded,
   isTooltipVisible,
   isMemoInputVisible,
-  handleCloseInputExpansion,
   toggleInputExpansion,
   handleMemoInputToggle,
   handleTooltipvisible,
@@ -49,29 +46,6 @@ const LinkInputSection = ({
   maxChars,
 }: LinkInputSectionProps) => {
   const { mutate, isPending } = useRegisterAccommodationCard();
-  useEffect(() => {
-    if (localStorage.getItem("onboardingStep") !== "finish") return;
-    let timer: ReturnType<typeof setTimeout> | null = null;
-
-    const handleScroll = () => {
-      if (timer) {
-        clearTimeout(timer);
-      }
-
-      if (isInputExpanded) {
-        timer = setTimeout(() => {
-          handleCloseInputExpansion();
-        }, 200);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (timer) clearTimeout(timer);
-    };
-  }, [isInputExpanded, handleCloseInputExpansion]);
 
   const onValid = (data: FormData) => {
     // TODO: boardId와 userId는 추후에 실제 값으로 변경

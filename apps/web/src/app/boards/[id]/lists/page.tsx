@@ -91,7 +91,6 @@ const BoardsIdListsPage = () => {
               isInputExpanded={isInputExpanded}
               isMemoInputVisible={isMemoInputVisible}
               isTooltipVisible={isTooltipVisible}
-              handleCloseInputExpansion={handleCloseInputExpansion}
               toggleInputExpansion={toggleInputExpansion}
               handleMemoInputToggle={handleMemoInputToggle}
               handleTooltipvisible={handleTooltipvisible}
@@ -106,6 +105,8 @@ const BoardsIdListsPage = () => {
               handlePersonSelect={handlePersonSelect}
               handleFilterSelect={handleFilterSelect}
               handleToggleDropdown={handleToggleDropdown}
+              handdleCloseInputExpansion={handleCloseInputExpansion}
+              isInputExpanded={isInputExpanded}
               isOpen={isOpen}
               selectedFilter={selectedFilter}
               isLoading={isLoading}

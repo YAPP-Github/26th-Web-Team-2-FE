@@ -1,5 +1,5 @@
 import { Button, Card, cn } from "@ssok/ui";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAccommodationContext } from "../../contexts/accomodation-context";
 import { useMemberData } from "../../hooks/use-member-data";
 import DropDown from "./atom/drop-down";
@@ -10,6 +10,8 @@ type PlaceListSectionProps = {
   handlePersonSelect: (id: number) => void;
   handleFilterSelect: (id: string) => void;
   handleToggleDropdown: () => void;
+  handdleCloseInputExpansion: () => void;
+  isInputExpanded: boolean;
   isOpen: boolean;
   selectedFilter: string;
   isLoading: boolean;
@@ -20,6 +22,8 @@ const PlaceListSection = ({
   handlePersonSelect,
   handleFilterSelect,
   handleToggleDropdown,
+  handdleCloseInputExpansion,
+  isInputExpanded,
   isOpen,
   selectedFilter,
   isLoading,
@@ -28,6 +32,34 @@ const PlaceListSection = ({
   const memberData = useMemberData();
   // const accommodationData = useAccommodationData();
   const { accommodations } = useAccommodationContext();
+  const listRef = useRef<HTMLUListElement | null>(null);
+
+  useEffect(() => {
+    if (localStorage.getItem("onboardingStep") !== "finish" && !isInputExpanded)
+      return;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+
+    const handleScroll = () => {
+      if (timer) clearTimeout(timer);
+      if (isInputExpanded) {
+        timer = setTimeout(() => {
+          handdleCloseInputExpansion();
+        }, 50);
+      }
+    };
+
+    const listElement = listRef.current;
+    if (listElement) {
+      listElement.addEventListener("scroll", handleScroll, { passive: true });
+    }
+
+    return () => {
+      if (listElement) {
+        listElement.removeEventListener("scroll", handleScroll);
+      }
+      if (timer) clearTimeout(timer);
+    };
+  }, [isInputExpanded, handdleCloseInputExpansion]);
 
   const handlePlaceSelect = (placeName: string) => {
     setSelectedPlaces((prev) =>
@@ -45,7 +77,7 @@ const PlaceListSection = ({
     <section
       className={cn(
         "rounded-2xl border border-neutral-90 bg-neutral-100",
-        "w-max overflow-visible p-[2.4rem]",
+        "w-max p-[2.4rem]",
       )}
     >
       {/* 숙소 리스트_제목 */}
@@ -75,7 +107,10 @@ const PlaceListSection = ({
         </div>
       </div>
       {/* 숙소 리스트_카드목록 */}
-      <ul className="flex h-[40rem] min-w-[60rem] flex-col gap-[1.2rem] overflow-y-auto">
+      <ul
+        ref={listRef}
+        className="flex h-[40rem] min-w-[60rem] flex-col gap-[1.2rem] overflow-y-scroll"
+      >
         {accommodations?.map((place) => (
           <li key={`${place.hotelId}-card`}>
             <Card

@@ -108,6 +108,7 @@ const BoardsIdListsPage = () => {
               handleToggleDropdown={handleToggleDropdown}
               isOpen={isOpen}
               selectedFilter={selectedFilter}
+              isLoading={isLoading}
             />
           </motion.div>
         )}
@@ -122,7 +123,7 @@ const BoardsIdListsPage = () => {
         )}
       />
       {isLoading && (
-        <main className="absolute z-10 flex h-full w-full items-center justify-center">
+        <main className="absolute z-10 flex h-full w-full items-center justify-center ">
           <div
             className={`h-[2.4rem] w-[2.4rem] animate-spin rounded-full border-4 border-t-transparent bg-primary`}
           />

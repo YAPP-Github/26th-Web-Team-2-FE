@@ -12,6 +12,7 @@ type PlaceListSectionProps = {
   handleToggleDropdown: () => void;
   isOpen: boolean;
   selectedFilter: string;
+  isLoading: boolean;
 };
 
 const PlaceListSection = ({
@@ -21,6 +22,7 @@ const PlaceListSection = ({
   handleToggleDropdown,
   isOpen,
   selectedFilter,
+  isLoading,
 }: PlaceListSectionProps) => {
   const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
   const memberData = useMemberData();
@@ -73,7 +75,7 @@ const PlaceListSection = ({
         </div>
       </div>
       {/* 숙소 리스트_카드목록 */}
-      <ul className="flex max-h-[40rem] flex-col gap-[1.2rem] overflow-y-auto">
+      <ul className="flex h-[40rem] min-w-[60rem] flex-col gap-[1.2rem] overflow-y-auto">
         {accommodations?.map((place) => (
           <li key={`${place.hotelId}-card`}>
             <Card
@@ -106,7 +108,7 @@ const PlaceListSection = ({
             />
           </li>
         ))}
-        {(!accommodations || accommodations.length === 0) && (
+        {!isLoading && (!accommodations || accommodations.length === 0) && (
           <EmptyListContainer />
         )}
       </ul>

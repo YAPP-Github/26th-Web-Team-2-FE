@@ -1,5 +1,4 @@
 import { Button, Card, cn } from "@ssok/ui";
-import { useState } from "react";
 import { useAccommodationContext } from "../../contexts/accomodation-context";
 import { useMemberData } from "../../hooks/use-member-data";
 import DropDown from "./atom/drop-down";
@@ -22,22 +21,10 @@ const PlaceListSection = ({
   isOpen,
   selectedFilter,
 }: PlaceListSectionProps) => {
-  const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
   const memberData = useMemberData();
   // const accommodationData = useAccommodationData();
-  const { accommodations } = useAccommodationContext();
-
-  const handlePlaceSelect = (placeName: string) => {
-    setSelectedPlaces((prev) =>
-      prev.includes(placeName)
-        ? prev.filter((name) => name !== placeName)
-        : [...prev, placeName],
-    );
-  };
-
-  const handleDeleteClick = (placeName: string) => {
-    setSelectedPlaces((prev) => prev.filter((name) => name !== placeName));
-  };
+  const { accommodations, selectedPlaces, togglePlaceSelect, removePlace } =
+    useAccommodationContext();
 
   return (
     <section
@@ -95,13 +82,13 @@ const PlaceListSection = ({
                 place.accommodationName as string,
               )}
               onClick={() =>
-                handlePlaceSelect(place.accommodationName as string)
+                togglePlaceSelect(place.accommodationName as string)
               }
               onAddClick={() => {
-                handlePlaceSelect(place.accommodationName as string);
+                togglePlaceSelect(place.accommodationName as string);
               }}
               onDeleteClick={() => {
-                handleDeleteClick(place.accommodationName as string);
+                removePlace(place.accommodationName as string);
               }}
             />
           </li>

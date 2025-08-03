@@ -7,14 +7,26 @@ import MapPin from "@/shared/components/map-component/map-pin";
 import { calculateCenter } from "@/shared/utils/map";
 
 const MapComponent = ({ className }: { className?: string }) => {
-  const { accommodations } = useAccommodationContext();
+  const { accommodations, lastSelectedPlace } = useAccommodationContext();
 
   const validLocations = accommodations.filter(
     (loc) =>
       typeof loc.latitude === "number" && typeof loc.longitude === "number",
   );
 
-  const center = calculateCenter(validLocations);
+  const defaultCenter = calculateCenter(validLocations);
+
+  const lastSelectedLocation = accommodations.find(
+    (loc) => loc.accommodationName === lastSelectedPlace,
+  );
+
+  const center =
+    lastSelectedLocation?.latitude && lastSelectedLocation.longitude
+      ? {
+          lat: lastSelectedLocation.latitude,
+          lng: lastSelectedLocation.longitude,
+        }
+      : defaultCenter;
 
   return (
     <div className={cn("relative h-screen w-full", className)}>
@@ -35,15 +47,19 @@ const MapComponent = ({ className }: { className?: string }) => {
           ],
         }}
       >
-        {accommodations.map((location) => (
-          <MapPin
-            key={location.id}
-            lat={location.latitude as number}
-            lng={location.longitude as number}
-          >
-            {location.accommodationName}
-          </MapPin>
-        ))}
+        {accommodations.map((location) => {
+          const isActive = location.accommodationName === lastSelectedPlace;
+          return (
+            <MapPin
+              key={location.id}
+              lat={location.latitude as number}
+              lng={location.longitude as number}
+              isActive={isActive}
+            >
+              {location.accommodationName}
+            </MapPin>
+          );
+        })}
       </GoogleMapReact>
     </div>
   );

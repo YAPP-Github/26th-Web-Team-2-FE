@@ -1,5 +1,5 @@
 import { Chip, IcCar, IcKm, IconTabs, IcWalker, TextField } from "@ssok/ui";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import type { ViewState } from "@/domains/compare/types";
 
 export interface TablePlacesContentsProps {
@@ -15,9 +15,9 @@ const TablePlacesContents = ({ contents, state }: TablePlacesContentsProps) => {
   return (
     <section className="flex flex-col gap-[1.6rem] rounded-[1.2rem] bg-neutral-98 p-[1.6rem]">
       {contents.map((content) => (
-        <>
+        <Fragment key={content.text}>
           {state !== "edit" && (
-            <div key={content.text}>
+            <div>
               <p className="mb-[0.4rem] text-body1-semi16 text-neutral-30">
                 {content.text}
               </p>
@@ -51,7 +51,7 @@ const TablePlacesContents = ({ contents, state }: TablePlacesContentsProps) => {
               </div>
             </div>
           )}
-        </>
+        </Fragment>
       ))}
     </section>
   );

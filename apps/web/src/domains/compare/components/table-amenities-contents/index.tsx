@@ -1,5 +1,5 @@
 import { Chip, TextField } from "@ssok/ui";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import type { ViewState } from "@/domains/compare/types";
 
 export interface TableAmenitiesContentsProps {
@@ -18,7 +18,7 @@ const TableAmenitiesContents = ({
   return (
     <section className="flex flex-col gap-[1.6rem] rounded-[1.2rem] bg-neutral-98 p-[1.6rem]">
       {contents.map((content) => (
-        <>
+        <Fragment key={content.text}>
           {state !== "edit" && (
             <div key={content.text} className="flex items-center gap-[0.8rem]">
               <span className="flex-shrink-0 text-neutral-60">
@@ -54,7 +54,7 @@ const TableAmenitiesContents = ({
               />
             </div>
           )}
-        </>
+        </Fragment>
       ))}
     </section>
   );

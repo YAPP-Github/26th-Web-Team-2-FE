@@ -20,7 +20,13 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import * as Accordion from "@radix-ui/react-accordion";
-import { cn, DeleteIconButton, IcAddBox, IcCollapse, IcExpand } from "@ssok/ui";
+import {
+  cn,
+  DeleteIconButton,
+  IcCollapse,
+  IcExpand,
+  IcPlusCircle,
+} from "@ssok/ui";
 import Image from "next/image";
 import type { Accommodation } from "@/domains/compare/types";
 import AddButton from "@/shared/components/add-button";
@@ -72,38 +78,48 @@ const CompareAccommodations = ({
       type="single"
       collapsible
       className={cn(
-        "max-h-[46rem] rounded-[1.6rem] border border-neutral-90 bg-white transition-colors hover:bg-neutral-98",
+        "max-h-[46rem] rounded-[1.6rem] bg-white py-[2.4rem] hover:bg-neutral-98",
+        "border border-neutral-90 transition-colors",
         className,
       )}
     >
       <Accordion.Item value="accommodations">
-        {/* Header - Accordion Trigger */}
-        <Accordion.Trigger className="group flex w-full items-center justify-between p-[2.4rem] focus:outline-none">
-          <div className="flex items-center text-body2-medi14 text-neutral-70">
+        {/* Header */}
+        <Accordion.Trigger className="group flex w-full cursor-pointer items-center justify-between px-[2.4rem]">
+          <div className="flex items-center">
             <span className="mr-[0.8rem] text-heading1-semi20 text-neutral-20">
               비교 중인 숙소
             </span>
-            (
-            <span className="text-neutral-variant-30">
+            <span className="text-body2-medi14 text-neutral-70">(</span>
+            <span className="text-body2-medi14 text-neutral-variant-30">
               {accommodations.length}
             </span>
-            /{maxAccommodations})
+            <span className="text-body2-medi14 text-neutral-70">
+              /{maxAccommodations})
+            </span>
           </div>
           <ToggleIndicator />
         </Accordion.Trigger>
 
         {/* Content */}
-        <Accordion.Content className="flex flex-1 flex-col gap-4 overflow-hidden px-6 pb-6 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-          {/* Add Hotel Button */}
-          <AddButton onClick={onAddAccommodation} className="shrink-0">
-            <IcAddBox
-              width="24"
-              height="24"
-              className="mr-[1rem] text-neutral-70"
-            />
-            <span className="text-body1-semi16 text-neutral-60">
+        <Accordion.Content
+          className={cn(
+            "flex flex-1 flex-col overflow-hidden",
+            "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
+          )}
+        >
+          <AddButton
+            onClick={onAddAccommodation}
+            className="mx-[2.4rem] my-[1.6rem] shrink-0"
+          >
+            <span className="mr-[1rem] text-[#A3A3A3] text-body1-semi16">
               비교 호텔 추가하기
             </span>
+            <IcPlusCircle
+              width="24"
+              height="24"
+              className="mr-[1rem] text-[#A3A3A3]"
+            />
           </AddButton>
 
           {/* Accommodations List */}
@@ -116,7 +132,7 @@ const CompareAccommodations = ({
               items={accommodations.map((a) => a.id || 0)}
               strategy={verticalListSortingStrategy}
             >
-              <div className="flex max-h-[32rem] flex-1 flex-col gap-4 overflow-y-auto">
+              <div className="flex max-h-[29.4rem] flex-col gap-[1.6rem] overflow-y-auto overflow-x-hidden pr-[2.4rem]">
                 {accommodations.map((accommodation) => (
                   <AccommodationItem
                     key={accommodation.id}
@@ -133,15 +149,13 @@ const CompareAccommodations = ({
   );
 };
 
-interface AccommodationItemProps {
-  accommodation: Accommodation;
-  onRemove?: (id: number) => void;
-}
-
 const AccommodationItem = ({
   accommodation,
   onRemove,
-}: AccommodationItemProps) => {
+}: {
+  accommodation: Accommodation;
+  onRemove?: (id: number) => void;
+}) => {
   const {
     attributes,
     listeners,
@@ -151,36 +165,31 @@ const AccommodationItem = ({
     isDragging,
   } = useSortable({ id: accommodation.id || 0 });
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
   return (
     <div
       ref={setNodeRef}
-      style={style}
-      className={cn("flex items-center", isDragging && "opacity-50")}
+      className={cn("flex items-start", isDragging && "opacity-50")}
+      style={{ transform: CSS.Transform.toString(transform), transition }}
     >
       <DragHandle {...attributes} {...listeners} />
 
       {/* Hotel Image */}
-      <div className="relative mr-[0.8rem] h-[4.8rem] w-[4.8rem] shrink-0 overflow-hidden rounded-2xl bg-neutral-90">
+      <div className="relative mr-[0.8rem] h-[4.8rem] w-[4.8rem] shrink-0 overflow-hidden rounded-[0.8rem] bg-neutral-90">
         <Image
           src={accommodation.images?.[0] || "/placeholder-hotel.jpg"}
           alt={accommodation.accommodationName || "Hotel Image"}
           fill
-          className="object-cover"
           sizes="48px"
+          className="object-cover"
         />
       </div>
 
       {/* Hotel Info */}
-      <div className="flex flex-1 flex-col justify-center gap-1">
-        <h3 className="line-clamp-1 text-body1-semi16 text-neutral-30">
+      <div className="flex flex-1 flex-col">
+        <h3 className="mb-[0.4rem] text-body1-semi16 text-neutral-30">
           {accommodation.accommodationName}
         </h3>
-        <p className="line-clamp-1 text-body2-medi14 text-neutral-50">
+        <p className="text-body2-medi14 text-neutral-50">
           {accommodation.nearbyAttractions?.[0]?.name || "위치 정보 없음"}
         </p>
       </div>
@@ -196,24 +205,20 @@ const AccommodationItem = ({
 
 const DragHandle = (props: SyntheticListenerMap | DraggableAttributes) => (
   <div
-    className="flex w-[2.4rem] shrink-0 cursor-grab flex-col items-center gap-2 p-[0.8rem] active:cursor-grabbing"
+    className="grid cursor-grab grid-cols-2 grid-rows-3 items-center justify-center gap-[0.2rem] px-[0.9rem] py-[0.8rem] active:cursor-grabbing"
     {...props}
   >
-    {[0, 1, 2].map((index) => (
-      <div key={index} className="flex gap-[0.2rem]">
-        {[0, 1].map((dot) => (
-          <div
-            key={dot}
-            className="h-[0.2rem] w-[0.2rem] rounded-full bg-neutral-80"
-          />
-        ))}
-      </div>
-    ))}
+    <div className="h-[0.2rem] w-[0.2rem] rounded-full bg-neutral-80" />
+    <div className="h-[0.2rem] w-[0.2rem] rounded-full bg-neutral-80" />
+    <div className="h-[0.2rem] w-[0.2rem] rounded-full bg-neutral-80" />
+    <div className="h-[0.2rem] w-[0.2rem] rounded-full bg-neutral-80" />
+    <div className="h-[0.2rem] w-[0.2rem] rounded-full bg-neutral-80" />
+    <div className="h-[0.2rem] w-[0.2rem] rounded-full bg-neutral-80" />
   </div>
 );
 
 const ToggleIndicator = () => (
-  <div className="relative flex h-6 w-6 items-center justify-center">
+  <div className="relative flex h-[2.4rem] w-[2.4rem] items-center justify-center">
     <IcExpand
       width="24"
       height="24"

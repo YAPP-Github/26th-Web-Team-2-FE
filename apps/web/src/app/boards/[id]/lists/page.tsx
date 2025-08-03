@@ -105,7 +105,7 @@ const BoardsIdListsPage = () => {
               handlePersonSelect={handlePersonSelect}
               handleFilterSelect={handleFilterSelect}
               handleToggleDropdown={handleToggleDropdown}
-              handdleCloseInputExpansion={handleCloseInputExpansion}
+              handleCloseInputExpansion={handleCloseInputExpansion}
               isInputExpanded={isInputExpanded}
               isOpen={isOpen}
               selectedFilter={selectedFilter}

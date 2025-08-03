@@ -10,7 +10,7 @@ type PlaceListSectionProps = {
   handlePersonSelect: (id: number) => void;
   handleFilterSelect: (id: string) => void;
   handleToggleDropdown: () => void;
-  handdleCloseInputExpansion: () => void;
+  handleCloseInputExpansion: () => void;
   isInputExpanded: boolean;
   isOpen: boolean;
   selectedFilter: string;
@@ -22,7 +22,7 @@ const PlaceListSection = ({
   handlePersonSelect,
   handleFilterSelect,
   handleToggleDropdown,
-  handdleCloseInputExpansion,
+  handleCloseInputExpansion,
   isInputExpanded,
   isOpen,
   selectedFilter,
@@ -43,7 +43,7 @@ const PlaceListSection = ({
       if (timer) clearTimeout(timer);
       if (isInputExpanded) {
         timer = setTimeout(() => {
-          handdleCloseInputExpansion();
+          handleCloseInputExpansion();
         }, 50);
       }
     };
@@ -59,7 +59,7 @@ const PlaceListSection = ({
       }
       if (timer) clearTimeout(timer);
     };
-  }, [isInputExpanded, handdleCloseInputExpansion]);
+  }, [isInputExpanded, handleCloseInputExpansion]);
 
   const handlePlaceSelect = (placeName: string) => {
     setSelectedPlaces((prev) =>

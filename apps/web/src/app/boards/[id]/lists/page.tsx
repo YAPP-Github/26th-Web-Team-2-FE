@@ -91,7 +91,6 @@ const BoardsIdListsPage = () => {
               isInputExpanded={isInputExpanded}
               isMemoInputVisible={isMemoInputVisible}
               isTooltipVisible={isTooltipVisible}
-              handleCloseInputExpansion={handleCloseInputExpansion}
               toggleInputExpansion={toggleInputExpansion}
               handleMemoInputToggle={handleMemoInputToggle}
               handleTooltipvisible={handleTooltipvisible}
@@ -106,15 +105,18 @@ const BoardsIdListsPage = () => {
               handlePersonSelect={handlePersonSelect}
               handleFilterSelect={handleFilterSelect}
               handleToggleDropdown={handleToggleDropdown}
+              handleCloseInputExpansion={handleCloseInputExpansion}
+              isInputExpanded={isInputExpanded}
               isOpen={isOpen}
               selectedFilter={selectedFilter}
+              isLoading={isLoading}
             />
           </motion.div>
         )}
       </AnimatePresence>
       {/* TODO: resize 추가 애니메이션 보강  */}
       <SolidExpand
-        expand={isPanelExpanded}
+        collapse={!isPanelExpanded}
         onClick={handlePanelToggle}
         className={cn(
           "absolute top-[50%] z-2",
@@ -122,7 +124,7 @@ const BoardsIdListsPage = () => {
         )}
       />
       {isLoading && (
-        <main className="absolute z-10 flex h-full w-full items-center justify-center">
+        <main className="absolute z-10 flex h-full w-full items-center justify-center ">
           <div
             className={`h-[2.4rem] w-[2.4rem] animate-spin rounded-full border-4 border-t-transparent bg-primary`}
           />

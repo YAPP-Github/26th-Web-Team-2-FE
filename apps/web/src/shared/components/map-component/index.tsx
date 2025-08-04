@@ -17,7 +17,7 @@ const MapComponent = ({ className }: { className?: string }) => {
   const defaultCenter = calculateCenter(validLocations);
 
   const lastSelectedLocation = accommodations.find(
-    (loc) => loc.accommodationName === lastSelectedPlace,
+    (loc) => loc.id === lastSelectedPlace,
   );
 
   const center =
@@ -48,7 +48,7 @@ const MapComponent = ({ className }: { className?: string }) => {
         }}
       >
         {accommodations.map((location) => {
-          const isActive = location.accommodationName === lastSelectedPlace;
+          const isActive = location.id === lastSelectedPlace;
           return (
             <MapPin
               key={location.id}

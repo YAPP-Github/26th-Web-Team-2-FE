@@ -61,6 +61,8 @@ const PlaceListSection = ({
     };
   }, [isInputExpanded, handleCloseInputExpansion]);
 
+  console.log("accommodations", accommodations);
+  console.log("selectedPlaces", selectedPlaces);
   return (
     <section
       className={cn(
@@ -116,17 +118,13 @@ const PlaceListSection = ({
                 )?.name || "알 수 없음"
               }
               memo={place.memo}
-              selected={selectedPlaces.includes(
-                place.accommodationName as string,
-              )}
-              onClick={() =>
-                togglePlaceSelect(place.accommodationName as string)
-              }
+              selected={selectedPlaces.includes(place.id as number)}
+              onClick={() => togglePlaceSelect(place.id as number)}
               onAddClick={() => {
-                togglePlaceSelect(place.accommodationName as string);
+                togglePlaceSelect(place.id as number);
               }}
               onDeleteClick={() => {
-                removePlace(place.accommodationName as string);
+                removePlace(place.id as number);
               }}
             />
           </li>

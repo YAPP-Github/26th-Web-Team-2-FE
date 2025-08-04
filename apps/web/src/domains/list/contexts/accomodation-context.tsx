@@ -7,10 +7,10 @@ type NonNullableAccommodation = NonNullable<AccommodationResponse>;
 const AccommodationContext = createContext<{
   accommodations: NonNullableAccommodation[];
   setAccommodations: (list: NonNullableAccommodation[]) => void;
-  selectedPlaces: string[];
-  togglePlaceSelect: (placeName: string) => void;
-  removePlace: (placeName: string) => void;
-  lastSelectedPlace: string | null;
+  selectedPlaces: number[];
+  togglePlaceSelect: (id: number) => void;
+  removePlace: (id: number) => void;
+  lastSelectedPlace: number | null;
 }>({
   accommodations: [],
   setAccommodations: () => {},
@@ -30,25 +30,25 @@ export const AccommodationProvider = ({
   const [accommodations, setAccommodations] = useState<AccommodationResponse[]>(
     [],
   );
-  const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
-  const [lastSelectedPlace, setLastSelectedPlace] = useState<string | null>(
+  const [selectedPlaces, setSelectedPlaces] = useState<number[]>([]);
+  const [lastSelectedPlace, setLastSelectedPlace] = useState<number | null>(
     null,
   );
 
-  const togglePlaceSelect = (placeName: string) => {
+  const togglePlaceSelect = (id: number) => {
     setSelectedPlaces((prev) => {
-      const alreadySelected = prev.includes(placeName);
+      const alreadySelected = prev.includes(id);
       if (alreadySelected) {
-        return prev.filter((name) => name !== placeName);
+        return prev.filter((name) => name !== id);
       } else {
-        setLastSelectedPlace(placeName);
-        return [...prev, placeName];
+        setLastSelectedPlace(id);
+        return [...prev, id];
       }
     });
   };
 
-  const removePlace = (placeName: string) => {
-    setSelectedPlaces((prev) => prev.filter((name) => name !== placeName));
+  const removePlace = (placeId: number) => {
+    setSelectedPlaces((prev) => prev.filter((id) => id !== placeId));
   };
 
   return (

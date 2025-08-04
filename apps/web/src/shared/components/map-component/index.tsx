@@ -7,7 +7,8 @@ import MapPin from "@/shared/components/map-component/map-pin";
 import { calculateCenter } from "@/shared/utils/map";
 
 const MapComponent = ({ className }: { className?: string }) => {
-  const { accommodations, lastSelectedPlace } = useAccommodationContext();
+  const { accommodations, lastSelectedPlace, onSelectPlace } =
+    useAccommodationContext();
 
   const validLocations = accommodations.filter(
     (loc) =>
@@ -51,6 +52,7 @@ const MapComponent = ({ className }: { className?: string }) => {
           const isActive = location.id === lastSelectedPlace;
           return (
             <MapPin
+              onClick={() => onSelectPlace(location.id as number)}
               key={location.id}
               lat={location.latitude as number}
               lng={location.longitude as number}

@@ -102,7 +102,7 @@ const PlaceListSection = ({
         className="flex h-[40rem] min-w-[60rem] flex-col gap-[1.2rem] overflow-y-scroll"
       >
         {accommodations?.map((place) => (
-          <li key={`${place.hotelId}-card`}>
+          <li key={`${place.id}-card`}>
             <Card
               images={place?.images || []}
               siteName={place.siteName || "-"}

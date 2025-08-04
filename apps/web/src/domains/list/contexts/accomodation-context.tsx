@@ -1,6 +1,7 @@
 "use client";
 import type { AccommodationResponse } from "@ssok/api/schemas";
 import { createContext, useContext, useState } from "react";
+import useBoardPanel from "../hooks/use-board-panel";
 
 type NonNullableAccommodation = NonNullable<AccommodationResponse>;
 
@@ -11,6 +12,9 @@ const AccommodationContext = createContext<{
   togglePlaceSelect: (id: number) => void;
   removePlace: (id: number) => void;
   lastSelectedPlace: number | null;
+  handlePanelToggle: () => void;
+  onSelectPlace: (placeId: number) => void;
+  isPanelExpanded: boolean;
 }>({
   accommodations: [],
   setAccommodations: () => {},
@@ -18,6 +22,9 @@ const AccommodationContext = createContext<{
   togglePlaceSelect: () => {},
   removePlace: () => {},
   lastSelectedPlace: null,
+  handlePanelToggle: () => {},
+  onSelectPlace: () => {},
+  isPanelExpanded: false,
 });
 
 export const useAccommodationContext = () => useContext(AccommodationContext);
@@ -34,6 +41,8 @@ export const AccommodationProvider = ({
   const [lastSelectedPlace, setLastSelectedPlace] = useState<number | null>(
     null,
   );
+  const { handlePanelExpand, isPanelExpanded, handlePanelToggle } =
+    useBoardPanel();
 
   const togglePlaceSelect = (id: number) => {
     setSelectedPlaces((prev) => {
@@ -45,6 +54,15 @@ export const AccommodationProvider = ({
         return [...prev, id];
       }
     });
+    if (!isPanelExpanded) handlePanelExpand();
+  };
+
+  const onSelectPlace = (placeId: number) => {
+    setSelectedPlaces((prev) => {
+      return [...prev, placeId];
+    });
+    setLastSelectedPlace(placeId);
+    if (!isPanelExpanded) handlePanelExpand();
   };
 
   const removePlace = (placeId: number) => {
@@ -60,6 +78,9 @@ export const AccommodationProvider = ({
         togglePlaceSelect,
         removePlace,
         lastSelectedPlace,
+        handlePanelToggle,
+        onSelectPlace,
+        isPanelExpanded,
       }}
     >
       {children}

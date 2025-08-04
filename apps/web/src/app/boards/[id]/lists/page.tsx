@@ -7,7 +7,6 @@ import HeaderSection from "@/domains/list/components/header-section";
 import LinkInputSection from "@/domains/list/components/link-input-section";
 import PlaceListSection from "@/domains/list/components/place-list-section";
 import { useAccommodationContext } from "@/domains/list/contexts/accomodation-context";
-import useBoardPanel from "@/domains/list/hooks/use-board-panel";
 import useDragAndDrop from "@/domains/list/hooks/use-drag-and-drop";
 import useDropdown from "@/domains/list/hooks/use-dropdown";
 import useInputPanel from "@/domains/list/hooks/use-input-panel";
@@ -23,7 +22,7 @@ const BoardsIdListsPage = () => {
   } = useInputPanel();
   const { isOpen, handleToggleDropdown, selectedFilter, handleFilterSelect } =
     useDropdown();
-  const { isPanelExpanded, handlePanelToggle } = useBoardPanel();
+  // const { isPanelExpanded, handlePanelToggle } = useBoardPanel();
   const [selectedPerson, setSelectedPerson] = useState(0);
   const { isDragging, onDragEnter, onDragOver, onDragLeave, onDrop } =
     useDragAndDrop((url) => {
@@ -48,7 +47,8 @@ const BoardsIdListsPage = () => {
     sort: selectedFilter,
   });
 
-  const { setAccommodations } = useAccommodationContext();
+  const { setAccommodations, handlePanelToggle, isPanelExpanded } =
+    useAccommodationContext();
 
   useEffect(() => {
     const all =

@@ -60,6 +60,7 @@ export type { IconTabsOption, IconTabsProps } from "@/components/icon-tabs";
 export { IconTabs } from "@/components/icon-tabs";
 export { Pin } from "@/components/pin";
 export { TextField } from "@/components/text-field";
+export { Textarea } from "@/components/textarea";
 export { cn } from "@/utils";
 
 export { default as TextWithIcon } from "./components/text-with-icon";

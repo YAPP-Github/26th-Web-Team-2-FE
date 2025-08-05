@@ -11,8 +11,7 @@ const MapComponent = ({ className }: { className?: string }) => {
     useAccommodationContext();
 
   const validLocations = accommodations.filter(
-    (loc) =>
-      typeof loc.latitude === "number" && typeof loc.longitude === "number",
+    (loc) => loc.latitude && loc.longitude,
   );
 
   const defaultCenter = calculateCenter(validLocations);

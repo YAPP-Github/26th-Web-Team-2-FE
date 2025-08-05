@@ -45,16 +45,19 @@ export const AccommodationProvider = ({
     useBoardPanel();
 
   const togglePlaceSelect = (id: number) => {
+    let updated: number[] = [];
     setSelectedPlaces((prev) => {
       const alreadySelected = prev.includes(id);
-      if (alreadySelected) {
-        return prev.filter((name) => name !== id);
-      } else {
-        setLastSelectedPlace(id);
-        return [...prev, id];
-      }
+      updated = alreadySelected
+        ? prev.filter((name) => name !== id)
+        : [...prev, id];
+      return updated;
     });
-    if (!isPanelExpanded) handlePanelExpand();
+
+    if (!selectedPlaces.includes(id)) {
+      setLastSelectedPlace(id);
+      if (!isPanelExpanded) handlePanelExpand();
+    }
   };
 
   const onSelectPlace = (placeId: number) => {

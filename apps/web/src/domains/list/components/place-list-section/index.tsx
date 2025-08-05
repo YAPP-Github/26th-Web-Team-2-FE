@@ -61,8 +61,6 @@ const PlaceListSection = ({
     };
   }, [isInputExpanded, handleCloseInputExpansion]);
 
-  console.log("accommodations", accommodations);
-  console.log("selectedPlaces", selectedPlaces);
   return (
     <section
       className={cn(

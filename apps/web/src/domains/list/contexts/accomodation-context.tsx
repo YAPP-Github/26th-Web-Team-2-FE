@@ -54,10 +54,8 @@ export const AccommodationProvider = ({
       return updated;
     });
 
-    if (!selectedPlaces.includes(id)) {
-      setLastSelectedPlace(id);
-      if (!isPanelExpanded) handlePanelExpand();
-    }
+    setLastSelectedPlace(id);
+    if (!isPanelExpanded) handlePanelExpand();
   };
 
   const onSelectPlace = (placeId: number) => {

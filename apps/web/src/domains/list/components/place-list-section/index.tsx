@@ -116,13 +116,15 @@ const PlaceListSection = ({
                 )?.name || "알 수 없음"
               }
               memo={place.memo}
-              selected={selectedPlaces.includes(place.id as number)}
-              onClick={() => togglePlaceSelect(place.id as number)}
+              selected={place.id ? selectedPlaces.includes(place.id) : false}
+              onClick={() => place.id && togglePlaceSelect(place.id)}
               onAddClick={() => {
-                togglePlaceSelect(place.id as number);
+                if (!place.id) return;
+                togglePlaceSelect(place.id);
               }}
               onDeleteClick={() => {
-                removePlace(place.id as number);
+                if (!place.id) return;
+                removePlace(place.id);
               }}
             />
           </li>

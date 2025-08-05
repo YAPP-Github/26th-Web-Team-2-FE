@@ -11,7 +11,8 @@ const MapComponent = ({ className }: { className?: string }) => {
     useAccommodationContext();
 
   const validLocations = accommodations.filter(
-    (loc) => loc.latitude && loc.longitude,
+    (loc) =>
+      typeof loc.latitude === "number" && typeof loc.longitude === "number",
   );
 
   const defaultCenter = calculateCenter(validLocations);
@@ -53,8 +54,8 @@ const MapComponent = ({ className }: { className?: string }) => {
             <MapPin
               onClick={() => onSelectPlace(location.id as number)}
               key={location.id}
-              lat={location.latitude as number}
-              lng={location.longitude as number}
+              lat={location.latitude!}
+              lng={location.longitude!}
               isActive={isActive}
             >
               {location.accommodationName}

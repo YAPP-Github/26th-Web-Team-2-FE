@@ -20,7 +20,7 @@ export const button = cva(
         text: "border-none bg-transparent text-neutral-40 hover:bg-neutral-variant-98 hover:text-neutral-40 focus:bg-neutral-variant-90 focus:text-neutral-25 active:bg-neutral-variant-95 active:text-neutral-40 disabled:cursor-not-allowed",
         round: "rounded-[4.8rem] px-[1.2rem] py-[0.6rem]",
         black:
-          "bg-neutral-variant-20 text-primary-100 focus:bg-neutral-variant-35",
+          "rounded-[0.8rem] bg-neutral-variant-20 text-primary-100 focus:bg-neutral-variant-35",
       },
       selected: {
         true: "",

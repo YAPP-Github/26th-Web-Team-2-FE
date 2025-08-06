@@ -1,5 +1,10 @@
-export const formatDate = (date: Date): string => {
-  const year = date.getFullYear();
+type FormatDateOptions = {
+  shortYear?: boolean; // true이면 "YY.MM.DD", false이면 "YYYY.MM.DD"
+};
+
+export const formatDate = (date: Date, options?: FormatDateOptions): string => {
+  const yearFull = String(date.getFullYear());
+  const year = options?.shortYear ? yearFull.slice(2) : yearFull;
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}.${month}.${day}`;

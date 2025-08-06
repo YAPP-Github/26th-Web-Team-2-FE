@@ -6,7 +6,8 @@ import useAccommodationList from "@/app/api/accomodation/use-accomodation-list";
 import HeaderSection from "@/domains/list/components/header-section";
 import LinkInputSection from "@/domains/list/components/link-input-section";
 import PlaceListSection from "@/domains/list/components/place-list-section";
-import { useAccommodationContext } from "@/domains/list/contexts/accomodation-context";
+import { useAccommodationDataContext } from "@/domains/list/contexts/accomodation-data-context";
+import { usePanelContext } from "@/domains/list/contexts/pannel-context";
 import useDragAndDrop from "@/domains/list/hooks/use-drag-and-drop";
 import useDropdown from "@/domains/list/hooks/use-dropdown";
 import useInputPanel from "@/domains/list/hooks/use-input-panel";
@@ -22,7 +23,6 @@ const BoardsIdListsPage = () => {
   } = useInputPanel();
   const { isOpen, handleToggleDropdown, selectedFilter, handleFilterSelect } =
     useDropdown();
-  // const { isPanelExpanded, handlePanelToggle } = useBoardPanel();
   const [selectedPerson, setSelectedPerson] = useState(0);
   const { isDragging, onDragEnter, onDragOver, onDragLeave, onDrop } =
     useDragAndDrop((url) => {
@@ -47,14 +47,13 @@ const BoardsIdListsPage = () => {
     sort: selectedFilter,
   });
 
-  const { setAccommodations, handlePanelToggle, isPanelExpanded } =
-    useAccommodationContext();
-
+  const { updateAccommodations } = useAccommodationDataContext();
+  const { handlePanelToggle, isPanelExpanded } = usePanelContext();
   useEffect(() => {
     const all =
       data?.pages.flatMap((page) => page.result?.accommodations || []) ?? [];
-    setAccommodations(all);
-  }, [data, setAccommodations]);
+    updateAccommodations(all);
+  }, [data, updateAccommodations]);
 
   const handlePersonSelect = (id: number) => {
     setSelectedPerson(id);

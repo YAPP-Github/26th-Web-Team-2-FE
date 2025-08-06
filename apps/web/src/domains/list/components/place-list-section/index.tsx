@@ -1,6 +1,7 @@
 import { Button, Card, cn } from "@ssok/ui";
 import { useEffect, useRef } from "react";
-import { useAccommodationContext } from "../../contexts/accomodation-context";
+import { useAccommodationDataContext } from "../../contexts/accomodation-data-context";
+import { usePlaceSelectionContext } from "../../contexts/place-select-context";
 import { useMemberData } from "../../hooks/use-member-data";
 import DropDown from "./atom/drop-down";
 import EmptyListContainer from "./atom/empty-list-container";
@@ -29,9 +30,9 @@ const PlaceListSection = ({
   isLoading,
 }: PlaceListSectionProps) => {
   const memberData = useMemberData();
-  // const accommodationData = useAccommodationData();
-  const { accommodations, selectedPlaces, togglePlaceSelect, removePlace } =
-    useAccommodationContext();
+  const { accommodations } = useAccommodationDataContext();
+  const { selectedPlaces, togglePlaceSelect, removePlace } =
+    usePlaceSelectionContext();
   const listRef = useRef<HTMLUListElement | null>(null);
 
   useEffect(() => {

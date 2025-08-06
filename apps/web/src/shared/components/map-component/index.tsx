@@ -2,13 +2,15 @@
 
 import { cn } from "@ssok/ui";
 import GoogleMapReact from "google-map-react";
-import { useAccommodationContext } from "@/domains/list/contexts/accomodation-context";
+import { useAccommodationDataContext } from "@/domains/list/contexts/accomodation-data-context";
+import { usePlaceSelectionContext } from "@/domains/list/contexts/place-select-context";
 import MapPin from "@/shared/components/map-component/map-pin";
 import { calculateCenter } from "@/shared/utils/map";
 
 const MapComponent = ({ className }: { className?: string }) => {
-  const { accommodations, lastSelectedPlace, onSelectPlace } =
-    useAccommodationContext();
+  const { accommodations } = useAccommodationDataContext();
+
+  const { onSelectPlace, lastSelectedPlace } = usePlaceSelectionContext();
 
   const validLocations = accommodations.filter(
     (loc) =>

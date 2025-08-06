@@ -1,7 +1,8 @@
 import { Button, Card, cn } from "@ssok/ui";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useAccommodationDataContext } from "../../contexts/accomodation-data-context";
 import { usePlaceSelectionContext } from "../../contexts/place-select-context";
+import useCollapseOnScroll from "../../hooks/use-collapse-on-scroll";
 import useInfiniteScroll from "../../hooks/use-infinite-scroll";
 import { useMemberData } from "../../hooks/use-member-data";
 import DropDown from "./atom/drop-down";
@@ -48,32 +49,7 @@ const PlaceListSection = ({
     fetchNextPage,
   });
 
-  useEffect(() => {
-    if (localStorage.getItem("onboardingStep") !== "finish" && !isInputExpanded)
-      return;
-    let timer: ReturnType<typeof setTimeout> | null = null;
-
-    const handleScroll = () => {
-      if (timer) clearTimeout(timer);
-      if (isInputExpanded) {
-        timer = setTimeout(() => {
-          handleCloseInputExpansion();
-        }, 50);
-      }
-    };
-
-    const listElement = listRef.current;
-    if (listElement) {
-      listElement.addEventListener("scroll", handleScroll, { passive: true });
-    }
-
-    return () => {
-      if (listElement) {
-        listElement.removeEventListener("scroll", handleScroll);
-      }
-      if (timer) clearTimeout(timer);
-    };
-  }, [isInputExpanded, handleCloseInputExpansion]);
+  useCollapseOnScroll(listRef, isInputExpanded, handleCloseInputExpansion);
 
   return (
     <section

@@ -1,6 +1,7 @@
 import { Button, Card, cn } from "@ssok/ui";
-import { useEffect, useRef, useState } from "react";
-import { useAccommodationContext } from "../../contexts/accomodation-context";
+import { useEffect, useRef } from "react";
+import { useAccommodationDataContext } from "../../contexts/accomodation-data-context";
+import { usePlaceSelectionContext } from "../../contexts/place-select-context";
 import { useMemberData } from "../../hooks/use-member-data";
 import DropDown from "./atom/drop-down";
 import EmptyListContainer from "./atom/empty-list-container";
@@ -28,10 +29,10 @@ const PlaceListSection = ({
   selectedFilter,
   isLoading,
 }: PlaceListSectionProps) => {
-  const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
   const memberData = useMemberData();
-  // const accommodationData = useAccommodationData();
-  const { accommodations } = useAccommodationContext();
+  const { accommodations } = useAccommodationDataContext();
+  const { selectedPlaces, togglePlaceSelect, removePlace } =
+    usePlaceSelectionContext();
   const listRef = useRef<HTMLUListElement | null>(null);
 
   useEffect(() => {
@@ -60,18 +61,6 @@ const PlaceListSection = ({
       if (timer) clearTimeout(timer);
     };
   }, [isInputExpanded, handleCloseInputExpansion]);
-
-  const handlePlaceSelect = (placeName: string) => {
-    setSelectedPlaces((prev) =>
-      prev.includes(placeName)
-        ? prev.filter((name) => name !== placeName)
-        : [...prev, placeName],
-    );
-  };
-
-  const handleDeleteClick = (placeName: string) => {
-    setSelectedPlaces((prev) => prev.filter((name) => name !== placeName));
-  };
 
   return (
     <section
@@ -112,7 +101,7 @@ const PlaceListSection = ({
         className="flex h-[40rem] min-w-[60rem] flex-col gap-[1.2rem] overflow-y-scroll"
       >
         {accommodations?.map((place) => (
-          <li key={`${place.hotelId}-card`}>
+          <li key={`${place.id}-card`}>
             <Card
               images={place?.images || []}
               siteName={place.siteName || "-"}
@@ -128,17 +117,15 @@ const PlaceListSection = ({
                 )?.name || "알 수 없음"
               }
               memo={place.memo}
-              selected={selectedPlaces.includes(
-                place.accommodationName as string,
-              )}
-              onClick={() =>
-                handlePlaceSelect(place.accommodationName as string)
-              }
+              selected={place.id ? selectedPlaces.includes(place.id) : false}
+              onClick={() => place.id && togglePlaceSelect(place.id)}
               onAddClick={() => {
-                handlePlaceSelect(place.accommodationName as string);
+                if (!place.id) return;
+                togglePlaceSelect(place.id);
               }}
               onDeleteClick={() => {
-                handleDeleteClick(place.accommodationName as string);
+                if (!place.id) return;
+                removePlace(place.id);
               }}
             />
           </li>

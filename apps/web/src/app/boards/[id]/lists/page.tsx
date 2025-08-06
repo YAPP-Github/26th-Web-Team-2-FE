@@ -40,12 +40,13 @@ const BoardsIdListsPage = () => {
     watch,
   } = useRegisterUrlInput();
 
-  const { data, isLoading } = useAccommodationList({
-    boardId: 1,
-    userId: selectedPerson === 0 ? undefined : selectedPerson,
-    size: 10,
-    sort: selectedFilter,
-  });
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useAccommodationList({
+      boardId: 1,
+      userId: selectedPerson === 0 ? undefined : selectedPerson,
+      size: 3,
+      sort: selectedFilter,
+    });
 
   const { updateAccommodations } = useAccommodationDataContext();
   const { handlePanelToggle, isPanelExpanded } = usePanelContext();
@@ -109,6 +110,9 @@ const BoardsIdListsPage = () => {
               isOpen={isOpen}
               selectedFilter={selectedFilter}
               isLoading={isLoading}
+              fetchNextPage={fetchNextPage}
+              hasNextPage={hasNextPage}
+              isFetchingNextPage={isFetchingNextPage}
             />
           </motion.div>
         )}

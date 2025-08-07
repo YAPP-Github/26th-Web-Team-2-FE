@@ -38,7 +38,7 @@ const mockCompareData: Accommodation[] = [
       },
     ],
     checkInTime: { checkInTimeFrom: "15:00", checkInTimeTo: "24:00" },
-    checkOutTime: { checkInTimeFrom: "00:00", checkInTimeTo: "11:00" },
+    checkOutTime: { checkOutTimeFrom: "00:00", checkOutTimeTo: "11:00" },
     amenities: [
       {
         type: "무료 와이파이",
@@ -112,7 +112,7 @@ const mockCompareData: Accommodation[] = [
       },
     ],
     checkInTime: { checkInTimeFrom: "14:00", checkInTimeTo: "23:00" },
-    checkOutTime: { checkInTimeFrom: "00:00", checkInTimeTo: "10:00" },
+    checkOutTime: { checkOutTimeFrom: "00:00", checkOutTimeTo: "10:00" },
     amenities: [
       {
         type: "무료 와이파이",
@@ -179,7 +179,7 @@ const mockCompareData: Accommodation[] = [
       },
     ],
     checkInTime: { checkInTimeFrom: "15:00", checkInTimeTo: "24:00" },
-    checkOutTime: { checkInTimeFrom: "00:00", checkInTimeTo: "12:00" },
+    checkOutTime: { checkOutTimeFrom: "00:00", checkOutTimeTo: "12:00" },
     reviewSummary: "최고급 호텔로 서비스와 시설 모든 면에서 완벽합니다.",
     nearbyTransportation: [
       {
@@ -253,7 +253,7 @@ const mockCompareData: Accommodation[] = [
       },
     ],
     checkInTime: { checkInTimeFrom: "15:00", checkInTimeTo: "24:00" },
-    checkOutTime: { checkInTimeFrom: "00:00", checkInTimeTo: "11:00" },
+    checkOutTime: { checkOutTimeFrom: "00:00", checkOutTimeTo: "11:00" },
     reviewSummary: "가격 대비 괜찮은 편이지만 시설이 다소 오래되었습니다.",
     nearbyTransportation: [
       {

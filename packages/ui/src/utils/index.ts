@@ -21,3 +21,6 @@ const twMerge = extendTailwindMerge({
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
+
+// Re-export date utilities
+export { formatTime } from "./date";

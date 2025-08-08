@@ -1,4 +1,5 @@
 import { cn, IcBookmark, IcLocation } from "dist";
+import { useState } from "react";
 import { IcMore } from "@/index";
 import ProfileGroup from "../avatar/group";
 import TextWithIcon from "../text-with-icon";
@@ -24,17 +25,20 @@ type TravelBoardProps = {
 
 export const TravelBoard = ({ onClick, data, ...props }: TravelBoardProps) => {
   const { boardName, destination, startDate, endDate, participants } = data;
+  const [moreHover, setMoreHover] = useState(false);
 
   return (
     <section
       className={cn(
         `flex min-h-[24.2rem] min-w-[38.4rem] flex-col rounded-[1.6rem] pt-[2.4rem] pr-[2.8rem] pb-[2.4rem] pl-[3.2rem]`,
         `border border-neutral-90 bg-neutral-99`,
+        `hover:border-neutral-80 hover:bg-neutral-98`,
+        moreHover && "border hover:border-secondary-90 hover:bg-neutral-99",
       )}
       {...props}
     >
       {/* 헤더 정보 */}
-      <header className="mt-[0.8rem] flex w-full flex-row justify-between">
+      <header className="flex w-full flex-row justify-between">
         <div className="flex items-center gap-[0.8rem]">
           <span className="flex gap-[0.4rem] rounded-[0.4rem] bg-neutral-95 px-[0.8rem] py-[0.4rem] text-caption1-medi14 text-neutral-60">
             <p>{startDate}</p>
@@ -51,7 +55,13 @@ export const TravelBoard = ({ onClick, data, ...props }: TravelBoardProps) => {
             </TextWithIcon.Text>
           </TextWithIcon>
         </div>
-        <button type="button" onClick={() => {}}>
+        <button
+          type="button"
+          onMouseEnter={() => setMoreHover(true)}
+          onMouseLeave={() => setMoreHover(false)}
+          onClick={() => {}}
+          className="rounded-[1.2rem] p-[0.8rem] hover:bg-neutral-98 focus:bg-neutral-95"
+        >
           <IcMore width={32} height={32} className="text-neutral-50" />
         </button>
       </header>

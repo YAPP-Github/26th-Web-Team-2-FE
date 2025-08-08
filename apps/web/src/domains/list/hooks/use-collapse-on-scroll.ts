@@ -1,4 +1,5 @@
 import { type RefObject, useEffect } from "react";
+import storage from "@/shared/utils/storage";
 
 /**
  * useCollapseOnScroll
@@ -24,8 +25,7 @@ const useCollapseOnScroll = <T extends HTMLElement | null>(
   handleClose: () => void,
 ) => {
   useEffect(() => {
-    if (localStorage.getItem("onboardingStep") !== "finish" && !isInputExpanded)
-      return;
+    if (storage.get("onboardingStep") !== "finish" && !isInputExpanded) return;
 
     let timer: ReturnType<typeof setTimeout> | null = null;
 

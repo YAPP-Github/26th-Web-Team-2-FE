@@ -1,9 +1,9 @@
 import { Button, Card, cn } from "@ssok/ui";
 import { useRef } from "react";
+import useInfiniteScroll from "../../../../shared/hooks/use-infinite-scroll";
 import { useAccommodationDataContext } from "../../contexts/accomodation-data-context";
 import { usePlaceSelectionContext } from "../../contexts/place-select-context";
 import useCollapseOnScroll from "../../hooks/use-collapse-on-scroll";
-import useInfiniteScroll from "../../hooks/use-infinite-scroll";
 import { useMemberData } from "../../hooks/use-member-data";
 import DropDown from "./atom/drop-down";
 import EmptyListContainer from "./atom/empty-list-container";

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { TravelBoard } from ".";
+import TravelBoard from ".";
 
 const meta: Meta<typeof TravelBoard> = {
   title: "Components/TravelBoard",

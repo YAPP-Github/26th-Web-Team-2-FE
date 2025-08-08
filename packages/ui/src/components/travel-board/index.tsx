@@ -1,6 +1,8 @@
-import { cn, IcBookmark, IcLocation } from "dist";
 import { useState } from "react";
-import { IcMore } from "@/index";
+import IcBookmark from "@/assets/icons/ic_bookmark.svg?react";
+import IcLocation from "@/assets/icons/ic_location.svg?react";
+import IcMore from "@/assets/icons/ic_more.svg?react";
+import { cn } from "@/index";
 import ProfileGroup from "../avatar/group";
 import TextWithIcon from "../text-with-icon";
 

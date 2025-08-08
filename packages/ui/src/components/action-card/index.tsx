@@ -1,4 +1,5 @@
-import { cn, IcAdd } from "dist";
+import IcAdd from "@/assets/icons/ic_add.svg?react";
+import { cn } from "@/index";
 
 type ActionCardProps = {
   onClick: () => void;

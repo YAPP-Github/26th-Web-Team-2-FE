@@ -7,7 +7,8 @@ export const formatDate = (
   { format = "YYYY.MM.DD" }: FormatDateOptions = {},
 ): string => {
   const yearFull = String(date.getFullYear());
-  const year = format === "YY.MM.DD" ? yearFull.slice(2) : yearFull;
+  const year =
+    format === "YY.MM.DD" ? yearFull.slice(-2).padStart(2, "0") : yearFull;
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}.${month}.${day}`;

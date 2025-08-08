@@ -10,6 +10,7 @@ const mockCompareData: Accommodation[] = [
       "https://pix8.agoda.net/hotelImages/692/69287/69287_16060314210043106872.jpg?ca=6&ce=1&s=600x",
     ],
     reviewScore: 8.5,
+    cleanlinessScore: 7.2,
     nearbyAttractions: [
       {
         name: "도쿄역",
@@ -36,6 +37,8 @@ const mockCompareData: Accommodation[] = [
         byCar: { distance: "800m", time: "7분" },
       },
     ],
+    checkInTime: { checkInTimeFrom: "15:00", checkInTimeTo: "24:00" },
+    checkOutTime: { checkInTimeFrom: "00:00", checkInTimeTo: "11:00" },
     amenities: [
       {
         type: "무료 와이파이",
@@ -51,6 +54,8 @@ const mockCompareData: Accommodation[] = [
       { type: "수영장", available: true, description: "오전 07시 ~ 오후 22시" },
       { type: "조식", available: true, description: "오전 07시 ~ 오전 11시" },
     ],
+    reviewSummary:
+      "위치가 좋고 시설이 깨끗합니다. 직원들이 친절하고 조식이 맛있어요.",
     nearbyTransportation: [
       {
         name: "도쿄역",
@@ -78,7 +83,8 @@ const mockCompareData: Accommodation[] = [
       "https://pix8.agoda.net/hotelImages/49986351/0/e311c6d8b735a44ace73b8219d07876d.jpeg?ce=0&s=600x",
       "https://pix8.agoda.net/hotelImages/9373867/0/d325a6b849fb3bcce909f813ea7adfb8.jpg?ce=2&s=1024x",
     ],
-    reviewScore: 9.7,
+    reviewScore: 7.8,
+    cleanlinessScore: 8.9,
     nearbyAttractions: [
       {
         name: "아사쿠사",
@@ -105,6 +111,8 @@ const mockCompareData: Accommodation[] = [
         byFoot: { distance: "300m", time: "3분" },
       },
     ],
+    checkInTime: { checkInTimeFrom: "14:00", checkInTimeTo: "23:00" },
+    checkOutTime: { checkInTimeFrom: "00:00", checkInTimeTo: "10:00" },
     amenities: [
       {
         type: "무료 와이파이",
@@ -118,6 +126,7 @@ const mockCompareData: Accommodation[] = [
         description: "오전 11시 ~ 오후 23시",
       },
     ],
+    reviewSummary: "전통적인 분위기가 좋고 온천 시설이 훌륭합니다.",
     nearbyTransportation: [
       {
         name: "아사쿠사역",
@@ -144,7 +153,8 @@ const mockCompareData: Accommodation[] = [
     images: [
       "https://pix8.agoda.net/hotelImages/692/69287/69287_16060314210043106872.jpg?ca=6&ce=1&s=600x",
     ],
-    reviewScore: 8.2,
+    reviewScore: 9.2,
+    cleanlinessScore: 9.5,
     amenities: [
       {
         type: "무료 와이파이",
@@ -168,6 +178,9 @@ const mockCompareData: Accommodation[] = [
         description: "",
       },
     ],
+    checkInTime: { checkInTimeFrom: "15:00", checkInTimeTo: "24:00" },
+    checkOutTime: { checkInTimeFrom: "00:00", checkInTimeTo: "12:00" },
+    reviewSummary: "최고급 호텔로 서비스와 시설 모든 면에서 완벽합니다.",
     nearbyTransportation: [
       {
         name: "시부야역",
@@ -195,6 +208,7 @@ const mockCompareData: Accommodation[] = [
       "https://pix8.agoda.net/hotelImages/1723671/-1/47378d14e9f58fdd96ed6f18b4f8f060.jpg?ca=13&ce=1&s=1024x",
     ],
     reviewScore: 6.8,
+    cleanlinessScore: 6.5,
     nearbyAttractions: [
       {
         name: "신주쿠",
@@ -238,6 +252,9 @@ const mockCompareData: Accommodation[] = [
         description: "",
       },
     ],
+    checkInTime: { checkInTimeFrom: "15:00", checkInTimeTo: "24:00" },
+    checkOutTime: { checkInTimeFrom: "00:00", checkInTimeTo: "11:00" },
+    reviewSummary: "가격 대비 괜찮은 편이지만 시설이 다소 오래되었습니다.",
     nearbyTransportation: [
       {
         name: "신주쿠역",

@@ -113,7 +113,13 @@ export const Card = ({
                 {`${currency?.toLocaleString()}원`}
               </p>
               <TextWithIcon
-                icon={<IcInfo width="20px" height="20px" />}
+                icon={
+                  <IcInfo
+                    width="20px"
+                    height="20px"
+                    className="text-secondary-70"
+                  />
+                }
                 className="flex-row-reverse gap-[0.2rem]"
               >
                 <TextWithIcon.Text className="text-caption2-regular11 text-neutral-60">
@@ -124,7 +130,13 @@ export const Card = ({
           </div>
           <div className="mt-[8px] flex flex-col gap-[0.8rem]">
             <TextWithIcon
-              icon={<IcLocation width="20px" height="20px" />}
+              icon={
+                <IcLocation
+                  width="20px"
+                  height="20px"
+                  className="text-secondary-50"
+                />
+              }
               className="w-[30.3rem] gap-[0.2rem]"
             >
               <TextWithIcon.Text className="text-caption1-medi12 text-neutral-40">
@@ -155,10 +167,16 @@ export const Card = ({
         {/* 메모 내용 */}
         {memo && (
           <TextWithIcon
-            icon={<IcMemo width="16px" height="16px" />}
+            icon={
+              <IcMemo
+                width="16px"
+                height="16px"
+                className="text-secondary-50"
+              />
+            }
             className="w-[30.3rem] gap-[0.4rem]"
           >
-            <TextWithIcon.Text className="text-body2-medi14 text-secondary-50">
+            <TextWithIcon.Text className="text-body2-medi14 text-neutral-variant-70">
               {memo}
             </TextWithIcon.Text>
           </TextWithIcon>

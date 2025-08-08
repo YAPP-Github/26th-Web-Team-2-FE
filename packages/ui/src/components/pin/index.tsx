@@ -2,10 +2,11 @@ import { cn } from "@/utils";
 
 export type PinProps = {
   className?: string;
+  isActive: boolean;
   children: React.ReactNode;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const Pin = ({ children, className, ...props }: PinProps) => {
+export const Pin = ({ children, className, isActive, ...props }: PinProps) => {
   return (
     <button
       className={cn(
@@ -32,6 +33,8 @@ export const Pin = ({ children, className, ...props }: PinProps) => {
         "focus:after:border-t-primary-5",
 
         className,
+        isActive &&
+          "border-primary-5 bg-primary-5 text-primary-100 before:border-t-primary-5 after:border-t-primary-5",
       )}
       {...props}
     >

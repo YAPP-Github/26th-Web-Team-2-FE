@@ -6,6 +6,7 @@ import { useState } from "react";
  * @returns {{
  *   isPanelExpanded: boolean;          // 패널이 확장되어 있는지 여부
  *   handlePanelToggle: () => void;     // 패널 확장 상태를 토글하는 함수
+ *   handlePanelExpand: () => void;     // 패널을 확장하는 함수
  * }}
  *
  */
@@ -16,9 +17,14 @@ const useBoardPanel = () => {
     setIsPanelExpanded((prev) => !prev);
   };
 
+  const handlePanelExpand = () => {
+    setIsPanelExpanded(true);
+  };
+
   return {
     isPanelExpanded,
     handlePanelToggle,
+    handlePanelExpand,
   };
 };
 

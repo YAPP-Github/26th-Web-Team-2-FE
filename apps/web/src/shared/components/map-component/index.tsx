@@ -2,19 +2,34 @@
 
 import { cn } from "@ssok/ui";
 import GoogleMapReact from "google-map-react";
-import { useAccommodationContext } from "@/domains/list/contexts/accomodation-context";
+import { useAccommodationDataContext } from "@/domains/list/contexts/accomodation-data-context";
+import { usePlaceSelectionContext } from "@/domains/list/contexts/place-select-context";
 import MapPin from "@/shared/components/map-component/map-pin";
 import { calculateCenter } from "@/shared/utils/map";
 
 const MapComponent = ({ className }: { className?: string }) => {
-  const { accommodations } = useAccommodationContext();
+  const { accommodations } = useAccommodationDataContext();
+
+  const { onSelectPlace, lastSelectedPlace } = usePlaceSelectionContext();
 
   const validLocations = accommodations.filter(
     (loc) =>
       typeof loc.latitude === "number" && typeof loc.longitude === "number",
   );
 
-  const center = calculateCenter(validLocations);
+  const defaultCenter = calculateCenter(validLocations);
+
+  const lastSelectedLocation = accommodations.find(
+    (loc) => loc.id === lastSelectedPlace,
+  );
+
+  const center =
+    lastSelectedLocation?.latitude && lastSelectedLocation.longitude
+      ? {
+          lat: lastSelectedLocation.latitude,
+          lng: lastSelectedLocation.longitude,
+        }
+      : defaultCenter;
 
   return (
     <div className={cn("relative h-screen w-full", className)}>
@@ -35,15 +50,20 @@ const MapComponent = ({ className }: { className?: string }) => {
           ],
         }}
       >
-        {accommodations.map((location) => (
-          <MapPin
-            key={location.id}
-            lat={location.latitude as number}
-            lng={location.longitude as number}
-          >
-            {location.accommodationName}
-          </MapPin>
-        ))}
+        {accommodations.map((location) => {
+          const isActive = location.id === lastSelectedPlace;
+          return (
+            <MapPin
+              onClick={() => onSelectPlace(location.id as number)}
+              key={location.id}
+              lat={location.latitude!}
+              lng={location.longitude!}
+              isActive={isActive}
+            >
+              {location.accommodationName}
+            </MapPin>
+          );
+        })}
       </GoogleMapReact>
     </div>
   );

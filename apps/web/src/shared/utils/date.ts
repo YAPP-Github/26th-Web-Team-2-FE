@@ -1,5 +1,14 @@
-export const formatDate = (date: Date): string => {
-  const year = date.getFullYear();
+type FormatDateOptions = {
+  format?: "YY.MM.DD" | "YYYY.MM.DD";
+};
+
+export const formatDate = (
+  date: Date,
+  { format = "YYYY.MM.DD" }: FormatDateOptions = {},
+): string => {
+  const yearFull = String(date.getFullYear());
+  const year =
+    format === "YY.MM.DD" ? yearFull.slice(-2).padStart(2, "0") : yearFull;
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}.${month}.${day}`;

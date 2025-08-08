@@ -190,7 +190,7 @@ export const theme: Config["theme"] = {
       90: "#e1e3df",
       95: "#eff1ed",
       98: "#fafafa",
-      99: "#fbfdf8",
+      99: "#fdfdfd",
       100: "#ffffff",
     },
     "neutral-variant": {

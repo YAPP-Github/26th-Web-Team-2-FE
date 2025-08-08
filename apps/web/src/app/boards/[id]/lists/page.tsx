@@ -52,7 +52,7 @@ const BoardsIdListsPage = () => {
   const { handlePanelToggle, isPanelExpanded } = usePanelContext();
   useEffect(() => {
     const all =
-      data?.pages.flatMap((page) => page.result?.accommodations || []) ?? [];
+      data?.pages?.flatMap((page) => page?.result?.accommodations ?? []) ?? [];
     updateAccommodations(all);
   }, [data, updateAccommodations]);
 

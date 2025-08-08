@@ -9,8 +9,8 @@ type CommonProps = {
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 type ButtonBaseProps = {
-  size: "xs" | "sm" | "md" | "lg" | "sticky";
-  variant: "primary" | "secondary" | "text";
+  size: "xxs" | "xs" | "sm" | "md" | "lg" | "sticky";
+  variant: "primary" | "secondary" | "text" | "round" | "black";
   selected?: never;
   additionalText?: string;
 } & CommonProps;

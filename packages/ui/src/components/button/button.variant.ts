@@ -5,6 +5,7 @@ export const button = cva(
   {
     variants: {
       size: {
+        xxs: "px-[1.2rem] py-[0.6rem]",
         xs: "px-[0.8rem] py-[0.6rem]",
         sm: "gap-[0.4rem] px-[0.6rem] py-[0.6rem]",
         md: "px-[1.6rem] py-[0.8rem]",
@@ -18,6 +19,8 @@ export const button = cva(
           "border-none bg-secondary-95 text-secondary-40 hover:bg-secondary-90 hover:text-secondary-35 focus:bg-secondary-80 focus:text-secondary-30 active:bg-secondary-70 active:text-secondary-25 disabled:cursor-not-allowed disabled:bg-neutral-90 disabled:text-neutral-70",
         text: "border-none bg-transparent text-neutral-40 hover:bg-neutral-variant-98 hover:text-neutral-40 focus:bg-neutral-variant-90 focus:text-neutral-25 active:bg-neutral-variant-95 active:text-neutral-40 disabled:cursor-not-allowed",
         round: "rounded-[4.8rem] px-[1.2rem] py-[0.6rem]",
+        black:
+          "rounded-[0.8rem] bg-neutral-variant-20 text-primary-100 focus:bg-neutral-variant-35",
       },
       selected: {
         true: "",
@@ -52,6 +55,7 @@ export const button = cva(
 export const buttonText = cva("m-0 text-center", {
   variants: {
     size: {
+      xxs: "text-caption1-semi12",
       xs: "text-body2-semi14",
       sm: "text-body2-medi14",
       md: "text-body3-semi15",

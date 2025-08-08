@@ -4,7 +4,7 @@ type ActionCardProps = {
   onClick: () => void;
 };
 
-export const ActionCard = ({ onClick, ...props }: ActionCardProps) => {
+const ActionCard = ({ onClick, ...props }: ActionCardProps) => {
   return (
     <button
       type="button"
@@ -24,3 +24,5 @@ export const ActionCard = ({ onClick, ...props }: ActionCardProps) => {
     </button>
   );
 };
+
+export default ActionCard;

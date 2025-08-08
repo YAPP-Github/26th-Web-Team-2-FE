@@ -64,5 +64,8 @@ export { Pin } from "@/components/pin";
 export { TextField } from "@/components/text-field";
 export { Textarea } from "@/components/textarea";
 export { cn } from "@/utils";
-
+export { default as ActionCard } from "./components/action-card";
+export { default as AvatarGroup } from "./components/avatar/group";
+export { default as AvatarProfile } from "./components/avatar/profile";
 export { default as TextWithIcon } from "./components/text-with-icon";
+export { default as TravelBoard } from "./components/travel-board";

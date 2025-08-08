@@ -23,7 +23,7 @@ type TravelBoardProps = {
   };
 };
 
-export const TravelBoard = ({ onClick, data, ...props }: TravelBoardProps) => {
+const TravelBoard = ({ onClick, data, ...props }: TravelBoardProps) => {
   const { boardName, destination, startDate, endDate, participants } = data;
   const [moreHover, setMoreHover] = useState(false);
 
@@ -90,3 +90,5 @@ export const TravelBoard = ({ onClick, data, ...props }: TravelBoardProps) => {
     </section>
   );
 };
+
+export default TravelBoard;

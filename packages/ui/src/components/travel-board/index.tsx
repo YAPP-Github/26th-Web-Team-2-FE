@@ -2,11 +2,35 @@ import { cn, IcBookmark, IcLocation } from "dist";
 import { IcMore } from "@/index";
 import TextWithIcon from "../text-with-icon";
 
-type TravelBoardProps = {
-  onClick: () => void;
+type Participant = {
+  userId: number;
+  profileImageUrl: string;
+  nickname: string;
 };
 
-export const TravelBoard = ({ onClick, ...props }: TravelBoardProps) => {
+type TravelBoardProps = {
+  onClick: () => void;
+  data: {
+    boardId: number;
+    boardName: string;
+    destination: string;
+    startDate: string;
+    endDate: string;
+    participantCount: number;
+    participants: Participant[];
+  };
+};
+
+export const TravelBoard = ({ onClick, data, ...props }: TravelBoardProps) => {
+  const {
+    boardName,
+    destination,
+    startDate,
+    endDate,
+    // participantCount,
+    // participants,
+  } = data;
+
   return (
     <section
       className={cn(
@@ -19,9 +43,9 @@ export const TravelBoard = ({ onClick, ...props }: TravelBoardProps) => {
       <header className="mt-[0.8rem] flex w-full flex-row justify-between">
         <div className="flex items-center gap-[0.8rem]">
           <span className="flex gap-[0.4rem] rounded-[0.4rem] bg-neutral-95 px-[0.8rem] py-[0.4rem] text-caption1-medi14 text-neutral-60">
-            <p>YY.MM.DD</p>
+            <p>{startDate}</p>
             <p>~</p>
-            <p>YY.MM.DD</p>
+            <p>{endDate}</p>
           </span>
           <TextWithIcon
             icon={
@@ -39,9 +63,7 @@ export const TravelBoard = ({ onClick, ...props }: TravelBoardProps) => {
       </header>
       {/* 제목 + 여행지 */}
       <div className="flex flex-col gap-[1.2rem]">
-        <h1 className="text-neutral-20 text-title3-semi24">
-          보드명 보드명 보드명 보드명
-        </h1>
+        <h1 className="text-neutral-20 text-title3-semi24">{boardName}</h1>
         <TextWithIcon
           icon={
             <IcLocation
@@ -53,7 +75,7 @@ export const TravelBoard = ({ onClick, ...props }: TravelBoardProps) => {
           className="w-[30.3rem] gap-[0.2rem]"
         >
           <TextWithIcon.Text className="text-body1-medi16 text-neutral-50">
-            여행지 여행지 여행지 여행지 여행지
+            {destination}
           </TextWithIcon.Text>
         </TextWithIcon>
       </div>

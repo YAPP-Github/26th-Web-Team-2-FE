@@ -1,5 +1,6 @@
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import react from "@vitejs/plugin-react";
+import svgr from "vite-plugin-svgr";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
@@ -17,7 +18,7 @@ export default defineConfig({
       },
       {
         extends: true,
-        plugins: [storybookTest({ configDir: ".storybook" })],
+        plugins: [react(), svgr(), storybookTest({ configDir: ".storybook" })],
         test: {
           name: "storybook",
           browser: {

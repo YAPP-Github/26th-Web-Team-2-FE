@@ -16,15 +16,15 @@ type Story = StoryFn<typeof ProfileGroup>;
 
 const sampleProfiles: ProfileGroupProps["profiles"] = [
   {
-    id: 1,
-    imgUrl: "",
+    userId: 1,
+    profileImageUrl: "",
   },
-  { id: 2 },
-  { id: 3, imgUrl: "" },
-  { id: 4 },
+  { userId: 2 },
+  { userId: 3, profileImageUrl: "" },
+  { userId: 4 },
   {
-    id: 5,
-    imgUrl: "",
+    userId: 5,
+    profileImageUrl: "",
   },
 ];
 
@@ -38,8 +38,8 @@ export const TenRowsIncremental: Story = () => {
       {Array.from({ length: 10 }).map((_, rowIndex) => {
         const count = rowIndex + 1;
         const profiles = Array.from({ length: count }).map((_, i) => ({
-          id: `${rowIndex}-${i}`,
-          imgUrl: i % 2 === 0 ? "" : undefined,
+          userId: i,
+          profileImageUrl: i % 2 === 0 ? "" : undefined,
         }));
 
         return <ProfileGroup key={`avatar`} size={40} profiles={profiles} />;

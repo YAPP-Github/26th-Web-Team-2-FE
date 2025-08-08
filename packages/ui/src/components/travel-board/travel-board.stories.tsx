@@ -5,6 +5,9 @@ const meta: Meta<typeof TravelBoard> = {
   title: "Components/TravelBoard",
   component: TravelBoard,
   tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+  },
   decorators: [
     (Story) => (
       <div
@@ -39,17 +42,17 @@ export const Default: Story = {
       participants: [
         {
           userId: 1,
-          profileImageUrl: "https://example.com/image1.jpg",
+          profileImageUrl: "",
           nickname: "참여자1",
         },
         {
           userId: 2,
-          profileImageUrl: "https://example.com/image2.jpg",
+          profileImageUrl: "",
           nickname: "참여자2",
         },
         {
           userId: 3,
-          profileImageUrl: "https://example.com/image3.jpg",
+          profileImageUrl: "",
           nickname: "참여자3",
         },
       ],

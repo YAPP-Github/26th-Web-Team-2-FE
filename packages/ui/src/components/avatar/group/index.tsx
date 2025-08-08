@@ -4,8 +4,8 @@ import Profile from "../profile";
 export type ProfileGroupProps = {
   size: 32 | 40 | 48;
   profiles: Array<{
-    id: string | number;
-    imgUrl?: string;
+    userId: number;
+    profileImageUrl?: string;
   }>;
 };
 
@@ -14,11 +14,11 @@ const ProfileGroup = ({ size, profiles }: ProfileGroupProps) => {
     <ul className="relative flex w-fit items-center">
       {profiles.map((profile, index) => (
         <li
-          key={profile.id}
+          key={profile.userId}
           className={index === 0 ? "" : "-ml-[10px]"}
           style={{ zIndex: profiles.length - index }}
         >
-          <Profile size={size} imgUrl={profile.imgUrl} />
+          <Profile size={size} imgUrl={profile.profileImageUrl} />
         </li>
       ))}
       <span

@@ -1,5 +1,6 @@
 import { cn, IcBookmark, IcLocation } from "dist";
 import { IcMore } from "@/index";
+import ProfileGroup from "../avatar/group";
 import TextWithIcon from "../text-with-icon";
 
 type Participant = {
@@ -22,14 +23,7 @@ type TravelBoardProps = {
 };
 
 export const TravelBoard = ({ onClick, data, ...props }: TravelBoardProps) => {
-  const {
-    boardName,
-    destination,
-    startDate,
-    endDate,
-    // participantCount,
-    // participants,
-  } = data;
+  const { boardName, destination, startDate, endDate, participants } = data;
 
   return (
     <section
@@ -78,6 +72,10 @@ export const TravelBoard = ({ onClick, data, ...props }: TravelBoardProps) => {
             {destination}
           </TextWithIcon.Text>
         </TextWithIcon>
+      </div>
+      {/* 참여자 */}
+      <div className="mt-[3.6rem]">
+        <ProfileGroup size={40} profiles={participants} />
       </div>
     </section>
   );

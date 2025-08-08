@@ -9,7 +9,7 @@ export default {
   argTypes: {
     size: {
       control: { type: "radio" },
-      options: ["sm", "md", "lg"],
+      options: ["xxs", "xs", "sm", "md", "lg"],
       if: { arg: "variant", neq: "round" },
     },
     variant: {
@@ -95,4 +95,18 @@ TextButton.args = {
   children: "메인 버튼",
   size: "lg",
   variant: "text",
+};
+
+export const ExtraSmallButton: StoryFn<ButtonProps> = Template.bind({});
+ExtraSmallButton.args = {
+  children: "텍스트",
+  size: "xs",
+  variant: "primary",
+};
+
+export const ExtraExtraSmallButton: StoryFn<ButtonProps> = Template.bind({});
+ExtraExtraSmallButton.args = {
+  children: "초대하기",
+  size: "xxs",
+  variant: "black",
 };

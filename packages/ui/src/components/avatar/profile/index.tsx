@@ -9,8 +9,7 @@ type ProfileProps = {
 
 const Profile = ({ size, imgUrl }: ProfileProps) => {
   return (
-    <button
-      type="button"
+    <div
       className={cn(
         "h-fit w-fit rounded-[1000rem] border border-neutral-80 bg-neutral-90",
         "hover:border-[2px] hover:border-[rgba(164,173,166,0.8)]",
@@ -35,7 +34,7 @@ const Profile = ({ size, imgUrl }: ProfileProps) => {
           aria-label="프로필 아이콘"
         />
       )}
-    </button>
+    </div>
   );
 };
 

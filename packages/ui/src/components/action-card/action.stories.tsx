@@ -5,6 +5,9 @@ const meta: Meta<typeof ActionCard> = {
   title: "Components/ActionCard",
   component: ActionCard,
   tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+  },
   decorators: [
     (Story) => (
       <div

@@ -15,9 +15,9 @@ const HeaderSection = () => {
         <div className="flex items-center gap-[0.8rem]">
           <p className="text-body2-semi14 text-neutral-60">{place}</p>
           <div className="flex gap-[0.4rem] rounded-[0.4rem] bg-neutral-95 px-[0.8rem] py-[0.3rem] text-caption1-medi12 text-neutral-60">
-            <p>{formatDate(new Date(startDate), { shortYear: true })}</p>
+            <p>{formatDate(new Date(startDate), { format: "YY.MM.DD" })}</p>
             <p>~</p>
-            <p>{formatDate(new Date(endDate), { shortYear: true })}</p>
+            <p>{formatDate(new Date(endDate), { format: "YY.MM.DD" })}</p>
           </div>
         </div>
       </div>

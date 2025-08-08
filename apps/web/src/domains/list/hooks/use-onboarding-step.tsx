@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import storage from "@/shared/utils/storage";
 
 type OnboardStep = "init" | "saveLink" | "finish";
 
@@ -23,8 +24,7 @@ const useOnboarding = () => {
 
   useEffect(() => {
     try {
-      const step =
-        (localStorage.getItem("onboardingStep") as OnboardStep) || "init";
+      const step = storage.get<OnboardStep>("onboardingStep") || "init";
       setOnboardStep(step);
       setIsVisible(step !== "finish");
     } catch (_error) {
@@ -36,11 +36,11 @@ const useOnboarding = () => {
   const handleOnboardStep = () => {
     switch (onboardStep) {
       case "init":
-        localStorage.setItem("onboardingStep", "saveLink");
+        storage.set("onboardingStep", "saveLink");
         setOnboardStep("saveLink");
         break;
       case "saveLink":
-        localStorage.setItem("onboardingStep", "finish");
+        storage.set("onboardingStep", "finish");
         setOnboardStep("finish");
         break;
       default:
@@ -51,7 +51,7 @@ const useOnboarding = () => {
   const handleOnPrevStep = () => {
     switch (onboardStep) {
       case "saveLink":
-        localStorage.setItem("onboardingStep", "init");
+        storage.set("onboardingStep", "init");
         setOnboardStep("init");
         break;
       default:
@@ -60,7 +60,7 @@ const useOnboarding = () => {
   };
 
   const resetOnboardingStep = () => {
-    localStorage.removeItem("onboardingStep");
+    storage.remove("onboardingStep");
     setOnboardStep("init");
   };
 

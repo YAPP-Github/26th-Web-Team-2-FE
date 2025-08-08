@@ -11,7 +11,7 @@ type PanelContextType = {
 const PanelContext = createContext<PanelContextType | null>(null);
 
 export const PanelProvider = ({ children }: { children: ReactNode }) => {
-  const [isPanelExpanded, setIsPanelExpanded] = useState(false);
+  const [isPanelExpanded, setIsPanelExpanded] = useState(true);
 
   const handlePanelToggle = () => setIsPanelExpanded((prev) => !prev);
   const handlePanelExpand = () => setIsPanelExpanded(true);

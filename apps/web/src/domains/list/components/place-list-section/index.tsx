@@ -1,7 +1,9 @@
 import { Button, Card, cn } from "@ssok/ui";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import useInfiniteScroll from "../../../../shared/hooks/use-infinite-scroll";
 import { useAccommodationDataContext } from "../../contexts/accomodation-data-context";
 import { usePlaceSelectionContext } from "../../contexts/place-select-context";
+import useCollapseOnScroll from "../../hooks/use-collapse-on-scroll";
 import { useMemberData } from "../../hooks/use-member-data";
 import DropDown from "./atom/drop-down";
 import EmptyListContainer from "./atom/empty-list-container";
@@ -16,6 +18,9 @@ type PlaceListSectionProps = {
   isOpen: boolean;
   selectedFilter: string;
   isLoading: boolean;
+  fetchNextPage: () => void;
+  hasNextPage?: boolean;
+  isFetchingNextPage: boolean;
 };
 
 const PlaceListSection = ({
@@ -28,6 +33,9 @@ const PlaceListSection = ({
   isOpen,
   selectedFilter,
   isLoading,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
 }: PlaceListSectionProps) => {
   const memberData = useMemberData();
   const { accommodations } = useAccommodationDataContext();
@@ -35,32 +43,13 @@ const PlaceListSection = ({
     usePlaceSelectionContext();
   const listRef = useRef<HTMLUListElement | null>(null);
 
-  useEffect(() => {
-    if (localStorage.getItem("onboardingStep") !== "finish" && !isInputExpanded)
-      return;
-    let timer: ReturnType<typeof setTimeout> | null = null;
+  const lastItemRef = useInfiniteScroll({
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+  });
 
-    const handleScroll = () => {
-      if (timer) clearTimeout(timer);
-      if (isInputExpanded) {
-        timer = setTimeout(() => {
-          handleCloseInputExpansion();
-        }, 50);
-      }
-    };
-
-    const listElement = listRef.current;
-    if (listElement) {
-      listElement.addEventListener("scroll", handleScroll, { passive: true });
-    }
-
-    return () => {
-      if (listElement) {
-        listElement.removeEventListener("scroll", handleScroll);
-      }
-      if (timer) clearTimeout(timer);
-    };
-  }, [isInputExpanded, handleCloseInputExpansion]);
+  useCollapseOnScroll(listRef, isInputExpanded, handleCloseInputExpansion);
 
   return (
     <section
@@ -100,39 +89,43 @@ const PlaceListSection = ({
         ref={listRef}
         className="flex h-[40rem] min-w-[60rem] flex-col gap-[1.2rem] overflow-y-scroll"
       >
-        {accommodations?.map((place) => (
-          <li key={`${place.id}-card`}>
-            <Card
-              images={place?.images || []}
-              siteName={place.siteName || "-"}
-              logoUrl={place.logoUrl || ""}
-              url={place.url || ""}
-              currency={place.lowestPrice?.toLocaleString() || ""}
-              accommodationName={place.accommodationName || "-"}
-              address={place.address || "주소정보 없음"}
-              nearbyAttractions={place.nearbyAttractions?.slice(0, 2) || []}
-              savedByText={
-                memberData.find(
-                  (member) => member.id === String(selectedPerson),
-                )?.name || "알 수 없음"
-              }
-              memo={place.memo}
-              selected={place.id ? selectedPlaces.includes(place.id) : false}
-              onClick={() => place.id && togglePlaceSelect(place.id)}
-              onAddClick={() => {
-                if (!place.id) return;
-                togglePlaceSelect(place.id);
-              }}
-              onDeleteClick={() => {
-                if (!place.id) return;
-                removePlace(place.id);
-              }}
-            />
-          </li>
-        ))}
-        {!isLoading && (!accommodations || accommodations.length === 0) && (
-          <EmptyListContainer />
-        )}
+        {accommodations?.map((place) => {
+          const isLast = accommodations[accommodations.length - 1] === place;
+          return (
+            <li key={`${place.id}-card`} ref={isLast ? lastItemRef : null}>
+              <Card
+                images={place?.images || []}
+                siteName={place.siteName || "-"}
+                logoUrl={place.logoUrl || ""}
+                url={place.url || ""}
+                currency={place.lowestPrice?.toLocaleString() || ""}
+                accommodationName={place.accommodationName || "-"}
+                address={place.address || "주소정보 없음"}
+                nearbyAttractions={place.nearbyAttractions?.slice(0, 2) || []}
+                savedByText={
+                  memberData.find(
+                    (member) => member.id === String(selectedPerson),
+                  )?.name || "알 수 없음"
+                }
+                memo={place.memo}
+                selected={place.id ? selectedPlaces.includes(place.id) : false}
+                onClick={() => place.id && togglePlaceSelect(place.id)}
+                onAddClick={() => {
+                  if (!place.id) return;
+                  togglePlaceSelect(place.id);
+                }}
+                onDeleteClick={() => {
+                  if (!place.id) return;
+                  removePlace(place.id);
+                }}
+              />
+            </li>
+          );
+        })}
+        {!isFetchingNextPage &&
+          (!accommodations || accommodations.length === 0) && (
+            <EmptyListContainer />
+          )}
       </ul>
     </section>
   );

@@ -50,9 +50,11 @@ const BoardsIdListsPage = () => {
 
   const { setAccommodations } = useAccommodationContext();
 
+  console.log(data);
+  console.log(data?.pages);
   useEffect(() => {
     const all =
-      data?.pages.flatMap((page) => page.result?.accommodations || []) ?? [];
+      data?.pages.flatMap((page) => page?.result?.accommodations || []) ?? [];
     setAccommodations(all);
   }, [data, setAccommodations]);
 

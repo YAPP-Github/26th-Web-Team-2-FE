@@ -30,6 +30,7 @@ export { default as IcLuggage } from "@/assets/icons/ic_luggage.svg?react";
 export { default as IcMap } from "@/assets/icons/ic_map.svg?react";
 export { default as IcMemo } from "@/assets/icons/ic_memo.svg?react";
 export { default as IcMemoFilled } from "@/assets/icons/ic_memo_filled.svg?react";
+export { default as IcMore } from "@/assets/icons/ic_more.svg?react";
 export { default as IcPerson } from "@/assets/icons/ic_person.svg?react";
 export { default as IcPets } from "@/assets/icons/ic_pets.svg?react";
 export { default as IcPlusCircle } from "@/assets/icons/ic_plus_circle.svg?react";
@@ -63,5 +64,8 @@ export { Pin } from "@/components/pin";
 export { TextField } from "@/components/text-field";
 export { Textarea } from "@/components/textarea";
 export { cn } from "@/utils";
-
+export { default as ActionCard } from "./components/action-card";
+export { default as AvatarProfile } from "./components/avatar-profile";
+export { default as AvatarGroup } from "./components/avatar-profile-group";
 export { default as TextWithIcon } from "./components/text-with-icon";
+export { default as TravelBoard } from "./components/travel-board";

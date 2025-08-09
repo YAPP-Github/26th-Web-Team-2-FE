@@ -12,6 +12,7 @@ import useDragAndDrop from "@/domains/list/hooks/use-drag-and-drop";
 import useDropdown from "@/domains/list/hooks/use-dropdown";
 import useInputPanel from "@/domains/list/hooks/use-input-panel";
 import useRegisterUrlInput from "@/domains/list/hooks/use-register-url-input";
+import { useSession } from "@/shared/hooks/use-session";
 
 const BoardsIdListsPage = () => {
   const {
@@ -39,7 +40,7 @@ const BoardsIdListsPage = () => {
     setValue,
     watch,
   } = useRegisterUrlInput();
-
+  const { accessToken } = useSession({ required: true });
   const { data, isLoading } = useGetAccommodationByBoardIdAndUserIdInfinite(
     {
       boardId: 1,
@@ -50,17 +51,14 @@ const BoardsIdListsPage = () => {
     },
     {
       query: {
+        enabled: !!accessToken,
         getNextPageParam: (lastPage, allPages) => {
           if (lastPage?.data.result?.hasNext) {
             return allPages.length;
           }
         },
       },
-      request: {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_USER_1_ACCESS_TOKEN}`,
-        },
-      },
+      request: { headers: { Authorization: `Bearer ${accessToken}` } },
     },
   );
 

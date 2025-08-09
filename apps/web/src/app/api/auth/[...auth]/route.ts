@@ -18,6 +18,13 @@ const handler = async (
     case "logout": {
       return auth.logout(request);
     }
+    case "session": {
+      const session = await auth.getClientSession();
+      if (!session) {
+        return NextResponse.json(null, { status: 401 });
+      }
+      return NextResponse.json({ responseType: "SUCCESS", result: session });
+    }
     default: {
       return NextResponse.redirect(new URL("/404", request.url));
     }

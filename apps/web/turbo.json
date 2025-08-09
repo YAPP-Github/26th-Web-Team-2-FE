@@ -2,6 +2,9 @@
   "$schema": "../../node_modules/turbo/schema.json",
   "extends": ["//"],
   "tasks": {
+    "build": {
+      "passThroughEnv": ["SENTRY_AUTH_TOKEN"]
+    },
     "dev": {
       "cache": false,
       "dependsOn": ["@ssok/ui#build"],

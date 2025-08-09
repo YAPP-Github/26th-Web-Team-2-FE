@@ -1,5 +1,5 @@
 import { cn } from "@/utils";
-import Profile from "../profile";
+import Profile from "../avatar-profile";
 
 export type ProfileGroupProps = {
   size: 32 | 40 | 48;

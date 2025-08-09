@@ -3,9 +3,15 @@ import { cn } from "@/index";
 
 type ActionCardProps = {
   onClick: () => void;
+  icon?: React.ReactNode;
+  text?: string;
 };
 
-const ActionCard = ({ onClick }: ActionCardProps) => {
+const ActionCard = ({
+  onClick,
+  icon = <IcAdd width={32} height={32} className="text-neutral-70" />,
+  text = "새 여행 만들기",
+}: ActionCardProps) => {
   return (
     <button
       type="button"
@@ -19,8 +25,8 @@ const ActionCard = ({ onClick }: ActionCardProps) => {
         `active:border-neutral-variant-70 active:bg-neutral-variant-95`,
       )}
     >
-      <IcAdd width={32} height={32} className="text-neutral-70" />
-      <p className="text-heading1-semi20 text-neutral-70">새 여행 만들기</p>
+      {icon}
+      <p className="text-heading1-semi20 text-neutral-70">{text}</p>
     </button>
   );
 };

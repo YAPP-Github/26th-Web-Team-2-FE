@@ -3,7 +3,7 @@ import IcBookmark from "@/assets/icons/ic_bookmark.svg?react";
 import IcLocation from "@/assets/icons/ic_location.svg?react";
 import IcMore from "@/assets/icons/ic_more.svg?react";
 import { cn } from "@/index";
-import ProfileGroup from "../avatar/group";
+import ProfileGroup from "../avatar-profile-group";
 import TextWithIcon from "../text-with-icon";
 
 type Participant = {

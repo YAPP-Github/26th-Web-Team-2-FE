@@ -56,6 +56,11 @@ const BoardsIdListsPage = () => {
           }
         },
       },
+      request: {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_USER_1_ACCESS_TOKEN}`,
+        },
+      },
     },
   );
 

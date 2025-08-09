@@ -1,8 +1,8 @@
 "use client";
+import { useGetAccommodationByBoardIdAndUserIdInfinite } from "@ssok/api";
 import { cn, SolidExpand } from "@ssok/ui";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import useAccommodationList from "@/app/api/accomodation/use-accomodation-list";
 import HeaderSection from "@/domains/list/components/header-section";
 import LinkInputSection from "@/domains/list/components/link-input-section";
 import PlaceListSection from "@/domains/list/components/place-list-section";
@@ -40,18 +40,36 @@ const BoardsIdListsPage = () => {
     watch,
   } = useRegisterUrlInput();
 
-  const { data, isLoading } = useAccommodationList({
-    boardId: 1,
-    userId: selectedPerson === 0 ? undefined : selectedPerson,
-    size: 10,
-    sort: selectedFilter,
-  });
+  const { data, isLoading } = useGetAccommodationByBoardIdAndUserIdInfinite(
+    {
+      boardId: 1,
+      userId: selectedPerson === 0 ? undefined : selectedPerson,
+      size: 10,
+      sort: selectedFilter,
+      page: 0,
+    },
+    {
+      query: {
+        getNextPageParam: (lastPage, allPages) => {
+          if (lastPage?.data.result?.hasNext) {
+            return allPages.length;
+          }
+        },
+      },
+      request: {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_USER_1_ACCESS_TOKEN}`,
+        },
+      },
+    },
+  );
 
   const { updateAccommodations } = useAccommodationDataContext();
   const { handlePanelToggle, isPanelExpanded } = usePanelContext();
   useEffect(() => {
     const all =
-      data?.pages?.flatMap((page) => page?.result?.accommodations ?? []) ?? [];
+      data?.pages?.flatMap((page) => page?.data.result?.accommodations ?? []) ??
+      [];
     updateAccommodations(all);
   }, [data, updateAccommodations]);
 

@@ -45,7 +45,13 @@ const LinkInputSection = ({
   memoText,
   maxChars,
 }: LinkInputSectionProps) => {
-  const { mutate, isPending } = useRegisterAccommodationCard();
+  const { mutate, isPending } = useRegisterAccommodationCard({
+    request: {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_USER_1_ACCESS_TOKEN}`,
+      },
+    },
+  });
 
   const onValid = (data: FormData) => {
     // TODO: boardId와 userId는 추후에 실제 값으로 변경

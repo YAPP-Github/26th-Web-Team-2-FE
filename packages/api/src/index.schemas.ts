@@ -5,14 +5,318 @@
  * SSOK 서비스 API 명세
  * OpenAPI spec version: v1
  */
+export interface TripBoardUpdateRequest {
+  /**
+   * @minLength 0
+   * @maxLength 20
+   */
+  boardName?: string;
+  /**
+   * @minLength 0
+   * @maxLength 20
+   * @pattern ^[가-힣a-zA-Z\s]+$
+   */
+  destination?: string;
+  startDate: Date;
+  endDate: Date;
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseTripBoardUpdateResponseResponseType =
+  | "SUCCESS"
+  | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseTripBoardUpdateResponse {
+  /** 응답 유형 */
+  responseType?: StandardResponseTripBoardUpdateResponseResponseType;
+  /** 응답 결과 데이터 */
+  result?: TripBoardUpdateResponse;
+}
+
+export interface TripBoardUpdateResponse {
+  tripBoardId?: number;
+  boardName?: string;
+  destination?: string;
+  startDate?: Date;
+  endDate?: Date;
+  updatedAt?: Date;
+}
+
+export interface AmenityUpdate {
+  type: string;
+  available?: boolean;
+  description?: string;
+}
+
+export interface AttractionUpdate {
+  name?: string;
+  type?: string;
+  distance?: string;
+  latitude?: number;
+  longitude?: number;
+  byFoot?: DistanceInfo;
+  byCar?: DistanceInfo;
+}
+
+export interface CheckTimeUpdate {
+  from?: string;
+  to?: string;
+}
+
+export interface DistanceInfo {
+  distance?: string;
+  time?: string;
+}
+
+export interface TransportationUpdate {
+  name?: string;
+  type?: string;
+  distance?: string;
+  latitude?: number;
+  longitude?: number;
+  byFoot?: DistanceInfo;
+  byCar?: DistanceInfo;
+}
+
+export interface UpdateAccommodationRequest {
+  id?: number;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   */
+  memo?: string;
+  lowestPrice?: number;
+  currency?: string;
+  reviewScore?: number;
+  cleanlinessScore?: number;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   */
+  reviewSummary?: string;
+  nearbyAttractions?: AttractionUpdate[];
+  nearbyTransportation?: TransportationUpdate[];
+  amenities?: AmenityUpdate[];
+  checkInTime?: CheckTimeUpdate;
+  checkOutTime?: CheckTimeUpdate;
+}
+
+export interface UpdateComparisonTableRequest {
+  boardId: number;
+  /** @minLength 1 */
+  tableName?: string;
+  accommodationRequestList: UpdateAccommodationRequest[];
+  /** @minItems 1 */
+  accommodationIdList?: number[];
+  /** @minItems 1 */
+  factorList?: string[];
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseBooleanResponseType = "SUCCESS" | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseBoolean {
+  /** 응답 유형 */
+  responseType?: StandardResponseBooleanResponseType;
+  /** 응답 결과 데이터 */
+  result?: boolean;
+}
+
+export interface TripBoardCreateRequest {
+  /**
+   * @minLength 0
+   * @maxLength 20
+   */
+  boardName?: string;
+  /**
+   * @minLength 0
+   * @maxLength 20
+   * @pattern ^[가-힣a-zA-Z\s]+$
+   */
+  destination?: string;
+  startDate: Date;
+  endDate: Date;
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseTripBoardCreateResponseResponseType =
+  | "SUCCESS"
+  | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseTripBoardCreateResponse {
+  /** 응답 유형 */
+  responseType?: StandardResponseTripBoardCreateResponseResponseType;
+  /** 응답 결과 데이터 */
+  result?: TripBoardCreateResponse;
+}
+
+export interface TripBoardCreateResponse {
+  boardId?: number;
+  boardName?: string;
+  destination?: string;
+  travelPeriod?: string;
+  startDate?: string;
+  endDate?: string;
+  invitationUrl?: string;
+  invitationActive?: boolean;
+  creator?: UserInfo;
+  createdAt?: Date;
+}
+
+export interface UserInfo {
+  id?: number;
+  nickname?: string;
+  email?: string;
+  profileImage?: string;
+}
+
+export interface TripBoardLeaveRequest {
+  removeResources: boolean;
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseTripBoardLeaveResponseResponseType =
+  | "SUCCESS"
+  | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseTripBoardLeaveResponse {
+  /** 응답 유형 */
+  responseType?: StandardResponseTripBoardLeaveResponseResponseType;
+  /** 응답 결과 데이터 */
+  result?: TripBoardLeaveResponse;
+}
+
+export interface TripBoardLeaveResponse {
+  tripBoardId?: number;
+  leftAt?: Date;
+}
+
+export interface LogoutResponse {
+  logout?: boolean;
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseLogoutResponseResponseType = "SUCCESS" | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseLogoutResponse {
+  /** 응답 유형 */
+  responseType?: StandardResponseLogoutResponseResponseType;
+  /** 응답 결과 데이터 */
+  result?: LogoutResponse;
+}
+
+/**
+ * OAuth 로그인 응답
+ */
+export interface OauthLoginResponse {
+  userId?: number;
+  nickname?: string;
+  token?: TokenSuccessResponse;
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseOauthLoginResponseResponseType =
+  | "SUCCESS"
+  | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseOauthLoginResponse {
+  /** 응답 유형 */
+  responseType?: StandardResponseOauthLoginResponseResponseType;
+  /** 응답 결과 데이터 */
+  result?: OauthLoginResponse;
+}
+
+export interface TokenSuccessResponse {
+  accessToken?: string;
+  refreshToken?: string;
+}
+
 export interface CreateComparisonTableRequest {
   boardId: number;
   /** @minLength 1 */
   tableName?: string;
   /** @minItems 1 */
   accommodationIdList?: number[];
-  /** @minItems 1 */
   factorList?: string[];
+}
+
+export interface CreateComparisonTableResponse {
+  tableId?: number;
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseCreateComparisonTableResponseResponseType =
+  | "SUCCESS"
+  | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseCreateComparisonTableResponse {
+  /** 응답 유형 */
+  responseType?: StandardResponseCreateComparisonTableResponseResponseType;
+  /** 응답 결과 데이터 */
+  result?: CreateComparisonTableResponse;
+}
+
+export interface AccommodationRegisterRequest {
+  /** @minLength 1 */
+  url?: string;
+  /**
+   * @minLength 0
+   * @maxLength 50
+   */
+  memo?: string;
+  boardId: number;
+}
+
+export interface AccommodationRegisterResponse {
+  accommodationId?: number;
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseAccommodationRegisterResponseResponseType =
+  | "SUCCESS"
+  | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseAccommodationRegisterResponse {
+  /** 응답 유형 */
+  responseType?: StandardResponseAccommodationRegisterResponseResponseType;
+  /** 응답 결과 데이터 */
+  result?: AccommodationRegisterResponse;
+}
+
+export interface AddAccommodationRequest {
+  accommodationIds: number[];
 }
 
 export interface AccommodationResponse {
@@ -61,36 +365,25 @@ export interface Attraction {
 }
 
 export interface CheckTime {
-  checkInTimeFrom?: string;
-  checkInTimeTo?: string;
-  checkOutTimeFrom?: string;
-  checkOutTimeTo?: string;
+  from?: string;
+  to?: string;
 }
 
 export type ComparisonTableResponseFactorsListItem =
-  | "PARKING"
-  | "BREAKFAST"
-  | "FREE_WIFI"
-  | "POOL"
-  | "FITNESS"
-  | "LUGGAGE_STORAGE"
-  | "BAR_LOUNGE"
-  | "FRONT_DESK_HOURS"
-  | "PET_FRIENDLY"
-  | "BUSINESS_SERVICES"
-  | "CLEANING_SERVICE"
-  | "HANDICAP_FACILITIES";
+  | "REVIEW_SCORE"
+  | "ATTRACTION"
+  | "TRANSPORTATION"
+  | "CLEANLINESS"
+  | "AMENITY"
+  | "CHECK_TIME"
+  | "REVIEW_SUMMARY"
+  | "MEMO";
 export interface ComparisonTableResponse {
   tableId?: number;
   tableName?: string;
   accommodationResponsesList?: AccommodationResponse[];
   factorsList?: ComparisonTableResponseFactorsListItem[];
   createdBy?: number;
-}
-
-export interface DistanceInfo {
-  distance?: string;
-  time?: string;
 }
 
 /**
@@ -119,71 +412,83 @@ export interface Transportation {
   byCar?: DistanceInfo;
 }
 
-export interface CreateComparisonTableResponse {
-  tableId?: number;
+export type ParticipantProfileResponseRole = "OWNER" | "MEMBER";
+export interface ParticipantProfileResponse {
+  userId?: number;
+  profileImageUrl?: string;
+  nickname?: string;
+  role?: ParticipantProfileResponseRole;
 }
 
 /**
  * 응답 유형
  */
-export type StandardResponseCreateComparisonTableResponseResponseType =
+export type StandardResponseTripBoardPageResponseResponseType =
   | "SUCCESS"
   | "ERROR";
 /**
  * API 응답의 표준 형식을 정의하는 클래스
  */
-export interface StandardResponseCreateComparisonTableResponse {
+export interface StandardResponseTripBoardPageResponse {
   /** 응답 유형 */
-  responseType?: StandardResponseCreateComparisonTableResponseResponseType;
+  responseType?: StandardResponseTripBoardPageResponseResponseType;
   /** 응답 결과 데이터 */
-  result?: CreateComparisonTableResponse;
+  result?: TripBoardPageResponse;
 }
 
-export interface AccommodationRegisterRequest {
-  /** @minLength 1 */
-  url?: string;
-  /**
-   * @minLength 0
-   * @maxLength 50
-   */
-  memo?: string;
-  boardId: number;
-  userId: number;
+export interface TripBoardPageResponse {
+  tripBoards?: TripBoardSummaryResponse[];
+  hasNext?: boolean;
 }
 
-export interface AccommodationRegisterResponse {
-  accommodationId?: number;
+export type TripBoardSummaryResponseUserRole = "OWNER" | "MEMBER";
+export interface TripBoardSummaryResponse {
+  boardId?: number;
+  boardName?: string;
+  destination?: string;
+  startDate?: Date;
+  endDate?: Date;
+  travelPeriod?: string;
+  userRole?: TripBoardSummaryResponseUserRole;
+  participantCount?: number;
+  participants?: ParticipantProfileResponse[];
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+/**
+ * OAuth 인가 URL 응답
+ */
+export interface AuthorizeUrlResponse {
+  /** 카카오 OAuth 인가 URL */
+  authorizeUrl?: string;
 }
 
 /**
  * 응답 유형
  */
-export type StandardResponseAccommodationRegisterResponseResponseType =
+export type StandardResponseAuthorizeUrlResponseResponseType =
   | "SUCCESS"
   | "ERROR";
 /**
  * API 응답의 표준 형식을 정의하는 클래스
  */
-export interface StandardResponseAccommodationRegisterResponse {
+export interface StandardResponseAuthorizeUrlResponse {
   /** 응답 유형 */
-  responseType?: StandardResponseAccommodationRegisterResponseResponseType;
+  responseType?: StandardResponseAuthorizeUrlResponseResponseType;
   /** 응답 결과 데이터 */
-  result?: AccommodationRegisterResponse;
+  result?: AuthorizeUrlResponse;
 }
 
 export type ComparisonFactorListFactorsItem =
-  | "PARKING"
-  | "BREAKFAST"
-  | "FREE_WIFI"
-  | "POOL"
-  | "FITNESS"
-  | "LUGGAGE_STORAGE"
-  | "BAR_LOUNGE"
-  | "FRONT_DESK_HOURS"
-  | "PET_FRIENDLY"
-  | "BUSINESS_SERVICES"
-  | "CLEANING_SERVICE"
-  | "HANDICAP_FACILITIES";
+  | "REVIEW_SCORE"
+  | "ATTRACTION"
+  | "TRANSPORTATION"
+  | "CLEANLINESS"
+  | "AMENITY"
+  | "CHECK_TIME"
+  | "REVIEW_SUMMARY"
+  | "MEMO";
 export interface ComparisonFactorList {
   factors?: ComparisonFactorListFactorsItem[];
 }
@@ -202,6 +507,37 @@ export interface StandardResponseComparisonFactorList {
   responseType?: StandardResponseComparisonFactorListResponseType;
   /** 응답 결과 데이터 */
   result?: ComparisonFactorList;
+}
+
+export type AmenityFactorListFactorsItem =
+  | "PARKING"
+  | "BREAKFAST"
+  | "FREE_WIFI"
+  | "POOL"
+  | "FITNESS"
+  | "LUGGAGE_STORAGE"
+  | "BAR_LOUNGE"
+  | "FRONT_DESK_HOURS"
+  | "PET_FRIENDLY"
+  | "BUSINESS_SERVICES"
+  | "CLEANING_SERVICE"
+  | "HANDICAP_FACILITIES";
+export interface AmenityFactorList {
+  factors?: AmenityFactorListFactorsItem[];
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseAmenityFactorListResponseType = "SUCCESS" | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseAmenityFactorList {
+  /** 응답 유형 */
+  responseType?: StandardResponseAmenityFactorListResponseType;
+  /** 응답 결과 데이터 */
+  result?: AmenityFactorList;
 }
 
 /**
@@ -261,11 +597,46 @@ export interface StandardResponseAccommodationCountResponse {
   result?: AccommodationCountResponse;
 }
 
-export type AddAccommodationToComparisonTableParams = {
+/**
+ * 응답 유형
+ */
+export type StandardResponseTripBoardDeleteResponseResponseType =
+  | "SUCCESS"
+  | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseTripBoardDeleteResponse {
+  /** 응답 유형 */
+  responseType?: StandardResponseTripBoardDeleteResponseResponseType;
+  /** 응답 결과 데이터 */
+  result?: TripBoardDeleteResponse;
+}
+
+export interface TripBoardDeleteResponse {
+  tripBoardId?: number;
+}
+
+export type ExchangeKakaoTokenParams = {
+  code: string;
+  baseUrl: string;
+};
+
+export type GetTripBoardsParams = {
   /**
-   * 숙소 ID
+   * 페이지 번호
+   * @minimum 0
    */
-  accommodationId: number;
+  page: number;
+  /**
+   * 페이지 크기
+   * @minimum 1
+   */
+  size: number;
+};
+
+export type GetKakaoAuthorizeUrlParams = {
+  baseUrl: string;
 };
 
 export type GetAccommodationByBoardIdAndUserIdParams = {

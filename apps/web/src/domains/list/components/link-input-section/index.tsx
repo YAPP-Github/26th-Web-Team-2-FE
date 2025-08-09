@@ -57,7 +57,7 @@ const LinkInputSection = ({
     // TODO: boardId와 userId는 추후에 실제 값으로 변경
     mutate(
       {
-        data: { url: data.link, memo: data.memo, boardId: 1, userId: 1 },
+        data: { url: data.link, memo: data.memo, boardId: 1 },
       },
       {
         onSuccess: () => {

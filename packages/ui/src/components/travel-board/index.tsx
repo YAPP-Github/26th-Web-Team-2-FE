@@ -13,7 +13,6 @@ type Participant = {
 };
 
 type TravelBoardProps = {
-  onClick: () => void;
   data: {
     boardId: number;
     boardName: string;
@@ -23,9 +22,10 @@ type TravelBoardProps = {
     participantCount: number;
     participants: Participant[];
   };
+  className?: string;
 };
 
-const TravelBoard = ({ onClick, data, ...props }: TravelBoardProps) => {
+const TravelBoard = ({ data, className }: TravelBoardProps) => {
   const { boardName, destination, startDate, endDate, participants } = data;
   const [moreHover, setMoreHover] = useState(false);
 
@@ -36,8 +36,8 @@ const TravelBoard = ({ onClick, data, ...props }: TravelBoardProps) => {
         `border border-neutral-90 bg-neutral-99`,
         `hover:border-neutral-80 hover:bg-neutral-98`,
         moreHover && "border hover:border-secondary-90 hover:bg-neutral-99",
+        className,
       )}
-      {...props}
     >
       {/* 헤더 정보 */}
       <header className="flex w-full flex-row justify-between">

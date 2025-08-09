@@ -34,13 +34,13 @@ Default.args = {
 export const AllSizes: Story = () => {
   const sizes: Array<32 | 40 | 48> = [32, 40, 48];
   return (
-    <div className="flex w-full flex-col items-center gap-y-10">
-      <div className="flex flex-row justify-center gap-x-15">
+    <div className="flex w-full flex-col items-center gap-[1rem]">
+      <div className="flex flex-row justify-center gap-[1rem]">
         {sizes.map((s) => (
           <Profile key={s} size={s} />
         ))}
       </div>
-      <div className="flex flex-row justify-center gap-x-15">
+      <div className="flex flex-row justify-center gap-[1rem]">
         {sizes.map((s) => (
           <Profile
             key={`profile-${s}`}

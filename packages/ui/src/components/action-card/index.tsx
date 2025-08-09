@@ -5,7 +5,7 @@ type ActionCardProps = {
   onClick: () => void;
 };
 
-const ActionCard = ({ onClick, ...props }: ActionCardProps) => {
+const ActionCard = ({ onClick }: ActionCardProps) => {
   return (
     <button
       type="button"
@@ -18,7 +18,6 @@ const ActionCard = ({ onClick, ...props }: ActionCardProps) => {
         `focus:border-neutral-70 focus:bg-neutral-95`,
         `active:border-neutral-variant-70 active:bg-neutral-variant-95`,
       )}
-      {...props}
     >
       <IcAdd width={32} height={32} className="text-neutral-70" />
       <p className="text-heading1-semi20 text-neutral-70">새 여행 만들기</p>

@@ -1,28 +1,37 @@
 import { Button, cn, IcEdit, IcMap, IcSave, IcShare, IcTable } from "@ssok/ui";
+import { Controller, useFormContext } from "react-hook-form";
 import type { ViewMode } from "@/domains/compare/hooks/use-view-mode";
+import type { ComparisonFormData } from "@/domains/compare/types";
 import PageTitle from "./page-title";
 
 interface ComparePageTitleProps {
-  title: string;
   currentView: ViewMode;
   onViewChange: (view: ViewMode) => void;
-  onTitleChange?: (newTitle: string) => void;
+  onSave: () => void;
+  isLoading?: boolean;
   className?: string;
 }
 
 const ComparePageTitle = ({
-  title,
   currentView,
   onViewChange,
-  onTitleChange,
+  onSave,
+  isLoading = false,
   className,
 }: ComparePageTitleProps) => {
+  const { control } = useFormContext<ComparisonFormData>();
   return (
     <div className={cn("flex items-center justify-between", className)}>
-      <PageTitle
-        title={title}
-        isEditingAvailable={currentView === "edit"}
-        onTitleChange={onTitleChange}
+      <Controller
+        control={control}
+        name="tableName"
+        render={({ field }) => (
+          <PageTitle
+            title={field.value || "비교표"}
+            isEditingAvailable={currentView === "edit"}
+            onTitleChange={field.onChange}
+          />
+        )}
       />
       <div className="flex gap-[0.8rem]">
         {currentView === "table" && (
@@ -40,7 +49,7 @@ const ComparePageTitle = ({
           </>
         )}
         {currentView === "edit" && (
-          <SaveButton onClick={() => onViewChange("table")} />
+          <SaveButton onClick={onSave} isLoading={isLoading} />
         )}
       </div>
     </div>
@@ -50,6 +59,7 @@ const ComparePageTitle = ({
 const MapButton = ({ onClick }: { onClick: () => void }) => {
   return (
     <Button
+      type="button"
       size="lg"
       variant="text"
       icon={<IcMap width="20" height="20" />}
@@ -63,6 +73,7 @@ const MapButton = ({ onClick }: { onClick: () => void }) => {
 const EditButton = ({ onClick }: { onClick: () => void }) => {
   return (
     <Button
+      type="button"
       size="lg"
       variant="secondary"
       icon={<IcEdit width="20" height="20" />}
@@ -76,6 +87,7 @@ const EditButton = ({ onClick }: { onClick: () => void }) => {
 const ShareButton = ({ onClick }: { onClick: () => void }) => {
   return (
     <Button
+      type="button"
       size="lg"
       variant="primary"
       icon={<IcShare width="20" height="20" />}
@@ -89,6 +101,7 @@ const ShareButton = ({ onClick }: { onClick: () => void }) => {
 const TableButton = ({ onClick }: { onClick: () => void }) => {
   return (
     <Button
+      type="button"
       size="lg"
       variant="text"
       icon={<IcTable width="20" height="20" />}
@@ -99,13 +112,21 @@ const TableButton = ({ onClick }: { onClick: () => void }) => {
   );
 };
 
-const SaveButton = ({ onClick }: { onClick: () => void }) => {
+const SaveButton = ({
+  onClick,
+  isLoading = false,
+}: {
+  onClick: () => void;
+  isLoading?: boolean;
+}) => {
   return (
     <Button
+      type="button"
       size="lg"
       variant="primary"
       icon={<IcSave width="20" height="20" />}
       onClick={onClick}
+      disabled={isLoading}
     >
       저장하기
     </Button>

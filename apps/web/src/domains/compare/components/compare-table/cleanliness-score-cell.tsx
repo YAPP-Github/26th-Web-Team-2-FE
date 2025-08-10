@@ -1,12 +1,15 @@
 import { Graph } from "@ssok/ui";
-import type { ViewState } from "@/domains/compare/types";
+import { Controller, useFormContext } from "react-hook-form";
+import type { ComparisonFormData, ViewState } from "@/domains/compare/types";
 
 interface CleanlinessScoreCellProps {
-  score: number;
-  state?: ViewState;
+  state: ViewState;
+  name: `accommodationRequestList.${number}.cleanlinessScore`;
 }
 
-const CleanlinessScoreCell = ({ score, state }: CleanlinessScoreCellProps) => {
+const CleanlinessScoreCell = ({ state, name }: CleanlinessScoreCellProps) => {
+  const { control } = useFormContext<ComparisonFormData>();
+
   const getLabel = (value: number): string => {
     if (value >= 9) return "매우 깨끗";
     if (value >= 7) return "깨끗";
@@ -16,7 +19,21 @@ const CleanlinessScoreCell = ({ score, state }: CleanlinessScoreCellProps) => {
   };
 
   return (
-    <Graph value={score} label={getLabel(score)} showGraph state={state} />
+    <Controller
+      control={control}
+      name={name}
+      render={({ field }) => {
+        return (
+          <Graph
+            value={field.value || "0"}
+            label={getLabel(parseFloat(field.value || "0"))}
+            showGraph
+            state={state}
+            onChange={field.onChange}
+          />
+        );
+      }}
+    />
   );
 };
 

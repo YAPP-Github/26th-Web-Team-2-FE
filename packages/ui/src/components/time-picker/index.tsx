@@ -62,7 +62,12 @@ export const TimePicker = ({
 
   const empty = value === null;
   const displayValue = value ?? "00:00"; // 기본값
-  const { meridiem, time, hours, minutes } = formatTime(displayValue);
+  const {
+    meridiem = "오전",
+    time = "00:00",
+    hours = 0,
+    minutes = 0,
+  } = formatTime(displayValue) || {};
 
   const handleKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
     if (!disabled && (e.key === "Enter" || e.key === " ")) {

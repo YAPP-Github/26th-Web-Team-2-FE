@@ -27,6 +27,7 @@
     "chromatic": "^12.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
     "globby": "^14.1.0",
     "pretendard": "^1.3.9",
     "react": "^19.1.0",

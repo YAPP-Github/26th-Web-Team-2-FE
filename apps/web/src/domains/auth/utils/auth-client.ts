@@ -75,7 +75,18 @@ export class AuthClient {
     if (!cookie?.value) {
       return null;
     }
-    return await this.decrypt(cookie.value);
+    return (await this.decrypt(cookie.value)) as SessionData;
+  }
+
+  public async getClientSession() {
+    const session = await this.getSession();
+    if (!session) {
+      return null;
+    }
+    return {
+      ...session,
+      tokenSet: { accessToken: session.tokenSet.accessToken },
+    };
   }
 
   public async isAuthenticated(): Promise<boolean> {

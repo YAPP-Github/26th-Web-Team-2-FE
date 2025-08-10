@@ -6,6 +6,7 @@ import type {
   UseFormRegister,
   UseFormWatch,
 } from "react-hook-form";
+import { useSession } from "@/shared/hooks/use-session";
 import ButtonContainer from "./atom/button-container";
 import LinkInputContainer from "./atom/link-input-container";
 import OnboardingBubble from "./atom/onboarding-bubble";
@@ -45,12 +46,9 @@ const LinkInputSection = ({
   memoText,
   maxChars,
 }: LinkInputSectionProps) => {
+  const { accessToken } = useSession({ required: true });
   const { mutate, isPending } = useRegisterAccommodationCard({
-    request: {
-      headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_USER_1_ACCESS_TOKEN}`,
-      },
-    },
+    request: { headers: { Authorization: `Bearer ${accessToken}` } },
   });
 
   const onValid = (data: FormData) => {

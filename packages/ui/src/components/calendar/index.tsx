@@ -3,8 +3,8 @@ import {
   DayPicker,
   getDefaultClassNames,
 } from "react-day-picker";
-import IcArrowLeft from "@/assets/icons/arrow-left.svg?react";
-import IcArrowRight from "@/assets/icons/arrow-right.svg?react";
+import IcArrowLeft from "@/assets/icons/ic_arrow_left.svg?react";
+import IcArrowRight from "@/assets/icons/ic_arrow_right.svg?react";
 import "react-day-picker/dist/style.css";
 import { ko } from "react-day-picker/locale";
 

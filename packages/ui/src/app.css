@@ -24,7 +24,7 @@
   }
 }
 
-@layer components {
+@layer utilities {
   .rdp-range_start {
     @apply !bg-[#edf9f5];
   }

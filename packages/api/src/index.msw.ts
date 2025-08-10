@@ -14,10 +14,86 @@ import type {
   StandardResponseAccommodationPageResponse,
   StandardResponseAccommodationRegisterResponse,
   StandardResponseAccommodationResponse,
+  StandardResponseAmenityFactorList,
+  StandardResponseAuthorizeUrlResponse,
+  StandardResponseBoolean,
   StandardResponseComparisonFactorList,
   StandardResponseComparisonTableResponse,
   StandardResponseCreateComparisonTableResponse,
+  StandardResponseLogoutResponse,
+  StandardResponseOauthLoginResponse,
+  StandardResponseTripBoardCreateResponse,
+  StandardResponseTripBoardDeleteResponse,
+  StandardResponseTripBoardLeaveResponse,
+  StandardResponseTripBoardPageResponse,
+  StandardResponseTripBoardUpdateResponse,
 } from "./index.schemas";
+
+export const getUpdateTripBoardResponseMock = (
+  overrideResponse: Partial<StandardResponseTripBoardUpdateResponse> = {},
+): StandardResponseTripBoardUpdateResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      tripBoardId: faker.helpers.arrayElement([
+        faker.number.int({
+          min: undefined,
+          max: undefined,
+          multipleOf: undefined,
+        }),
+        undefined,
+      ]),
+      boardName: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      destination: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      startDate: faker.helpers.arrayElement([
+        new Date(faker.date.past().toISOString().split("T")[0]),
+        undefined,
+      ]),
+      endDate: faker.helpers.arrayElement([
+        new Date(faker.date.past().toISOString().split("T")[0]),
+        undefined,
+      ]),
+      updatedAt: faker.helpers.arrayElement([
+        new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
+
+export const getDeleteTripBoardResponseMock = (
+  overrideResponse: Partial<StandardResponseTripBoardDeleteResponse> = {},
+): StandardResponseTripBoardDeleteResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      tripBoardId: faker.helpers.arrayElement([
+        faker.number.int({
+          min: undefined,
+          max: undefined,
+          multipleOf: undefined,
+        }),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
 
 export const getGetComparisonTableResponseMock = (
   overrideResponse: Partial<StandardResponseComparisonTableResponse> = {},
@@ -318,19 +394,11 @@ export const getGetComparisonTableResponseMock = (
           ]),
           checkInTime: faker.helpers.arrayElement([
             {
-              checkInTimeFrom: faker.helpers.arrayElement([
+              from: faker.helpers.arrayElement([
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
               ]),
-              checkInTimeTo: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkOutTimeFrom: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkOutTimeTo: faker.helpers.arrayElement([
+              to: faker.helpers.arrayElement([
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
               ]),
@@ -339,19 +407,11 @@ export const getGetComparisonTableResponseMock = (
           ]),
           checkOutTime: faker.helpers.arrayElement([
             {
-              checkInTimeFrom: faker.helpers.arrayElement([
+              from: faker.helpers.arrayElement([
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
               ]),
-              checkInTimeTo: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkOutTimeFrom: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkOutTimeTo: faker.helpers.arrayElement([
+              to: faker.helpers.arrayElement([
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
               ]),
@@ -363,18 +423,14 @@ export const getGetComparisonTableResponseMock = (
       ]),
       factorsList: faker.helpers.arrayElement([
         faker.helpers.arrayElements([
-          "PARKING",
-          "BREAKFAST",
-          "FREE_WIFI",
-          "POOL",
-          "FITNESS",
-          "LUGGAGE_STORAGE",
-          "BAR_LOUNGE",
-          "FRONT_DESK_HOURS",
-          "PET_FRIENDLY",
-          "BUSINESS_SERVICES",
-          "CLEANING_SERVICE",
-          "HANDICAP_FACILITIES",
+          "REVIEW_SCORE",
+          "ATTRACTION",
+          "TRANSPORTATION",
+          "CLEANLINESS",
+          "AMENITY",
+          "CHECK_TIME",
+          "REVIEW_SUMMARY",
+          "MEMO",
         ] as const),
         undefined,
       ]),
@@ -393,375 +449,13 @@ export const getGetComparisonTableResponseMock = (
 });
 
 export const getUpdateComparisonTableResponseMock = (
-  overrideResponse: Partial<StandardResponseComparisonTableResponse> = {},
-): StandardResponseComparisonTableResponse => ({
+  overrideResponse: Partial<StandardResponseBoolean> = {},
+): StandardResponseBoolean => ({
   responseType: faker.helpers.arrayElement([
     faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
     undefined,
   ]),
-  result: faker.helpers.arrayElement([
-    {
-      tableId: faker.helpers.arrayElement([
-        faker.number.int({
-          min: undefined,
-          max: undefined,
-          multipleOf: undefined,
-        }),
-        undefined,
-      ]),
-      tableName: faker.helpers.arrayElement([
-        faker.string.alpha({ length: { min: 10, max: 20 } }),
-        undefined,
-      ]),
-      accommodationResponsesList: faker.helpers.arrayElement([
-        Array.from(
-          { length: faker.number.int({ min: 4, max: 4 }) },
-          (_, i) => i + 1,
-        ).map(() => ({
-          id: faker.helpers.arrayElement([
-            faker.number.int({
-              min: undefined,
-              max: undefined,
-              multipleOf: undefined,
-            }),
-            undefined,
-          ]),
-          url: faker.helpers.arrayElement([
-            faker.string.alpha({ length: { min: 10, max: 20 } }),
-            undefined,
-          ]),
-          siteName: faker.helpers.arrayElement([
-            faker.string.alpha({ length: { min: 10, max: 20 } }),
-            undefined,
-          ]),
-          logoUrl: faker.helpers.arrayElement([
-            faker.string.alpha({ length: { min: 10, max: 20 } }),
-            undefined,
-          ]),
-          memo: faker.helpers.arrayElement([
-            faker.string.alpha({ length: { min: 10, max: 20 } }),
-            undefined,
-          ]),
-          createdAt: faker.helpers.arrayElement([
-            new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
-            undefined,
-          ]),
-          updatedAt: faker.helpers.arrayElement([
-            new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
-            undefined,
-          ]),
-          createdBy: faker.helpers.arrayElement([
-            faker.number.int({
-              min: undefined,
-              max: undefined,
-              multipleOf: undefined,
-            }),
-            undefined,
-          ]),
-          boardId: faker.helpers.arrayElement([
-            faker.number.int({
-              min: undefined,
-              max: undefined,
-              multipleOf: undefined,
-            }),
-            undefined,
-          ]),
-          accommodationName: faker.helpers.arrayElement([
-            faker.string.alpha({ length: { min: 10, max: 20 } }),
-            undefined,
-          ]),
-          images: faker.helpers.arrayElement([
-            Array.from(
-              { length: faker.number.int({ min: 4, max: 4 }) },
-              (_, i) => i + 1,
-            ).map(() => faker.string.alpha({ length: { min: 10, max: 20 } })),
-            undefined,
-          ]),
-          address: faker.helpers.arrayElement([
-            faker.string.alpha({ length: { min: 10, max: 20 } }),
-            undefined,
-          ]),
-          latitude: faker.helpers.arrayElement([
-            faker.number.float({
-              min: undefined,
-              max: undefined,
-              fractionDigits: 2,
-            }),
-            undefined,
-          ]),
-          longitude: faker.helpers.arrayElement([
-            faker.number.float({
-              min: undefined,
-              max: undefined,
-              fractionDigits: 2,
-            }),
-            undefined,
-          ]),
-          lowestPrice: faker.helpers.arrayElement([
-            faker.number.int({
-              min: undefined,
-              max: undefined,
-              multipleOf: undefined,
-            }),
-            undefined,
-          ]),
-          highestPrice: faker.helpers.arrayElement([
-            faker.number.int({
-              min: undefined,
-              max: undefined,
-              multipleOf: undefined,
-            }),
-            undefined,
-          ]),
-          currency: faker.helpers.arrayElement([
-            faker.string.alpha({ length: { min: 10, max: 20 } }),
-            undefined,
-          ]),
-          reviewScore: faker.helpers.arrayElement([
-            faker.number.float({
-              min: undefined,
-              max: undefined,
-              fractionDigits: 2,
-            }),
-            undefined,
-          ]),
-          cleanlinessScore: faker.helpers.arrayElement([
-            faker.number.float({
-              min: undefined,
-              max: undefined,
-              fractionDigits: 2,
-            }),
-            undefined,
-          ]),
-          reviewSummary: faker.helpers.arrayElement([
-            faker.string.alpha({ length: { min: 10, max: 20 } }),
-            undefined,
-          ]),
-          hotelId: faker.helpers.arrayElement([
-            faker.number.int({
-              min: undefined,
-              max: undefined,
-              multipleOf: undefined,
-            }),
-            undefined,
-          ]),
-          nearbyAttractions: faker.helpers.arrayElement([
-            Array.from(
-              { length: faker.number.int({ min: 4, max: 4 }) },
-              (_, i) => i + 1,
-            ).map(() => ({
-              name: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              type: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              latitude: faker.helpers.arrayElement([
-                faker.number.float({
-                  min: undefined,
-                  max: undefined,
-                  fractionDigits: 2,
-                }),
-                undefined,
-              ]),
-              longitude: faker.helpers.arrayElement([
-                faker.number.float({
-                  min: undefined,
-                  max: undefined,
-                  fractionDigits: 2,
-                }),
-                undefined,
-              ]),
-              distance: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              byFoot: faker.helpers.arrayElement([
-                {
-                  distance: faker.helpers.arrayElement([
-                    faker.string.alpha({ length: { min: 10, max: 20 } }),
-                    undefined,
-                  ]),
-                  time: faker.helpers.arrayElement([
-                    faker.string.alpha({ length: { min: 10, max: 20 } }),
-                    undefined,
-                  ]),
-                },
-                undefined,
-              ]),
-              byCar: faker.helpers.arrayElement([
-                {
-                  distance: faker.helpers.arrayElement([
-                    faker.string.alpha({ length: { min: 10, max: 20 } }),
-                    undefined,
-                  ]),
-                  time: faker.helpers.arrayElement([
-                    faker.string.alpha({ length: { min: 10, max: 20 } }),
-                    undefined,
-                  ]),
-                },
-                undefined,
-              ]),
-            })),
-            undefined,
-          ]),
-          nearbyTransportation: faker.helpers.arrayElement([
-            Array.from(
-              { length: faker.number.int({ min: 4, max: 4 }) },
-              (_, i) => i + 1,
-            ).map(() => ({
-              name: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              type: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              latitude: faker.helpers.arrayElement([
-                faker.number.float({
-                  min: undefined,
-                  max: undefined,
-                  fractionDigits: 2,
-                }),
-                undefined,
-              ]),
-              longitude: faker.helpers.arrayElement([
-                faker.number.float({
-                  min: undefined,
-                  max: undefined,
-                  fractionDigits: 2,
-                }),
-                undefined,
-              ]),
-              distance: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              byFoot: faker.helpers.arrayElement([
-                {
-                  distance: faker.helpers.arrayElement([
-                    faker.string.alpha({ length: { min: 10, max: 20 } }),
-                    undefined,
-                  ]),
-                  time: faker.helpers.arrayElement([
-                    faker.string.alpha({ length: { min: 10, max: 20 } }),
-                    undefined,
-                  ]),
-                },
-                undefined,
-              ]),
-              byCar: faker.helpers.arrayElement([
-                {
-                  distance: faker.helpers.arrayElement([
-                    faker.string.alpha({ length: { min: 10, max: 20 } }),
-                    undefined,
-                  ]),
-                  time: faker.helpers.arrayElement([
-                    faker.string.alpha({ length: { min: 10, max: 20 } }),
-                    undefined,
-                  ]),
-                },
-                undefined,
-              ]),
-            })),
-            undefined,
-          ]),
-          amenities: faker.helpers.arrayElement([
-            Array.from(
-              { length: faker.number.int({ min: 4, max: 4 }) },
-              (_, i) => i + 1,
-            ).map(() => ({
-              type: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              available: faker.helpers.arrayElement([
-                faker.datatype.boolean(),
-                undefined,
-              ]),
-              description: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-            })),
-            undefined,
-          ]),
-          checkInTime: faker.helpers.arrayElement([
-            {
-              checkInTimeFrom: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkInTimeTo: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkOutTimeFrom: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkOutTimeTo: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-            },
-            undefined,
-          ]),
-          checkOutTime: faker.helpers.arrayElement([
-            {
-              checkInTimeFrom: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkInTimeTo: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkOutTimeFrom: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkOutTimeTo: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-            },
-            undefined,
-          ]),
-        })),
-        undefined,
-      ]),
-      factorsList: faker.helpers.arrayElement([
-        faker.helpers.arrayElements([
-          "PARKING",
-          "BREAKFAST",
-          "FREE_WIFI",
-          "POOL",
-          "FITNESS",
-          "LUGGAGE_STORAGE",
-          "BAR_LOUNGE",
-          "FRONT_DESK_HOURS",
-          "PET_FRIENDLY",
-          "BUSINESS_SERVICES",
-          "CLEANING_SERVICE",
-          "HANDICAP_FACILITIES",
-        ] as const),
-        undefined,
-      ]),
-      createdBy: faker.helpers.arrayElement([
-        faker.number.int({
-          min: undefined,
-          max: undefined,
-          multipleOf: undefined,
-        }),
-        undefined,
-      ]),
-    },
-    undefined,
-  ]),
+  result: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
   ...overrideResponse,
 });
 
@@ -1064,19 +758,11 @@ export const getAddAccommodationToComparisonTableResponseMock = (
           ]),
           checkInTime: faker.helpers.arrayElement([
             {
-              checkInTimeFrom: faker.helpers.arrayElement([
+              from: faker.helpers.arrayElement([
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
               ]),
-              checkInTimeTo: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkOutTimeFrom: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkOutTimeTo: faker.helpers.arrayElement([
+              to: faker.helpers.arrayElement([
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
               ]),
@@ -1085,19 +771,11 @@ export const getAddAccommodationToComparisonTableResponseMock = (
           ]),
           checkOutTime: faker.helpers.arrayElement([
             {
-              checkInTimeFrom: faker.helpers.arrayElement([
+              from: faker.helpers.arrayElement([
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
               ]),
-              checkInTimeTo: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkOutTimeFrom: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkOutTimeTo: faker.helpers.arrayElement([
+              to: faker.helpers.arrayElement([
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
               ]),
@@ -1109,18 +787,14 @@ export const getAddAccommodationToComparisonTableResponseMock = (
       ]),
       factorsList: faker.helpers.arrayElement([
         faker.helpers.arrayElements([
-          "PARKING",
-          "BREAKFAST",
-          "FREE_WIFI",
-          "POOL",
-          "FITNESS",
-          "LUGGAGE_STORAGE",
-          "BAR_LOUNGE",
-          "FRONT_DESK_HOURS",
-          "PET_FRIENDLY",
-          "BUSINESS_SERVICES",
-          "CLEANING_SERVICE",
-          "HANDICAP_FACILITIES",
+          "REVIEW_SCORE",
+          "ATTRACTION",
+          "TRANSPORTATION",
+          "CLEANLINESS",
+          "AMENITY",
+          "CHECK_TIME",
+          "REVIEW_SUMMARY",
+          "MEMO",
         ] as const),
         undefined,
       ]),
@@ -1130,6 +804,142 @@ export const getAddAccommodationToComparisonTableResponseMock = (
           max: undefined,
           multipleOf: undefined,
         }),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
+
+export const getCreateTripBoardResponseMock = (
+  overrideResponse: Partial<StandardResponseTripBoardCreateResponse> = {},
+): StandardResponseTripBoardCreateResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      boardId: faker.helpers.arrayElement([
+        faker.number.int({
+          min: undefined,
+          max: undefined,
+          multipleOf: undefined,
+        }),
+        undefined,
+      ]),
+      boardName: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      destination: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      travelPeriod: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      startDate: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      endDate: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      invitationUrl: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      invitationActive: faker.helpers.arrayElement([
+        faker.datatype.boolean(),
+        undefined,
+      ]),
+      creator: faker.helpers.arrayElement([
+        {
+          id: faker.helpers.arrayElement([
+            faker.number.int({
+              min: undefined,
+              max: undefined,
+              multipleOf: undefined,
+            }),
+            undefined,
+          ]),
+          nickname: faker.helpers.arrayElement([
+            faker.string.alpha({ length: { min: 10, max: 20 } }),
+            undefined,
+          ]),
+          email: faker.helpers.arrayElement([
+            faker.string.alpha({ length: { min: 10, max: 20 } }),
+            undefined,
+          ]),
+          profileImage: faker.helpers.arrayElement([
+            faker.string.alpha({ length: { min: 10, max: 20 } }),
+            undefined,
+          ]),
+        },
+        undefined,
+      ]),
+      createdAt: faker.helpers.arrayElement([
+        new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
+
+export const getLogoutResponseMock = (
+  overrideResponse: Partial<StandardResponseLogoutResponse> = {},
+): StandardResponseLogoutResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      logout: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
+
+export const getExchangeKakaoTokenResponseMock = (
+  overrideResponse: Partial<StandardResponseOauthLoginResponse> = {},
+): StandardResponseOauthLoginResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      userId: faker.helpers.arrayElement([
+        faker.number.int({
+          min: undefined,
+          max: undefined,
+          multipleOf: undefined,
+        }),
+        undefined,
+      ]),
+      nickname: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      token: faker.helpers.arrayElement([
+        {
+          accessToken: faker.helpers.arrayElement([
+            faker.string.alpha({ length: { min: 10, max: 20 } }),
+            undefined,
+          ]),
+          refreshToken: faker.helpers.arrayElement([
+            faker.string.alpha({ length: { min: 10, max: 20 } }),
+            undefined,
+          ]),
+        },
         undefined,
       ]),
     },
@@ -1184,9 +994,159 @@ export const getRegisterAccommodationCardResponseMock = (
   ...overrideResponse,
 });
 
+export const getGetTripBoardsResponseMock = (
+  overrideResponse: Partial<StandardResponseTripBoardPageResponse> = {},
+): StandardResponseTripBoardPageResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      tripBoards: faker.helpers.arrayElement([
+        Array.from(
+          { length: faker.number.int({ min: 4, max: 4 }) },
+          (_, i) => i + 1,
+        ).map(() => ({
+          boardId: faker.helpers.arrayElement([
+            faker.number.int({
+              min: undefined,
+              max: undefined,
+              multipleOf: undefined,
+            }),
+            undefined,
+          ]),
+          boardName: faker.helpers.arrayElement([
+            faker.string.alpha({ length: { min: 10, max: 20 } }),
+            undefined,
+          ]),
+          destination: faker.helpers.arrayElement([
+            faker.string.alpha({ length: { min: 10, max: 20 } }),
+            undefined,
+          ]),
+          startDate: faker.helpers.arrayElement([
+            new Date(faker.date.past().toISOString().split("T")[0]),
+            undefined,
+          ]),
+          endDate: faker.helpers.arrayElement([
+            new Date(faker.date.past().toISOString().split("T")[0]),
+            undefined,
+          ]),
+          travelPeriod: faker.helpers.arrayElement([
+            faker.string.alpha({ length: { min: 10, max: 20 } }),
+            undefined,
+          ]),
+          userRole: faker.helpers.arrayElement([
+            faker.helpers.arrayElement(["OWNER", "MEMBER"] as const),
+            undefined,
+          ]),
+          participantCount: faker.helpers.arrayElement([
+            faker.number.int({
+              min: undefined,
+              max: undefined,
+              multipleOf: undefined,
+            }),
+            undefined,
+          ]),
+          participants: faker.helpers.arrayElement([
+            Array.from(
+              { length: faker.number.int({ min: 4, max: 4 }) },
+              (_, i) => i + 1,
+            ).map(() => ({
+              userId: faker.helpers.arrayElement([
+                faker.number.int({
+                  min: undefined,
+                  max: undefined,
+                  multipleOf: undefined,
+                }),
+                undefined,
+              ]),
+              profileImageUrl: faker.helpers.arrayElement([
+                faker.string.alpha({ length: { min: 10, max: 20 } }),
+                undefined,
+              ]),
+              nickname: faker.helpers.arrayElement([
+                faker.string.alpha({ length: { min: 10, max: 20 } }),
+                undefined,
+              ]),
+              role: faker.helpers.arrayElement([
+                faker.helpers.arrayElement(["OWNER", "MEMBER"] as const),
+                undefined,
+              ]),
+            })),
+            undefined,
+          ]),
+          createdAt: faker.helpers.arrayElement([
+            new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
+            undefined,
+          ]),
+          updatedAt: faker.helpers.arrayElement([
+            new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
+            undefined,
+          ]),
+        })),
+        undefined,
+      ]),
+      hasNext: faker.helpers.arrayElement([
+        faker.datatype.boolean(),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
+
+export const getGetKakaoAuthorizeUrlResponseMock = (
+  overrideResponse: Partial<StandardResponseAuthorizeUrlResponse> = {},
+): StandardResponseAuthorizeUrlResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      authorizeUrl: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
+
 export const getGetComparisonFactorListResponseMock = (
   overrideResponse: Partial<StandardResponseComparisonFactorList> = {},
 ): StandardResponseComparisonFactorList => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      factors: faker.helpers.arrayElement([
+        faker.helpers.arrayElements([
+          "REVIEW_SCORE",
+          "ATTRACTION",
+          "TRANSPORTATION",
+          "CLEANLINESS",
+          "AMENITY",
+          "CHECK_TIME",
+          "REVIEW_SUMMARY",
+          "MEMO",
+        ] as const),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
+
+export const getGetAmenityFactorListResponseMock = (
+  overrideResponse: Partial<StandardResponseAmenityFactorList> = {},
+): StandardResponseAmenityFactorList => ({
   responseType: faker.helpers.arrayElement([
     faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
     undefined,
@@ -1498,19 +1458,11 @@ export const getGetAccommodationByIdResponseMock = (
       ]),
       checkInTime: faker.helpers.arrayElement([
         {
-          checkInTimeFrom: faker.helpers.arrayElement([
+          from: faker.helpers.arrayElement([
             faker.string.alpha({ length: { min: 10, max: 20 } }),
             undefined,
           ]),
-          checkInTimeTo: faker.helpers.arrayElement([
-            faker.string.alpha({ length: { min: 10, max: 20 } }),
-            undefined,
-          ]),
-          checkOutTimeFrom: faker.helpers.arrayElement([
-            faker.string.alpha({ length: { min: 10, max: 20 } }),
-            undefined,
-          ]),
-          checkOutTimeTo: faker.helpers.arrayElement([
+          to: faker.helpers.arrayElement([
             faker.string.alpha({ length: { min: 10, max: 20 } }),
             undefined,
           ]),
@@ -1519,19 +1471,11 @@ export const getGetAccommodationByIdResponseMock = (
       ]),
       checkOutTime: faker.helpers.arrayElement([
         {
-          checkInTimeFrom: faker.helpers.arrayElement([
+          from: faker.helpers.arrayElement([
             faker.string.alpha({ length: { min: 10, max: 20 } }),
             undefined,
           ]),
-          checkInTimeTo: faker.helpers.arrayElement([
-            faker.string.alpha({ length: { min: 10, max: 20 } }),
-            undefined,
-          ]),
-          checkOutTimeFrom: faker.helpers.arrayElement([
-            faker.string.alpha({ length: { min: 10, max: 20 } }),
-            undefined,
-          ]),
-          checkOutTimeTo: faker.helpers.arrayElement([
+          to: faker.helpers.arrayElement([
             faker.string.alpha({ length: { min: 10, max: 20 } }),
             undefined,
           ]),
@@ -1831,19 +1775,11 @@ export const getGetAccommodationByBoardIdAndUserIdResponseMock = (
           ]),
           checkInTime: faker.helpers.arrayElement([
             {
-              checkInTimeFrom: faker.helpers.arrayElement([
+              from: faker.helpers.arrayElement([
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
               ]),
-              checkInTimeTo: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkOutTimeFrom: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkOutTimeTo: faker.helpers.arrayElement([
+              to: faker.helpers.arrayElement([
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
               ]),
@@ -1852,19 +1788,11 @@ export const getGetAccommodationByBoardIdAndUserIdResponseMock = (
           ]),
           checkOutTime: faker.helpers.arrayElement([
             {
-              checkInTimeFrom: faker.helpers.arrayElement([
+              from: faker.helpers.arrayElement([
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
               ]),
-              checkInTimeTo: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkOutTimeFrom: faker.helpers.arrayElement([
-                faker.string.alpha({ length: { min: 10, max: 20 } }),
-                undefined,
-              ]),
-              checkOutTimeTo: faker.helpers.arrayElement([
+              to: faker.helpers.arrayElement([
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
               ]),
@@ -1907,6 +1835,83 @@ export const getGetAccommodationCountByBoardIdResponseMock = (
   ...overrideResponse,
 });
 
+export const getLeaveTripBoardResponseMock = (
+  overrideResponse: Partial<StandardResponseTripBoardLeaveResponse> = {},
+): StandardResponseTripBoardLeaveResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      tripBoardId: faker.helpers.arrayElement([
+        faker.number.int({
+          min: undefined,
+          max: undefined,
+          multipleOf: undefined,
+        }),
+        undefined,
+      ]),
+      leftAt: faker.helpers.arrayElement([
+        new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
+
+export const getUpdateTripBoardMockHandler = (
+  overrideResponse?:
+    | StandardResponseTripBoardUpdateResponse
+    | ((
+        info: Parameters<Parameters<typeof http.put>[1]>[0],
+      ) =>
+        | Promise<StandardResponseTripBoardUpdateResponse>
+        | StandardResponseTripBoardUpdateResponse),
+) => {
+  return http.put("*/api/trip-boards/:boardId", async (info) => {
+    await delay(500);
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getUpdateTripBoardResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  });
+};
+
+export const getDeleteTripBoardMockHandler = (
+  overrideResponse?:
+    | StandardResponseTripBoardDeleteResponse
+    | ((
+        info: Parameters<Parameters<typeof http.delete>[1]>[0],
+      ) =>
+        | Promise<StandardResponseTripBoardDeleteResponse>
+        | StandardResponseTripBoardDeleteResponse),
+) => {
+  return http.delete("*/api/trip-boards/:boardId", async (info) => {
+    await delay(500);
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getDeleteTripBoardResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  });
+};
+
 export const getGetComparisonTableMockHandler = (
   overrideResponse?:
     | StandardResponseComparisonTableResponse
@@ -1934,12 +1939,10 @@ export const getGetComparisonTableMockHandler = (
 
 export const getUpdateComparisonTableMockHandler = (
   overrideResponse?:
-    | StandardResponseComparisonTableResponse
+    | StandardResponseBoolean
     | ((
         info: Parameters<Parameters<typeof http.put>[1]>[0],
-      ) =>
-        | Promise<StandardResponseComparisonTableResponse>
-        | StandardResponseComparisonTableResponse),
+      ) => Promise<StandardResponseBoolean> | StandardResponseBoolean),
 ) => {
   return http.put("*/api/comparison/:tableId", async (info) => {
     await delay(500);
@@ -1976,6 +1979,81 @@ export const getAddAccommodationToComparisonTableMockHandler = (
             ? await overrideResponse(info)
             : overrideResponse
           : getAddAccommodationToComparisonTableResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  });
+};
+
+export const getCreateTripBoardMockHandler = (
+  overrideResponse?:
+    | StandardResponseTripBoardCreateResponse
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) =>
+        | Promise<StandardResponseTripBoardCreateResponse>
+        | StandardResponseTripBoardCreateResponse),
+) => {
+  return http.post("*/api/trip-boards/register", async (info) => {
+    await delay(500);
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getCreateTripBoardResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  });
+};
+
+export const getLogoutMockHandler = (
+  overrideResponse?:
+    | StandardResponseLogoutResponse
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) =>
+        | Promise<StandardResponseLogoutResponse>
+        | StandardResponseLogoutResponse),
+) => {
+  return http.post("*/api/oauth/logout", async (info) => {
+    await delay(500);
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getLogoutResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  });
+};
+
+export const getExchangeKakaoTokenMockHandler = (
+  overrideResponse?:
+    | StandardResponseOauthLoginResponse
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) =>
+        | Promise<StandardResponseOauthLoginResponse>
+        | StandardResponseOauthLoginResponse),
+) => {
+  return http.post("*/api/oauth/kakao/token", async (info) => {
+    await delay(500);
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getExchangeKakaoTokenResponseMock(),
       ),
       { status: 200, headers: { "Content-Type": "application/json" } },
     );
@@ -2032,19 +2110,53 @@ export const getRegisterAccommodationCardMockHandler = (
   });
 };
 
-export const getRedirectToKakaoAuthorizationMockHandler = (
+export const getGetTripBoardsMockHandler = (
   overrideResponse?:
-    | unknown
+    | StandardResponseTripBoardPageResponse
     | ((
         info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<unknown> | unknown),
+      ) =>
+        | Promise<StandardResponseTripBoardPageResponse>
+        | StandardResponseTripBoardPageResponse),
 ) => {
-  return http.get("*/api/oauth/kakao", async (info) => {
+  return http.get("*/api/trip-boards/search", async (info) => {
     await delay(500);
-    if (typeof overrideResponse === "function") {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 200 });
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getGetTripBoardsResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  });
+};
+
+export const getGetKakaoAuthorizeUrlMockHandler = (
+  overrideResponse?:
+    | StandardResponseAuthorizeUrlResponse
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) =>
+        | Promise<StandardResponseAuthorizeUrlResponse>
+        | StandardResponseAuthorizeUrlResponse),
+) => {
+  return http.get("*/api/oauth/kakao/authorize", async (info) => {
+    await delay(500);
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getGetKakaoAuthorizeUrlResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
   });
 };
 
@@ -2067,6 +2179,31 @@ export const getGetComparisonFactorListMockHandler = (
             ? await overrideResponse(info)
             : overrideResponse
           : getGetComparisonFactorListResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  });
+};
+
+export const getGetAmenityFactorListMockHandler = (
+  overrideResponse?:
+    | StandardResponseAmenityFactorList
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) =>
+        | Promise<StandardResponseAmenityFactorList>
+        | StandardResponseAmenityFactorList),
+) => {
+  return http.get("*/api/comparison/amenity", async (info) => {
+    await delay(500);
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getGetAmenityFactorListResponseMock(),
       ),
       { status: 200, headers: { "Content-Type": "application/json" } },
     );
@@ -2147,15 +2284,48 @@ export const getGetAccommodationCountByBoardIdMockHandler = (
     );
   });
 };
+
+export const getLeaveTripBoardMockHandler = (
+  overrideResponse?:
+    | StandardResponseTripBoardLeaveResponse
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) =>
+        | Promise<StandardResponseTripBoardLeaveResponse>
+        | StandardResponseTripBoardLeaveResponse),
+) => {
+  return http.post("*/api/trip-boards/leave/:boardId", async (info) => {
+    await delay(500);
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getLeaveTripBoardResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  });
+};
 export const getYapp26Web2Mock = () => [
+  getUpdateTripBoardMockHandler(),
+  getDeleteTripBoardMockHandler(),
   getGetComparisonTableMockHandler(),
   getUpdateComparisonTableMockHandler(),
   getAddAccommodationToComparisonTableMockHandler(),
+  getCreateTripBoardMockHandler(),
+  getLogoutMockHandler(),
+  getExchangeKakaoTokenMockHandler(),
   getCreateComparisonTableMockHandler(),
   getRegisterAccommodationCardMockHandler(),
-  getRedirectToKakaoAuthorizationMockHandler(),
+  getGetTripBoardsMockHandler(),
+  getGetKakaoAuthorizeUrlMockHandler(),
   getGetComparisonFactorListMockHandler(),
+  getGetAmenityFactorListMockHandler(),
   getGetAccommodationByIdMockHandler(),
   getGetAccommodationByBoardIdAndUserIdMockHandler(),
   getGetAccommodationCountByBoardIdMockHandler(),
+  getLeaveTripBoardMockHandler(),
 ];

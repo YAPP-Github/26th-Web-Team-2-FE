@@ -1,9 +1,10 @@
-import { IcArrowLeft, IcArrowRight } from "dist";
 import {
   type DateRange,
   DayPicker,
   getDefaultClassNames,
 } from "react-day-picker";
+import IcArrowLeft from "@/assets/icons/arrow-left.svg?react";
+import IcArrowRight from "@/assets/icons/arrow-right.svg?react";
 import "react-day-picker/dist/style.css";
 import { ko } from "react-day-picker/locale";
 

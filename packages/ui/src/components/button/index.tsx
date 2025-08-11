@@ -32,11 +32,12 @@ export const Button = ({
   selected,
   variant = "primary",
   additionalText,
+  disabled = false,
   ...props
 }: ButtonProps) => {
   return (
     <button
-      className={cn(button({ size, variant, selected }), className)}
+      className={cn(button({ size, variant, selected, disabled }), className)}
       {...props}
     >
       {icon && <>{icon}</>}

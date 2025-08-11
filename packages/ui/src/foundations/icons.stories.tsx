@@ -9,6 +9,7 @@ import IcArrowRight from "@/assets/icons/ic_arrow_right.svg?react";
 import IcArrowUp from "@/assets/icons/ic_arrow_up.svg?react";
 import IcBookmark from "@/assets/icons/ic_bookmark.svg?react";
 import IcCar from "@/assets/icons/ic_car.svg?react";
+import IcCaretDown from "@/assets/icons/ic_caret_down.svg?react";
 import IcCheckFill from "@/assets/icons/ic_check_fill.svg?react";
 import IcCleaningServices from "@/assets/icons/ic_cleaning_services.svg?react";
 import IcClock from "@/assets/icons/ic_clock.svg?react";
@@ -57,6 +58,7 @@ const icons = {
   IcArrowUp,
   IcBookmark,
   IcCar,
+  IcCaretDown,
   IcCheckFill,
   IcCleaningServices,
   IcClock,

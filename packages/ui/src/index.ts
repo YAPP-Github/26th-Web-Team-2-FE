@@ -9,6 +9,7 @@ export { default as IcArrowRight } from "@/assets/icons/ic_arrow_right.svg?react
 export { default as IcArrowUp } from "@/assets/icons/ic_arrow_up.svg?react";
 export { default as IcBookmark } from "@/assets/icons/ic_bookmark.svg?react";
 export { default as IcCar } from "@/assets/icons/ic_car.svg?react";
+export { default as IcCaretDown } from "@/assets/icons/ic_caret_down.svg?react";
 export { default as IcCheckFill } from "@/assets/icons/ic_check_fill.svg?react";
 export { default as IcCleaningServices } from "@/assets/icons/ic_cleaning_services.svg?react";
 export { default as IcClock } from "@/assets/icons/ic_clock.svg?react";
@@ -63,6 +64,8 @@ export { IconTabs } from "@/components/icon-tabs";
 export { Pin } from "@/components/pin";
 export { TextField } from "@/components/text-field";
 export { Textarea } from "@/components/textarea";
+export { TimePicker } from "@/components/time-picker";
+export { useFloating } from "@/hooks/use-floating";
 export { cn } from "@/utils";
 export { default as ActionCard } from "./components/action-card";
 export { default as AvatarProfile } from "./components/avatar-profile";

@@ -7,12 +7,16 @@ interface CheckInOutCellProps {
   state?: ViewState;
 }
 
-const CheckInOutCell = ({ checkInTime, checkOutTime }: CheckInOutCellProps) => {
-  const transform = (time: string) => new Date(`1970-01-01T${time}:00+09:00`);
+const CheckInOutCell = ({
+  checkInTime,
+  checkOutTime,
+  state,
+}: CheckInOutCellProps) => {
   return (
     <TableTimeContents
-      checkInAt={transform(checkInTime.from)}
-      checkOutAt={transform(checkOutTime.to)}
+      checkInAt={checkInTime.from}
+      checkOutAt={checkOutTime.to}
+      state={state}
     />
   );
 };

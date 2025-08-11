@@ -31,7 +31,6 @@ type Story = StoryObj<typeof TravelBoard>;
 
 export const Default: Story = {
   args: {
-    onClick: () => {},
     data: {
       boardId: 1,
       boardName: "도키도키 나고야",

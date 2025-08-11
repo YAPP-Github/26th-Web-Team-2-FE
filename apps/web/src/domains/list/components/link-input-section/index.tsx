@@ -1,5 +1,6 @@
 import { useRegisterAccommodationCard } from "@ssok/api";
 import { cn, IcLink } from "@ssok/ui";
+import { useParams } from "next/navigation";
 import type {
   FieldErrors,
   UseFormHandleSubmit,
@@ -46,16 +47,18 @@ const LinkInputSection = ({
   memoText,
   maxChars,
 }: LinkInputSectionProps) => {
+  const params = useParams();
+  const id = params.id;
   const { accessToken } = useSession({ required: true });
   const { mutate, isPending } = useRegisterAccommodationCard({
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
   });
 
   const onValid = (data: FormData) => {
-    // TODO: boardId와 userId는 추후에 실제 값으로 변경
+    if (id === undefined) return;
     mutate(
       {
-        data: { url: data.link, memo: data.memo, boardId: 1 },
+        data: { url: data.link, memo: data.memo, boardId: Number(id) },
       },
       {
         onSuccess: () => {

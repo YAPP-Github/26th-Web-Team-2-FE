@@ -1,13 +1,14 @@
 "use client";
-import { useGetAccommodationByBoardIdAndUserIdInfinite } from "@ssok/api";
 import { cn, SolidExpand } from "@ssok/ui";
 import { AnimatePresence, motion } from "framer-motion";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import HeaderSection from "@/domains/list/components/header-section";
 import LinkInputSection from "@/domains/list/components/link-input-section";
 import PlaceListSection from "@/domains/list/components/place-list-section";
 import { useAccommodationDataContext } from "@/domains/list/contexts/accomodation-data-context";
 import { usePanelContext } from "@/domains/list/contexts/pannel-context";
+import useAccommodationList from "@/domains/list/hooks/use-accomodation-list";
 import useDragAndDrop from "@/domains/list/hooks/use-drag-and-drop";
 import useDropdown from "@/domains/list/hooks/use-dropdown";
 import useInputPanel from "@/domains/list/hooks/use-input-panel";
@@ -40,26 +41,20 @@ const BoardsIdListsPage = () => {
     setValue,
     watch,
   } = useRegisterUrlInput();
+  const params = useParams();
+  const id = params.id;
   const { accessToken } = useSession({ required: true });
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useGetAccommodationByBoardIdAndUserIdInfinite(
+    useAccommodationList(
       {
-        boardId: 1,
+        boardId: Number(id),
         userId: selectedPerson === 0 ? undefined : selectedPerson,
-        size: 10,
+        size: 2,
         sort: selectedFilter,
-        page: 0,
       },
       {
-        query: {
-          enabled: !!accessToken,
-          getNextPageParam: (lastPage, allPages) => {
-            if (lastPage?.data.result?.hasNext) {
-              return allPages.length;
-            }
-          },
-        },
-        request: { headers: { Authorization: `Bearer ${accessToken}` } },
+        accessToken: accessToken || "",
+        enabled: !!accessToken,
       },
     );
 
@@ -67,8 +62,7 @@ const BoardsIdListsPage = () => {
   const { handlePanelToggle, isPanelExpanded } = usePanelContext();
   useEffect(() => {
     const all =
-      data?.pages?.flatMap((page) => page?.data.result?.accommodations ?? []) ??
-      [];
+      data?.pages?.flatMap((page) => page?.result?.accommodations ?? []) ?? [];
     updateAccommodations(all);
   }, [data, updateAccommodations]);
 
@@ -142,7 +136,7 @@ const BoardsIdListsPage = () => {
           isPanelExpanded ? "right-[-5.5%]" : "right-[-4rem]",
         )}
       />
-      {isLoading && (
+      {isLoading && isFetchingNextPage && (
         <main className="absolute z-10 flex h-full w-full items-center justify-center ">
           <div
             className={`h-[2.4rem] w-[2.4rem] animate-spin rounded-full border-4 border-t-transparent bg-primary`}

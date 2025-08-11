@@ -3086,8 +3086,11 @@ export const getGetAccommodationByBoardIdAndUserIdInfiniteQueryOptions = <
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
-  > = ({ signal }) =>
-    getAccommodationByBoardIdAndUserId(params, { signal, ...requestOptions });
+  > = ({ signal, pageParam = 0 }) =>
+    getAccommodationByBoardIdAndUserId(
+      { ...params, page: typeof pageParam === "number" ? pageParam : 0 },
+      { signal, ...requestOptions },
+    );
 
   return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
     Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,

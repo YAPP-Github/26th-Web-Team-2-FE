@@ -1,5 +1,8 @@
+import { useGetAccommodationCountByBoardId } from "@ssok/api";
 import { Button, Card, cn } from "@ssok/ui";
+import { useParams } from "next/navigation";
 import { useRef } from "react";
+import { useSession } from "@/shared/hooks/use-session";
 import useInfiniteScroll from "../../../../shared/hooks/use-infinite-scroll";
 import { useAccommodationDataContext } from "../../contexts/accomodation-data-context";
 import { usePlaceSelectionContext } from "../../contexts/place-select-context";
@@ -39,6 +42,21 @@ const PlaceListSection = ({
 }: PlaceListSectionProps) => {
   const memberData = useMemberData();
   const { accommodations } = useAccommodationDataContext();
+  const { accessToken } = useSession({ required: true });
+  const params = useParams();
+  const id = params.id;
+  const { data: accommodationCountData } = useGetAccommodationCountByBoardId(
+    {
+      boardId: Number(id),
+    },
+    {
+      query: {
+        enabled: !!accessToken,
+      },
+      request: { headers: { Authorization: `Bearer ${accessToken}` } },
+    },
+  );
+
   const { selectedPlaces, togglePlaceSelect, removePlace } =
     usePlaceSelectionContext();
   const listRef = useRef<HTMLUListElement | null>(null);
@@ -75,7 +93,7 @@ const PlaceListSection = ({
           ))}
         </ul>
         <div className="flex justify-between text-body2-regular14 text-neutral-40">
-          <span>{`${accommodations.length}곳 저장됨`}</span>
+          <span>{`${accommodationCountData?.data.result?.accommodationCount || 0}곳 저장됨`}</span>
           <DropDown
             handleFilterSelect={handleFilterSelect}
             handleToggleDropdown={handleToggleDropdown}
@@ -122,7 +140,8 @@ const PlaceListSection = ({
             </li>
           );
         })}
-        {!isFetchingNextPage &&
+        {!isLoading &&
+          !isFetchingNextPage &&
           (!accommodations || accommodations.length === 0) && (
             <EmptyListContainer />
           )}

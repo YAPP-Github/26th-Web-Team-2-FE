@@ -28,9 +28,9 @@ const useAccommodationList = (
           ...params,
         },
         {
-          headers: {
-            Authorization: `Bearer ${options?.accessToken ?? ""}`,
-          },
+          headers: options?.accessToken
+            ? { Authorization: `Bearer ${options.accessToken}` }
+            : {},
         },
       );
       return res.data;

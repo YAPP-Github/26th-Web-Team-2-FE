@@ -8,7 +8,7 @@ import LinkInputSection from "@/domains/list/components/link-input-section";
 import PlaceListSection from "@/domains/list/components/place-list-section";
 import { useAccommodationDataContext } from "@/domains/list/contexts/accomodation-data-context";
 import { usePanelContext } from "@/domains/list/contexts/pannel-context";
-import useAccommodationList from "@/domains/list/hooks/use-accomodation-list";
+import useAccommodationList from "@/domains/list/hooks/use-accommodation-list";
 import useDragAndDrop from "@/domains/list/hooks/use-drag-and-drop";
 import useDropdown from "@/domains/list/hooks/use-dropdown";
 import useInputPanel from "@/domains/list/hooks/use-input-panel";
@@ -49,7 +49,7 @@ const BoardsIdListsPage = () => {
       {
         boardId: Number(id),
         userId: selectedPerson === 0 ? undefined : selectedPerson,
-        size: 2,
+        size: 10,
         sort: selectedFilter,
       },
       {
@@ -136,13 +136,14 @@ const BoardsIdListsPage = () => {
           isPanelExpanded ? "right-[-5.5%]" : "right-[-4rem]",
         )}
       />
-      {isLoading && isFetchingNextPage && (
-        <main className="absolute z-10 flex h-full w-full items-center justify-center ">
-          <div
-            className={`h-[2.4rem] w-[2.4rem] animate-spin rounded-full border-4 border-t-transparent bg-primary`}
-          />
-        </main>
-      )}
+      {isLoading ||
+        (isFetchingNextPage && (
+          <main className="absolute z-10 flex h-full w-full items-center justify-center ">
+            <div
+              className={`h-[2.4rem] w-[2.4rem] animate-spin rounded-full border-4 border-t-transparent bg-primary`}
+            />
+          </main>
+        ))}
     </main>
   );
 };

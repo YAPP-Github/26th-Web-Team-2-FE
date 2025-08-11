@@ -38,7 +38,7 @@ const MapComponent = ({ className }: { className?: string }) => {
           key: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY,
         }}
         center={center}
-        defaultZoom={11}
+        defaultZoom={15}
         // TODO: 지도 스타일링 옵션 변경
         options={{
           styles: [

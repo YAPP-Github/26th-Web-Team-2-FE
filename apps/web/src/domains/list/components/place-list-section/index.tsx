@@ -3,7 +3,7 @@ import {
   useGetAccommodationCountByBoardId,
 } from "@ssok/api";
 import { Button, Card, cn } from "@ssok/ui";
-import { redirect, useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useRef } from "react";
 import { useSession } from "@/shared/hooks/use-session";
 import useInfiniteScroll from "../../../../shared/hooks/use-infinite-scroll";
@@ -43,6 +43,7 @@ const PlaceListSection = ({
   hasNextPage,
   isFetchingNextPage,
 }: PlaceListSectionProps) => {
+  const router = useRouter();
   const memberData = useMemberData();
   const { accommodations } = useAccommodationDataContext();
   const { accessToken } = useSession({ required: true });
@@ -80,7 +81,7 @@ const PlaceListSection = ({
       },
       {
         onSuccess: (data) => {
-          redirect(`/boards/${id}/compares/${data.data.result?.tableId}`);
+          router.push(`/boards/${id}/compares/${data?.data?.result?.tableId}`);
         },
         onError: (err) => {
           // TODO: 에러 처리 toast popup

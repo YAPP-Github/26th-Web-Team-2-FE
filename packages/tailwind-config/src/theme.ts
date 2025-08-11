@@ -218,4 +218,25 @@ export const theme: Config["theme"] = {
     floating:
       "0px -0.5px 1px 0px #fff inset, 0px 0.5px 1px 0px var(--neutral-variant-100, #fff) inset",
   },
+  backgroundImage: {
+    "gradient-top-white": `linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.14) 14%,
+      rgba(255, 255, 255, 0.27) 26%,
+      rgba(255, 255, 255, 0.38) 37%,
+      rgba(255, 255, 255, 0.48) 46%,
+      rgba(255, 255, 255, 0.57) 54%,
+      rgba(255, 255, 255, 0.65) 60%,
+      rgba(255, 255, 255, 0.71) 66%,
+      rgba(255, 255, 255, 0.77) 72%,
+      rgba(255, 255, 255, 0.82) 76%,
+      rgba(255, 255, 255, 0.86) 80%,
+      rgba(255, 255, 255, 0.9) 83%,
+      rgba(255, 255, 255, 0.93) 87%,
+      rgba(255, 255, 255, 0.96) 91%,
+      rgba(255, 255, 255, 0.98) 95%,
+      rgba(255, 255, 255, 1) 100%
+    )`,
+  },
 };

@@ -35,23 +35,239 @@ import {
 import { http } from "./api/http";
 import type {
   AccommodationRegisterRequest,
-  AddAccommodationToComparisonTableParams,
+  AddAccommodationRequest,
   CreateComparisonTableRequest,
+  ExchangeKakaoTokenParams,
   GetAccommodationByBoardIdAndUserIdParams,
   GetAccommodationCountByBoardIdParams,
+  GetKakaoAuthorizeUrlParams,
+  GetTripBoardsParams,
   StandardResponseAccommodationCountResponse,
   StandardResponseAccommodationPageResponse,
   StandardResponseAccommodationRegisterResponse,
   StandardResponseAccommodationResponse,
+  StandardResponseAmenityFactorList,
+  StandardResponseAuthorizeUrlResponse,
+  StandardResponseBoolean,
   StandardResponseComparisonFactorList,
   StandardResponseComparisonTableResponse,
   StandardResponseCreateComparisonTableResponse,
+  StandardResponseLogoutResponse,
+  StandardResponseOauthLoginResponse,
+  StandardResponseTripBoardCreateResponse,
+  StandardResponseTripBoardDeleteResponse,
+  StandardResponseTripBoardLeaveResponse,
+  StandardResponseTripBoardPageResponse,
+  StandardResponseTripBoardUpdateResponse,
+  TripBoardCreateRequest,
+  TripBoardLeaveRequest,
+  TripBoardUpdateRequest,
+  UpdateComparisonTableRequest,
 } from "./index.schemas";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 /**
- * 비교표 메타 데이터와 포함된 숙소 정보 리스트를 조회합니다.
+ * 기존 여행 보드의 기본 정보(보드 이름, 목적지, 여행 기간)를 수정합니다. JWT 인증을 통해 현재 사용자 정보를 추출하고, 수정된 보드 정보를 반환합니다.
+ * @summary 여행 보드 수정
+ */
+export type updateTripBoardResponse200 = {
+  data: StandardResponseTripBoardUpdateResponse;
+  status: 200;
+};
+
+export type updateTripBoardResponseComposite = updateTripBoardResponse200;
+
+export type updateTripBoardResponse = updateTripBoardResponseComposite & {
+  headers: Headers;
+};
+
+export const getUpdateTripBoardUrl = (boardId: number) => {
+  return `https://api.ssok.info/api/trip-boards/${boardId}`;
+};
+
+export const updateTripBoard = async (
+  boardId: number,
+  tripBoardUpdateRequest: TripBoardUpdateRequest,
+  options?: RequestInit,
+): Promise<updateTripBoardResponse> => {
+  return http<updateTripBoardResponse>(getUpdateTripBoardUrl(boardId), {
+    ...options,
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(tripBoardUpdateRequest),
+  });
+};
+
+export const getUpdateTripBoardMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateTripBoard>>,
+    TError,
+    { boardId: number; data: TripBoardUpdateRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateTripBoard>>,
+  TError,
+  { boardId: number; data: TripBoardUpdateRequest },
+  TContext
+> => {
+  const mutationKey = ["updateTripBoard"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateTripBoard>>,
+    { boardId: number; data: TripBoardUpdateRequest }
+  > = (props) => {
+    const { boardId, data } = props ?? {};
+
+    return updateTripBoard(boardId, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpdateTripBoardMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateTripBoard>>
+>;
+export type UpdateTripBoardMutationBody = TripBoardUpdateRequest;
+export type UpdateTripBoardMutationError = unknown;
+
+/**
+ * @summary 여행 보드 수정
+ */
+export const useUpdateTripBoard = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof updateTripBoard>>,
+      TError,
+      { boardId: number; data: TripBoardUpdateRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof updateTripBoard>>,
+  TError,
+  { boardId: number; data: TripBoardUpdateRequest },
+  TContext
+> => {
+  const mutationOptions = getUpdateTripBoardMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * 여행 보드와 관련된 모든 데이터를 삭제합니다. 오직 여행 보드의 소유자(OWNER)만이 삭제할 수 있으며, 삭제 시 해당 보드에 연관된 모든 리소스(숙소 정보, 멤버 매핑 관계, 비교표 등)가 함께 제거됩니다.
+ * @summary 여행 보드 삭제
+ */
+export type deleteTripBoardResponse200 = {
+  data: StandardResponseTripBoardDeleteResponse;
+  status: 200;
+};
+
+export type deleteTripBoardResponseComposite = deleteTripBoardResponse200;
+
+export type deleteTripBoardResponse = deleteTripBoardResponseComposite & {
+  headers: Headers;
+};
+
+export const getDeleteTripBoardUrl = (boardId: number) => {
+  return `https://api.ssok.info/api/trip-boards/${boardId}`;
+};
+
+export const deleteTripBoard = async (
+  boardId: number,
+  options?: RequestInit,
+): Promise<deleteTripBoardResponse> => {
+  return http<deleteTripBoardResponse>(getDeleteTripBoardUrl(boardId), {
+    ...options,
+    method: "DELETE",
+  });
+};
+
+export const getDeleteTripBoardMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteTripBoard>>,
+    TError,
+    { boardId: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteTripBoard>>,
+  TError,
+  { boardId: number },
+  TContext
+> => {
+  const mutationKey = ["deleteTripBoard"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteTripBoard>>,
+    { boardId: number }
+  > = (props) => {
+    const { boardId } = props ?? {};
+
+    return deleteTripBoard(boardId, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteTripBoardMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteTripBoard>>
+>;
+
+export type DeleteTripBoardMutationError = unknown;
+
+/**
+ * @summary 여행 보드 삭제
+ */
+export const useDeleteTripBoard = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteTripBoard>>,
+      TError,
+      { boardId: number },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteTripBoard>>,
+  TError,
+  { boardId: number },
+  TContext
+> => {
+  const mutationOptions = getDeleteTripBoardMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * 비교표 메타 데이터와 포함된 숙소 정보 리스트를 조회합니다. (Authorization 헤더에 Bearer 토큰 필요)
  * @summary 비교표 조회
  */
 export type getComparisonTableResponse200 = {
@@ -391,11 +607,11 @@ export function useGetComparisonTableSuspense<
 }
 
 /**
- * 비교표 메타 데이터와 비교 기준 항목을 수정합니다.
+ * 비교표 메타 데이터(제목)와 숙소 세부 내용, 비교 기준 정렬 순서, 숙소 정렬 순서를 수정합니다. (Authorization 헤더에 Bearer 토큰 필요)
  * @summary 비교표 수정
  */
 export type updateComparisonTableResponse200 = {
-  data: StandardResponseComparisonTableResponse;
+  data: StandardResponseBoolean;
   status: 200;
 };
 
@@ -413,7 +629,7 @@ export const getUpdateComparisonTableUrl = (tableId: number) => {
 
 export const updateComparisonTable = async (
   tableId: number,
-  createComparisonTableRequest: CreateComparisonTableRequest,
+  updateComparisonTableRequest: UpdateComparisonTableRequest,
   options?: RequestInit,
 ): Promise<updateComparisonTableResponse> => {
   return http<updateComparisonTableResponse>(
@@ -422,7 +638,7 @@ export const updateComparisonTable = async (
       ...options,
       method: "PUT",
       headers: { "Content-Type": "application/json", ...options?.headers },
-      body: JSON.stringify(createComparisonTableRequest),
+      body: JSON.stringify(updateComparisonTableRequest),
     },
   );
 };
@@ -434,14 +650,14 @@ export const getUpdateComparisonTableMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof updateComparisonTable>>,
     TError,
-    { tableId: number; data: CreateComparisonTableRequest },
+    { tableId: number; data: UpdateComparisonTableRequest },
     TContext
   >;
   request?: SecondParameter<typeof http>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof updateComparisonTable>>,
   TError,
-  { tableId: number; data: CreateComparisonTableRequest },
+  { tableId: number; data: UpdateComparisonTableRequest },
   TContext
 > => {
   const mutationKey = ["updateComparisonTable"];
@@ -455,7 +671,7 @@ export const getUpdateComparisonTableMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof updateComparisonTable>>,
-    { tableId: number; data: CreateComparisonTableRequest }
+    { tableId: number; data: UpdateComparisonTableRequest }
   > = (props) => {
     const { tableId, data } = props ?? {};
 
@@ -468,7 +684,7 @@ export const getUpdateComparisonTableMutationOptions = <
 export type UpdateComparisonTableMutationResult = NonNullable<
   Awaited<ReturnType<typeof updateComparisonTable>>
 >;
-export type UpdateComparisonTableMutationBody = CreateComparisonTableRequest;
+export type UpdateComparisonTableMutationBody = UpdateComparisonTableRequest;
 export type UpdateComparisonTableMutationError = unknown;
 
 /**
@@ -479,7 +695,7 @@ export const useUpdateComparisonTable = <TError = unknown, TContext = unknown>(
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof updateComparisonTable>>,
       TError,
-      { tableId: number; data: CreateComparisonTableRequest },
+      { tableId: number; data: UpdateComparisonTableRequest },
       TContext
     >;
     request?: SecondParameter<typeof http>;
@@ -488,7 +704,7 @@ export const useUpdateComparisonTable = <TError = unknown, TContext = unknown>(
 ): UseMutationResult<
   Awaited<ReturnType<typeof updateComparisonTable>>,
   TError,
-  { tableId: number; data: CreateComparisonTableRequest },
+  { tableId: number; data: UpdateComparisonTableRequest },
   TContext
 > => {
   const mutationOptions = getUpdateComparisonTableMutationOptions(options);
@@ -497,7 +713,7 @@ export const useUpdateComparisonTable = <TError = unknown, TContext = unknown>(
 };
 
 /**
- * 비교표에 새로운 숙소를 추가합니다.
+ * 비교표에 새로운 숙소를 추가합니다. (Authorization 헤더에 Bearer 토큰 필요)
  * @summary 비교표 숙소 추가
  */
 export type addAccommodationToComparisonTableResponse200 = {
@@ -513,35 +729,22 @@ export type addAccommodationToComparisonTableResponse =
     headers: Headers;
   };
 
-export const getAddAccommodationToComparisonTableUrl = (
-  tableId: number,
-  params: AddAccommodationToComparisonTableParams,
-) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? "null" : value.toString());
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0
-    ? `https://api.ssok.info/api/comparison/${tableId}?${stringifiedParams}`
-    : `https://api.ssok.info/api/comparison/${tableId}`;
+export const getAddAccommodationToComparisonTableUrl = (tableId: number) => {
+  return `https://api.ssok.info/api/comparison/${tableId}`;
 };
 
 export const addAccommodationToComparisonTable = async (
   tableId: number,
-  params: AddAccommodationToComparisonTableParams,
+  addAccommodationRequest: AddAccommodationRequest,
   options?: RequestInit,
 ): Promise<addAccommodationToComparisonTableResponse> => {
   return http<addAccommodationToComparisonTableResponse>(
-    getAddAccommodationToComparisonTableUrl(tableId, params),
+    getAddAccommodationToComparisonTableUrl(tableId),
     {
       ...options,
       method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(addAccommodationRequest),
     },
   );
 };
@@ -553,14 +756,14 @@ export const getAddAccommodationToComparisonTableMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof addAccommodationToComparisonTable>>,
     TError,
-    { tableId: number; params: AddAccommodationToComparisonTableParams },
+    { tableId: number; data: AddAccommodationRequest },
     TContext
   >;
   request?: SecondParameter<typeof http>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof addAccommodationToComparisonTable>>,
   TError,
-  { tableId: number; params: AddAccommodationToComparisonTableParams },
+  { tableId: number; data: AddAccommodationRequest },
   TContext
 > => {
   const mutationKey = ["addAccommodationToComparisonTable"];
@@ -574,11 +777,11 @@ export const getAddAccommodationToComparisonTableMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof addAccommodationToComparisonTable>>,
-    { tableId: number; params: AddAccommodationToComparisonTableParams }
+    { tableId: number; data: AddAccommodationRequest }
   > = (props) => {
-    const { tableId, params } = props ?? {};
+    const { tableId, data } = props ?? {};
 
-    return addAccommodationToComparisonTable(tableId, params, requestOptions);
+    return addAccommodationToComparisonTable(tableId, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -587,7 +790,8 @@ export const getAddAccommodationToComparisonTableMutationOptions = <
 export type AddAccommodationToComparisonTableMutationResult = NonNullable<
   Awaited<ReturnType<typeof addAccommodationToComparisonTable>>
 >;
-
+export type AddAccommodationToComparisonTableMutationBody =
+  AddAccommodationRequest;
 export type AddAccommodationToComparisonTableMutationError = unknown;
 
 /**
@@ -601,7 +805,7 @@ export const useAddAccommodationToComparisonTable = <
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof addAccommodationToComparisonTable>>,
       TError,
-      { tableId: number; params: AddAccommodationToComparisonTableParams },
+      { tableId: number; data: AddAccommodationRequest },
       TContext
     >;
     request?: SecondParameter<typeof http>;
@@ -610,7 +814,7 @@ export const useAddAccommodationToComparisonTable = <
 ): UseMutationResult<
   Awaited<ReturnType<typeof addAccommodationToComparisonTable>>,
   TError,
-  { tableId: number; params: AddAccommodationToComparisonTableParams },
+  { tableId: number; data: AddAccommodationRequest },
   TContext
 > => {
   const mutationOptions =
@@ -620,7 +824,312 @@ export const useAddAccommodationToComparisonTable = <
 };
 
 /**
- * 비교표 이름, 숙소 ID 리스트, 비교 기준 항목을 받아서 비교표 메타 데이터를 생성합니다.
+ * 새로운 여행 보드를 생성합니다. JWT 인증을 통해 현재 사용자 정보를 추출하고, 생성자는 자동으로 OWNER 역할로 등록되며 고유한 초대 링크가 생성됩니다.
+ * @summary 여행 보드 생성
+ */
+export type createTripBoardResponse200 = {
+  data: StandardResponseTripBoardCreateResponse;
+  status: 200;
+};
+
+export type createTripBoardResponseComposite = createTripBoardResponse200;
+
+export type createTripBoardResponse = createTripBoardResponseComposite & {
+  headers: Headers;
+};
+
+export const getCreateTripBoardUrl = () => {
+  return `https://api.ssok.info/api/trip-boards/register`;
+};
+
+export const createTripBoard = async (
+  tripBoardCreateRequest: TripBoardCreateRequest,
+  options?: RequestInit,
+): Promise<createTripBoardResponse> => {
+  return http<createTripBoardResponse>(getCreateTripBoardUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(tripBoardCreateRequest),
+  });
+};
+
+export const getCreateTripBoardMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createTripBoard>>,
+    TError,
+    { data: TripBoardCreateRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createTripBoard>>,
+  TError,
+  { data: TripBoardCreateRequest },
+  TContext
+> => {
+  const mutationKey = ["createTripBoard"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createTripBoard>>,
+    { data: TripBoardCreateRequest }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return createTripBoard(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type CreateTripBoardMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createTripBoard>>
+>;
+export type CreateTripBoardMutationBody = TripBoardCreateRequest;
+export type CreateTripBoardMutationError = unknown;
+
+/**
+ * @summary 여행 보드 생성
+ */
+export const useCreateTripBoard = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof createTripBoard>>,
+      TError,
+      { data: TripBoardCreateRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof createTripBoard>>,
+  TError,
+  { data: TripBoardCreateRequest },
+  TContext
+> => {
+  const mutationOptions = getCreateTripBoardMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * 현재 로그인된 사용자의 세션을 종료합니다. 헤더에 있는 access-token 토큰을 블랙리스트에 추가합니다. Redis에서 Refresh Token을 삭제하고 브라우저의 REFRESH_TOKEN 쿠키를 무효화합니다. 로그아웃 후에는 새로운 인증이 필요합니다.
+ * @summary 사용자 로그아웃
+ */
+export type logoutResponse200 = {
+  data: StandardResponseLogoutResponse;
+  status: 200;
+};
+
+export type logoutResponseComposite = logoutResponse200;
+
+export type logoutResponse = logoutResponseComposite & {
+  headers: Headers;
+};
+
+export const getLogoutUrl = () => {
+  return `https://api.ssok.info/api/oauth/logout`;
+};
+
+export const logout = async (
+  options?: RequestInit,
+): Promise<logoutResponse> => {
+  return http<logoutResponse>(getLogoutUrl(), {
+    ...options,
+    method: "POST",
+  });
+};
+
+export const getLogoutMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof logout>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof logout>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["logout"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof logout>>,
+    void
+  > = () => {
+    return logout(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type LogoutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof logout>>
+>;
+
+export type LogoutMutationError = unknown;
+
+/**
+ * @summary 사용자 로그아웃
+ */
+export const useLogout = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof logout>>,
+      TError,
+      void,
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof logout>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions = getLogoutMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * 카카오에서 발급받은 인가 코드를 통해 액세스 토큰을 획득하고, 사용자 정보를 조회하여 JWT 토큰을 헤더로 설정합니다. JWT 토큰은 응답 헤더로 전달되며, 응답 바디에는 사용자 정보만 포함됩니다. 인가 코드와 baseUrl은 Query Parameter로 전달해야 합니다. 로그인 성공 후 응답 헤더 access-token, 쿠키 REFRESH_TOKEN 로 각각 액세스 토큰, 리프레시 토큰이 전달됩니다.
+ * @summary 카카오 OAuth 토큰 교환
+ */
+export type exchangeKakaoTokenResponse200 = {
+  data: StandardResponseOauthLoginResponse;
+  status: 200;
+};
+
+export type exchangeKakaoTokenResponseComposite = exchangeKakaoTokenResponse200;
+
+export type exchangeKakaoTokenResponse = exchangeKakaoTokenResponseComposite & {
+  headers: Headers;
+};
+
+export const getExchangeKakaoTokenUrl = (params: ExchangeKakaoTokenParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `https://api.ssok.info/api/oauth/kakao/token?${stringifiedParams}`
+    : `https://api.ssok.info/api/oauth/kakao/token`;
+};
+
+export const exchangeKakaoToken = async (
+  params: ExchangeKakaoTokenParams,
+  options?: RequestInit,
+): Promise<exchangeKakaoTokenResponse> => {
+  return http<exchangeKakaoTokenResponse>(getExchangeKakaoTokenUrl(params), {
+    ...options,
+    method: "POST",
+  });
+};
+
+export const getExchangeKakaoTokenMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof exchangeKakaoToken>>,
+    TError,
+    { params: ExchangeKakaoTokenParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof exchangeKakaoToken>>,
+  TError,
+  { params: ExchangeKakaoTokenParams },
+  TContext
+> => {
+  const mutationKey = ["exchangeKakaoToken"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof exchangeKakaoToken>>,
+    { params: ExchangeKakaoTokenParams }
+  > = (props) => {
+    const { params } = props ?? {};
+
+    return exchangeKakaoToken(params, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ExchangeKakaoTokenMutationResult = NonNullable<
+  Awaited<ReturnType<typeof exchangeKakaoToken>>
+>;
+
+export type ExchangeKakaoTokenMutationError = unknown;
+
+/**
+ * @summary 카카오 OAuth 토큰 교환
+ */
+export const useExchangeKakaoToken = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof exchangeKakaoToken>>,
+      TError,
+      { params: ExchangeKakaoTokenParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof exchangeKakaoToken>>,
+  TError,
+  { params: ExchangeKakaoTokenParams },
+  TContext
+> => {
+  const mutationOptions = getExchangeKakaoTokenMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * 비교표 이름, 숙소 ID 리스트, 비교 기준 항목을 받아서 비교표 메타 데이터를 생성합니다. (Authorization 헤더에 Bearer 토큰 필요)
  * @summary 비교표 생성
  */
 export type createComparisonTableResponse200 = {
@@ -831,94 +1340,99 @@ export const useRegisterAccommodationCard = <
 };
 
 /**
- * 클라이언트 요청 시 카카오 OAuth2 인가 페이지로 리다이렉트하고, 인가 완료 시 쿠키에 ACCESS TOKEN 및 REFRESH TOKEN을 발급합니다.
- * @summary 카카오 소셜 로그인 리다이렉션
+ * 사용자가 참여한 여행 보드 목록을 페이징으로 조회합니다. JWT 인증을 통해 현재 사용자 정보를 추출하고, 최신순으로 정렬된 결과를 반환합니다.
+ * @summary 여행 보드 목록 조회
  */
-export type redirectToKakaoAuthorizationResponse302 = {
-  data: null;
-  status: 302;
+export type getTripBoardsResponse200 = {
+  data: StandardResponseTripBoardPageResponse;
+  status: 200;
 };
 
-export type redirectToKakaoAuthorizationResponseComposite =
-  redirectToKakaoAuthorizationResponse302;
+export type getTripBoardsResponseComposite = getTripBoardsResponse200;
 
-export type redirectToKakaoAuthorizationResponse =
-  redirectToKakaoAuthorizationResponseComposite & {
-    headers: Headers;
-  };
-
-export const getRedirectToKakaoAuthorizationUrl = () => {
-  return `https://api.ssok.info/api/oauth/kakao`;
+export type getTripBoardsResponse = getTripBoardsResponseComposite & {
+  headers: Headers;
 };
 
-export const redirectToKakaoAuthorization = async (
+export const getGetTripBoardsUrl = (params: GetTripBoardsParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `https://api.ssok.info/api/trip-boards/search?${stringifiedParams}`
+    : `https://api.ssok.info/api/trip-boards/search`;
+};
+
+export const getTripBoards = async (
+  params: GetTripBoardsParams,
   options?: RequestInit,
-): Promise<redirectToKakaoAuthorizationResponse> => {
-  return http<redirectToKakaoAuthorizationResponse>(
-    getRedirectToKakaoAuthorizationUrl(),
-    {
-      ...options,
-      method: "GET",
-    },
-  );
+): Promise<getTripBoardsResponse> => {
+  return http<getTripBoardsResponse>(getGetTripBoardsUrl(params), {
+    ...options,
+    method: "GET",
+  });
 };
 
-export const getRedirectToKakaoAuthorizationQueryKey = () => {
-  return [`https://api.ssok.info/api/oauth/kakao`] as const;
+export const getGetTripBoardsQueryKey = (params?: GetTripBoardsParams) => {
+  return [
+    `https://api.ssok.info/api/trip-boards/search`,
+    ...(params ? [params] : []),
+  ] as const;
 };
 
-export const getRedirectToKakaoAuthorizationQueryOptions = <
-  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-  TError = null,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-      TError,
-      TData
-    >
-  >;
-  request?: SecondParameter<typeof http>;
-}) => {
+export const getGetTripBoardsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getTripBoards>>,
+  TError = unknown,
+>(
+  params: GetTripBoardsParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getTripBoards>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getRedirectToKakaoAuthorizationQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetTripBoardsQueryKey(params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof redirectToKakaoAuthorization>>
-  > = ({ signal }) =>
-    redirectToKakaoAuthorization({ signal, ...requestOptions });
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTripBoards>>> = ({
+    signal,
+  }) => getTripBoards(params, { signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+    Awaited<ReturnType<typeof getTripBoards>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData> };
 };
 
-export type RedirectToKakaoAuthorizationQueryResult = NonNullable<
-  Awaited<ReturnType<typeof redirectToKakaoAuthorization>>
+export type GetTripBoardsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getTripBoards>>
 >;
-export type RedirectToKakaoAuthorizationQueryError = null;
+export type GetTripBoardsQueryError = unknown;
 
-export function useRedirectToKakaoAuthorization<
-  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-  TError = null,
+export function useGetTripBoards<
+  TData = Awaited<ReturnType<typeof getTripBoards>>,
+  TError = unknown,
 >(
+  params: GetTripBoardsParams,
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTripBoards>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+          Awaited<ReturnType<typeof getTripBoards>>,
           TError,
-          Awaited<ReturnType<typeof redirectToKakaoAuthorization>>
+          Awaited<ReturnType<typeof getTripBoards>>
         >,
         "initialData"
       >;
@@ -928,23 +1442,20 @@ export function useRedirectToKakaoAuthorization<
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData>;
 };
-export function useRedirectToKakaoAuthorization<
-  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-  TError = null,
+export function useGetTripBoards<
+  TData = Awaited<ReturnType<typeof getTripBoards>>,
+  TError = unknown,
 >(
+  params: GetTripBoardsParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTripBoards>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+          Awaited<ReturnType<typeof getTripBoards>>,
           TError,
-          Awaited<ReturnType<typeof redirectToKakaoAuthorization>>
+          Awaited<ReturnType<typeof getTripBoards>>
         >,
         "initialData"
       >;
@@ -952,43 +1463,37 @@ export function useRedirectToKakaoAuthorization<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
-export function useRedirectToKakaoAuthorization<
-  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-  TError = null,
+export function useGetTripBoards<
+  TData = Awaited<ReturnType<typeof getTripBoards>>,
+  TError = unknown,
 >(
+  params: GetTripBoardsParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTripBoards>>, TError, TData>
     >;
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 /**
- * @summary 카카오 소셜 로그인 리다이렉션
+ * @summary 여행 보드 목록 조회
  */
 
-export function useRedirectToKakaoAuthorization<
-  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-  TError = null,
+export function useGetTripBoards<
+  TData = Awaited<ReturnType<typeof getTripBoards>>,
+  TError = unknown,
 >(
+  params: GetTripBoardsParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTripBoards>>, TError, TData>
     >;
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getRedirectToKakaoAuthorizationQueryOptions(options);
+  const queryOptions = getGetTripBoardsQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
@@ -1001,74 +1506,73 @@ export function useRedirectToKakaoAuthorization<
 }
 
 /**
- * @summary 카카오 소셜 로그인 리다이렉션
+ * @summary 여행 보드 목록 조회
  */
-export const prefetchRedirectToKakaoAuthorizationQuery = async <
-  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-  TError = null,
+export const prefetchGetTripBoardsQuery = async <
+  TData = Awaited<ReturnType<typeof getTripBoards>>,
+  TError = unknown,
 >(
   queryClient: QueryClient,
+  params: GetTripBoardsParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTripBoards>>, TError, TData>
     >;
     request?: SecondParameter<typeof http>;
   },
 ): Promise<QueryClient> => {
-  const queryOptions = getRedirectToKakaoAuthorizationQueryOptions(options);
+  const queryOptions = getGetTripBoardsQueryOptions(params, options);
 
   await queryClient.prefetchQuery(queryOptions);
 
   return queryClient;
 };
 
-export const getRedirectToKakaoAuthorizationSuspenseQueryOptions = <
-  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-  TError = null,
->(options?: {
-  query?: Partial<
-    UseSuspenseQueryOptions<
-      Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-      TError,
-      TData
-    >
-  >;
-  request?: SecondParameter<typeof http>;
-}) => {
+export const getGetTripBoardsSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getTripBoards>>,
+  TError = unknown,
+>(
+  params: GetTripBoardsParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getTripBoards>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getRedirectToKakaoAuthorizationQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetTripBoardsQueryKey(params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof redirectToKakaoAuthorization>>
-  > = ({ signal }) =>
-    redirectToKakaoAuthorization({ signal, ...requestOptions });
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTripBoards>>> = ({
+    signal,
+  }) => getTripBoards(params, { signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
-    Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+    Awaited<ReturnType<typeof getTripBoards>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData> };
 };
 
-export type RedirectToKakaoAuthorizationSuspenseQueryResult = NonNullable<
-  Awaited<ReturnType<typeof redirectToKakaoAuthorization>>
+export type GetTripBoardsSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getTripBoards>>
 >;
-export type RedirectToKakaoAuthorizationSuspenseQueryError = null;
+export type GetTripBoardsSuspenseQueryError = unknown;
 
-export function useRedirectToKakaoAuthorizationSuspense<
-  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-  TError = null,
+export function useGetTripBoardsSuspense<
+  TData = Awaited<ReturnType<typeof getTripBoards>>,
+  TError = unknown,
 >(
+  params: GetTripBoardsParams,
   options: {
     query: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+        Awaited<ReturnType<typeof getTripBoards>>,
         TError,
         TData
       >
@@ -1079,14 +1583,15 @@ export function useRedirectToKakaoAuthorizationSuspense<
 ): UseSuspenseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData>;
 };
-export function useRedirectToKakaoAuthorizationSuspense<
-  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-  TError = null,
+export function useGetTripBoardsSuspense<
+  TData = Awaited<ReturnType<typeof getTripBoards>>,
+  TError = unknown,
 >(
+  params: GetTripBoardsParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+        Awaited<ReturnType<typeof getTripBoards>>,
         TError,
         TData
       >
@@ -1097,14 +1602,15 @@ export function useRedirectToKakaoAuthorizationSuspense<
 ): UseSuspenseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData>;
 };
-export function useRedirectToKakaoAuthorizationSuspense<
-  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-  TError = null,
+export function useGetTripBoardsSuspense<
+  TData = Awaited<ReturnType<typeof getTripBoards>>,
+  TError = unknown,
 >(
+  params: GetTripBoardsParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+        Awaited<ReturnType<typeof getTripBoards>>,
         TError,
         TData
       >
@@ -1116,17 +1622,18 @@ export function useRedirectToKakaoAuthorizationSuspense<
   queryKey: DataTag<QueryKey, TData>;
 };
 /**
- * @summary 카카오 소셜 로그인 리다이렉션
+ * @summary 여행 보드 목록 조회
  */
 
-export function useRedirectToKakaoAuthorizationSuspense<
-  TData = Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
-  TError = null,
+export function useGetTripBoardsSuspense<
+  TData = Awaited<ReturnType<typeof getTripBoards>>,
+  TError = unknown,
 >(
+  params: GetTripBoardsParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof redirectToKakaoAuthorization>>,
+        Awaited<ReturnType<typeof getTripBoards>>,
         TError,
         TData
       >
@@ -1137,8 +1644,366 @@ export function useRedirectToKakaoAuthorizationSuspense<
 ): UseSuspenseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData>;
 } {
-  const queryOptions =
-    getRedirectToKakaoAuthorizationSuspenseQueryOptions(options);
+  const queryOptions = getGetTripBoardsSuspenseQueryOptions(params, options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * 카카오 OAuth 인가 페이지 URL을 반환합니다. 클라이언트의 baseUrl을 기반으로 동적으로 redirect_uri를 생성합니다. 프론트엔드에서 이 URL로 리다이렉트하여 사용자 인증을 진행합니다.
+ * @summary 카카오 OAuth 인가 URL 조회
+ */
+export type getKakaoAuthorizeUrlResponse200 = {
+  data: StandardResponseAuthorizeUrlResponse;
+  status: 200;
+};
+
+export type getKakaoAuthorizeUrlResponseComposite =
+  getKakaoAuthorizeUrlResponse200;
+
+export type getKakaoAuthorizeUrlResponse =
+  getKakaoAuthorizeUrlResponseComposite & {
+    headers: Headers;
+  };
+
+export const getGetKakaoAuthorizeUrlUrl = (
+  params: GetKakaoAuthorizeUrlParams,
+) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `https://api.ssok.info/api/oauth/kakao/authorize?${stringifiedParams}`
+    : `https://api.ssok.info/api/oauth/kakao/authorize`;
+};
+
+export const getKakaoAuthorizeUrl = async (
+  params: GetKakaoAuthorizeUrlParams,
+  options?: RequestInit,
+): Promise<getKakaoAuthorizeUrlResponse> => {
+  return http<getKakaoAuthorizeUrlResponse>(
+    getGetKakaoAuthorizeUrlUrl(params),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getGetKakaoAuthorizeUrlQueryKey = (
+  params?: GetKakaoAuthorizeUrlParams,
+) => {
+  return [
+    `https://api.ssok.info/api/oauth/kakao/authorize`,
+    ...(params ? [params] : []),
+  ] as const;
+};
+
+export const getGetKakaoAuthorizeUrlQueryOptions = <
+  TData = Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+  TError = unknown,
+>(
+  params: GetKakaoAuthorizeUrlParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetKakaoAuthorizeUrlQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>
+  > = ({ signal }) =>
+    getKakaoAuthorizeUrl(params, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type GetKakaoAuthorizeUrlQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>
+>;
+export type GetKakaoAuthorizeUrlQueryError = unknown;
+
+export function useGetKakaoAuthorizeUrl<
+  TData = Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+  TError = unknown,
+>(
+  params: GetKakaoAuthorizeUrlParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+          TError,
+          Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+export function useGetKakaoAuthorizeUrl<
+  TData = Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+  TError = unknown,
+>(
+  params: GetKakaoAuthorizeUrlParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+          TError,
+          Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetKakaoAuthorizeUrl<
+  TData = Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+  TError = unknown,
+>(
+  params: GetKakaoAuthorizeUrlParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+/**
+ * @summary 카카오 OAuth 인가 URL 조회
+ */
+
+export function useGetKakaoAuthorizeUrl<
+  TData = Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+  TError = unknown,
+>(
+  params: GetKakaoAuthorizeUrlParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getGetKakaoAuthorizeUrlQueryOptions(params, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary 카카오 OAuth 인가 URL 조회
+ */
+export const prefetchGetKakaoAuthorizeUrlQuery = async <
+  TData = Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+  TError = unknown,
+>(
+  queryClient: QueryClient,
+  params: GetKakaoAuthorizeUrlParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetKakaoAuthorizeUrlQueryOptions(params, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetKakaoAuthorizeUrlSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+  TError = unknown,
+>(
+  params: GetKakaoAuthorizeUrlParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetKakaoAuthorizeUrlQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>
+  > = ({ signal }) =>
+    getKakaoAuthorizeUrl(params, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type GetKakaoAuthorizeUrlSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>
+>;
+export type GetKakaoAuthorizeUrlSuspenseQueryError = unknown;
+
+export function useGetKakaoAuthorizeUrlSuspense<
+  TData = Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+  TError = unknown,
+>(
+  params: GetKakaoAuthorizeUrlParams,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+export function useGetKakaoAuthorizeUrlSuspense<
+  TData = Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+  TError = unknown,
+>(
+  params: GetKakaoAuthorizeUrlParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+export function useGetKakaoAuthorizeUrlSuspense<
+  TData = Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+  TError = unknown,
+>(
+  params: GetKakaoAuthorizeUrlParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+/**
+ * @summary 카카오 OAuth 인가 URL 조회
+ */
+
+export function useGetKakaoAuthorizeUrlSuspense<
+  TData = Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+  TError = unknown,
+>(
+  params: GetKakaoAuthorizeUrlParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+} {
+  const queryOptions = getGetKakaoAuthorizeUrlSuspenseQueryOptions(
+    params,
+    options,
+  );
 
   const query = useSuspenseQuery(
     queryOptions,
@@ -1458,6 +2323,320 @@ export function useGetComparisonFactorListSuspense<
   queryKey: DataTag<QueryKey, TData>;
 } {
   const queryOptions = getGetComparisonFactorListSuspenseQueryOptions(options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * 편의 서비스 항목 Enum 리스트를 반환합니다.
+ * @summary 편의 서비스 Enum 리스트
+ */
+export type getAmenityFactorListResponse200 = {
+  data: StandardResponseAmenityFactorList;
+  status: 200;
+};
+
+export type getAmenityFactorListResponseComposite =
+  getAmenityFactorListResponse200;
+
+export type getAmenityFactorListResponse =
+  getAmenityFactorListResponseComposite & {
+    headers: Headers;
+  };
+
+export const getGetAmenityFactorListUrl = () => {
+  return `https://api.ssok.info/api/comparison/amenity`;
+};
+
+export const getAmenityFactorList = async (
+  options?: RequestInit,
+): Promise<getAmenityFactorListResponse> => {
+  return http<getAmenityFactorListResponse>(getGetAmenityFactorListUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetAmenityFactorListQueryKey = () => {
+  return [`https://api.ssok.info/api/comparison/amenity`] as const;
+};
+
+export const getGetAmenityFactorListQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAmenityFactorList>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof getAmenityFactorList>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof http>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetAmenityFactorListQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getAmenityFactorList>>
+  > = ({ signal }) => getAmenityFactorList({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getAmenityFactorList>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type GetAmenityFactorListQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAmenityFactorList>>
+>;
+export type GetAmenityFactorListQueryError = unknown;
+
+export function useGetAmenityFactorList<
+  TData = Awaited<ReturnType<typeof getAmenityFactorList>>,
+  TError = unknown,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getAmenityFactorList>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAmenityFactorList>>,
+          TError,
+          Awaited<ReturnType<typeof getAmenityFactorList>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+export function useGetAmenityFactorList<
+  TData = Awaited<ReturnType<typeof getAmenityFactorList>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getAmenityFactorList>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAmenityFactorList>>,
+          TError,
+          Awaited<ReturnType<typeof getAmenityFactorList>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetAmenityFactorList<
+  TData = Awaited<ReturnType<typeof getAmenityFactorList>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getAmenityFactorList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+/**
+ * @summary 편의 서비스 Enum 리스트
+ */
+
+export function useGetAmenityFactorList<
+  TData = Awaited<ReturnType<typeof getAmenityFactorList>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getAmenityFactorList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getGetAmenityFactorListQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary 편의 서비스 Enum 리스트
+ */
+export const prefetchGetAmenityFactorListQuery = async <
+  TData = Awaited<ReturnType<typeof getAmenityFactorList>>,
+  TError = unknown,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getAmenityFactorList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetAmenityFactorListQueryOptions(options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetAmenityFactorListSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAmenityFactorList>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof getAmenityFactorList>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof http>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetAmenityFactorListQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getAmenityFactorList>>
+  > = ({ signal }) => getAmenityFactorList({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getAmenityFactorList>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type GetAmenityFactorListSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAmenityFactorList>>
+>;
+export type GetAmenityFactorListSuspenseQueryError = unknown;
+
+export function useGetAmenityFactorListSuspense<
+  TData = Awaited<ReturnType<typeof getAmenityFactorList>>,
+  TError = unknown,
+>(
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getAmenityFactorList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+export function useGetAmenityFactorListSuspense<
+  TData = Awaited<ReturnType<typeof getAmenityFactorList>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getAmenityFactorList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+export function useGetAmenityFactorListSuspense<
+  TData = Awaited<ReturnType<typeof getAmenityFactorList>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getAmenityFactorList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+/**
+ * @summary 편의 서비스 Enum 리스트
+ */
+
+export function useGetAmenityFactorListSuspense<
+  TData = Awaited<ReturnType<typeof getAmenityFactorList>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getAmenityFactorList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+} {
+  const queryOptions = getGetAmenityFactorListSuspenseQueryOptions(options);
 
   const query = useSuspenseQuery(
     queryOptions,
@@ -2741,3 +3920,104 @@ export function useGetAccommodationCountByBoardIdSuspense<
 
   return query;
 }
+
+/**
+ * 여행 보드에서 나갑니다. OWNER인 경우 가장 먼저 입장한 MEMBER에게 권한이 이양되며, 마지막 참여자인 경우 여행보드가 삭제됩니다. 나가는 사용자는 자신이 생성한 리소스(비교표, 숙소)를 유지하거나 제거할 수 있습니다.
+ * @summary 여행 보드 나가기
+ */
+export type leaveTripBoardResponse200 = {
+  data: StandardResponseTripBoardLeaveResponse;
+  status: 200;
+};
+
+export type leaveTripBoardResponseComposite = leaveTripBoardResponse200;
+
+export type leaveTripBoardResponse = leaveTripBoardResponseComposite & {
+  headers: Headers;
+};
+
+export const getLeaveTripBoardUrl = (boardId: number) => {
+  return `https://api.ssok.info/api/trip-boards/leave/${boardId}`;
+};
+
+export const leaveTripBoard = async (
+  boardId: number,
+  tripBoardLeaveRequest: TripBoardLeaveRequest,
+  options?: RequestInit,
+): Promise<leaveTripBoardResponse> => {
+  return http<leaveTripBoardResponse>(getLeaveTripBoardUrl(boardId), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(tripBoardLeaveRequest),
+  });
+};
+
+export const getLeaveTripBoardMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof leaveTripBoard>>,
+    TError,
+    { boardId: number; data: TripBoardLeaveRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof leaveTripBoard>>,
+  TError,
+  { boardId: number; data: TripBoardLeaveRequest },
+  TContext
+> => {
+  const mutationKey = ["leaveTripBoard"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof leaveTripBoard>>,
+    { boardId: number; data: TripBoardLeaveRequest }
+  > = (props) => {
+    const { boardId, data } = props ?? {};
+
+    return leaveTripBoard(boardId, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type LeaveTripBoardMutationResult = NonNullable<
+  Awaited<ReturnType<typeof leaveTripBoard>>
+>;
+export type LeaveTripBoardMutationBody = TripBoardLeaveRequest;
+export type LeaveTripBoardMutationError = unknown;
+
+/**
+ * @summary 여행 보드 나가기
+ */
+export const useLeaveTripBoard = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof leaveTripBoard>>,
+      TError,
+      { boardId: number; data: TripBoardLeaveRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof leaveTripBoard>>,
+  TError,
+  { boardId: number; data: TripBoardLeaveRequest },
+  TContext
+> => {
+  const mutationOptions = getLeaveTripBoardMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};

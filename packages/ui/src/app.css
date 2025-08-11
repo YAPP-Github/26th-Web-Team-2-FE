@@ -23,3 +23,20 @@
     font: inherit;
   }
 }
+
+@layer utilities {
+  .rdp-range_start {
+    @apply !bg-[#edf9f5];
+  }
+
+  .rdp-range_end {
+    @apply !bg-[#edf9f5];
+  }
+
+  .rdp-range_start .rdp-day_button {
+    @apply !bg-primary text-primary-100;
+  }
+  .rdp-range_end .rdp-day_button {
+    @apply !bg-primary text-primary-100;
+  }
+}

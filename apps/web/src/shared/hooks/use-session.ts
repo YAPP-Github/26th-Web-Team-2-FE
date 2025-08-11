@@ -1,0 +1,67 @@
+"use client";
+import { useQuery } from "@tanstack/react-query";
+import { redirect } from "next/navigation";
+
+interface SessionUser {
+  userId: number;
+  nickname: string;
+}
+
+interface SessionResponse {
+  responseType: "SUCCESS" | "ERROR";
+  result: {
+    user: SessionUser;
+    tokenSet: {
+      accessToken: string;
+    };
+  };
+}
+
+export interface UseSessionResult {
+  user: SessionUser | null;
+  accessToken: string | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  error: Error | null;
+  refetch: () => void;
+}
+
+export const useSession = ({
+  required,
+}: {
+  required?: boolean;
+} = {}): UseSessionResult => {
+  const { data: { result } = {}, ...query } = useQuery({
+    queryKey: ["/api/auth/session"],
+    queryFn: async (): Promise<SessionResponse> => {
+      const response = await fetch("/api/auth/session", {
+        headers: { "content-type": "application/json" },
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to fetch session: ${response.statusText}`);
+      }
+      return response.json();
+    },
+    staleTime: 5 * 60 * 1000, // 5분
+    gcTime: 10 * 60 * 1000, // 10분
+    retry: (failureCount, error) => {
+      if (error.message.includes("401")) {
+        return false;
+      }
+      return failureCount < 2;
+    },
+  });
+
+  if (required && !query.isLoading && !result?.tokenSet.accessToken) {
+    redirect("/api/auth/login");
+  }
+
+  return {
+    user: result?.user || null,
+    accessToken: result?.tokenSet.accessToken || null,
+    isAuthenticated: Boolean(result?.tokenSet.accessToken),
+    isLoading: query.isLoading,
+    error: query.error,
+    refetch: query.refetch,
+  };
+};

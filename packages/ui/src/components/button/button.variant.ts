@@ -27,7 +27,7 @@ export const button = cva(
         false: "",
       },
       disabled: {
-        true: "cursor-not-allowed bg-neutral-90 text-neutral-70",
+        true: "pointer-events-none cursor-not-allowed bg-neutral-90 text-neutral-70",
         false: "",
       },
     },

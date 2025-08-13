@@ -10,6 +10,7 @@ import { useSession } from "@/shared/hooks/use-session";
 import useInfiniteScroll from "../../../../shared/hooks/use-infinite-scroll";
 import { useAccommodationDataContext } from "../../contexts/accomodation-data-context";
 import { usePlaceSelectionContext } from "../../contexts/place-select-context";
+import { useDeleteAccommodationWithOptimisticUpdate } from "../../hooks/use-accommodation-del";
 import useCollapseOnScroll from "../../hooks/use-collapse-on-scroll";
 import DropDown from "./atom/drop-down";
 import EmptyListContainer from "./atom/empty-list-container";
@@ -63,6 +64,14 @@ const PlaceListSection = ({
       },
     );
 
+  const { mutate: deleteAccommodation } =
+    useDeleteAccommodationWithOptimisticUpdate({
+      accessToken: accessToken || "",
+      tripBoardId: Number(id),
+      userId: selectedPerson === 0 ? undefined : selectedPerson,
+      size: 10,
+      sort: selectedFilter,
+    });
   const { selectedPlaces, togglePlaceSelect, removePlace } =
     usePlaceSelectionContext();
   const listRef = useRef<HTMLUListElement | null>(null);
@@ -88,6 +97,24 @@ const PlaceListSection = ({
         onError: (err) => {
           // TODO: 에러 처리 toast popup
           alert(`비교 테이블 생성에 실패했습니다. ${err}`);
+        },
+      },
+    );
+  };
+
+  const handleDeleteAccommodation = async (accommodationId: number) => {
+    deleteAccommodation(
+      { accommodationId },
+      {
+        onSuccess: () => {
+          // TODO: 성공 처리 toast popup
+          removePlace(accommodationId);
+          alert(`숙소 삭제에 성공했습니다.`);
+        },
+        onError: (err) => {
+          // TODO: 에러 처리 toast popup
+          console.error("숙소 삭제 실패:", err);
+          alert(`숙소 삭제에 실패했습니다. ${err}`);
         },
       },
     );
@@ -176,7 +203,7 @@ const PlaceListSection = ({
                 }}
                 onDeleteClick={() => {
                   if (!place.id) return;
-                  removePlace(place.id);
+                  handleDeleteAccommodation(place.id);
                 }}
               />
             </li>

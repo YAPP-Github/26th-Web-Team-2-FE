@@ -39,13 +39,12 @@ export const useDeleteAccommodationWithOptimisticUpdate = ({
       onMutate: async ({ accommodationId }) => {
         await queryClient.cancelQueries({ queryKey: listQueryKey });
 
-        const previousData =
+        const prevList =
           queryClient.getQueryData<InfiniteData<AccommodationListData>>(
             listQueryKey,
           );
         const prevCount = queryClient.getQueryData<number>(countQueryKey);
 
-        console.log("previousData", prevCount);
         queryClient.setQueryData<InfiniteData<AccommodationListData>>(
           listQueryKey,
           (oldData) => {
@@ -73,11 +72,11 @@ export const useDeleteAccommodationWithOptimisticUpdate = ({
           },
         );
 
-        return { previousData, prevCount };
+        return { prevList, prevCount };
       },
       onError: (_err, _variables, context) => {
-        if (context?.previousData) {
-          queryClient.setQueryData(listQueryKey, context.previousData);
+        if (context?.prevList) {
+          queryClient.setQueryData(listQueryKey, context.prevList);
         }
         if (context?.prevCount !== undefined) {
           queryClient.setQueryData<number>(countQueryKey, context.prevCount);

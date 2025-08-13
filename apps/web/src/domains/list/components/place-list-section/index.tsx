@@ -128,6 +128,9 @@ const PlaceListSection = ({
 
   useCollapseOnScroll(listRef, isInputExpanded, handleCloseInputExpansion);
 
+  console.log("accommodationCountData", accommodations);
+  console.log("selectedPlaces", selectedPlaces);
+  console.log("participants", participants);
   return (
     <section
       className={cn(
@@ -191,7 +194,7 @@ const PlaceListSection = ({
                 nearbyAttractions={place.nearbyAttractions?.slice(0, 2) || []}
                 savedByText={
                   participants.find(
-                    (member) => member?.userId === selectedPerson,
+                    (member) => member?.userId === place?.createdBy,
                   )?.nickname || "알 수 없음"
                 }
                 memo={place.memo}

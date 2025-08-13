@@ -26,6 +26,10 @@ export const button = cva(
         true: "",
         false: "",
       },
+      disabled: {
+        true: "pointer-events-none cursor-not-allowed bg-neutral-90 text-neutral-70",
+        false: "",
+      },
     },
     defaultVariants: {
       size: "md",

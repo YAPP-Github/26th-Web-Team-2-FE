@@ -1,7 +1,10 @@
-import { useGetAccommodationCountByTripBoardId } from "@ssok/api";
+import {
+  useCreateComparisonTable,
+  useGetAccommodationCountByTripBoardId,
+} from "@ssok/api";
 import type { ParticipantProfileResponse } from "@ssok/api/schemas";
 import { Button, Card, cn } from "@ssok/ui";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useRef } from "react";
 import { useSession } from "@/shared/hooks/use-session";
 import useInfiniteScroll from "../../../../shared/hooks/use-infinite-scroll";
@@ -42,6 +45,7 @@ const PlaceListSection = ({
   isFetchingNextPage,
   participants,
 }: PlaceListSectionProps) => {
+  const router = useRouter();
   const { accommodations } = useAccommodationDataContext();
   const { accessToken } = useSession({ required: true });
   const params = useParams();
@@ -62,6 +66,32 @@ const PlaceListSection = ({
   const { selectedPlaces, togglePlaceSelect, removePlace } =
     usePlaceSelectionContext();
   const listRef = useRef<HTMLUListElement | null>(null);
+  const { mutateAsync: createComparisonTable } = useCreateComparisonTable({
+    request: { headers: { Authorization: `Bearer ${accessToken}` } },
+  });
+
+  const onCompareButtonClick = () => {
+    createComparisonTable(
+      {
+        // TODO: 보드 단건 조회 api 연결 후, tableName 변수 연결
+        data: {
+          tripBoardId: Number(id),
+          tableName: "도키도키 나고야",
+          accommodationIdList: selectedPlaces,
+          factorList: [],
+        },
+      },
+      {
+        onSuccess: (data) => {
+          router.push(`/boards/${id}/compares/${data?.data?.result?.tableId}`);
+        },
+        onError: (err) => {
+          // TODO: 에러 처리 toast popup
+          alert(`비교 테이블 생성에 실패했습니다. ${err}`);
+        },
+      },
+    );
+  };
 
   const lastItemRef = useInfiniteScroll({
     isLoading,
@@ -152,6 +182,21 @@ const PlaceListSection = ({
             </li>
           );
         })}
+        {selectedPlaces.length > 0 && (
+          <div className="sticky bottom-0 z-[1] w-full bg-primary-100 px-[2.4rem] pt-[0.8rem] pb-[1.6rem]">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute top-[-23%] left-0 h-[2.4rem] w-full bg-gradient-top-white"
+            />
+            <Button
+              variant="primary"
+              size="sticky"
+              disabled={selectedPlaces.length === 1}
+              className="flex w-full justify-center"
+              onClick={onCompareButtonClick}
+            >{`${selectedPlaces.length}곳 비교하기`}</Button>
+          </div>
+        )}
         {!isLoading &&
           !isFetchingNextPage &&
           (!accommodations || accommodations.length === 0) && (

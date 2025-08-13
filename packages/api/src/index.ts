@@ -9,16 +9,12 @@
 import type {
   DataTag,
   DefinedInitialDataOptions,
-  DefinedUseInfiniteQueryResult,
   DefinedUseQueryResult,
-  InfiniteData,
   MutationFunction,
   QueryClient,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
-  UseInfiniteQueryOptions,
-  UseInfiniteQueryResult,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -26,23 +22,19 @@ import type {
   UseSuspenseQueryOptions,
   UseSuspenseQueryResult,
 } from "@tanstack/react-query";
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { http } from "./api/http";
 import type {
   AccommodationRegisterRequest,
   AddAccommodationRequest,
   CreateComparisonTableRequest,
   ExchangeKakaoTokenParams,
-  GetAccommodationByBoardIdAndUserIdParams,
-  GetAccommodationCountByBoardIdParams,
+  GetAccommodationByTripBoardIdAndUserIdParams,
+  GetAccommodationCountByTripBoardIdParams,
   GetKakaoAuthorizeUrlParams,
   GetTripBoardsParams,
   StandardResponseAccommodationCountResponse,
+  StandardResponseAccommodationDeleteResponse,
   StandardResponseAccommodationPageResponse,
   StandardResponseAccommodationRegisterResponse,
   StandardResponseAccommodationResponse,
@@ -52,219 +44,23 @@ import type {
   StandardResponseComparisonFactorList,
   StandardResponseComparisonTableResponse,
   StandardResponseCreateComparisonTableResponse,
+  StandardResponseInvitationCodeResponse,
+  StandardResponseInvitationToggleResponse,
   StandardResponseLogoutResponse,
   StandardResponseOauthLoginResponse,
   StandardResponseTripBoardCreateResponse,
   StandardResponseTripBoardDeleteResponse,
+  StandardResponseTripBoardJoinResponse,
   StandardResponseTripBoardLeaveResponse,
   StandardResponseTripBoardPageResponse,
-  StandardResponseTripBoardUpdateResponse,
+  StandardResponseWithdrawResponse,
   TripBoardCreateRequest,
+  TripBoardJoinRequest,
   TripBoardLeaveRequest,
-  TripBoardUpdateRequest,
   UpdateComparisonTableRequest,
 } from "./index.schemas";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
-
-/**
- * 기존 여행 보드의 기본 정보(보드 이름, 목적지, 여행 기간)를 수정합니다. JWT 인증을 통해 현재 사용자 정보를 추출하고, 수정된 보드 정보를 반환합니다.
- * @summary 여행 보드 수정
- */
-export type updateTripBoardResponse200 = {
-  data: StandardResponseTripBoardUpdateResponse;
-  status: 200;
-};
-
-export type updateTripBoardResponseComposite = updateTripBoardResponse200;
-
-export type updateTripBoardResponse = updateTripBoardResponseComposite & {
-  headers: Headers;
-};
-
-export const getUpdateTripBoardUrl = (boardId: number) => {
-  return `https://api.ssok.info/api/trip-boards/${boardId}`;
-};
-
-export const updateTripBoard = async (
-  boardId: number,
-  tripBoardUpdateRequest: TripBoardUpdateRequest,
-  options?: RequestInit,
-): Promise<updateTripBoardResponse> => {
-  return http<updateTripBoardResponse>(getUpdateTripBoardUrl(boardId), {
-    ...options,
-    method: "PUT",
-    headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(tripBoardUpdateRequest),
-  });
-};
-
-export const getUpdateTripBoardMutationOptions = <
-  TError = unknown,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateTripBoard>>,
-    TError,
-    { boardId: number; data: TripBoardUpdateRequest },
-    TContext
-  >;
-  request?: SecondParameter<typeof http>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateTripBoard>>,
-  TError,
-  { boardId: number; data: TripBoardUpdateRequest },
-  TContext
-> => {
-  const mutationKey = ["updateTripBoard"];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, request: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateTripBoard>>,
-    { boardId: number; data: TripBoardUpdateRequest }
-  > = (props) => {
-    const { boardId, data } = props ?? {};
-
-    return updateTripBoard(boardId, data, requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type UpdateTripBoardMutationResult = NonNullable<
-  Awaited<ReturnType<typeof updateTripBoard>>
->;
-export type UpdateTripBoardMutationBody = TripBoardUpdateRequest;
-export type UpdateTripBoardMutationError = unknown;
-
-/**
- * @summary 여행 보드 수정
- */
-export const useUpdateTripBoard = <TError = unknown, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof updateTripBoard>>,
-      TError,
-      { boardId: number; data: TripBoardUpdateRequest },
-      TContext
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof updateTripBoard>>,
-  TError,
-  { boardId: number; data: TripBoardUpdateRequest },
-  TContext
-> => {
-  const mutationOptions = getUpdateTripBoardMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
-
-/**
- * 여행 보드와 관련된 모든 데이터를 삭제합니다. 오직 여행 보드의 소유자(OWNER)만이 삭제할 수 있으며, 삭제 시 해당 보드에 연관된 모든 리소스(숙소 정보, 멤버 매핑 관계, 비교표 등)가 함께 제거됩니다.
- * @summary 여행 보드 삭제
- */
-export type deleteTripBoardResponse200 = {
-  data: StandardResponseTripBoardDeleteResponse;
-  status: 200;
-};
-
-export type deleteTripBoardResponseComposite = deleteTripBoardResponse200;
-
-export type deleteTripBoardResponse = deleteTripBoardResponseComposite & {
-  headers: Headers;
-};
-
-export const getDeleteTripBoardUrl = (boardId: number) => {
-  return `https://api.ssok.info/api/trip-boards/${boardId}`;
-};
-
-export const deleteTripBoard = async (
-  boardId: number,
-  options?: RequestInit,
-): Promise<deleteTripBoardResponse> => {
-  return http<deleteTripBoardResponse>(getDeleteTripBoardUrl(boardId), {
-    ...options,
-    method: "DELETE",
-  });
-};
-
-export const getDeleteTripBoardMutationOptions = <
-  TError = unknown,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteTripBoard>>,
-    TError,
-    { boardId: number },
-    TContext
-  >;
-  request?: SecondParameter<typeof http>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteTripBoard>>,
-  TError,
-  { boardId: number },
-  TContext
-> => {
-  const mutationKey = ["deleteTripBoard"];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, request: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deleteTripBoard>>,
-    { boardId: number }
-  > = (props) => {
-    const { boardId } = props ?? {};
-
-    return deleteTripBoard(boardId, requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type DeleteTripBoardMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deleteTripBoard>>
->;
-
-export type DeleteTripBoardMutationError = unknown;
-
-/**
- * @summary 여행 보드 삭제
- */
-export const useDeleteTripBoard = <TError = unknown, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof deleteTripBoard>>,
-      TError,
-      { boardId: number },
-      TContext
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof deleteTripBoard>>,
-  TError,
-  { boardId: number },
-  TContext
-> => {
-  const mutationOptions = getDeleteTripBoardMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
 
 /**
  * 비교표 메타 데이터와 포함된 숙소 정보 리스트를 조회합니다. (Authorization 헤더에 Bearer 토큰 필요)
@@ -824,7 +620,7 @@ export const useAddAccommodationToComparisonTable = <
 };
 
 /**
- * 새로운 여행 보드를 생성합니다. JWT 인증을 통해 현재 사용자 정보를 추출하고, 생성자는 자동으로 OWNER 역할로 등록되며 고유한 초대 링크가 생성됩니다.
+ * 새로운 여행 보드를 생성합니다. JWT 인증을 통해 현재 사용자 정보를 추출하고, 생성자는 자동으로 OWNER 역할로 등록되며 고유한 초대 코드가 생성됩니다.
  * @summary 여행 보드 생성
  */
 export type createTripBoardResponse200 = {
@@ -924,7 +720,201 @@ export const useCreateTripBoard = <TError = unknown, TContext = unknown>(
 };
 
 /**
- * 현재 로그인된 사용자의 세션을 종료합니다. 헤더에 있는 access-token 토큰을 블랙리스트에 추가합니다. Redis에서 Refresh Token을 삭제하고 브라우저의 REFRESH_TOKEN 쿠키를 무효화합니다. 로그아웃 후에는 새로운 인증이 필요합니다.
+ * 초대 코드를 통해 기존 여행 보드에 참여합니다. JWT 인증을 통해 현재 사용자 정보를 추출하고, 초대 코드의 유효성을 검증한 후 보드에 참여자로 등록합니다.
+ * @summary 여행 보드 참여
+ */
+export type joinTripBoardResponse200 = {
+  data: StandardResponseTripBoardJoinResponse;
+  status: 200;
+};
+
+export type joinTripBoardResponseComposite = joinTripBoardResponse200;
+
+export type joinTripBoardResponse = joinTripBoardResponseComposite & {
+  headers: Headers;
+};
+
+export const getJoinTripBoardUrl = () => {
+  return `https://api.ssok.info/api/trip-boards/join`;
+};
+
+export const joinTripBoard = async (
+  tripBoardJoinRequest: TripBoardJoinRequest,
+  options?: RequestInit,
+): Promise<joinTripBoardResponse> => {
+  return http<joinTripBoardResponse>(getJoinTripBoardUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(tripBoardJoinRequest),
+  });
+};
+
+export const getJoinTripBoardMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof joinTripBoard>>,
+    TError,
+    { data: TripBoardJoinRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof joinTripBoard>>,
+  TError,
+  { data: TripBoardJoinRequest },
+  TContext
+> => {
+  const mutationKey = ["joinTripBoard"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof joinTripBoard>>,
+    { data: TripBoardJoinRequest }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return joinTripBoard(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type JoinTripBoardMutationResult = NonNullable<
+  Awaited<ReturnType<typeof joinTripBoard>>
+>;
+export type JoinTripBoardMutationBody = TripBoardJoinRequest;
+export type JoinTripBoardMutationError = unknown;
+
+/**
+ * @summary 여행 보드 참여
+ */
+export const useJoinTripBoard = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof joinTripBoard>>,
+      TError,
+      { data: TripBoardJoinRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof joinTripBoard>>,
+  TError,
+  { data: TripBoardJoinRequest },
+  TContext
+> => {
+  const mutationOptions = getJoinTripBoardMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * @summary 사용자 회원탈퇴
+ */
+export type withdrawUserResponse200 = {
+  data: StandardResponseWithdrawResponse;
+  status: 200;
+};
+
+export type withdrawUserResponseComposite = withdrawUserResponse200;
+
+export type withdrawUserResponse = withdrawUserResponseComposite & {
+  headers: Headers;
+};
+
+export const getWithdrawUserUrl = () => {
+  return `https://api.ssok.info/api/oauth/withdraw`;
+};
+
+export const withdrawUser = async (
+  options?: RequestInit,
+): Promise<withdrawUserResponse> => {
+  return http<withdrawUserResponse>(getWithdrawUserUrl(), {
+    ...options,
+    method: "POST",
+  });
+};
+
+export const getWithdrawUserMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof withdrawUser>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof withdrawUser>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["withdrawUser"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof withdrawUser>>,
+    void
+  > = () => {
+    return withdrawUser(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type WithdrawUserMutationResult = NonNullable<
+  Awaited<ReturnType<typeof withdrawUser>>
+>;
+
+export type WithdrawUserMutationError = unknown;
+
+/**
+ * @summary 사용자 회원탈퇴
+ */
+export const useWithdrawUser = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof withdrawUser>>,
+      TError,
+      void,
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof withdrawUser>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions = getWithdrawUserMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * 현재 로그인된 사용자의 세션을 종료합니다. 헤더에 있는 access-token 토큰을 블랙리스트에 추가하고, Redis에서 Refresh Token을 삭제합니다.로그아웃 후에는 새로운 인증이 필요합니다.
  * @summary 사용자 로그아웃
  */
 export type logoutResponse200 = {
@@ -1338,6 +1328,451 @@ export const useRegisterAccommodationCard = <
 
   return useMutation(mutationOptions, queryClient);
 };
+
+/**
+ * 여행 보드의 초대 링크 활성화 상태를 토글합니다. 현재 상태의 반대로 변경되며, 활성화된 초대 링크만 사용하여 여행 보드에 참여할 수 있습니다.
+ * @summary 초대 링크 활성화/비활성화 토글
+ */
+export type toggleInvitationActiveResponse200 = {
+  data: StandardResponseInvitationToggleResponse;
+  status: 200;
+};
+
+export type toggleInvitationActiveResponseComposite =
+  toggleInvitationActiveResponse200;
+
+export type toggleInvitationActiveResponse =
+  toggleInvitationActiveResponseComposite & {
+    headers: Headers;
+  };
+
+export const getToggleInvitationActiveUrl = (tripBoardId: number) => {
+  return `https://api.ssok.info/api/trip-boards/${tripBoardId}/invitation/toggle`;
+};
+
+export const toggleInvitationActive = async (
+  tripBoardId: number,
+  options?: RequestInit,
+): Promise<toggleInvitationActiveResponse> => {
+  return http<toggleInvitationActiveResponse>(
+    getToggleInvitationActiveUrl(tripBoardId),
+    {
+      ...options,
+      method: "PATCH",
+    },
+  );
+};
+
+export const getToggleInvitationActiveMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof toggleInvitationActive>>,
+    TError,
+    { tripBoardId: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof toggleInvitationActive>>,
+  TError,
+  { tripBoardId: number },
+  TContext
+> => {
+  const mutationKey = ["toggleInvitationActive"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof toggleInvitationActive>>,
+    { tripBoardId: number }
+  > = (props) => {
+    const { tripBoardId } = props ?? {};
+
+    return toggleInvitationActive(tripBoardId, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ToggleInvitationActiveMutationResult = NonNullable<
+  Awaited<ReturnType<typeof toggleInvitationActive>>
+>;
+
+export type ToggleInvitationActiveMutationError = unknown;
+
+/**
+ * @summary 초대 링크 활성화/비활성화 토글
+ */
+export const useToggleInvitationActive = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof toggleInvitationActive>>,
+      TError,
+      { tripBoardId: number },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof toggleInvitationActive>>,
+  TError,
+  { tripBoardId: number },
+  TContext
+> => {
+  const mutationOptions = getToggleInvitationActiveMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * 여행 보드에서 현재 사용자의 초대 링크 정보를 조회합니다. 초대 코드, 활성화 상태 등의 정보를 포함합니다.
+ * @summary 초대 링크 정보 조회
+ */
+export type getInvitationCodeResponse200 = {
+  data: StandardResponseInvitationCodeResponse;
+  status: 200;
+};
+
+export type getInvitationCodeResponseComposite = getInvitationCodeResponse200;
+
+export type getInvitationCodeResponse = getInvitationCodeResponseComposite & {
+  headers: Headers;
+};
+
+export const getGetInvitationCodeUrl = (tripBoardId: number) => {
+  return `https://api.ssok.info/api/trip-boards/${tripBoardId}/invitation`;
+};
+
+export const getInvitationCode = async (
+  tripBoardId: number,
+  options?: RequestInit,
+): Promise<getInvitationCodeResponse> => {
+  return http<getInvitationCodeResponse>(getGetInvitationCodeUrl(tripBoardId), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetInvitationCodeQueryKey = (tripBoardId?: number) => {
+  return [
+    `https://api.ssok.info/api/trip-boards/${tripBoardId}/invitation`,
+  ] as const;
+};
+
+export const getGetInvitationCodeQueryOptions = <
+  TData = Awaited<ReturnType<typeof getInvitationCode>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getInvitationCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetInvitationCodeQueryKey(tripBoardId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getInvitationCode>>
+  > = ({ signal }) =>
+    getInvitationCode(tripBoardId, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!tripBoardId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getInvitationCode>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type GetInvitationCodeQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getInvitationCode>>
+>;
+export type GetInvitationCodeQueryError = unknown;
+
+export function useGetInvitationCode<
+  TData = Awaited<ReturnType<typeof getInvitationCode>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getInvitationCode>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getInvitationCode>>,
+          TError,
+          Awaited<ReturnType<typeof getInvitationCode>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+export function useGetInvitationCode<
+  TData = Awaited<ReturnType<typeof getInvitationCode>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getInvitationCode>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getInvitationCode>>,
+          TError,
+          Awaited<ReturnType<typeof getInvitationCode>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetInvitationCode<
+  TData = Awaited<ReturnType<typeof getInvitationCode>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getInvitationCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+/**
+ * @summary 초대 링크 정보 조회
+ */
+
+export function useGetInvitationCode<
+  TData = Awaited<ReturnType<typeof getInvitationCode>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getInvitationCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getGetInvitationCodeQueryOptions(tripBoardId, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary 초대 링크 정보 조회
+ */
+export const prefetchGetInvitationCodeQuery = async <
+  TData = Awaited<ReturnType<typeof getInvitationCode>>,
+  TError = unknown,
+>(
+  queryClient: QueryClient,
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getInvitationCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetInvitationCodeQueryOptions(tripBoardId, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetInvitationCodeSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getInvitationCode>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getInvitationCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetInvitationCodeQueryKey(tripBoardId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getInvitationCode>>
+  > = ({ signal }) =>
+    getInvitationCode(tripBoardId, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getInvitationCode>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type GetInvitationCodeSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getInvitationCode>>
+>;
+export type GetInvitationCodeSuspenseQueryError = unknown;
+
+export function useGetInvitationCodeSuspense<
+  TData = Awaited<ReturnType<typeof getInvitationCode>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getInvitationCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+export function useGetInvitationCodeSuspense<
+  TData = Awaited<ReturnType<typeof getInvitationCode>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getInvitationCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+export function useGetInvitationCodeSuspense<
+  TData = Awaited<ReturnType<typeof getInvitationCode>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getInvitationCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+/**
+ * @summary 초대 링크 정보 조회
+ */
+
+export function useGetInvitationCodeSuspense<
+  TData = Awaited<ReturnType<typeof getInvitationCode>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getInvitationCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+} {
+  const queryOptions = getGetInvitationCodeSuspenseQueryOptions(
+    tripBoardId,
+    options,
+  );
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 /**
  * 사용자가 참여한 여행 보드 목록을 페이징으로 조회합니다. JWT 인증을 통해 현재 사용자 정보를 추출하고, 최신순으로 정렬된 결과를 반환합니다.
@@ -3004,24 +3439,127 @@ export function useGetAccommodationByIdSuspense<
 }
 
 /**
+ * 본인이 등록한 숙소를 삭제합니다.
+ * @summary 숙소 삭제
+ */
+export type deleteAccommodationResponse200 = {
+  data: StandardResponseAccommodationDeleteResponse;
+  status: 200;
+};
+
+export type deleteAccommodationResponseComposite =
+  deleteAccommodationResponse200;
+
+export type deleteAccommodationResponse =
+  deleteAccommodationResponseComposite & {
+    headers: Headers;
+  };
+
+export const getDeleteAccommodationUrl = (accommodationId: number) => {
+  return `https://api.ssok.info/api/accommodations/${accommodationId}`;
+};
+
+export const deleteAccommodation = async (
+  accommodationId: number,
+  options?: RequestInit,
+): Promise<deleteAccommodationResponse> => {
+  return http<deleteAccommodationResponse>(
+    getDeleteAccommodationUrl(accommodationId),
+    {
+      ...options,
+      method: "DELETE",
+    },
+  );
+};
+
+export const getDeleteAccommodationMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteAccommodation>>,
+    TError,
+    { accommodationId: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteAccommodation>>,
+  TError,
+  { accommodationId: number },
+  TContext
+> => {
+  const mutationKey = ["deleteAccommodation"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteAccommodation>>,
+    { accommodationId: number }
+  > = (props) => {
+    const { accommodationId } = props ?? {};
+
+    return deleteAccommodation(accommodationId, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteAccommodationMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteAccommodation>>
+>;
+
+export type DeleteAccommodationMutationError = unknown;
+
+/**
+ * @summary 숙소 삭제
+ */
+export const useDeleteAccommodation = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteAccommodation>>,
+      TError,
+      { accommodationId: number },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteAccommodation>>,
+  TError,
+  { accommodationId: number },
+  TContext
+> => {
+  const mutationOptions = getDeleteAccommodationMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
  * 숙소 목록을 조회합니다.
  * @summary 숙소 목록 조회
  */
-export type getAccommodationByBoardIdAndUserIdResponse200 = {
+export type getAccommodationByTripBoardIdAndUserIdResponse200 = {
   data: StandardResponseAccommodationPageResponse;
   status: 200;
 };
 
-export type getAccommodationByBoardIdAndUserIdResponseComposite =
-  getAccommodationByBoardIdAndUserIdResponse200;
+export type getAccommodationByTripBoardIdAndUserIdResponseComposite =
+  getAccommodationByTripBoardIdAndUserIdResponse200;
 
-export type getAccommodationByBoardIdAndUserIdResponse =
-  getAccommodationByBoardIdAndUserIdResponseComposite & {
+export type getAccommodationByTripBoardIdAndUserIdResponse =
+  getAccommodationByTripBoardIdAndUserIdResponseComposite & {
     headers: Headers;
   };
 
-export const getGetAccommodationByBoardIdAndUserIdUrl = (
-  params: GetAccommodationByBoardIdAndUserIdParams,
+export const getGetAccommodationByTripBoardIdAndUserIdUrl = (
+  params: GetAccommodationByTripBoardIdAndUserIdParams,
 ) => {
   const normalizedParams = new URLSearchParams();
 
@@ -3038,12 +3576,12 @@ export const getGetAccommodationByBoardIdAndUserIdUrl = (
     : `https://api.ssok.info/api/accommodations/search`;
 };
 
-export const getAccommodationByBoardIdAndUserId = async (
-  params: GetAccommodationByBoardIdAndUserIdParams,
+export const getAccommodationByTripBoardIdAndUserId = async (
+  params: GetAccommodationByTripBoardIdAndUserIdParams,
   options?: RequestInit,
-): Promise<getAccommodationByBoardIdAndUserIdResponse> => {
-  return http<getAccommodationByBoardIdAndUserIdResponse>(
-    getGetAccommodationByBoardIdAndUserIdUrl(params),
+): Promise<getAccommodationByTripBoardIdAndUserIdResponse> => {
+  return http<getAccommodationByTripBoardIdAndUserIdResponse>(
+    getGetAccommodationByTripBoardIdAndUserIdUrl(params),
     {
       ...options,
       method: "GET",
@@ -3051,8 +3589,8 @@ export const getAccommodationByBoardIdAndUserId = async (
   );
 };
 
-export const getGetAccommodationByBoardIdAndUserIdQueryKey = (
-  params?: GetAccommodationByBoardIdAndUserIdParams,
+export const getGetAccommodationByTripBoardIdAndUserIdQueryKey = (
+  params?: GetAccommodationByTripBoardIdAndUserIdParams,
 ) => {
   return [
     `https://api.ssok.info/api/accommodations/search`,
@@ -3060,206 +3598,15 @@ export const getGetAccommodationByBoardIdAndUserIdQueryKey = (
   ] as const;
 };
 
-export const getGetAccommodationByBoardIdAndUserIdInfiniteQueryOptions = <
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
-  >,
+export const getGetAccommodationByTripBoardIdAndUserIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByBoardIdAndUserIdParams,
-  options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
-
-  const queryKey =
-    queryOptions?.queryKey ??
-    getGetAccommodationByBoardIdAndUserIdQueryKey(params);
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
-  > = ({ signal, pageParam = 0 }) =>
-    getAccommodationByBoardIdAndUserId(
-      { ...params, page: typeof pageParam === "number" ? pageParam : 0 },
-      { signal, ...requestOptions },
-    );
-
-  return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
-    Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData> };
-};
-
-export type GetAccommodationByBoardIdAndUserIdInfiniteQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
->;
-export type GetAccommodationByBoardIdAndUserIdInfiniteQueryError = unknown;
-
-export function useGetAccommodationByBoardIdAndUserIdInfinite<
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
-  >,
-  TError = unknown,
->(
-  params: GetAccommodationByBoardIdAndUserIdParams,
-  options: {
-    query: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
-          TError,
-          Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): DefinedUseInfiniteQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
-};
-export function useGetAccommodationByBoardIdAndUserIdInfinite<
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
-  >,
-  TError = unknown,
->(
-  params: GetAccommodationByBoardIdAndUserIdParams,
-  options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
-          TError,
-          Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseInfiniteQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
-};
-export function useGetAccommodationByBoardIdAndUserIdInfinite<
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
-  >,
-  TError = unknown,
->(
-  params: GetAccommodationByBoardIdAndUserIdParams,
-  options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseInfiniteQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
-};
-/**
- * @summary 숙소 목록 조회
- */
-
-export function useGetAccommodationByBoardIdAndUserIdInfinite<
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
-  >,
-  TError = unknown,
->(
-  params: GetAccommodationByBoardIdAndUserIdParams,
-  options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseInfiniteQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
-} {
-  const queryOptions =
-    getGetAccommodationByBoardIdAndUserIdInfiniteQueryOptions(params, options);
-
-  const query = useInfiniteQuery(
-    queryOptions,
-    queryClient,
-  ) as UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}
-
-/**
- * @summary 숙소 목록 조회
- */
-export const prefetchGetAccommodationByBoardIdAndUserIdInfiniteQuery = async <
-  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
-  TError = unknown,
->(
-  queryClient: QueryClient,
-  params: GetAccommodationByBoardIdAndUserIdParams,
-  options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-): Promise<QueryClient> => {
-  const queryOptions =
-    getGetAccommodationByBoardIdAndUserIdInfiniteQueryOptions(params, options);
-
-  await queryClient.prefetchInfiniteQuery(queryOptions);
-
-  return queryClient;
-};
-
-export const getGetAccommodationByBoardIdAndUserIdQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
-  TError = unknown,
->(
-  params: GetAccommodationByBoardIdAndUserIdParams,
+  params: GetAccommodationByTripBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -3271,43 +3618,46 @@ export const getGetAccommodationByBoardIdAndUserIdQueryOptions = <
 
   const queryKey =
     queryOptions?.queryKey ??
-    getGetAccommodationByBoardIdAndUserIdQueryKey(params);
+    getGetAccommodationByTripBoardIdAndUserIdQueryKey(params);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
+    Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>
   > = ({ signal }) =>
-    getAccommodationByBoardIdAndUserId(params, { signal, ...requestOptions });
+    getAccommodationByTripBoardIdAndUserId(params, {
+      signal,
+      ...requestOptions,
+    });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+    Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData> };
 };
 
-export type GetAccommodationByBoardIdAndUserIdQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
+export type GetAccommodationByTripBoardIdAndUserIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>
 >;
-export type GetAccommodationByBoardIdAndUserIdQueryError = unknown;
+export type GetAccommodationByTripBoardIdAndUserIdQueryError = unknown;
 
-export function useGetAccommodationByBoardIdAndUserId<
-  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+export function useGetAccommodationByTripBoardIdAndUserId<
+  TData = Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByBoardIdAndUserIdParams,
+  params: GetAccommodationByTripBoardIdAndUserIdParams,
   options: {
     query: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
         TError,
         TData
       >
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+          Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
           TError,
-          Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
+          Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>
         >,
         "initialData"
       >;
@@ -3317,24 +3667,24 @@ export function useGetAccommodationByBoardIdAndUserId<
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData>;
 };
-export function useGetAccommodationByBoardIdAndUserId<
-  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+export function useGetAccommodationByTripBoardIdAndUserId<
+  TData = Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByBoardIdAndUserIdParams,
+  params: GetAccommodationByTripBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
         TError,
         TData
       >
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+          Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
           TError,
-          Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
+          Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>
         >,
         "initialData"
       >;
@@ -3342,15 +3692,15 @@ export function useGetAccommodationByBoardIdAndUserId<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
-export function useGetAccommodationByBoardIdAndUserId<
-  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+export function useGetAccommodationByTripBoardIdAndUserId<
+  TData = Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByBoardIdAndUserIdParams,
+  params: GetAccommodationByTripBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -3363,15 +3713,15 @@ export function useGetAccommodationByBoardIdAndUserId<
  * @summary 숙소 목록 조회
  */
 
-export function useGetAccommodationByBoardIdAndUserId<
-  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+export function useGetAccommodationByTripBoardIdAndUserId<
+  TData = Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByBoardIdAndUserIdParams,
+  params: GetAccommodationByTripBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -3380,7 +3730,7 @@ export function useGetAccommodationByBoardIdAndUserId<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getGetAccommodationByBoardIdAndUserIdQueryOptions(
+  const queryOptions = getGetAccommodationByTripBoardIdAndUserIdQueryOptions(
     params,
     options,
   );
@@ -3398,16 +3748,16 @@ export function useGetAccommodationByBoardIdAndUserId<
 /**
  * @summary 숙소 목록 조회
  */
-export const prefetchGetAccommodationByBoardIdAndUserIdQuery = async <
-  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+export const prefetchGetAccommodationByTripBoardIdAndUserIdQuery = async <
+  TData = Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
   TError = unknown,
 >(
   queryClient: QueryClient,
-  params: GetAccommodationByBoardIdAndUserIdParams,
+  params: GetAccommodationByTripBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -3415,7 +3765,7 @@ export const prefetchGetAccommodationByBoardIdAndUserIdQuery = async <
     request?: SecondParameter<typeof http>;
   },
 ): Promise<QueryClient> => {
-  const queryOptions = getGetAccommodationByBoardIdAndUserIdQueryOptions(
+  const queryOptions = getGetAccommodationByTripBoardIdAndUserIdQueryOptions(
     params,
     options,
   );
@@ -3425,15 +3775,15 @@ export const prefetchGetAccommodationByBoardIdAndUserIdQuery = async <
   return queryClient;
 };
 
-export const getGetAccommodationByBoardIdAndUserIdSuspenseQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+export const getGetAccommodationByTripBoardIdAndUserIdSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByBoardIdAndUserIdParams,
+  params: GetAccommodationByTripBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -3445,34 +3795,38 @@ export const getGetAccommodationByBoardIdAndUserIdSuspenseQueryOptions = <
 
   const queryKey =
     queryOptions?.queryKey ??
-    getGetAccommodationByBoardIdAndUserIdQueryKey(params);
+    getGetAccommodationByTripBoardIdAndUserIdQueryKey(params);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
+    Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>
   > = ({ signal }) =>
-    getAccommodationByBoardIdAndUserId(params, { signal, ...requestOptions });
+    getAccommodationByTripBoardIdAndUserId(params, {
+      signal,
+      ...requestOptions,
+    });
 
   return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
-    Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+    Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData> };
 };
 
-export type GetAccommodationByBoardIdAndUserIdSuspenseQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>
->;
-export type GetAccommodationByBoardIdAndUserIdSuspenseQueryError = unknown;
+export type GetAccommodationByTripBoardIdAndUserIdSuspenseQueryResult =
+  NonNullable<
+    Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>
+  >;
+export type GetAccommodationByTripBoardIdAndUserIdSuspenseQueryError = unknown;
 
-export function useGetAccommodationByBoardIdAndUserIdSuspense<
-  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+export function useGetAccommodationByTripBoardIdAndUserIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByBoardIdAndUserIdParams,
+  params: GetAccommodationByTripBoardIdAndUserIdParams,
   options: {
     query: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -3483,15 +3837,15 @@ export function useGetAccommodationByBoardIdAndUserIdSuspense<
 ): UseSuspenseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData>;
 };
-export function useGetAccommodationByBoardIdAndUserIdSuspense<
-  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+export function useGetAccommodationByTripBoardIdAndUserIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByBoardIdAndUserIdParams,
+  params: GetAccommodationByTripBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -3502,15 +3856,15 @@ export function useGetAccommodationByBoardIdAndUserIdSuspense<
 ): UseSuspenseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData>;
 };
-export function useGetAccommodationByBoardIdAndUserIdSuspense<
-  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+export function useGetAccommodationByTripBoardIdAndUserIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByBoardIdAndUserIdParams,
+  params: GetAccommodationByTripBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -3525,15 +3879,15 @@ export function useGetAccommodationByBoardIdAndUserIdSuspense<
  * @summary 숙소 목록 조회
  */
 
-export function useGetAccommodationByBoardIdAndUserIdSuspense<
-  TData = Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+export function useGetAccommodationByTripBoardIdAndUserIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
   TError = unknown,
 >(
-  params: GetAccommodationByBoardIdAndUserIdParams,
+  params: GetAccommodationByTripBoardIdAndUserIdParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationByBoardIdAndUserId>>,
+        Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
         TError,
         TData
       >
@@ -3545,7 +3899,10 @@ export function useGetAccommodationByBoardIdAndUserIdSuspense<
   queryKey: DataTag<QueryKey, TData>;
 } {
   const queryOptions =
-    getGetAccommodationByBoardIdAndUserIdSuspenseQueryOptions(params, options);
+    getGetAccommodationByTripBoardIdAndUserIdSuspenseQueryOptions(
+      params,
+      options,
+    );
 
   const query = useSuspenseQuery(
     queryOptions,
@@ -3563,21 +3920,21 @@ export function useGetAccommodationByBoardIdAndUserIdSuspense<
  * 여행보드에 포함된 숙소의 개수를 조회합니다.
  * @summary 여행보드 숙소 개수 조회
  */
-export type getAccommodationCountByBoardIdResponse200 = {
+export type getAccommodationCountByTripBoardIdResponse200 = {
   data: StandardResponseAccommodationCountResponse;
   status: 200;
 };
 
-export type getAccommodationCountByBoardIdResponseComposite =
-  getAccommodationCountByBoardIdResponse200;
+export type getAccommodationCountByTripBoardIdResponseComposite =
+  getAccommodationCountByTripBoardIdResponse200;
 
-export type getAccommodationCountByBoardIdResponse =
-  getAccommodationCountByBoardIdResponseComposite & {
+export type getAccommodationCountByTripBoardIdResponse =
+  getAccommodationCountByTripBoardIdResponseComposite & {
     headers: Headers;
   };
 
-export const getGetAccommodationCountByBoardIdUrl = (
-  params: GetAccommodationCountByBoardIdParams,
+export const getGetAccommodationCountByTripBoardIdUrl = (
+  params: GetAccommodationCountByTripBoardIdParams,
 ) => {
   const normalizedParams = new URLSearchParams();
 
@@ -3594,12 +3951,12 @@ export const getGetAccommodationCountByBoardIdUrl = (
     : `https://api.ssok.info/api/accommodations/count`;
 };
 
-export const getAccommodationCountByBoardId = async (
-  params: GetAccommodationCountByBoardIdParams,
+export const getAccommodationCountByTripBoardId = async (
+  params: GetAccommodationCountByTripBoardIdParams,
   options?: RequestInit,
-): Promise<getAccommodationCountByBoardIdResponse> => {
-  return http<getAccommodationCountByBoardIdResponse>(
-    getGetAccommodationCountByBoardIdUrl(params),
+): Promise<getAccommodationCountByTripBoardIdResponse> => {
+  return http<getAccommodationCountByTripBoardIdResponse>(
+    getGetAccommodationCountByTripBoardIdUrl(params),
     {
       ...options,
       method: "GET",
@@ -3607,8 +3964,8 @@ export const getAccommodationCountByBoardId = async (
   );
 };
 
-export const getGetAccommodationCountByBoardIdQueryKey = (
-  params?: GetAccommodationCountByBoardIdParams,
+export const getGetAccommodationCountByTripBoardIdQueryKey = (
+  params?: GetAccommodationCountByTripBoardIdParams,
 ) => {
   return [
     `https://api.ssok.info/api/accommodations/count`,
@@ -3616,15 +3973,15 @@ export const getGetAccommodationCountByBoardIdQueryKey = (
   ] as const;
 };
 
-export const getGetAccommodationCountByBoardIdQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+export const getGetAccommodationCountByTripBoardIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByBoardIdParams,
+  params: GetAccommodationCountByTripBoardIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
         TError,
         TData
       >
@@ -3635,43 +3992,44 @@ export const getGetAccommodationCountByBoardIdQueryOptions = <
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getGetAccommodationCountByBoardIdQueryKey(params);
+    queryOptions?.queryKey ??
+    getGetAccommodationCountByTripBoardIdQueryKey(params);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAccommodationCountByBoardId>>
+    Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>
   > = ({ signal }) =>
-    getAccommodationCountByBoardId(params, { signal, ...requestOptions });
+    getAccommodationCountByTripBoardId(params, { signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+    Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData> };
 };
 
-export type GetAccommodationCountByBoardIdQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAccommodationCountByBoardId>>
+export type GetAccommodationCountByTripBoardIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>
 >;
-export type GetAccommodationCountByBoardIdQueryError = unknown;
+export type GetAccommodationCountByTripBoardIdQueryError = unknown;
 
-export function useGetAccommodationCountByBoardId<
-  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+export function useGetAccommodationCountByTripBoardId<
+  TData = Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByBoardIdParams,
+  params: GetAccommodationCountByTripBoardIdParams,
   options: {
     query: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
         TError,
         TData
       >
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+          Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
           TError,
-          Awaited<ReturnType<typeof getAccommodationCountByBoardId>>
+          Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>
         >,
         "initialData"
       >;
@@ -3681,24 +4039,24 @@ export function useGetAccommodationCountByBoardId<
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData>;
 };
-export function useGetAccommodationCountByBoardId<
-  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+export function useGetAccommodationCountByTripBoardId<
+  TData = Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByBoardIdParams,
+  params: GetAccommodationCountByTripBoardIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
         TError,
         TData
       >
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+          Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
           TError,
-          Awaited<ReturnType<typeof getAccommodationCountByBoardId>>
+          Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>
         >,
         "initialData"
       >;
@@ -3706,15 +4064,15 @@ export function useGetAccommodationCountByBoardId<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
-export function useGetAccommodationCountByBoardId<
-  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+export function useGetAccommodationCountByTripBoardId<
+  TData = Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByBoardIdParams,
+  params: GetAccommodationCountByTripBoardIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
         TError,
         TData
       >
@@ -3727,15 +4085,15 @@ export function useGetAccommodationCountByBoardId<
  * @summary 여행보드 숙소 개수 조회
  */
 
-export function useGetAccommodationCountByBoardId<
-  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+export function useGetAccommodationCountByTripBoardId<
+  TData = Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByBoardIdParams,
+  params: GetAccommodationCountByTripBoardIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
         TError,
         TData
       >
@@ -3744,7 +4102,7 @@ export function useGetAccommodationCountByBoardId<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getGetAccommodationCountByBoardIdQueryOptions(
+  const queryOptions = getGetAccommodationCountByTripBoardIdQueryOptions(
     params,
     options,
   );
@@ -3762,16 +4120,16 @@ export function useGetAccommodationCountByBoardId<
 /**
  * @summary 여행보드 숙소 개수 조회
  */
-export const prefetchGetAccommodationCountByBoardIdQuery = async <
-  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+export const prefetchGetAccommodationCountByTripBoardIdQuery = async <
+  TData = Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
   TError = unknown,
 >(
   queryClient: QueryClient,
-  params: GetAccommodationCountByBoardIdParams,
+  params: GetAccommodationCountByTripBoardIdParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
         TError,
         TData
       >
@@ -3779,7 +4137,7 @@ export const prefetchGetAccommodationCountByBoardIdQuery = async <
     request?: SecondParameter<typeof http>;
   },
 ): Promise<QueryClient> => {
-  const queryOptions = getGetAccommodationCountByBoardIdQueryOptions(
+  const queryOptions = getGetAccommodationCountByTripBoardIdQueryOptions(
     params,
     options,
   );
@@ -3789,15 +4147,15 @@ export const prefetchGetAccommodationCountByBoardIdQuery = async <
   return queryClient;
 };
 
-export const getGetAccommodationCountByBoardIdSuspenseQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+export const getGetAccommodationCountByTripBoardIdSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByBoardIdParams,
+  params: GetAccommodationCountByTripBoardIdParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
         TError,
         TData
       >
@@ -3808,34 +4166,35 @@ export const getGetAccommodationCountByBoardIdSuspenseQueryOptions = <
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getGetAccommodationCountByBoardIdQueryKey(params);
+    queryOptions?.queryKey ??
+    getGetAccommodationCountByTripBoardIdQueryKey(params);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAccommodationCountByBoardId>>
+    Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>
   > = ({ signal }) =>
-    getAccommodationCountByBoardId(params, { signal, ...requestOptions });
+    getAccommodationCountByTripBoardId(params, { signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
-    Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+    Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData> };
 };
 
-export type GetAccommodationCountByBoardIdSuspenseQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAccommodationCountByBoardId>>
+export type GetAccommodationCountByTripBoardIdSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>
 >;
-export type GetAccommodationCountByBoardIdSuspenseQueryError = unknown;
+export type GetAccommodationCountByTripBoardIdSuspenseQueryError = unknown;
 
-export function useGetAccommodationCountByBoardIdSuspense<
-  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+export function useGetAccommodationCountByTripBoardIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByBoardIdParams,
+  params: GetAccommodationCountByTripBoardIdParams,
   options: {
     query: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
         TError,
         TData
       >
@@ -3846,15 +4205,15 @@ export function useGetAccommodationCountByBoardIdSuspense<
 ): UseSuspenseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData>;
 };
-export function useGetAccommodationCountByBoardIdSuspense<
-  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+export function useGetAccommodationCountByTripBoardIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByBoardIdParams,
+  params: GetAccommodationCountByTripBoardIdParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
         TError,
         TData
       >
@@ -3865,15 +4224,15 @@ export function useGetAccommodationCountByBoardIdSuspense<
 ): UseSuspenseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData>;
 };
-export function useGetAccommodationCountByBoardIdSuspense<
-  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+export function useGetAccommodationCountByTripBoardIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByBoardIdParams,
+  params: GetAccommodationCountByTripBoardIdParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
         TError,
         TData
       >
@@ -3888,15 +4247,15 @@ export function useGetAccommodationCountByBoardIdSuspense<
  * @summary 여행보드 숙소 개수 조회
  */
 
-export function useGetAccommodationCountByBoardIdSuspense<
-  TData = Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+export function useGetAccommodationCountByTripBoardIdSuspense<
+  TData = Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
   TError = unknown,
 >(
-  params: GetAccommodationCountByBoardIdParams,
+  params: GetAccommodationCountByTripBoardIdParams,
   options?: {
     query?: Partial<
       UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getAccommodationCountByBoardId>>,
+        Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
         TError,
         TData
       >
@@ -3907,10 +4266,8 @@ export function useGetAccommodationCountByBoardIdSuspense<
 ): UseSuspenseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData>;
 } {
-  const queryOptions = getGetAccommodationCountByBoardIdSuspenseQueryOptions(
-    params,
-    options,
-  );
+  const queryOptions =
+    getGetAccommodationCountByTripBoardIdSuspenseQueryOptions(params, options);
 
   const query = useSuspenseQuery(
     queryOptions,
@@ -3923,6 +4280,104 @@ export function useGetAccommodationCountByBoardIdSuspense<
 
   return query;
 }
+
+/**
+ * 여행 보드와 관련된 모든 데이터를 삭제합니다. 오직 여행 보드의 소유자(OWNER)만이 삭제할 수 있으며, 삭제 시 해당 보드에 연관된 모든 리소스(숙소 정보, 멤버 매핑 관계, 비교표 등)가 함께 제거됩니다.
+ * @summary 여행 보드 삭제
+ */
+export type deleteTripBoardResponse200 = {
+  data: StandardResponseTripBoardDeleteResponse;
+  status: 200;
+};
+
+export type deleteTripBoardResponseComposite = deleteTripBoardResponse200;
+
+export type deleteTripBoardResponse = deleteTripBoardResponseComposite & {
+  headers: Headers;
+};
+
+export const getDeleteTripBoardUrl = (boardId: number) => {
+  return `https://api.ssok.info/api/trip-boards/${boardId}`;
+};
+
+export const deleteTripBoard = async (
+  boardId: number,
+  options?: RequestInit,
+): Promise<deleteTripBoardResponse> => {
+  return http<deleteTripBoardResponse>(getDeleteTripBoardUrl(boardId), {
+    ...options,
+    method: "DELETE",
+  });
+};
+
+export const getDeleteTripBoardMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteTripBoard>>,
+    TError,
+    { boardId: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteTripBoard>>,
+  TError,
+  { boardId: number },
+  TContext
+> => {
+  const mutationKey = ["deleteTripBoard"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteTripBoard>>,
+    { boardId: number }
+  > = (props) => {
+    const { boardId } = props ?? {};
+
+    return deleteTripBoard(boardId, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteTripBoardMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteTripBoard>>
+>;
+
+export type DeleteTripBoardMutationError = unknown;
+
+/**
+ * @summary 여행 보드 삭제
+ */
+export const useDeleteTripBoard = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteTripBoard>>,
+      TError,
+      { boardId: number },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteTripBoard>>,
+  TError,
+  { boardId: number },
+  TContext
+> => {
+  const mutationOptions = getDeleteTripBoardMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
 
 /**
  * 여행 보드에서 나갑니다. OWNER인 경우 가장 먼저 입장한 MEMBER에게 권한이 이양되며, 마지막 참여자인 경우 여행보드가 삭제됩니다. 나가는 사용자는 자신이 생성한 리소스(비교표, 숙소)를 유지하거나 제거할 수 있습니다.

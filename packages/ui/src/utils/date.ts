@@ -1,3 +1,8 @@
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.extend(customParseFormat);
+
 /**
  * @param timeString - "HH:MM" (24시간 형태의 시간)
  * @returns { meridiem: "오전" | "오후", time: string, hours: number, minutes: number }
@@ -13,30 +18,18 @@ export const formatTime = (
   time: string;
   hours: number;
   minutes: number;
-} => {
-  const error = "Invalid time format. Expected HH:MM format with hours 0-23";
-  if (!time) {
-    throw new Error(error);
+} | null => {
+  const parsed = dayjs(time.slice(-5).replace(" ", "0"), "HH:mm");
+  if (!parsed.isValid()) {
+    return null;
   }
 
-  const parts = time.split(":");
-  if (parts.length !== 2) {
-    throw new Error(error);
-  }
-
-  const [hoursStr, minutesStr] = parts;
-  const hours = parseInt(hoursStr, 10);
-  const minutes = parseInt(minutesStr, 10);
-
-  if (Number.isNaN(hours) || hours < 0 || hours > 23) {
-    throw new Error(error);
-  }
-  if (Number.isNaN(minutes) || minutes < 0 || minutes > 59) {
-    throw new Error(error);
-  }
-
-  const meridiem = hours < 12 ? "오전" : "오후";
-  return { meridiem, time, hours, minutes };
+  return {
+    meridiem: parsed.format("A") === "AM" ? "오전" : "오후",
+    time: parsed.format("HH:mm"),
+    hours: parsed.hour(),
+    minutes: parsed.minute(),
+  };
 };
 
 /**

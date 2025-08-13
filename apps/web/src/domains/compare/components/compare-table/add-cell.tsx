@@ -11,6 +11,7 @@ interface AddCellProps {
 const AddCell = ({ onClick, className }: AddCellProps) => {
   return (
     <AddButton
+      type="button"
       onClick={onClick}
       className={`mb-[1.6rem] h-full w-full ${className || ""}`}
     >

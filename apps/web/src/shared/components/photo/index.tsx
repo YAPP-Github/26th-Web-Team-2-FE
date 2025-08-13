@@ -99,6 +99,7 @@ const PhotoButton = ({
       )}
     >
       <IconButton
+        type="button"
         size="sm"
         onClick={onClick}
         className="flex h-full w-full items-center justify-center bg-transparent p-0 hover:bg-transparent focus:bg-transparent"

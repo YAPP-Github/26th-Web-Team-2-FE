@@ -18,12 +18,12 @@ const TableTimeContents = ({
   state,
 }: TableTimeContentsProps) => {
   return (
-    <section className="flex items-center justify-between overflow-hidden rounded-[1.2rem] bg-neutral-98 p-[1.6rem]">
+    <section className="flex items-center justify-between rounded-[1.2rem] bg-neutral-98 p-[1.6rem]">
       <TimePicker
         value={checkInAt}
         onChange={(time) => onCheckInChange?.(time)}
         disabled={state !== "edit"}
-        className="flex-1"
+        className="flex flex-1 justify-start"
       />
       <span className="mx-[0.8rem] flex-shrink-0 text-neutral-60">
         <SymbolTableTimeRightArrow width="20" />
@@ -32,7 +32,7 @@ const TableTimeContents = ({
         value={checkOutAt}
         onChange={(time) => onCheckOutChange?.(time)}
         disabled={state !== "edit"}
-        className="flex-1"
+        className="flex flex-1 justify-end"
       />
     </section>
   );

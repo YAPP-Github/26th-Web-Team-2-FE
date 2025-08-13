@@ -1,14 +1,29 @@
 import { Textarea } from "@ssok/ui";
-import type { ViewState } from "@/domains/compare/types";
+import { Controller, useFormContext } from "react-hook-form";
+import type { ComparisonFormData, ViewState } from "@/domains/compare/types";
 
 interface ReviewSummaryCellProps {
-  summary: string;
-  state?: ViewState;
+  state: ViewState;
+  name: `accommodationRequestList.${number}.reviewSummary`;
 }
 
-const ReviewSummaryCell = ({ summary, state }: ReviewSummaryCellProps) => {
+const ReviewSummaryCell = ({ state, name }: ReviewSummaryCellProps) => {
+  const { control } = useFormContext<ComparisonFormData>();
+
   return (
-    <Textarea disabled={state !== "edit"} value={summary} maxLength={100} />
+    <Controller
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <Textarea
+          {...field}
+          value={typeof field.value === "string" ? field.value : ""}
+          maxLength={100}
+          placeholder="리뷰 요약을 입력해주세요..."
+          disabled={state !== "edit"}
+        />
+      )}
+    />
   );
 };
 

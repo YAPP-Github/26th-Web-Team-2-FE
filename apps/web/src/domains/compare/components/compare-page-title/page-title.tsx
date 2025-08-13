@@ -62,7 +62,7 @@ const PageTitle = ({
       type="button"
       onClick={handleClick}
       className={cn(
-        "group flex cursor-pointer items-center gap-[1rem] rounded-[1.2rem] px-[0.8rem] py-[0.3rem] transition-colors duration-200",
+        "group flex items-center gap-[1rem] rounded-[1.2rem] px-[0.8rem] py-[0.3rem] transition-colors duration-200",
         isEditingAvailable && "cursor-pointer hover:bg-neutral-90",
         isEditingNow && "bg-neutral-90",
         className,

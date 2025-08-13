@@ -40,7 +40,6 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
-      external: ["react", "react-dom", "react-textarea-autosize"],
       output: {
         globals: {
           react: "React",

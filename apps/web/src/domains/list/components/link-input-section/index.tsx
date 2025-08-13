@@ -58,7 +58,7 @@ const LinkInputSection = ({
     if (id === undefined) return;
     mutate(
       {
-        data: { url: data.link, memo: data.memo, boardId: Number(id) },
+        data: { url: data.link, memo: data.memo, tripBoardId: Number(id) },
       },
       {
         onSuccess: () => {

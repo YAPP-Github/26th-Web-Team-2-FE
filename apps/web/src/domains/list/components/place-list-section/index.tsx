@@ -1,4 +1,4 @@
-import { useGetAccommodationCountByBoardId } from "@ssok/api";
+import { useGetAccommodationCountByTripBoardId } from "@ssok/api";
 import { Button, Card, cn } from "@ssok/ui";
 import { useParams } from "next/navigation";
 import { useRef } from "react";
@@ -45,17 +45,18 @@ const PlaceListSection = ({
   const { accessToken } = useSession({ required: true });
   const params = useParams();
   const id = params.id;
-  const { data: accommodationCountData } = useGetAccommodationCountByBoardId(
-    {
-      boardId: Number(id),
-    },
-    {
-      query: {
-        enabled: !!accessToken,
+  const { data: accommodationCountData } =
+    useGetAccommodationCountByTripBoardId(
+      {
+        tripBoardId: Number(id),
       },
-      request: { headers: { Authorization: `Bearer ${accessToken}` } },
-    },
-  );
+      {
+        query: {
+          enabled: !!accessToken,
+        },
+        request: { headers: { Authorization: `Bearer ${accessToken}` } },
+      },
+    );
 
   const { selectedPlaces, togglePlaceSelect, removePlace } =
     usePlaceSelectionContext();

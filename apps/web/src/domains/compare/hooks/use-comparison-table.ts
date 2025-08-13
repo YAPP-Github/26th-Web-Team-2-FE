@@ -30,7 +30,7 @@ export const useComparisonTable = ({
   const formData = useMemo((): ComparisonFormData => {
     const response = data?.data.result;
     if (!response) {
-      return { boardId, accommodationRequestList: [] };
+      return { tripBoardId: boardId, accommodationRequestList: [] };
     }
     return transformComparisonTableResponseToFormData({ boardId, response });
   }, [data, boardId]);

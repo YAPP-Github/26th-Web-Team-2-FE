@@ -34,7 +34,7 @@ export const Pin = ({ children, className, isActive, ...props }: PinProps) => {
 
         className,
         isActive &&
-          "border-primary-5 bg-primary-5 text-primary-100 before:border-t-primary-5 after:border-t-primary-5",
+          "border-primary-5 bg-primary-5 text-primary-100 before:border-t-primary-5 after:border-t-primary-5 hover:after:border-t-primary-5",
       )}
       {...props}
     >

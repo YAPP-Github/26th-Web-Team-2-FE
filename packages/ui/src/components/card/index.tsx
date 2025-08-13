@@ -3,7 +3,6 @@ import IcAddMemo from "@/assets/icons/ic_add_memo.svg?react";
 import IcInfo from "@/assets/icons/ic_info.svg?react";
 import IcLocation from "@/assets/icons/ic_location.svg?react";
 import IcMemo from "@/assets/icons/ic_memo.svg?react";
-import IcWalker from "@/assets/icons/ic_walker.svg?react";
 import { Button } from "@/components/button";
 import { Chip } from "@/components/chip";
 import { AddIconButton } from "@/components/icon-button/add-icon-button";
@@ -11,6 +10,7 @@ import { DeleteIconButton } from "@/components/icon-button/delete-icon-button";
 import { ImageCard } from "@/components/image-card";
 import TextWithIcon from "@/components/text-with-icon";
 import { cn } from "@/utils";
+import { getAttractionDistance } from "./card.utils";
 import { card } from "./card.variant";
 
 type TransportInfo = {
@@ -18,7 +18,7 @@ type TransportInfo = {
   time?: string;
 };
 
-type Attraction = {
+export type Attraction = {
   name?: string;
   type?: string;
   latitude?: number;
@@ -145,22 +145,25 @@ export const Card = ({
             </TextWithIcon>
             {/* 인근 관광지 정보 */}
             <ul className="m-0 flex list-none flex-row items-center p-0">
-              {nearbyAttractions?.map((attraction, _index) => (
-                <li
-                  key={attraction.name}
-                  className="flex flex-row items-center"
-                >
-                  <Chip
-                    size="xs"
-                    text={attraction.name || "-"}
-                    icon={<IcWalker width="12px" height="12px" />}
-                    additionalText={`${attraction.distance || "-"}분`}
-                  />
-                  {_index !== nearbyAttractions.length - 1 && (
-                    <hr className="mx-[0.4rem] h-[0.2rem] w-[0.2rem] rounded-full border-none bg-neutral-80" />
-                  )}
-                </li>
-              ))}
+              {nearbyAttractions?.map((attraction, _index) => {
+                const { value, icon } = getAttractionDistance(attraction);
+                return (
+                  <li
+                    key={attraction.name}
+                    className="flex flex-row items-center"
+                  >
+                    <Chip
+                      size="xs"
+                      text={attraction.name || "-"}
+                      icon={icon}
+                      additionalText={`${value}`}
+                    />
+                    {_index !== nearbyAttractions.length - 1 && (
+                      <hr className="mx-[0.4rem] h-[0.2rem] w-[0.2rem] rounded-full border-none bg-neutral-80" />
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </header>

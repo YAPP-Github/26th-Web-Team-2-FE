@@ -21,7 +21,7 @@ export const transformComparisonTableResponseToFormData = ({
   };
 
   return {
-    boardId,
+    tripBoardId: boardId,
     tableName: response.tableName,
     accommodationRequestList:
       response.accommodationResponsesList?.map(

@@ -196,10 +196,23 @@ export const Card = ({
         )}
       </article>
       <div className="flex flex-col gap-[1.6rem]">
-        <AddIconButton type="button" selected={selected} onClick={onAddClick} />
+        <AddIconButton
+          type="button"
+          selected={selected}
+          onClick={(e) => {
+            e.stopPropagation();
+            onAddClick();
+          }}
+        />
         {!selected && (
           <div className="hidden group-hover:block">
-            <DeleteIconButton type="button" onClick={onDeleteClick} />
+            <DeleteIconButton
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteClick();
+              }}
+            />
           </div>
         )}
       </div>

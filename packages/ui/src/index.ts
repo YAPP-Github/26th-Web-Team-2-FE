@@ -54,6 +54,8 @@ export { default as IcWifi } from "@/assets/icons/ic_wifi.svg?react";
 export { Button } from "@/components/button";
 export { Card } from "@/components/card";
 export { Chip } from "@/components/chip";
+export type { ConfirmProps } from "@/components/confirm";
+export { Confirm } from "@/components/confirm";
 export { Graph } from "@/components/graph";
 export { AddIconButton } from "@/components/icon-button/add-icon-button";
 export { CheckIconButton } from "@/components/icon-button/check-icon-button";

@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 import type { Plugin } from "vite";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
+import { externalizeDeps } from "vite-plugin-externalize-deps";
 import svgr from "vite-plugin-svgr";
 import tsconfigPaths from "vite-tsconfig-paths";
 
@@ -30,6 +31,7 @@ export default defineConfig({
       rollupTypes: true,
     }),
     tsconfigPaths(),
+    externalizeDeps(),
   ],
   build: {
     lib: {
@@ -38,7 +40,7 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: ["react", "react-dom", "react-textarea-autosize"],
       output: {
         globals: {
           react: "React",

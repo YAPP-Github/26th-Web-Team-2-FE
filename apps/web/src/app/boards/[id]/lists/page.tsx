@@ -1,4 +1,5 @@
 "use client";
+import { useGetTripBoardDetail } from "@ssok/api";
 import { cn, SolidExpand } from "@ssok/ui";
 import { AnimatePresence, motion } from "framer-motion";
 import { useParams } from "next/navigation";
@@ -44,19 +45,32 @@ const BoardsIdListsPage = () => {
   const params = useParams();
   const id = params.id;
   const { accessToken } = useSession({ required: true });
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useAccommodationList(
-      {
-        boardId: Number(id),
-        userId: selectedPerson === 0 ? undefined : selectedPerson,
-        size: 10,
-        sort: selectedFilter,
-      },
-      {
-        accessToken: accessToken || "",
+  const { data: tripBoardDetail, isLoading: isTripBoardLoading } =
+    useGetTripBoardDetail(Number(id), {
+      query: {
         enabled: !!accessToken,
       },
-    );
+      request: { headers: { Authorization: `Bearer ${accessToken}` } },
+    });
+
+  const {
+    data,
+    isLoading: accommodationDataLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useAccommodationList(
+    {
+      boardId: Number(id),
+      userId: selectedPerson === 0 ? undefined : selectedPerson,
+      size: 10,
+      sort: selectedFilter,
+    },
+    {
+      accessToken: accessToken || "",
+      enabled: !!accessToken,
+    },
+  );
 
   const { updateAccommodations } = useAccommodationDataContext();
   const { handlePanelToggle, isPanelExpanded } = usePanelContext();
@@ -69,6 +83,8 @@ const BoardsIdListsPage = () => {
   const handlePersonSelect = (id: number) => {
     setSelectedPerson(id);
   };
+
+  const loading = accommodationDataLoading || isTripBoardLoading;
 
   return (
     <main
@@ -93,7 +109,7 @@ const BoardsIdListsPage = () => {
             className="flex flex-col gap-[1.6rem]"
           >
             {/* 헤더 */}
-            <HeaderSection />
+            <HeaderSection {...tripBoardDetail?.data.result} />
             {/* 링크 저장 */}
             <LinkInputSection
               watch={watch}
@@ -119,10 +135,11 @@ const BoardsIdListsPage = () => {
               isInputExpanded={isInputExpanded}
               isOpen={isOpen}
               selectedFilter={selectedFilter}
-              isLoading={isLoading}
+              isLoading={accommodationDataLoading}
               fetchNextPage={fetchNextPage}
               hasNextPage={hasNextPage}
               isFetchingNextPage={isFetchingNextPage}
+              participants={tripBoardDetail?.data.result?.participants || []}
             />
           </motion.div>
         )}
@@ -136,7 +153,7 @@ const BoardsIdListsPage = () => {
           isPanelExpanded ? "right-[-5.5%]" : "right-[-4rem]",
         )}
       />
-      {isLoading ||
+      {loading ||
         (isFetchingNextPage && (
           <main className="absolute z-10 flex h-full w-full items-center justify-center ">
             <div

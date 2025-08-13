@@ -1,40 +1,40 @@
-import { IcClock } from "@ssok/ui";
+import { TimePicker } from "@ssok/ui";
 import SymbolTableTimeRightArrow from "@/domains/compare/assets/symbol_table_time_right_arrow.svg";
-import { formatTime } from "@/shared/utils/date";
+import type { ViewState } from "@/domains/compare/types";
 
 interface TableTimeContentsProps {
-  checkInAt: Date;
-  checkOutAt: Date;
+  checkInAt: string | null; // "HH:MM"
+  checkOutAt: string | null; // "HH:MM"
+  onCheckInChange?: (time: string) => void; // "HH:MM"
+  onCheckOutChange?: (time: string) => void; // "HH:MM"
+  state?: ViewState;
 }
 
 const TableTimeContents = ({
   checkInAt,
   checkOutAt,
+  onCheckInChange,
+  onCheckOutChange,
+  state,
 }: TableTimeContentsProps) => {
   return (
-    <section className="flex items-center justify-between overflow-hidden rounded-[1.2rem] bg-neutral-98 p-[1.6rem]">
-      <Time date={checkInAt} />
-      <span className="flex-shrink-0 text-neutral-60">
+    <section className="flex items-center justify-between rounded-[1.2rem] bg-neutral-98 p-[1.6rem]">
+      <TimePicker
+        value={checkInAt}
+        onChange={(time) => onCheckInChange?.(time)}
+        disabled={state !== "edit"}
+        className="flex flex-1 justify-start"
+      />
+      <span className="mx-[0.8rem] flex-shrink-0 text-neutral-60">
         <SymbolTableTimeRightArrow width="20" />
       </span>
-      <Time date={checkOutAt} />
+      <TimePicker
+        value={checkOutAt}
+        onChange={(time) => onCheckOutChange?.(time)}
+        disabled={state !== "edit"}
+        className="flex flex-1 justify-end"
+      />
     </section>
-  );
-};
-
-const Time = ({ date }: { date: Date }) => {
-  const { meridiem, time } = formatTime(date);
-
-  return (
-    <div className="flex items-center">
-      <div className="mr-[0.4rem] flex gap-[0.6rem]">
-        <p className="truncate text-body1-semi16 text-neutral-30">{meridiem}</p>
-        <p className="truncate text-body1-semi16 text-neutral-30">{time}</p>
-      </div>
-      <span className="flex-shrink-0 text-neutral-60">
-        <IcClock width="20" height="20" />
-      </span>
-    </div>
   );
 };
 

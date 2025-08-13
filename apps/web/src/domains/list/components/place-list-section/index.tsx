@@ -1,4 +1,5 @@
-import { useGetAccommodationCountByBoardId } from "@ssok/api";
+import { useGetAccommodationCountByTripBoardId } from "@ssok/api";
+import type { ParticipantProfileResponse } from "@ssok/api/schemas";
 import { Button, Card, cn } from "@ssok/ui";
 import { useParams } from "next/navigation";
 import { useRef } from "react";
@@ -7,7 +8,6 @@ import useInfiniteScroll from "../../../../shared/hooks/use-infinite-scroll";
 import { useAccommodationDataContext } from "../../contexts/accomodation-data-context";
 import { usePlaceSelectionContext } from "../../contexts/place-select-context";
 import useCollapseOnScroll from "../../hooks/use-collapse-on-scroll";
-import { useMemberData } from "../../hooks/use-member-data";
 import DropDown from "./atom/drop-down";
 import EmptyListContainer from "./atom/empty-list-container";
 
@@ -24,6 +24,7 @@ type PlaceListSectionProps = {
   fetchNextPage: () => void;
   hasNextPage?: boolean;
   isFetchingNextPage: boolean;
+  participants: ParticipantProfileResponse[];
 };
 
 const PlaceListSection = ({
@@ -39,23 +40,24 @@ const PlaceListSection = ({
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
+  participants,
 }: PlaceListSectionProps) => {
-  const memberData = useMemberData();
   const { accommodations } = useAccommodationDataContext();
   const { accessToken } = useSession({ required: true });
   const params = useParams();
   const id = params.id;
-  const { data: accommodationCountData } = useGetAccommodationCountByBoardId(
-    {
-      boardId: Number(id),
-    },
-    {
-      query: {
-        enabled: !!accessToken,
+  const { data: accommodationCountData } =
+    useGetAccommodationCountByTripBoardId(
+      {
+        tripBoardId: Number(id),
       },
-      request: { headers: { Authorization: `Bearer ${accessToken}` } },
-    },
-  );
+      {
+        query: {
+          enabled: !!accessToken,
+        },
+        request: { headers: { Authorization: `Bearer ${accessToken}` } },
+      },
+    );
 
   const { selectedPlaces, togglePlaceSelect, removePlace } =
     usePlaceSelectionContext();
@@ -80,14 +82,24 @@ const PlaceListSection = ({
       <div className="flex flex-col gap-[1.6rem] p-[2.4rem]">
         <h1 className="text-heading1-semi20"> 저장된 숙소</h1>
         <ul className="flex w-max flex-row gap-[0.8rem]">
-          {memberData.map((person) => (
-            <li key={person.id}>
+          <li key="all">
+            <Button
+              variant="round"
+              selected={selectedPerson === 0}
+              onClick={() => handlePersonSelect(0)}
+            >
+              전체
+            </Button>
+          </li>
+
+          {participants.map((person) => (
+            <li key={person.userId}>
               <Button
                 variant="round"
-                selected={selectedPerson === parseInt(person.id)}
-                onClick={() => handlePersonSelect(parseInt(person.id))}
+                selected={selectedPerson === person.userId}
+                onClick={() => handlePersonSelect(person.userId!)}
               >
-                {person.name}
+                {person.nickname}
               </Button>
             </li>
           ))}
@@ -121,9 +133,9 @@ const PlaceListSection = ({
                 address={place.address || "주소정보 없음"}
                 nearbyAttractions={place.nearbyAttractions?.slice(0, 2) || []}
                 savedByText={
-                  memberData.find(
-                    (member) => member.id === String(selectedPerson),
-                  )?.name || "알 수 없음"
+                  participants.find(
+                    (member) => member?.userId === selectedPerson,
+                  )?.nickname || "알 수 없음"
                 }
                 memo={place.memo}
                 selected={place.id ? selectedPlaces.includes(place.id) : false}

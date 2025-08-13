@@ -34,6 +34,7 @@
         "useSelfClosingElements": "error"
       },
       "suspicious": {
+        "noArrayIndexKey": "off",
         "noVar": "error"
       }
     }

@@ -1,18 +1,40 @@
-import type { Accommodation, ViewState } from "@/domains/compare/types";
+import { useFormContext } from "react-hook-form";
+import type { ComparisonFormData, ViewState } from "@/domains/compare/types";
 import TableTimeContents from "../table-time-contents";
 
 interface CheckInOutCellProps {
-  checkInTime: Required<NonNullable<Accommodation["checkInTime"]>>;
-  checkOutTime: Required<NonNullable<Accommodation["checkOutTime"]>>;
-  state?: ViewState;
+  state: ViewState;
+  checkInName: `accommodationRequestList.${number}.checkInTime`;
+  checkOutName: `accommodationRequestList.${number}.checkOutTime`;
 }
 
-const CheckInOutCell = ({ checkInTime, checkOutTime }: CheckInOutCellProps) => {
-  const transform = (time: string) => new Date(`1970-01-01T${time}:00+09:00`);
+const CheckInOutCell = ({
+  state,
+  checkInName,
+  checkOutName,
+}: CheckInOutCellProps) => {
+  const { setValue, watch } = useFormContext<ComparisonFormData>();
+
+  const checkInTime = watch(checkInName);
+  const checkOutTime = watch(checkOutName);
+
+  const handleCheckInChange = (time: string) => {
+    setValue(checkInName, { ...checkInTime, from: time });
+  };
+
+  const handleCheckOutChange = (time: string) => {
+    setValue(checkOutName, { ...checkOutTime, to: time });
+  };
+
+  console.log({ checkInTime, checkOutTime });
+
   return (
     <TableTimeContents
-      checkInAt={transform(checkInTime.from)}
-      checkOutAt={transform(checkOutTime.to)}
+      checkInAt={checkInTime?.from || null}
+      checkOutAt={checkOutTime?.to || null}
+      onCheckInChange={state === "edit" ? handleCheckInChange : undefined}
+      onCheckOutChange={state === "edit" ? handleCheckOutChange : undefined}
+      state={state}
     />
   );
 };

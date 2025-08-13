@@ -2,27 +2,32 @@
 
 import { cn } from "@ssok/ui";
 import { Fragment } from "react";
+import { useFormContext } from "react-hook-form";
 import AddCell from "@/domains/compare/components/compare-table/add-cell";
 import AmenitiesCell from "@/domains/compare/components/compare-table/amenities-cell";
 import CheckInOutCell from "@/domains/compare/components/compare-table/check-in-out-cell";
 import CleanlinessScoreCell from "@/domains/compare/components/compare-table/cleanliness-score-cell";
-import NearbyAttractionsCell from "@/domains/compare/components/compare-table/nearby-attractions-cell";
-import NearbyTransportationCell from "@/domains/compare/components/compare-table/nearby-transportation-cell";
+import NearbyPlacesCell from "@/domains/compare/components/compare-table/nearby-places-cell.tsx";
 import PhotoCell from "@/domains/compare/components/compare-table/photo-cell";
 import ReviewScoreCell from "@/domains/compare/components/compare-table/review-score-cell";
 import ReviewSummaryCell from "@/domains/compare/components/compare-table/review-summary-cell";
 import { useViewMode } from "@/domains/compare/hooks/use-view-mode";
-import type { Accommodation, ViewState } from "@/domains/compare/types";
-import { isCheckTimeExist } from "@/domains/compare/utils/check-in-out";
+import type {
+  Accommodation,
+  ComparisonFormData,
+  ViewState,
+} from "@/domains/compare/types";
 
 interface CompareTableProps {
-  items: Accommodation[];
-  state?: ViewState;
+  state: ViewState;
   className?: string;
 }
 
-const CompareTable = ({ items, state, className }: CompareTableProps) => {
+const CompareTable = ({ state, className }: CompareTableProps) => {
   const { handleViewChange } = useViewMode();
+  const { watch } = useFormContext<ComparisonFormData>();
+
+  const items = watch("accommodationRequestList") || [];
 
   const rows = [
     { key: "photo", label: null },
@@ -37,67 +42,88 @@ const CompareTable = ({ items, state, className }: CompareTableProps) => {
 
   const handleAddCellClick = () => handleViewChange("edit");
 
-  const renderCellContent = (item: Accommodation, rowKey: string) => {
+  const renderCellContent = (
+    item: Accommodation,
+    rowKey: string,
+    index: number,
+  ) => {
+    const accommodationName = item.accommodationName || "숙소명 없음";
+
     switch (rowKey) {
       case "photo":
         return (
           <PhotoCell
             images={item.images}
-            name={item.accommodationName || "숙소명 없음"}
-            price={item.lowestPrice}
-            siteName={item.siteName || "알 수 없음"}
-            logoUrl="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Booking.com_Icon_2022.svg/1200px-Booking.com_Icon_2022.svg.png"
+            accommodationName={accommodationName}
+            siteName={item.siteName}
+            logoUrl={item.logoUrl}
             state={state}
+            name={`accommodationRequestList.${index}.lowestPrice`}
           />
         );
       case "reviewScore":
         if (!item.reviewScore) {
           return <AddCell state={state} onClick={handleAddCellClick} />;
         }
-        return <ReviewScoreCell score={item.reviewScore} state={state} />;
+        return (
+          <ReviewScoreCell
+            state={state}
+            name={`accommodationRequestList.${index}.reviewScore`}
+          />
+        );
       case "cleanlinessScore":
         if (!item.cleanlinessScore) {
           return <AddCell state={state} onClick={handleAddCellClick} />;
         }
         return (
-          <CleanlinessScoreCell score={item.cleanlinessScore} state={state} />
+          <CleanlinessScoreCell
+            state={state}
+            name={`accommodationRequestList.${index}.cleanlinessScore`}
+          />
         );
       case "nearbyAttractions":
         if (!item.nearbyAttractions) {
           return <AddCell state={state} onClick={handleAddCellClick} />;
         }
         return (
-          <NearbyAttractionsCell
-            attractions={item.nearbyAttractions}
+          <NearbyPlacesCell
+            places={item.nearbyAttractions}
             state={state}
+            name={`accommodationRequestList.${index}.nearbyAttractions`}
           />
         );
       case "amenities":
         if (!item.amenities) {
           return <AddCell state={state} onClick={handleAddCellClick} />;
         }
-        return <AmenitiesCell amenities={item.amenities} state={state} />;
+        return (
+          <AmenitiesCell
+            amenities={item.amenities}
+            state={state}
+            name={`accommodationRequestList.${index}.amenities`}
+          />
+        );
       case "nearbyTransportation":
         if (!item.nearbyTransportation) {
           return <AddCell state={state} onClick={handleAddCellClick} />;
         }
         return (
-          <NearbyTransportationCell
-            transportation={item.nearbyTransportation}
+          <NearbyPlacesCell
+            places={item.nearbyTransportation}
             state={state}
+            name={`accommodationRequestList.${index}.nearbyTransportation`}
           />
         );
       case "checkInOut": {
         const { checkInTime, checkOutTime } = item;
-        if (!isCheckTimeExist(checkInTime) || !isCheckTimeExist(checkOutTime)) {
+        if (!checkInTime?.from && !checkOutTime?.to) {
           return <AddCell state={state} onClick={handleAddCellClick} />;
         }
-
         return (
           <CheckInOutCell
-            checkInTime={checkInTime}
-            checkOutTime={checkOutTime}
             state={state}
+            checkInName={`accommodationRequestList.${index}.checkInTime`}
+            checkOutName={`accommodationRequestList.${index}.checkOutTime`}
           />
         );
       }
@@ -105,7 +131,12 @@ const CompareTable = ({ items, state, className }: CompareTableProps) => {
         if (!item.reviewSummary) {
           return <AddCell state={state} onClick={handleAddCellClick} />;
         }
-        return <ReviewSummaryCell summary={item.reviewSummary} state={state} />;
+        return (
+          <ReviewSummaryCell
+            state={state}
+            name={`accommodationRequestList.${index}.reviewSummary`}
+          />
+        );
       default:
         return null;
     }
@@ -127,12 +158,12 @@ const CompareTable = ({ items, state, className }: CompareTableProps) => {
               </h3>
             )}
             <div className="flex gap-[2.4rem]">
-              {items.map((item) => (
+              {items.map((item, index) => (
                 <div
                   key={`${row.key}-${item.id}`}
                   className="min-w-[29.8rem] flex-1"
                 >
-                  {renderCellContent(item, row.key)}
+                  {renderCellContent(item, row.key, index)}
                 </div>
               ))}
             </div>

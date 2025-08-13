@@ -61,7 +61,7 @@ const BoardsIdListsPage = () => {
     isFetchingNextPage,
   } = useAccommodationList(
     {
-      boardId: Number(id),
+      tripBoardId: Number(id),
       userId: selectedPerson === 0 ? undefined : selectedPerson,
       size: 10,
       sort: selectedFilter,

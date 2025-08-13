@@ -1,8 +1,11 @@
-import { getAccommodationByBoardIdAndUserId } from "@ssok/api";
-import type { GetAccommodationByBoardIdAndUserIdParams } from "@ssok/api/schemas";
+import { getAccommodationByTripBoardIdAndUserId } from "@ssok/api";
+import type { GetAccommodationByTripBoardIdAndUserIdParams } from "@ssok/api/schemas";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-type ParamsWithoutPage = Omit<GetAccommodationByBoardIdAndUserIdParams, "page">;
+type ParamsWithoutPage = Omit<
+  GetAccommodationByTripBoardIdAndUserIdParams,
+  "page"
+>;
 
 interface UseAccommodationListOptions {
   accessToken?: string;
@@ -16,13 +19,13 @@ const useAccommodationList = (
   useInfiniteQuery({
     queryKey: [
       "accommodations",
-      params.boardId,
+      params.tripBoardId,
       params.userId,
       params.size,
       params.sort,
     ],
     queryFn: async ({ pageParam = 0 }) => {
-      const res = await getAccommodationByBoardIdAndUserId(
+      const res = await getAccommodationByTripBoardIdAndUserId(
         {
           page: pageParam,
           ...params,

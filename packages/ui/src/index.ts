@@ -64,6 +64,7 @@ export { SolidExpand } from "@/components/icon-button/solid-expand";
 export type { IconTabsOption, IconTabsProps } from "@/components/icon-tabs";
 export { IconTabs } from "@/components/icon-tabs";
 export { Pin } from "@/components/pin";
+export { Popup } from "@/components/popup";
 export { TextField } from "@/components/text-field";
 export { Textarea } from "@/components/textarea";
 export { TimePicker } from "@/components/time-picker";

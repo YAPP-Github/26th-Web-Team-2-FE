@@ -30,8 +30,175 @@ import type {
   StandardResponseTripBoardJoinResponse,
   StandardResponseTripBoardLeaveResponse,
   StandardResponseTripBoardPageResponse,
+  StandardResponseTripBoardSummaryResponse,
+  StandardResponseTripBoardUpdateResponse,
   StandardResponseWithdrawResponse,
 } from "./index.schemas";
+
+export const getGetTripBoardDetailResponseMock = (
+  overrideResponse: Partial<StandardResponseTripBoardSummaryResponse> = {},
+): StandardResponseTripBoardSummaryResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      tripBoardId: faker.helpers.arrayElement([
+        faker.number.int({
+          min: undefined,
+          max: undefined,
+          multipleOf: undefined,
+        }),
+        undefined,
+      ]),
+      boardName: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      destination: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      startDate: faker.helpers.arrayElement([
+        new Date(faker.date.past().toISOString().split("T")[0]),
+        undefined,
+      ]),
+      endDate: faker.helpers.arrayElement([
+        new Date(faker.date.past().toISOString().split("T")[0]),
+        undefined,
+      ]),
+      travelPeriod: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      userRole: faker.helpers.arrayElement([
+        faker.helpers.arrayElement(["OWNER", "MEMBER"] as const),
+        undefined,
+      ]),
+      participantCount: faker.helpers.arrayElement([
+        faker.number.int({
+          min: undefined,
+          max: undefined,
+          multipleOf: undefined,
+        }),
+        undefined,
+      ]),
+      accommodationCount: faker.helpers.arrayElement([
+        faker.number.int({
+          min: undefined,
+          max: undefined,
+          multipleOf: undefined,
+        }),
+        undefined,
+      ]),
+      participants: faker.helpers.arrayElement([
+        Array.from(
+          { length: faker.number.int({ min: 4, max: 4 }) },
+          (_, i) => i + 1,
+        ).map(() => ({
+          userId: faker.helpers.arrayElement([
+            faker.number.int({
+              min: undefined,
+              max: undefined,
+              multipleOf: undefined,
+            }),
+            undefined,
+          ]),
+          profileImageUrl: faker.helpers.arrayElement([
+            faker.string.alpha({ length: { min: 10, max: 20 } }),
+            undefined,
+          ]),
+          nickname: faker.helpers.arrayElement([
+            faker.string.alpha({ length: { min: 10, max: 20 } }),
+            undefined,
+          ]),
+          role: faker.helpers.arrayElement([
+            faker.helpers.arrayElement(["OWNER", "MEMBER"] as const),
+            undefined,
+          ]),
+        })),
+        undefined,
+      ]),
+      createdAt: faker.helpers.arrayElement([
+        new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
+        undefined,
+      ]),
+      updatedAt: faker.helpers.arrayElement([
+        new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
+
+export const getUpdateTripBoardResponseMock = (
+  overrideResponse: Partial<StandardResponseTripBoardUpdateResponse> = {},
+): StandardResponseTripBoardUpdateResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      tripBoardId: faker.helpers.arrayElement([
+        faker.number.int({
+          min: undefined,
+          max: undefined,
+          multipleOf: undefined,
+        }),
+        undefined,
+      ]),
+      boardName: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      destination: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      startDate: faker.helpers.arrayElement([
+        new Date(faker.date.past().toISOString().split("T")[0]),
+        undefined,
+      ]),
+      endDate: faker.helpers.arrayElement([
+        new Date(faker.date.past().toISOString().split("T")[0]),
+        undefined,
+      ]),
+      updatedAt: faker.helpers.arrayElement([
+        new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
+
+export const getDeleteTripBoardResponseMock = (
+  overrideResponse: Partial<StandardResponseTripBoardDeleteResponse> = {},
+): StandardResponseTripBoardDeleteResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      tripBoardId: faker.helpers.arrayElement([
+        faker.number.int({
+          min: undefined,
+          max: undefined,
+          multipleOf: undefined,
+        }),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
 
 export const getGetComparisonTableResponseMock = (
   overrideResponse: Partial<StandardResponseComparisonTableResponse> = {},
@@ -821,6 +988,33 @@ export const getCreateTripBoardResponseMock = (
         undefined,
       ]),
       createdAt: faker.helpers.arrayElement([
+        new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
+
+export const getLeaveTripBoardResponseMock = (
+  overrideResponse: Partial<StandardResponseTripBoardLeaveResponse> = {},
+): StandardResponseTripBoardLeaveResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      tripBoardId: faker.helpers.arrayElement([
+        faker.number.int({
+          min: undefined,
+          max: undefined,
+          multipleOf: undefined,
+        }),
+        undefined,
+      ]),
+      leftAt: faker.helpers.arrayElement([
         new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
         undefined,
       ]),
@@ -1935,55 +2129,80 @@ export const getGetAccommodationCountByTripBoardIdResponseMock = (
   ...overrideResponse,
 });
 
-export const getDeleteTripBoardResponseMock = (
-  overrideResponse: Partial<StandardResponseTripBoardDeleteResponse> = {},
-): StandardResponseTripBoardDeleteResponse => ({
-  responseType: faker.helpers.arrayElement([
-    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
-    undefined,
-  ]),
-  result: faker.helpers.arrayElement([
-    {
-      tripBoardId: faker.helpers.arrayElement([
-        faker.number.int({
-          min: undefined,
-          max: undefined,
-          multipleOf: undefined,
-        }),
-        undefined,
-      ]),
-    },
-    undefined,
-  ]),
-  ...overrideResponse,
-});
+export const getGetTripBoardDetailMockHandler = (
+  overrideResponse?:
+    | StandardResponseTripBoardSummaryResponse
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) =>
+        | Promise<StandardResponseTripBoardSummaryResponse>
+        | StandardResponseTripBoardSummaryResponse),
+) => {
+  return http.get("*/api/trip-boards/:tripBoardId", async (info) => {
+    await delay(500);
 
-export const getLeaveTripBoardResponseMock = (
-  overrideResponse: Partial<StandardResponseTripBoardLeaveResponse> = {},
-): StandardResponseTripBoardLeaveResponse => ({
-  responseType: faker.helpers.arrayElement([
-    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
-    undefined,
-  ]),
-  result: faker.helpers.arrayElement([
-    {
-      tripBoardId: faker.helpers.arrayElement([
-        faker.number.int({
-          min: undefined,
-          max: undefined,
-          multipleOf: undefined,
-        }),
-        undefined,
-      ]),
-      leftAt: faker.helpers.arrayElement([
-        new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
-        undefined,
-      ]),
-    },
-    undefined,
-  ]),
-  ...overrideResponse,
-});
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getGetTripBoardDetailResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  });
+};
+
+export const getUpdateTripBoardMockHandler = (
+  overrideResponse?:
+    | StandardResponseTripBoardUpdateResponse
+    | ((
+        info: Parameters<Parameters<typeof http.put>[1]>[0],
+      ) =>
+        | Promise<StandardResponseTripBoardUpdateResponse>
+        | StandardResponseTripBoardUpdateResponse),
+) => {
+  return http.put("*/api/trip-boards/:tripBoardId", async (info) => {
+    await delay(500);
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getUpdateTripBoardResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  });
+};
+
+export const getDeleteTripBoardMockHandler = (
+  overrideResponse?:
+    | StandardResponseTripBoardDeleteResponse
+    | ((
+        info: Parameters<Parameters<typeof http.delete>[1]>[0],
+      ) =>
+        | Promise<StandardResponseTripBoardDeleteResponse>
+        | StandardResponseTripBoardDeleteResponse),
+) => {
+  return http.delete("*/api/trip-boards/:tripBoardId", async (info) => {
+    await delay(500);
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getDeleteTripBoardResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  });
+};
 
 export const getGetComparisonTableMockHandler = (
   overrideResponse?:
@@ -2077,6 +2296,31 @@ export const getCreateTripBoardMockHandler = (
             ? await overrideResponse(info)
             : overrideResponse
           : getCreateTripBoardResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  });
+};
+
+export const getLeaveTripBoardMockHandler = (
+  overrideResponse?:
+    | StandardResponseTripBoardLeaveResponse
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) =>
+        | Promise<StandardResponseTripBoardLeaveResponse>
+        | StandardResponseTripBoardLeaveResponse),
+) => {
+  return http.post("*/api/trip-boards/leave/:tripBoardId", async (info) => {
+    await delay(500);
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getLeaveTripBoardResponseMock(),
       ),
       { status: 200, headers: { "Content-Type": "application/json" } },
     );
@@ -2485,61 +2729,15 @@ export const getGetAccommodationCountByTripBoardIdMockHandler = (
     );
   });
 };
-
-export const getDeleteTripBoardMockHandler = (
-  overrideResponse?:
-    | StandardResponseTripBoardDeleteResponse
-    | ((
-        info: Parameters<Parameters<typeof http.delete>[1]>[0],
-      ) =>
-        | Promise<StandardResponseTripBoardDeleteResponse>
-        | StandardResponseTripBoardDeleteResponse),
-) => {
-  return http.delete("*/api/trip-boards/:boardId", async (info) => {
-    await delay(500);
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getDeleteTripBoardResponseMock(),
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } },
-    );
-  });
-};
-
-export const getLeaveTripBoardMockHandler = (
-  overrideResponse?:
-    | StandardResponseTripBoardLeaveResponse
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0],
-      ) =>
-        | Promise<StandardResponseTripBoardLeaveResponse>
-        | StandardResponseTripBoardLeaveResponse),
-) => {
-  return http.post("*/api/trip-boards/leave/:boardId", async (info) => {
-    await delay(500);
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getLeaveTripBoardResponseMock(),
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } },
-    );
-  });
-};
 export const getYapp26Web2Mock = () => [
+  getGetTripBoardDetailMockHandler(),
+  getUpdateTripBoardMockHandler(),
+  getDeleteTripBoardMockHandler(),
   getGetComparisonTableMockHandler(),
   getUpdateComparisonTableMockHandler(),
   getAddAccommodationToComparisonTableMockHandler(),
   getCreateTripBoardMockHandler(),
+  getLeaveTripBoardMockHandler(),
   getJoinTripBoardMockHandler(),
   getWithdrawUserMockHandler(),
   getLogoutMockHandler(),
@@ -2556,6 +2754,4 @@ export const getYapp26Web2Mock = () => [
   getDeleteAccommodationMockHandler(),
   getGetAccommodationByTripBoardIdAndUserIdMockHandler(),
   getGetAccommodationCountByTripBoardIdMockHandler(),
-  getDeleteTripBoardMockHandler(),
-  getLeaveTripBoardMockHandler(),
 ];

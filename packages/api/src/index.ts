@@ -53,14 +53,559 @@ import type {
   StandardResponseTripBoardJoinResponse,
   StandardResponseTripBoardLeaveResponse,
   StandardResponseTripBoardPageResponse,
+  StandardResponseTripBoardSummaryResponse,
+  StandardResponseTripBoardUpdateResponse,
   StandardResponseWithdrawResponse,
   TripBoardCreateRequest,
   TripBoardJoinRequest,
   TripBoardLeaveRequest,
+  TripBoardUpdateRequest,
   UpdateComparisonTableRequest,
 } from "./index.schemas";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+/**
+ * 특정 여행 보드의 상세 정보를 조회합니다. JWT 인증을 통해 현재 사용자 정보를 추출하고, 여행 보드 참여자만 접근할 수 있습니다. 보드의 기본 정보, 참여자 목록, 사용자 역할 등을 포함한 완전한 정보를 반환합니다.
+ * @summary 여행 보드 상세 조회
+ */
+export type getTripBoardDetailResponse200 = {
+  data: StandardResponseTripBoardSummaryResponse;
+  status: 200;
+};
+
+export type getTripBoardDetailResponseComposite = getTripBoardDetailResponse200;
+
+export type getTripBoardDetailResponse = getTripBoardDetailResponseComposite & {
+  headers: Headers;
+};
+
+export const getGetTripBoardDetailUrl = (tripBoardId: number) => {
+  return `https://api.ssok.info/api/trip-boards/${tripBoardId}`;
+};
+
+export const getTripBoardDetail = async (
+  tripBoardId: number,
+  options?: RequestInit,
+): Promise<getTripBoardDetailResponse> => {
+  return http<getTripBoardDetailResponse>(
+    getGetTripBoardDetailUrl(tripBoardId),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getGetTripBoardDetailQueryKey = (tripBoardId?: number) => {
+  return [`https://api.ssok.info/api/trip-boards/${tripBoardId}`] as const;
+};
+
+export const getGetTripBoardDetailQueryOptions = <
+  TData = Awaited<ReturnType<typeof getTripBoardDetail>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTripBoardDetail>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetTripBoardDetailQueryKey(tripBoardId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getTripBoardDetail>>
+  > = ({ signal }) =>
+    getTripBoardDetail(tripBoardId, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!tripBoardId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getTripBoardDetail>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type GetTripBoardDetailQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getTripBoardDetail>>
+>;
+export type GetTripBoardDetailQueryError = unknown;
+
+export function useGetTripBoardDetail<
+  TData = Awaited<ReturnType<typeof getTripBoardDetail>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTripBoardDetail>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTripBoardDetail>>,
+          TError,
+          Awaited<ReturnType<typeof getTripBoardDetail>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+export function useGetTripBoardDetail<
+  TData = Awaited<ReturnType<typeof getTripBoardDetail>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTripBoardDetail>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTripBoardDetail>>,
+          TError,
+          Awaited<ReturnType<typeof getTripBoardDetail>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetTripBoardDetail<
+  TData = Awaited<ReturnType<typeof getTripBoardDetail>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTripBoardDetail>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+/**
+ * @summary 여행 보드 상세 조회
+ */
+
+export function useGetTripBoardDetail<
+  TData = Awaited<ReturnType<typeof getTripBoardDetail>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTripBoardDetail>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getGetTripBoardDetailQueryOptions(tripBoardId, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary 여행 보드 상세 조회
+ */
+export const prefetchGetTripBoardDetailQuery = async <
+  TData = Awaited<ReturnType<typeof getTripBoardDetail>>,
+  TError = unknown,
+>(
+  queryClient: QueryClient,
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTripBoardDetail>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetTripBoardDetailQueryOptions(tripBoardId, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetTripBoardDetailSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getTripBoardDetail>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getTripBoardDetail>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetTripBoardDetailQueryKey(tripBoardId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getTripBoardDetail>>
+  > = ({ signal }) =>
+    getTripBoardDetail(tripBoardId, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getTripBoardDetail>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type GetTripBoardDetailSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getTripBoardDetail>>
+>;
+export type GetTripBoardDetailSuspenseQueryError = unknown;
+
+export function useGetTripBoardDetailSuspense<
+  TData = Awaited<ReturnType<typeof getTripBoardDetail>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getTripBoardDetail>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+export function useGetTripBoardDetailSuspense<
+  TData = Awaited<ReturnType<typeof getTripBoardDetail>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getTripBoardDetail>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+export function useGetTripBoardDetailSuspense<
+  TData = Awaited<ReturnType<typeof getTripBoardDetail>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getTripBoardDetail>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+/**
+ * @summary 여행 보드 상세 조회
+ */
+
+export function useGetTripBoardDetailSuspense<
+  TData = Awaited<ReturnType<typeof getTripBoardDetail>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getTripBoardDetail>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+} {
+  const queryOptions = getGetTripBoardDetailSuspenseQueryOptions(
+    tripBoardId,
+    options,
+  );
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * 기존 여행 보드의 기본 정보(보드 이름, 목적지, 여행 기간)를 수정합니다. JWT 인증을 통해 현재 사용자 정보를 추출하고, 수정된 보드 정보를 반환합니다.
+ * @summary 여행 보드 수정
+ */
+export type updateTripBoardResponse200 = {
+  data: StandardResponseTripBoardUpdateResponse;
+  status: 200;
+};
+
+export type updateTripBoardResponseComposite = updateTripBoardResponse200;
+
+export type updateTripBoardResponse = updateTripBoardResponseComposite & {
+  headers: Headers;
+};
+
+export const getUpdateTripBoardUrl = (tripBoardId: number) => {
+  return `https://api.ssok.info/api/trip-boards/${tripBoardId}`;
+};
+
+export const updateTripBoard = async (
+  tripBoardId: number,
+  tripBoardUpdateRequest: TripBoardUpdateRequest,
+  options?: RequestInit,
+): Promise<updateTripBoardResponse> => {
+  return http<updateTripBoardResponse>(getUpdateTripBoardUrl(tripBoardId), {
+    ...options,
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(tripBoardUpdateRequest),
+  });
+};
+
+export const getUpdateTripBoardMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateTripBoard>>,
+    TError,
+    { tripBoardId: number; data: TripBoardUpdateRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateTripBoard>>,
+  TError,
+  { tripBoardId: number; data: TripBoardUpdateRequest },
+  TContext
+> => {
+  const mutationKey = ["updateTripBoard"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateTripBoard>>,
+    { tripBoardId: number; data: TripBoardUpdateRequest }
+  > = (props) => {
+    const { tripBoardId, data } = props ?? {};
+
+    return updateTripBoard(tripBoardId, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpdateTripBoardMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateTripBoard>>
+>;
+export type UpdateTripBoardMutationBody = TripBoardUpdateRequest;
+export type UpdateTripBoardMutationError = unknown;
+
+/**
+ * @summary 여행 보드 수정
+ */
+export const useUpdateTripBoard = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof updateTripBoard>>,
+      TError,
+      { tripBoardId: number; data: TripBoardUpdateRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof updateTripBoard>>,
+  TError,
+  { tripBoardId: number; data: TripBoardUpdateRequest },
+  TContext
+> => {
+  const mutationOptions = getUpdateTripBoardMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * 여행 보드와 관련된 모든 데이터를 삭제합니다. 오직 여행 보드의 소유자(OWNER)만이 삭제할 수 있으며, 삭제 시 해당 보드에 연관된 모든 리소스(숙소 정보, 멤버 매핑 관계, 비교표 등)가 함께 제거됩니다.
+ * @summary 여행 보드 삭제
+ */
+export type deleteTripBoardResponse200 = {
+  data: StandardResponseTripBoardDeleteResponse;
+  status: 200;
+};
+
+export type deleteTripBoardResponseComposite = deleteTripBoardResponse200;
+
+export type deleteTripBoardResponse = deleteTripBoardResponseComposite & {
+  headers: Headers;
+};
+
+export const getDeleteTripBoardUrl = (tripBoardId: number) => {
+  return `https://api.ssok.info/api/trip-boards/${tripBoardId}`;
+};
+
+export const deleteTripBoard = async (
+  tripBoardId: number,
+  options?: RequestInit,
+): Promise<deleteTripBoardResponse> => {
+  return http<deleteTripBoardResponse>(getDeleteTripBoardUrl(tripBoardId), {
+    ...options,
+    method: "DELETE",
+  });
+};
+
+export const getDeleteTripBoardMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteTripBoard>>,
+    TError,
+    { tripBoardId: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteTripBoard>>,
+  TError,
+  { tripBoardId: number },
+  TContext
+> => {
+  const mutationKey = ["deleteTripBoard"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteTripBoard>>,
+    { tripBoardId: number }
+  > = (props) => {
+    const { tripBoardId } = props ?? {};
+
+    return deleteTripBoard(tripBoardId, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteTripBoardMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteTripBoard>>
+>;
+
+export type DeleteTripBoardMutationError = unknown;
+
+/**
+ * @summary 여행 보드 삭제
+ */
+export const useDeleteTripBoard = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteTripBoard>>,
+      TError,
+      { tripBoardId: number },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteTripBoard>>,
+  TError,
+  { tripBoardId: number },
+  TContext
+> => {
+  const mutationOptions = getDeleteTripBoardMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
 
 /**
  * 비교표 메타 데이터와 포함된 숙소 정보 리스트를 조회합니다. (Authorization 헤더에 Bearer 토큰 필요)
@@ -715,6 +1260,107 @@ export const useCreateTripBoard = <TError = unknown, TContext = unknown>(
   TContext
 > => {
   const mutationOptions = getCreateTripBoardMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * 여행 보드에서 나갑니다. OWNER인 경우 가장 먼저 입장한 MEMBER에게 권한이 이양되며, 마지막 참여자인 경우 여행보드가 삭제됩니다. 나가는 사용자는 자신이 생성한 리소스(비교표, 숙소)를 유지하거나 제거할 수 있습니다.
+ * @summary 여행 보드 나가기
+ */
+export type leaveTripBoardResponse200 = {
+  data: StandardResponseTripBoardLeaveResponse;
+  status: 200;
+};
+
+export type leaveTripBoardResponseComposite = leaveTripBoardResponse200;
+
+export type leaveTripBoardResponse = leaveTripBoardResponseComposite & {
+  headers: Headers;
+};
+
+export const getLeaveTripBoardUrl = (tripBoardId: number) => {
+  return `https://api.ssok.info/api/trip-boards/leave/${tripBoardId}`;
+};
+
+export const leaveTripBoard = async (
+  tripBoardId: number,
+  tripBoardLeaveRequest: TripBoardLeaveRequest,
+  options?: RequestInit,
+): Promise<leaveTripBoardResponse> => {
+  return http<leaveTripBoardResponse>(getLeaveTripBoardUrl(tripBoardId), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(tripBoardLeaveRequest),
+  });
+};
+
+export const getLeaveTripBoardMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof leaveTripBoard>>,
+    TError,
+    { tripBoardId: number; data: TripBoardLeaveRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof leaveTripBoard>>,
+  TError,
+  { tripBoardId: number; data: TripBoardLeaveRequest },
+  TContext
+> => {
+  const mutationKey = ["leaveTripBoard"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof leaveTripBoard>>,
+    { tripBoardId: number; data: TripBoardLeaveRequest }
+  > = (props) => {
+    const { tripBoardId, data } = props ?? {};
+
+    return leaveTripBoard(tripBoardId, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type LeaveTripBoardMutationResult = NonNullable<
+  Awaited<ReturnType<typeof leaveTripBoard>>
+>;
+export type LeaveTripBoardMutationBody = TripBoardLeaveRequest;
+export type LeaveTripBoardMutationError = unknown;
+
+/**
+ * @summary 여행 보드 나가기
+ */
+export const useLeaveTripBoard = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof leaveTripBoard>>,
+      TError,
+      { tripBoardId: number; data: TripBoardLeaveRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof leaveTripBoard>>,
+  TError,
+  { tripBoardId: number; data: TripBoardLeaveRequest },
+  TContext
+> => {
+  const mutationOptions = getLeaveTripBoardMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -4280,202 +4926,3 @@ export function useGetAccommodationCountByTripBoardIdSuspense<
 
   return query;
 }
-
-/**
- * 여행 보드와 관련된 모든 데이터를 삭제합니다. 오직 여행 보드의 소유자(OWNER)만이 삭제할 수 있으며, 삭제 시 해당 보드에 연관된 모든 리소스(숙소 정보, 멤버 매핑 관계, 비교표 등)가 함께 제거됩니다.
- * @summary 여행 보드 삭제
- */
-export type deleteTripBoardResponse200 = {
-  data: StandardResponseTripBoardDeleteResponse;
-  status: 200;
-};
-
-export type deleteTripBoardResponseComposite = deleteTripBoardResponse200;
-
-export type deleteTripBoardResponse = deleteTripBoardResponseComposite & {
-  headers: Headers;
-};
-
-export const getDeleteTripBoardUrl = (boardId: number) => {
-  return `https://api.ssok.info/api/trip-boards/${boardId}`;
-};
-
-export const deleteTripBoard = async (
-  boardId: number,
-  options?: RequestInit,
-): Promise<deleteTripBoardResponse> => {
-  return http<deleteTripBoardResponse>(getDeleteTripBoardUrl(boardId), {
-    ...options,
-    method: "DELETE",
-  });
-};
-
-export const getDeleteTripBoardMutationOptions = <
-  TError = unknown,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteTripBoard>>,
-    TError,
-    { boardId: number },
-    TContext
-  >;
-  request?: SecondParameter<typeof http>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteTripBoard>>,
-  TError,
-  { boardId: number },
-  TContext
-> => {
-  const mutationKey = ["deleteTripBoard"];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, request: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deleteTripBoard>>,
-    { boardId: number }
-  > = (props) => {
-    const { boardId } = props ?? {};
-
-    return deleteTripBoard(boardId, requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type DeleteTripBoardMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deleteTripBoard>>
->;
-
-export type DeleteTripBoardMutationError = unknown;
-
-/**
- * @summary 여행 보드 삭제
- */
-export const useDeleteTripBoard = <TError = unknown, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof deleteTripBoard>>,
-      TError,
-      { boardId: number },
-      TContext
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof deleteTripBoard>>,
-  TError,
-  { boardId: number },
-  TContext
-> => {
-  const mutationOptions = getDeleteTripBoardMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
-
-/**
- * 여행 보드에서 나갑니다. OWNER인 경우 가장 먼저 입장한 MEMBER에게 권한이 이양되며, 마지막 참여자인 경우 여행보드가 삭제됩니다. 나가는 사용자는 자신이 생성한 리소스(비교표, 숙소)를 유지하거나 제거할 수 있습니다.
- * @summary 여행 보드 나가기
- */
-export type leaveTripBoardResponse200 = {
-  data: StandardResponseTripBoardLeaveResponse;
-  status: 200;
-};
-
-export type leaveTripBoardResponseComposite = leaveTripBoardResponse200;
-
-export type leaveTripBoardResponse = leaveTripBoardResponseComposite & {
-  headers: Headers;
-};
-
-export const getLeaveTripBoardUrl = (boardId: number) => {
-  return `https://api.ssok.info/api/trip-boards/leave/${boardId}`;
-};
-
-export const leaveTripBoard = async (
-  boardId: number,
-  tripBoardLeaveRequest: TripBoardLeaveRequest,
-  options?: RequestInit,
-): Promise<leaveTripBoardResponse> => {
-  return http<leaveTripBoardResponse>(getLeaveTripBoardUrl(boardId), {
-    ...options,
-    method: "POST",
-    headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(tripBoardLeaveRequest),
-  });
-};
-
-export const getLeaveTripBoardMutationOptions = <
-  TError = unknown,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof leaveTripBoard>>,
-    TError,
-    { boardId: number; data: TripBoardLeaveRequest },
-    TContext
-  >;
-  request?: SecondParameter<typeof http>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof leaveTripBoard>>,
-  TError,
-  { boardId: number; data: TripBoardLeaveRequest },
-  TContext
-> => {
-  const mutationKey = ["leaveTripBoard"];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, request: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof leaveTripBoard>>,
-    { boardId: number; data: TripBoardLeaveRequest }
-  > = (props) => {
-    const { boardId, data } = props ?? {};
-
-    return leaveTripBoard(boardId, data, requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type LeaveTripBoardMutationResult = NonNullable<
-  Awaited<ReturnType<typeof leaveTripBoard>>
->;
-export type LeaveTripBoardMutationBody = TripBoardLeaveRequest;
-export type LeaveTripBoardMutationError = unknown;
-
-/**
- * @summary 여행 보드 나가기
- */
-export const useLeaveTripBoard = <TError = unknown, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof leaveTripBoard>>,
-      TError,
-      { boardId: number; data: TripBoardLeaveRequest },
-      TContext
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof leaveTripBoard>>,
-  TError,
-  { boardId: number; data: TripBoardLeaveRequest },
-  TContext
-> => {
-  const mutationOptions = getLeaveTripBoardMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};

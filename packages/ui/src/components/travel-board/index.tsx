@@ -27,6 +27,7 @@ type TravelBoardProps = {
     endDate: string;
     participantCount: number;
     participants: Participant[];
+    accommodationCount: number;
   };
   className?: string;
 
@@ -44,7 +45,14 @@ const TravelBoard = ({
   onExitClick,
   onInviteClick,
 }: TravelBoardProps) => {
-  const { boardName, destination, startDate, endDate, participants } = data;
+  const {
+    boardName,
+    destination,
+    startDate,
+    endDate,
+    participants,
+    accommodationCount,
+  } = data;
   const [moreHover, setMoreHover] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownWrapperRef = useRef<HTMLDivElement | null>(null);
@@ -85,7 +93,7 @@ const TravelBoard = ({
             }
           >
             <TextWithIcon.Text className="text-caption1-medi14 text-neutral-60">
-              {`n곳 저장됨`}
+              {`${accommodationCount}곳 저장됨`}
             </TextWithIcon.Text>
           </TextWithIcon>
         </div>

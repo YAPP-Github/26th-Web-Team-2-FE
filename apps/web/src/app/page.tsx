@@ -1,8 +1,7 @@
-import { redirect } from "next/navigation";
+import IndexPageView from "@/domains/landing/views/index-page-view";
 
-const IndexPage = async () => {
-  const defaultBoardId = "1";
-  redirect(`/boards/${defaultBoardId}/lists`);
+const IndexPage = () => {
+  return <IndexPageView />;
 };
 
 export default IndexPage;

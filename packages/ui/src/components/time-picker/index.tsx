@@ -1,3 +1,4 @@
+"use client";
 import { cva, type VariantProps } from "class-variance-authority";
 import { type ComponentProps, type KeyboardEvent, useState } from "react";
 import { useOutsideClickEffect } from "react-simplikit";

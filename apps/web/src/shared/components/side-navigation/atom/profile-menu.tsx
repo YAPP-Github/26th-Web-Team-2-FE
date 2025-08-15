@@ -28,7 +28,7 @@ export const ModalConfig = {
 const ProfileMenu = () => {
   const router = useRouter();
   const { accessToken } = useSession({ required: true });
-  const { data: userInfo } = useGetUserInfo({
+  const { data: userInfo, isLoading } = useGetUserInfo({
     query: {
       enabled: !!accessToken,
     },
@@ -138,12 +138,21 @@ const ProfileMenu = () => {
           } else if (modalConfig === "withdraw") {
             withdrawUser(undefined, {
               onSuccess: () => {
+                logout();
                 router.push("/");
               },
             });
           }
         }}
       />
+      {/* TODO: 스피너 컴포넌트 제작 후 반영 */}
+      {isLoading && (
+        <main className="absolute z-10 flex h-full w-full items-center justify-center ">
+          <div
+            className={`h-[2.4rem] w-[2.4rem] animate-spin rounded-full border-4 border-t-transparent bg-primary`}
+          />
+        </main>
+      )}
     </>
   );
 };

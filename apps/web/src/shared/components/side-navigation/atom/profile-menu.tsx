@@ -84,8 +84,7 @@ const ProfileMenu = () => {
                 현재 로그인한 계정
               </p>
               <p className="text-body1-semi16 text-neutral-10">
-                {/* TODO: 실제 이메일주소 반영 */}
-                ssokssok@gmail.com
+                {userInfo?.data.result?.email}
               </p>
             </header>
             {/* 회원관리 버튼 */}

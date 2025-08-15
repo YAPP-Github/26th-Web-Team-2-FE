@@ -9,12 +9,16 @@
 import type {
   DataTag,
   DefinedInitialDataOptions,
+  DefinedUseInfiniteQueryResult,
   DefinedUseQueryResult,
+  InfiniteData,
   MutationFunction,
   QueryClient,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseInfiniteQueryOptions,
+  UseInfiniteQueryResult,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -22,7 +26,12 @@ import type {
   UseSuspenseQueryOptions,
   UseSuspenseQueryResult,
 } from "@tanstack/react-query";
-import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { http } from "./api/http";
 import type {
   AccommodationRegisterRequest,
@@ -140,7 +149,7 @@ export const getGetTripBoardDetailQueryOptions = <
     Awaited<ReturnType<typeof getTripBoardDetail>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetTripBoardDetailQueryResult = NonNullable<
@@ -173,7 +182,7 @@ export function useGetTripBoardDetail<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetTripBoardDetail<
   TData = Awaited<ReturnType<typeof getTripBoardDetail>>,
@@ -199,7 +208,9 @@ export function useGetTripBoardDetail<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 export function useGetTripBoardDetail<
   TData = Awaited<ReturnType<typeof getTripBoardDetail>>,
   TError = unknown,
@@ -216,7 +227,9 @@ export function useGetTripBoardDetail<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary 여행 보드 상세 조회
  */
@@ -237,13 +250,15 @@ export function useGetTripBoardDetail<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
   const queryOptions = getGetTripBoardDetailQueryOptions(tripBoardId, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
     TError
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -307,7 +322,7 @@ export const getGetTripBoardDetailSuspenseQueryOptions = <
     Awaited<ReturnType<typeof getTripBoardDetail>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetTripBoardDetailSuspenseQueryResult = NonNullable<
@@ -332,7 +347,7 @@ export function useGetTripBoardDetailSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetTripBoardDetailSuspense<
   TData = Awaited<ReturnType<typeof getTripBoardDetail>>,
@@ -351,7 +366,7 @@ export function useGetTripBoardDetailSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetTripBoardDetailSuspense<
   TData = Awaited<ReturnType<typeof getTripBoardDetail>>,
@@ -370,7 +385,7 @@ export function useGetTripBoardDetailSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
  * @summary 여행 보드 상세 조회
@@ -393,7 +408,7 @@ export function useGetTripBoardDetailSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetTripBoardDetailSuspenseQueryOptions(
     tripBoardId,
@@ -404,7 +419,7 @@ export function useGetTripBoardDetailSuspense<
     queryOptions,
     queryClient,
   ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
+    queryKey: DataTag<QueryKey, TData, TError>;
   };
 
   query.queryKey = queryOptions.queryKey;
@@ -679,7 +694,7 @@ export const getGetComparisonTableQueryOptions = <
     Awaited<ReturnType<typeof getComparisonTable>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetComparisonTableQueryResult = NonNullable<
@@ -712,7 +727,7 @@ export function useGetComparisonTable<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetComparisonTable<
   TData = Awaited<ReturnType<typeof getComparisonTable>>,
@@ -738,7 +753,9 @@ export function useGetComparisonTable<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 export function useGetComparisonTable<
   TData = Awaited<ReturnType<typeof getComparisonTable>>,
   TError = unknown,
@@ -755,7 +772,9 @@ export function useGetComparisonTable<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary 비교표 조회
  */
@@ -776,13 +795,15 @@ export function useGetComparisonTable<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
   const queryOptions = getGetComparisonTableQueryOptions(tableId, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
     TError
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -846,7 +867,7 @@ export const getGetComparisonTableSuspenseQueryOptions = <
     Awaited<ReturnType<typeof getComparisonTable>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetComparisonTableSuspenseQueryResult = NonNullable<
@@ -871,7 +892,7 @@ export function useGetComparisonTableSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetComparisonTableSuspense<
   TData = Awaited<ReturnType<typeof getComparisonTable>>,
@@ -890,7 +911,7 @@ export function useGetComparisonTableSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetComparisonTableSuspense<
   TData = Awaited<ReturnType<typeof getComparisonTable>>,
@@ -909,7 +930,7 @@ export function useGetComparisonTableSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
  * @summary 비교표 조회
@@ -932,7 +953,7 @@ export function useGetComparisonTableSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetComparisonTableSuspenseQueryOptions(
     tableId,
@@ -943,7 +964,7 @@ export function useGetComparisonTableSuspense<
     queryOptions,
     queryClient,
   ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
+    queryKey: DataTag<QueryKey, TData, TError>;
   };
 
   query.queryKey = queryOptions.queryKey;
@@ -2400,7 +2421,7 @@ export const getGetUserInfoQueryOptions = <
     Awaited<ReturnType<typeof getUserInfo>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetUserInfoQueryResult = NonNullable<
@@ -2430,7 +2451,7 @@ export function useGetUserInfo<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetUserInfo<
   TData = Awaited<ReturnType<typeof getUserInfo>>,
@@ -2451,7 +2472,9 @@ export function useGetUserInfo<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 export function useGetUserInfo<
   TData = Awaited<ReturnType<typeof getUserInfo>>,
   TError = StandardResponseUserInfoResponse | StandardResponseUserInfoResponse,
@@ -2463,7 +2486,9 @@ export function useGetUserInfo<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary 사용자 정보 조회
  */
@@ -2479,13 +2504,15 @@ export function useGetUserInfo<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
   const queryOptions = getGetUserInfoQueryOptions(options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
     TError
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -2539,7 +2566,7 @@ export const getGetUserInfoSuspenseQueryOptions = <
     Awaited<ReturnType<typeof getUserInfo>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetUserInfoSuspenseQueryResult = NonNullable<
@@ -2565,7 +2592,7 @@ export function useGetUserInfoSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetUserInfoSuspense<
   TData = Awaited<ReturnType<typeof getUserInfo>>,
@@ -2583,7 +2610,7 @@ export function useGetUserInfoSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetUserInfoSuspense<
   TData = Awaited<ReturnType<typeof getUserInfo>>,
@@ -2601,7 +2628,7 @@ export function useGetUserInfoSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
  * @summary 사용자 정보 조회
@@ -2623,7 +2650,7 @@ export function useGetUserInfoSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetUserInfoSuspenseQueryOptions(options);
 
@@ -2631,7 +2658,7 @@ export function useGetUserInfoSuspense<
     queryOptions,
     queryClient,
   ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
+    queryKey: DataTag<QueryKey, TData, TError>;
   };
 
   query.queryKey = queryOptions.queryKey;
@@ -2709,7 +2736,7 @@ export const getGetInvitationCodeQueryOptions = <
     Awaited<ReturnType<typeof getInvitationCode>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetInvitationCodeQueryResult = NonNullable<
@@ -2742,7 +2769,7 @@ export function useGetInvitationCode<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetInvitationCode<
   TData = Awaited<ReturnType<typeof getInvitationCode>>,
@@ -2768,7 +2795,9 @@ export function useGetInvitationCode<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 export function useGetInvitationCode<
   TData = Awaited<ReturnType<typeof getInvitationCode>>,
   TError = unknown,
@@ -2785,7 +2814,9 @@ export function useGetInvitationCode<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary 초대 링크 정보 조회
  */
@@ -2806,13 +2837,15 @@ export function useGetInvitationCode<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
   const queryOptions = getGetInvitationCodeQueryOptions(tripBoardId, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
     TError
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -2876,7 +2909,7 @@ export const getGetInvitationCodeSuspenseQueryOptions = <
     Awaited<ReturnType<typeof getInvitationCode>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetInvitationCodeSuspenseQueryResult = NonNullable<
@@ -2901,7 +2934,7 @@ export function useGetInvitationCodeSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetInvitationCodeSuspense<
   TData = Awaited<ReturnType<typeof getInvitationCode>>,
@@ -2920,7 +2953,7 @@ export function useGetInvitationCodeSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetInvitationCodeSuspense<
   TData = Awaited<ReturnType<typeof getInvitationCode>>,
@@ -2939,7 +2972,7 @@ export function useGetInvitationCodeSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
  * @summary 초대 링크 정보 조회
@@ -2962,7 +2995,7 @@ export function useGetInvitationCodeSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetInvitationCodeSuspenseQueryOptions(
     tripBoardId,
@@ -2973,7 +3006,7 @@ export function useGetInvitationCodeSuspense<
     queryOptions,
     queryClient,
   ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
+    queryKey: DataTag<QueryKey, TData, TError>;
   };
 
   query.queryKey = queryOptions.queryKey;
@@ -3029,6 +3062,216 @@ export const getGetTripBoardsQueryKey = (params?: GetTripBoardsParams) => {
   ] as const;
 };
 
+export const getGetTripBoardsInfiniteQueryOptions = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getTripBoards>>,
+    GetTripBoardsParams["page"]
+  >,
+  TError = unknown,
+>(
+  params: GetTripBoardsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getTripBoards>>,
+        TError,
+        TData,
+        QueryKey,
+        GetTripBoardsParams["page"]
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetTripBoardsQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getTripBoards>>,
+    QueryKey,
+    GetTripBoardsParams["page"]
+  > = ({ signal, pageParam }) =>
+    getTripBoards(
+      { ...params, page: pageParam || params?.page },
+      { signal, ...requestOptions },
+    );
+
+  return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getTripBoards>>,
+    TError,
+    TData,
+    QueryKey,
+    GetTripBoardsParams["page"]
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetTripBoardsInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getTripBoards>>
+>;
+export type GetTripBoardsInfiniteQueryError = unknown;
+
+export function useGetTripBoardsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getTripBoards>>,
+    GetTripBoardsParams["page"]
+  >,
+  TError = unknown,
+>(
+  params: GetTripBoardsParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getTripBoards>>,
+        TError,
+        TData,
+        QueryKey,
+        GetTripBoardsParams["page"]
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTripBoards>>,
+          TError,
+          Awaited<ReturnType<typeof getTripBoards>>,
+          QueryKey
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTripBoardsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getTripBoards>>,
+    GetTripBoardsParams["page"]
+  >,
+  TError = unknown,
+>(
+  params: GetTripBoardsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getTripBoards>>,
+        TError,
+        TData,
+        QueryKey,
+        GetTripBoardsParams["page"]
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTripBoards>>,
+          TError,
+          Awaited<ReturnType<typeof getTripBoards>>,
+          QueryKey
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTripBoardsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getTripBoards>>,
+    GetTripBoardsParams["page"]
+  >,
+  TError = unknown,
+>(
+  params: GetTripBoardsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getTripBoards>>,
+        TError,
+        TData,
+        QueryKey,
+        GetTripBoardsParams["page"]
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary 여행 보드 목록 조회
+ */
+
+export function useGetTripBoardsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getTripBoards>>,
+    GetTripBoardsParams["page"]
+  >,
+  TError = unknown,
+>(
+  params: GetTripBoardsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getTripBoards>>,
+        TError,
+        TData,
+        QueryKey,
+        GetTripBoardsParams["page"]
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetTripBoardsInfiniteQueryOptions(params, options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary 여행 보드 목록 조회
+ */
+export const prefetchGetTripBoardsInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof getTripBoards>>,
+  TError = unknown,
+>(
+  queryClient: QueryClient,
+  params: GetTripBoardsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getTripBoards>>,
+        TError,
+        TData,
+        QueryKey,
+        GetTripBoardsParams["page"]
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetTripBoardsInfiniteQueryOptions(params, options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
+};
+
 export const getGetTripBoardsQueryOptions = <
   TData = Awaited<ReturnType<typeof getTripBoards>>,
   TError = unknown,
@@ -3053,7 +3296,7 @@ export const getGetTripBoardsQueryOptions = <
     Awaited<ReturnType<typeof getTripBoards>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetTripBoardsQueryResult = NonNullable<
@@ -3082,7 +3325,7 @@ export function useGetTripBoards<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetTripBoards<
   TData = Awaited<ReturnType<typeof getTripBoards>>,
@@ -3104,7 +3347,9 @@ export function useGetTripBoards<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 export function useGetTripBoards<
   TData = Awaited<ReturnType<typeof getTripBoards>>,
   TError = unknown,
@@ -3117,7 +3362,9 @@ export function useGetTripBoards<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary 여행 보드 목록 조회
  */
@@ -3134,13 +3381,15 @@ export function useGetTripBoards<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
   const queryOptions = getGetTripBoardsQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
     TError
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -3198,7 +3447,7 @@ export const getGetTripBoardsSuspenseQueryOptions = <
     Awaited<ReturnType<typeof getTripBoards>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetTripBoardsSuspenseQueryResult = NonNullable<
@@ -3223,7 +3472,7 @@ export function useGetTripBoardsSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetTripBoardsSuspense<
   TData = Awaited<ReturnType<typeof getTripBoards>>,
@@ -3242,7 +3491,7 @@ export function useGetTripBoardsSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetTripBoardsSuspense<
   TData = Awaited<ReturnType<typeof getTripBoards>>,
@@ -3261,7 +3510,7 @@ export function useGetTripBoardsSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
  * @summary 여행 보드 목록 조회
@@ -3284,7 +3533,7 @@ export function useGetTripBoardsSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetTripBoardsSuspenseQueryOptions(params, options);
 
@@ -3292,7 +3541,7 @@ export function useGetTripBoardsSuspense<
     queryOptions,
     queryClient,
   ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
+    queryKey: DataTag<QueryKey, TData, TError>;
   };
 
   query.queryKey = queryOptions.queryKey;
@@ -3387,7 +3636,7 @@ export const getGetKakaoAuthorizeUrlQueryOptions = <
     Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetKakaoAuthorizeUrlQueryResult = NonNullable<
@@ -3420,7 +3669,7 @@ export function useGetKakaoAuthorizeUrl<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetKakaoAuthorizeUrl<
   TData = Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
@@ -3446,7 +3695,9 @@ export function useGetKakaoAuthorizeUrl<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 export function useGetKakaoAuthorizeUrl<
   TData = Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
   TError = unknown,
@@ -3463,7 +3714,9 @@ export function useGetKakaoAuthorizeUrl<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary 카카오 OAuth 인가 URL 조회
  */
@@ -3484,13 +3737,15 @@ export function useGetKakaoAuthorizeUrl<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
   const queryOptions = getGetKakaoAuthorizeUrlQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
     TError
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -3554,7 +3809,7 @@ export const getGetKakaoAuthorizeUrlSuspenseQueryOptions = <
     Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetKakaoAuthorizeUrlSuspenseQueryResult = NonNullable<
@@ -3579,7 +3834,7 @@ export function useGetKakaoAuthorizeUrlSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetKakaoAuthorizeUrlSuspense<
   TData = Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
@@ -3598,7 +3853,7 @@ export function useGetKakaoAuthorizeUrlSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetKakaoAuthorizeUrlSuspense<
   TData = Awaited<ReturnType<typeof getKakaoAuthorizeUrl>>,
@@ -3617,7 +3872,7 @@ export function useGetKakaoAuthorizeUrlSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
  * @summary 카카오 OAuth 인가 URL 조회
@@ -3640,7 +3895,7 @@ export function useGetKakaoAuthorizeUrlSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetKakaoAuthorizeUrlSuspenseQueryOptions(
     params,
@@ -3651,7 +3906,7 @@ export function useGetKakaoAuthorizeUrlSuspense<
     queryOptions,
     queryClient,
   ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
+    queryKey: DataTag<QueryKey, TData, TError>;
   };
 
   query.queryKey = queryOptions.queryKey;
@@ -3722,7 +3977,7 @@ export const getGetComparisonFactorListQueryOptions = <
     Awaited<ReturnType<typeof getComparisonFactorList>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetComparisonFactorListQueryResult = NonNullable<
@@ -3754,7 +4009,7 @@ export function useGetComparisonFactorList<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetComparisonFactorList<
   TData = Awaited<ReturnType<typeof getComparisonFactorList>>,
@@ -3779,7 +4034,9 @@ export function useGetComparisonFactorList<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 export function useGetComparisonFactorList<
   TData = Awaited<ReturnType<typeof getComparisonFactorList>>,
   TError = unknown,
@@ -3795,7 +4052,9 @@ export function useGetComparisonFactorList<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary 비교표 기준 항목 Enum 리스트
  */
@@ -3815,13 +4074,15 @@ export function useGetComparisonFactorList<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
   const queryOptions = getGetComparisonFactorListQueryOptions(options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
     TError
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -3880,7 +4141,7 @@ export const getGetComparisonFactorListSuspenseQueryOptions = <
     Awaited<ReturnType<typeof getComparisonFactorList>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetComparisonFactorListSuspenseQueryResult = NonNullable<
@@ -3904,7 +4165,7 @@ export function useGetComparisonFactorListSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetComparisonFactorListSuspense<
   TData = Awaited<ReturnType<typeof getComparisonFactorList>>,
@@ -3922,7 +4183,7 @@ export function useGetComparisonFactorListSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetComparisonFactorListSuspense<
   TData = Awaited<ReturnType<typeof getComparisonFactorList>>,
@@ -3940,7 +4201,7 @@ export function useGetComparisonFactorListSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
  * @summary 비교표 기준 항목 Enum 리스트
@@ -3962,7 +4223,7 @@ export function useGetComparisonFactorListSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetComparisonFactorListSuspenseQueryOptions(options);
 
@@ -3970,7 +4231,7 @@ export function useGetComparisonFactorListSuspense<
     queryOptions,
     queryClient,
   ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
+    queryKey: DataTag<QueryKey, TData, TError>;
   };
 
   query.queryKey = queryOptions.queryKey;
@@ -4037,7 +4298,7 @@ export const getGetAmenityFactorListQueryOptions = <
     Awaited<ReturnType<typeof getAmenityFactorList>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetAmenityFactorListQueryResult = NonNullable<
@@ -4069,7 +4330,7 @@ export function useGetAmenityFactorList<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAmenityFactorList<
   TData = Awaited<ReturnType<typeof getAmenityFactorList>>,
@@ -4094,7 +4355,9 @@ export function useGetAmenityFactorList<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 export function useGetAmenityFactorList<
   TData = Awaited<ReturnType<typeof getAmenityFactorList>>,
   TError = unknown,
@@ -4110,7 +4373,9 @@ export function useGetAmenityFactorList<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary 편의 서비스 Enum 리스트
  */
@@ -4130,13 +4395,15 @@ export function useGetAmenityFactorList<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
   const queryOptions = getGetAmenityFactorListQueryOptions(options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
     TError
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -4194,7 +4461,7 @@ export const getGetAmenityFactorListSuspenseQueryOptions = <
     Awaited<ReturnType<typeof getAmenityFactorList>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetAmenityFactorListSuspenseQueryResult = NonNullable<
@@ -4218,7 +4485,7 @@ export function useGetAmenityFactorListSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAmenityFactorListSuspense<
   TData = Awaited<ReturnType<typeof getAmenityFactorList>>,
@@ -4236,7 +4503,7 @@ export function useGetAmenityFactorListSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAmenityFactorListSuspense<
   TData = Awaited<ReturnType<typeof getAmenityFactorList>>,
@@ -4254,7 +4521,7 @@ export function useGetAmenityFactorListSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
  * @summary 편의 서비스 Enum 리스트
@@ -4276,7 +4543,7 @@ export function useGetAmenityFactorListSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetAmenityFactorListSuspenseQueryOptions(options);
 
@@ -4284,7 +4551,7 @@ export function useGetAmenityFactorListSuspense<
     queryOptions,
     queryClient,
   ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
+    queryKey: DataTag<QueryKey, TData, TError>;
   };
 
   query.queryKey = queryOptions.queryKey;
@@ -4367,7 +4634,7 @@ export const getGetAccommodationByIdQueryOptions = <
     Awaited<ReturnType<typeof getAccommodationById>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetAccommodationByIdQueryResult = NonNullable<
@@ -4400,7 +4667,7 @@ export function useGetAccommodationById<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAccommodationById<
   TData = Awaited<ReturnType<typeof getAccommodationById>>,
@@ -4426,7 +4693,9 @@ export function useGetAccommodationById<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 export function useGetAccommodationById<
   TData = Awaited<ReturnType<typeof getAccommodationById>>,
   TError = unknown,
@@ -4443,7 +4712,9 @@ export function useGetAccommodationById<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary 숙소 단건 조회
  */
@@ -4464,7 +4735,9 @@ export function useGetAccommodationById<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
   const queryOptions = getGetAccommodationByIdQueryOptions(
     accommodationId,
     options,
@@ -4473,7 +4746,7 @@ export function useGetAccommodationById<
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
     TError
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -4540,7 +4813,7 @@ export const getGetAccommodationByIdSuspenseQueryOptions = <
     Awaited<ReturnType<typeof getAccommodationById>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetAccommodationByIdSuspenseQueryResult = NonNullable<
@@ -4565,7 +4838,7 @@ export function useGetAccommodationByIdSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAccommodationByIdSuspense<
   TData = Awaited<ReturnType<typeof getAccommodationById>>,
@@ -4584,7 +4857,7 @@ export function useGetAccommodationByIdSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAccommodationByIdSuspense<
   TData = Awaited<ReturnType<typeof getAccommodationById>>,
@@ -4603,7 +4876,7 @@ export function useGetAccommodationByIdSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
  * @summary 숙소 단건 조회
@@ -4626,7 +4899,7 @@ export function useGetAccommodationByIdSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetAccommodationByIdSuspenseQueryOptions(
     accommodationId,
@@ -4637,7 +4910,7 @@ export function useGetAccommodationByIdSuspense<
     queryOptions,
     queryClient,
   ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
+    queryKey: DataTag<QueryKey, TData, TError>;
   };
 
   query.queryKey = queryOptions.queryKey;
@@ -4839,7 +5112,7 @@ export const getGetAccommodationByTripBoardIdAndUserIdQueryOptions = <
     Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetAccommodationByTripBoardIdAndUserIdQueryResult = NonNullable<
@@ -4872,7 +5145,7 @@ export function useGetAccommodationByTripBoardIdAndUserId<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAccommodationByTripBoardIdAndUserId<
   TData = Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
@@ -4898,7 +5171,9 @@ export function useGetAccommodationByTripBoardIdAndUserId<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 export function useGetAccommodationByTripBoardIdAndUserId<
   TData = Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
   TError = unknown,
@@ -4915,7 +5190,9 @@ export function useGetAccommodationByTripBoardIdAndUserId<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary 숙소 목록 조회
  */
@@ -4936,7 +5213,9 @@ export function useGetAccommodationByTripBoardIdAndUserId<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
   const queryOptions = getGetAccommodationByTripBoardIdAndUserIdQueryOptions(
     params,
     options,
@@ -4945,7 +5224,7 @@ export function useGetAccommodationByTripBoardIdAndUserId<
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
     TError
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -5016,7 +5295,7 @@ export const getGetAccommodationByTripBoardIdAndUserIdSuspenseQueryOptions = <
     Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetAccommodationByTripBoardIdAndUserIdSuspenseQueryResult =
@@ -5042,7 +5321,7 @@ export function useGetAccommodationByTripBoardIdAndUserIdSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAccommodationByTripBoardIdAndUserIdSuspense<
   TData = Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
@@ -5061,7 +5340,7 @@ export function useGetAccommodationByTripBoardIdAndUserIdSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAccommodationByTripBoardIdAndUserIdSuspense<
   TData = Awaited<ReturnType<typeof getAccommodationByTripBoardIdAndUserId>>,
@@ -5080,7 +5359,7 @@ export function useGetAccommodationByTripBoardIdAndUserIdSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
  * @summary 숙소 목록 조회
@@ -5103,7 +5382,7 @@ export function useGetAccommodationByTripBoardIdAndUserIdSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions =
     getGetAccommodationByTripBoardIdAndUserIdSuspenseQueryOptions(
@@ -5115,7 +5394,7 @@ export function useGetAccommodationByTripBoardIdAndUserIdSuspense<
     queryOptions,
     queryClient,
   ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
+    queryKey: DataTag<QueryKey, TData, TError>;
   };
 
   query.queryKey = queryOptions.queryKey;
@@ -5211,7 +5490,7 @@ export const getGetAccommodationCountByTripBoardIdQueryOptions = <
     Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetAccommodationCountByTripBoardIdQueryResult = NonNullable<
@@ -5244,7 +5523,7 @@ export function useGetAccommodationCountByTripBoardId<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAccommodationCountByTripBoardId<
   TData = Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
@@ -5270,7 +5549,9 @@ export function useGetAccommodationCountByTripBoardId<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 export function useGetAccommodationCountByTripBoardId<
   TData = Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
   TError = unknown,
@@ -5287,7 +5568,9 @@ export function useGetAccommodationCountByTripBoardId<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary 여행보드 숙소 개수 조회
  */
@@ -5308,7 +5591,9 @@ export function useGetAccommodationCountByTripBoardId<
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
   const queryOptions = getGetAccommodationCountByTripBoardIdQueryOptions(
     params,
     options,
@@ -5317,7 +5602,7 @@ export function useGetAccommodationCountByTripBoardId<
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
     TError
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -5385,7 +5670,7 @@ export const getGetAccommodationCountByTripBoardIdSuspenseQueryOptions = <
     Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData> };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetAccommodationCountByTripBoardIdSuspenseQueryResult = NonNullable<
@@ -5410,7 +5695,7 @@ export function useGetAccommodationCountByTripBoardIdSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAccommodationCountByTripBoardIdSuspense<
   TData = Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
@@ -5429,7 +5714,7 @@ export function useGetAccommodationCountByTripBoardIdSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAccommodationCountByTripBoardIdSuspense<
   TData = Awaited<ReturnType<typeof getAccommodationCountByTripBoardId>>,
@@ -5448,7 +5733,7 @@ export function useGetAccommodationCountByTripBoardIdSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
  * @summary 여행보드 숙소 개수 조회
@@ -5471,7 +5756,7 @@ export function useGetAccommodationCountByTripBoardIdSuspense<
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData>;
+  queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions =
     getGetAccommodationCountByTripBoardIdSuspenseQueryOptions(params, options);
@@ -5480,7 +5765,7 @@ export function useGetAccommodationCountByTripBoardIdSuspense<
     queryOptions,
     queryClient,
   ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
+    queryKey: DataTag<QueryKey, TData, TError>;
   };
 
   query.queryKey = queryOptions.queryKey;

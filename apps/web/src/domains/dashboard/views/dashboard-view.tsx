@@ -1,21 +1,40 @@
 "use client";
+
+import { useGetTripBoardsInfinite } from "@ssok/api";
 import { ActionCard, TravelBoard } from "@ssok/ui";
-import useTripBoardList from "@/domains/dashboard/hooks/use-trip-board-list";
+import { useEffect } from "react";
 import Header from "@/shared/components/header";
 import { useSession } from "@/shared/hooks/use-session";
 
-const DashBoardPage = () => {
+const DashboardView = () => {
   const { accessToken } = useSession({ required: true });
-  const { data: tripBoards } = useTripBoardList(
-    { size: 10 },
+
+  const {
+    data: { pages } = {},
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+  } = useGetTripBoardsInfinite(
+    { page: 0, size: 10 },
     {
-      accessToken: accessToken || "",
-      enabled: !!accessToken,
+      query: {
+        enabled: !!accessToken,
+        getNextPageParam: (lastPage, allPages) => {
+          return lastPage.data.result?.hasNext ? allPages.length : undefined;
+        },
+      },
+      request: { headers: { Authorization: `Bearer ${accessToken}` } },
     },
   );
 
   const allTripBoards =
-    tripBoards?.pages?.flatMap((page) => page?.result?.tripBoards ?? []) ?? [];
+    pages?.flatMap((page) => page?.data.result?.tripBoards ?? []) ?? [];
+
+  useEffect(() => {
+    if (accessToken && hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  }, [accessToken, hasNextPage, isFetching, fetchNextPage]);
 
   return (
     <main>
@@ -59,9 +78,16 @@ const DashBoardPage = () => {
             </li>
           ))}
         </ul>
+        {isFetching && (
+          <div className="mt-[2rem] text-center">
+            <p className="text-body2-medi14 text-neutral-60">
+              데이터를 불러오는 중...
+            </p>
+          </div>
+        )}
       </section>
     </main>
   );
 };
 
-export default DashBoardPage;
+export default DashboardView;

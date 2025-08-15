@@ -42,13 +42,14 @@ export const TextField = ({
   icon,
   value,
   maxLength,
+  hasError: hasError_,
   ...props
 }: TextFieldProps) => {
   const hasValue = String(value).length > 0;
   const currentLength = String(value).length;
   const isOverLimit = maxLength && currentLength > maxLength;
 
-  const hasError = props.hasError || isOverLimit || false;
+  const hasError = hasError_ || isOverLimit || false;
   const endIcon = props.endIcon || (isOverLimit ? <IcAlert /> : undefined);
   const showCharacterCount = maxLength && !props.disabled;
 

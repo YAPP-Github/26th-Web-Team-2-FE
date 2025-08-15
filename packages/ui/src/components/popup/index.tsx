@@ -8,7 +8,6 @@ export type PopupProps = PropsWithChildren<{
   onClose: () => void;
   title?: string;
   className?: string;
-  hasHeader?: boolean;
 }>;
 
 export const Popup = ({
@@ -17,7 +16,6 @@ export const Popup = ({
   onClose,
   className,
   active = true,
-  hasHeader = true,
 }: PopupProps) => {
   return (
     <Backdrop active={active} onClose={onClose}>
@@ -30,23 +28,21 @@ export const Popup = ({
         )}
         onClick={(e) => e.stopPropagation()}
       >
-        {hasHeader && (
-          <div className="mb-[2.4rem] flex items-start justify-between">
-            {title && (
-              <h2 className="text-heading1-semi20 text-neutral-25">{title}</h2>
+        <div className="mb-[2.4rem] flex items-start justify-between">
+          {title && (
+            <h2 className="text-heading1-semi20 text-neutral-25">{title}</h2>
+          )}
+          <button
+            type="button"
+            onClick={onClose}
+            className={cn(
+              "cursor-pointer rounded-[0.8rem] transition-colors hover:bg-neutral-90",
+              !title && "ml-auto",
             )}
-            <button
-              type="button"
-              onClick={onClose}
-              className={cn(
-                "cursor-pointer rounded-[0.8rem] transition-colors hover:bg-neutral-90",
-                !title && "ml-auto",
-              )}
-            >
-              <IcClose className="h-[3rem] w-[3rem] text-neutral-40" />
-            </button>
-          </div>
-        )}
+          >
+            <IcClose className="h-[3rem] w-[3rem] text-neutral-40" />
+          </button>
+        </div>
         <div className="flex-1">{children}</div>
       </div>
     </Backdrop>

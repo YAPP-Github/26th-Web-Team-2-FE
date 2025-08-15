@@ -1,5 +1,6 @@
-import { useGetUserInfo } from "@ssok/api";
+import { useGetUserInfo, useWithdrawUser } from "@ssok/api";
 import { AvatarProfile, cn, useToggle } from "@ssok/ui";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useOutsideClick } from "@/domains/list/hooks/use-outside-click";
 import { useSession } from "@/shared/hooks/use-session";
@@ -10,9 +11,6 @@ export const ModalConfig = {
     content: "로그아웃 하시겠어요?",
     description: null,
     actionBtnText: "로그아웃",
-    onAction: () => {
-      // 로그아웃
-    },
   },
   withdraw: {
     content: "탈퇴를 진행하시겠어요?",
@@ -24,13 +22,11 @@ export const ModalConfig = {
       </>
     ),
     actionBtnText: "탈퇴하기",
-    onAction: () => {
-      // 회원 탈퇴 로직
-    },
   },
 };
 
 const ProfileMenu = () => {
+  const router = useRouter();
   const { accessToken } = useSession({ required: true });
   const { data: userInfo } = useGetUserInfo({
     query: {
@@ -38,10 +34,20 @@ const ProfileMenu = () => {
     },
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
   });
+  const { mutate: withdrawUser } = useWithdrawUser({
+    request: { headers: { Authorization: `Bearer ${accessToken}` } },
+  });
+
+  const logout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    router.push("/");
+  };
+
   const { active, activate, deactivate } = useToggle(false);
   const [modalConfig, setModalConfig] = useState<
     keyof typeof ModalConfig | null
   >(null);
+
   const menuRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const onOpenMenu = () => setIsMenuOpen(true);
@@ -78,6 +84,7 @@ const ProfileMenu = () => {
                 현재 로그인한 계정
               </p>
               <p className="text-body1-semi16 text-neutral-10">
+                {/* TODO: 실제 이메일주소 반영 */}
                 ssokssok@gmail.com
               </p>
             </header>
@@ -125,6 +132,17 @@ const ProfileMenu = () => {
         active={active}
         onClose={deactivate}
         {...ModalConfig[modalConfig ?? "logout"]}
+        onAction={() => {
+          if (modalConfig === "logout") {
+            logout();
+          } else if (modalConfig === "withdraw") {
+            withdrawUser(undefined, {
+              onSuccess: () => {
+                router.push("/");
+              },
+            });
+          }
+        }}
       />
     </>
   );

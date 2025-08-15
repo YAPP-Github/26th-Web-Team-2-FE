@@ -9,6 +9,7 @@ export type PinProps = {
 export const Pin = ({ children, className, isActive, ...props }: PinProps) => {
   return (
     <button
+      type="button"
       className={cn(
         // 본체 스타일
         "relative inline-flex items-center justify-center text-heading2-semi18 text-primary-5 shadow-[2px_4px_6px_0px_rgba(0,0,0,0.2)]",

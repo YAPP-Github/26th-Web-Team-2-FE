@@ -1330,6 +1330,11 @@
             "description": "사용자 닉네임",
             "example": "홍길동"
           },
+          "email": {
+            "type": "string",
+            "description": "사용자 이메일",
+            "example": "abc1234@gmail.com"
+          },
           "token": {
             "$ref": "#/components/schemas/TokenSuccessResponse",
             "description": "토큰 정보"
@@ -1617,6 +1622,11 @@
             "type": "string",
             "description": "유저 프로필 이미지 URL",
             "example": "https://example.com/profile/user123.jpg"
+          },
+          "email": {
+            "type": "string",
+            "description": "사용자 이메일",
+            "example": "abc1234@gmail.com"
           }
         }
       },

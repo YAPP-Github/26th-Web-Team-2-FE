@@ -334,6 +334,8 @@ export interface OauthLoginResponse {
   userId?: number;
   /** 사용자 닉네임 */
   nickname?: string;
+  /** 사용자 이메일 */
+  email?: string;
   /** 토큰 정보 */
   token?: TokenSuccessResponse;
 }
@@ -561,6 +563,8 @@ export interface UserInfoResponse {
   nickname?: string;
   /** 유저 프로필 이미지 URL */
   profileImageUrl?: string;
+  /** 사용자 이메일 */
+  email?: string;
 }
 
 export type ParticipantProfileResponseRole = "OWNER" | "MEMBER";

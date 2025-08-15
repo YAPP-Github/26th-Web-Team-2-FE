@@ -38,7 +38,7 @@ export const Pin = ({ children, className, isActive, ...props }: PinProps) => {
       )}
       {...props}
     >
-      <span className="block max-w-[25rem] overflow-hidden text-ellipsis whitespace-nowrap">
+      <span className="block max-w-[21.6rem] overflow-hidden text-ellipsis whitespace-nowrap">
         {children}
       </span>
     </button>

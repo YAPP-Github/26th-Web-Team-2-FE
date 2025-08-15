@@ -25,6 +25,7 @@ export interface UseFloatingReturn<
   floatingRef: RefObject<F | null>;
   floatingStyles: CSSProperties;
   placement: Placement;
+  refresh: () => void;
 }
 
 export function useFloating<R extends HTMLElement, F extends HTMLElement>({
@@ -35,24 +36,42 @@ export function useFloating<R extends HTMLElement, F extends HTMLElement>({
   const events = ["resize", "scroll"];
   const [placement, setPlacement] = useState<Placement>(defaultPlacement);
   const [maxHeight, setMaxHeight] = useState<number>(0);
+  const [left, setLeft] = useState<number>(0);
 
   const referenceRef = useRef<R>(null);
   const floatingRef = useRef<F>(null);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: referenceRef가 변경될 때 실행
+  const container = useMemo(() => {
+    let container = referenceRef.current?.parentElement;
+    while (container) {
+      const styles = window.getComputedStyle(container);
+      if (
+        styles.position === "relative" ||
+        styles.position === "absolute" ||
+        styles.position === "fixed"
+      ) {
+        break;
+      }
+      container = container.parentElement;
+    }
+    return container;
+  }, [referenceRef.current]);
+
   const floatingStyles = useMemo(() => {
     return {
       position: "absolute",
-      left: 0,
-      right: 0,
+      left,
       maxHeight: `${Math.max(maxHeight - offset, offset * 2)}px`,
       zIndex: 50,
       [placement === "top" ? "bottom" : "top"]: `calc(100% + ${offset}px)`,
     } satisfies CSSProperties;
-  }, [placement, offset, maxHeight]);
+  }, [placement, offset, maxHeight, left]);
 
   const refresh = useCallback(() => {
     if (!referenceRef.current || !enabled) {
       setMaxHeight(0);
+      setLeft(0);
       return;
     }
 
@@ -63,9 +82,17 @@ export function useFloating<R extends HTMLElement, F extends HTMLElement>({
     const placement =
       spaceBelow < 500 && spaceAbove > spaceBelow ? "top" : "bottom";
 
+    if (container) {
+      const containerRect = container.getBoundingClientRect();
+      const left = rect.left - containerRect.left;
+      setLeft(left);
+    } else {
+      setLeft(0);
+    }
+
     setPlacement(placement);
     setMaxHeight(placement === "top" ? spaceAbove : spaceBelow);
-  }, [enabled, offset]);
+  }, [enabled, offset, container]);
 
   useEffect(() => {
     refresh();
@@ -80,5 +107,6 @@ export function useFloating<R extends HTMLElement, F extends HTMLElement>({
     floatingRef,
     floatingStyles,
     placement,
+    refresh,
   };
 }

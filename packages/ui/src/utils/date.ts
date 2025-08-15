@@ -56,3 +56,17 @@ export const getCurrentTimeRounded = (): string => {
 
   return `${hoursStr}:${minutesStr}`;
 };
+
+/**
+ * @param date - Date 객체
+ * @returns "YYYY. MM. DD(요일)" 문자열
+ * @example
+ * formatDate(new Date('2025-06-01')) // "2025. 06. 01(일)"
+ */
+export const formatDate = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const dayOfWeek = ["일", "월", "화", "수", "목", "금", "토"][date.getDay()];
+  return `${year}. ${month}. ${day}(${dayOfWeek})`;
+};

@@ -5,12 +5,14 @@ type ActionCardProps = {
   onClick: () => void;
   icon?: React.ReactNode;
   text?: string;
+  className?: string;
 };
 
 const ActionCard = ({
   onClick,
   icon = <IcAdd width={32} height={32} className="text-neutral-70" />,
   text = "새 여행 만들기",
+  className,
 }: ActionCardProps) => {
   return (
     <button
@@ -23,6 +25,7 @@ const ActionCard = ({
         `hover:border-neutral-70 hover:bg-neutral-95`,
         `focus:border-neutral-70 focus:bg-neutral-95`,
         `active:border-neutral-variant-70 active:bg-neutral-variant-95`,
+        className,
       )}
     >
       {icon}

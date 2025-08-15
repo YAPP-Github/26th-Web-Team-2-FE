@@ -1183,6 +1183,10 @@ export const getExchangeKakaoTokenResponseMock = (
         faker.string.alpha({ length: { min: 10, max: 20 } }),
         undefined,
       ]),
+      email: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
       token: faker.helpers.arrayElement([
         {
           accessToken: faker.helpers.arrayElement([
@@ -1293,6 +1297,10 @@ export const getGetUserInfoResponseMock = (
         undefined,
       ]),
       profileImageUrl: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      email: faker.helpers.arrayElement([
         faker.string.alpha({ length: { min: 10, max: 20 } }),
         undefined,
       ]),

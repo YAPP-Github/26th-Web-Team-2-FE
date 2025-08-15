@@ -41,10 +41,22 @@ export const DateButton = forwardRef<HTMLButtonElement, DateButtonProps>(
         )}
         {...props}
       >
-        <IcCalendar width={24} height={24} className="text-neutral-50" />
-        {value && <span className="text-neutral-30">{formatDate(value)}</span>}
-        {!value && <span className="text-neutral-50">{placeholder}</span>}
-        <IcCaretDown width={16} height={16} className="text-neutral-50" />
+        <IcCalendar
+          width={24}
+          height={24}
+          className="shrink-0 text-neutral-50"
+        />
+        {value && (
+          <span className="truncate text-neutral-30">{formatDate(value)}</span>
+        )}
+        {!value && (
+          <span className="truncate text-neutral-50">{placeholder}</span>
+        )}
+        <IcCaretDown
+          width={16}
+          height={16}
+          className="shrink-0 text-neutral-50"
+        />
       </button>
     );
   },

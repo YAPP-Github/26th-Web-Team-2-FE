@@ -1,6 +1,7 @@
 "use client";
 import { ActionCard, TravelBoard } from "@ssok/ui";
 import useTripBoardList from "@/domains/dashboard/hooks/use-trip-board-list";
+import Header from "@/shared/components/header";
 import { useSession } from "@/shared/hooks/use-session";
 
 const DashBoardPage = () => {
@@ -16,10 +17,10 @@ const DashBoardPage = () => {
   const allTripBoards =
     tripBoards?.pages?.flatMap((page) => page?.result?.tripBoards ?? []) ?? [];
 
-  console.log("DashBoardPage 렌더링", allTripBoards);
   return (
     <main>
-      <header className="h-[6.4rem] w-full bg-neutral-35" />
+      {/* 페이지 헤더 */}
+      <Header />
       {/* 제목 + 여행 보드 목록 */}
       <section className="px-[10.4rem] pt-[7.2rem]">
         <h1 className="mb-[3.6rem] text-neutral-10 text-title1-semi36">

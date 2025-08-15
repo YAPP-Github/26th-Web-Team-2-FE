@@ -1,5 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps, ReactNode } from "react";
+import IcAlert from "@/assets/icons/ic_alert.svg?react";
 import { cn } from "@/utils";
 
 export interface TextFieldProps
@@ -8,6 +9,7 @@ export interface TextFieldProps
   icon?: ReactNode;
   endIcon?: ReactNode;
   hasError?: boolean;
+  maxLength?: number;
 }
 
 const variants = cva(
@@ -38,12 +40,17 @@ const variants = cva(
 export const TextField = ({
   className,
   icon,
-  endIcon,
-  hasError = false,
   value,
+  maxLength,
   ...props
 }: TextFieldProps) => {
   const hasValue = String(value).length > 0;
+  const currentLength = String(value).length;
+  const isOverLimit = maxLength && currentLength > maxLength;
+
+  const hasError = props.hasError || isOverLimit || false;
+  const endIcon = props.endIcon || (isOverLimit ? <IcAlert /> : undefined);
+  const showCharacterCount = maxLength && !props.disabled;
 
   return (
     <div className={cn(variants({ hasError }), className)}>
@@ -61,16 +68,40 @@ export const TextField = ({
       )}
       <input
         value={value}
+        maxLength={maxLength}
         className={cn(
           "w-full px-[1.6rem] py-[1.2rem]",
           "border-none bg-transparent outline-none",
           "text-inherit placeholder:text-neutral-70",
           "transition-all duration-200",
           icon && !hasValue && "indent-[3.2rem]",
-          endIcon && "pr-[4.8rem]",
+          endIcon && !showCharacterCount && "pr-[4.8rem]",
+          endIcon && showCharacterCount && "pr-[11.2rem]",
+          !endIcon && showCharacterCount && "pr-[6.4rem]",
         )}
         {...props}
       />
+      {showCharacterCount && (
+        <div
+          className={cn(
+            "-translate-y-1/2 absolute top-1/2 flex items-center gap-[0.2rem]",
+            "pointer-events-none text-caption1-medi12",
+            endIcon ? "right-[4.8rem]" : "right-[1.6rem]",
+            hasError ? "text-error-80" : "text-neutral-70",
+          )}
+        >
+          <span
+            className={cn(
+              "text-caption1-semi12",
+              hasError ? "text-error-70" : "text-neutral-60",
+            )}
+          >
+            {currentLength}
+          </span>
+          <span>/</span>
+          <span>{maxLength}</span>
+        </div>
+      )}
       {endIcon && (
         <div
           data-slot="icon"

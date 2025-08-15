@@ -33,6 +33,7 @@ import type {
   GetAccommodationCountByTripBoardIdParams,
   GetKakaoAuthorizeUrlParams,
   GetTripBoardsParams,
+  RefreshTokenRequest,
   StandardResponseAccommodationCountResponse,
   StandardResponseAccommodationDeleteResponse,
   StandardResponseAccommodationPageResponse,
@@ -42,12 +43,14 @@ import type {
   StandardResponseAuthorizeUrlResponse,
   StandardResponseBoolean,
   StandardResponseComparisonFactorList,
+  StandardResponseComparisonTableDeleteResponse,
   StandardResponseComparisonTableResponse,
   StandardResponseCreateComparisonTableResponse,
   StandardResponseInvitationCodeResponse,
   StandardResponseInvitationToggleResponse,
   StandardResponseLogoutResponse,
   StandardResponseOauthLoginResponse,
+  StandardResponseTokenSuccessResponse,
   StandardResponseTripBoardCreateResponse,
   StandardResponseTripBoardDeleteResponse,
   StandardResponseTripBoardJoinResponse,
@@ -55,6 +58,7 @@ import type {
   StandardResponseTripBoardPageResponse,
   StandardResponseTripBoardSummaryResponse,
   StandardResponseTripBoardUpdateResponse,
+  StandardResponseUserInfoResponse,
   StandardResponseWithdrawResponse,
   TripBoardCreateRequest,
   TripBoardJoinRequest,
@@ -1054,6 +1058,148 @@ export const useUpdateComparisonTable = <TError = unknown, TContext = unknown>(
 };
 
 /**
+ * 사용자가 생성한 비교표를 삭제합니다. 생성자만 삭제할 수 있습니다. (Authorization 헤더에 Bearer 토큰 필요)
+ * @summary 비교표 삭제
+ */
+export type deleteComparisonTableResponse200 = {
+  data: StandardResponseComparisonTableDeleteResponse;
+  status: 200;
+};
+
+export type deleteComparisonTableResponse401 = {
+  data: StandardResponseComparisonTableDeleteResponse;
+  status: 401;
+};
+
+export type deleteComparisonTableResponse403 = {
+  data: StandardResponseComparisonTableDeleteResponse;
+  status: 403;
+};
+
+export type deleteComparisonTableResponse404 = {
+  data: StandardResponseComparisonTableDeleteResponse;
+  status: 404;
+};
+
+export type deleteComparisonTableResponse500 = {
+  data: StandardResponseComparisonTableDeleteResponse;
+  status: 500;
+};
+
+export type deleteComparisonTableResponseComposite =
+  | deleteComparisonTableResponse200
+  | deleteComparisonTableResponse401
+  | deleteComparisonTableResponse403
+  | deleteComparisonTableResponse404
+  | deleteComparisonTableResponse500;
+
+export type deleteComparisonTableResponse =
+  deleteComparisonTableResponseComposite & {
+    headers: Headers;
+  };
+
+export const getDeleteComparisonTableUrl = (tableId: number) => {
+  return `https://api.ssok.info/api/comparison/${tableId}`;
+};
+
+export const deleteComparisonTable = async (
+  tableId: number,
+  options?: RequestInit,
+): Promise<deleteComparisonTableResponse> => {
+  return http<deleteComparisonTableResponse>(
+    getDeleteComparisonTableUrl(tableId),
+    {
+      ...options,
+      method: "DELETE",
+    },
+  );
+};
+
+export const getDeleteComparisonTableMutationOptions = <
+  TError =
+    | StandardResponseComparisonTableDeleteResponse
+    | StandardResponseComparisonTableDeleteResponse
+    | StandardResponseComparisonTableDeleteResponse
+    | StandardResponseComparisonTableDeleteResponse,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteComparisonTable>>,
+    TError,
+    { tableId: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteComparisonTable>>,
+  TError,
+  { tableId: number },
+  TContext
+> => {
+  const mutationKey = ["deleteComparisonTable"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteComparisonTable>>,
+    { tableId: number }
+  > = (props) => {
+    const { tableId } = props ?? {};
+
+    return deleteComparisonTable(tableId, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteComparisonTableMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteComparisonTable>>
+>;
+
+export type DeleteComparisonTableMutationError =
+  | StandardResponseComparisonTableDeleteResponse
+  | StandardResponseComparisonTableDeleteResponse
+  | StandardResponseComparisonTableDeleteResponse
+  | StandardResponseComparisonTableDeleteResponse;
+
+/**
+ * @summary 비교표 삭제
+ */
+export const useDeleteComparisonTable = <
+  TError =
+    | StandardResponseComparisonTableDeleteResponse
+    | StandardResponseComparisonTableDeleteResponse
+    | StandardResponseComparisonTableDeleteResponse
+    | StandardResponseComparisonTableDeleteResponse,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteComparisonTable>>,
+      TError,
+      { tableId: number },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteComparisonTable>>,
+  TError,
+  { tableId: number },
+  TContext
+> => {
+  const mutationOptions = getDeleteComparisonTableMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
  * 비교표에 새로운 숙소를 추가합니다. (Authorization 헤더에 Bearer 토큰 필요)
  * @summary 비교표 숙소 추가
  */
@@ -1555,6 +1701,116 @@ export const useWithdrawUser = <TError = unknown, TContext = unknown>(
   TContext
 > => {
   const mutationOptions = getWithdrawUserMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * 유효한 리프레시 토큰을 사용하여 새로운 액세스 토큰과 리프레시 토큰을 발급받습니다. 기존 리프레시 토큰은 무효화되고 새로운 토큰 쌍이 생성됩니다. 토큰 회전(Token Rotation)을 통해 보안을 강화합니다. 이 API는 액세스 토큰이 만료된 상황에서 사용되므로 JWT 인증이 필요하지 않습니다.
+ * @summary 리프레시 토큰 재발급
+ */
+export type refreshTokensResponse200 = {
+  data: StandardResponseTokenSuccessResponse;
+  status: 200;
+};
+
+export type refreshTokensResponse401 = {
+  data: StandardResponseTokenSuccessResponse;
+  status: 401;
+};
+
+export type refreshTokensResponseComposite =
+  | refreshTokensResponse200
+  | refreshTokensResponse401;
+
+export type refreshTokensResponse = refreshTokensResponseComposite & {
+  headers: Headers;
+};
+
+export const getRefreshTokensUrl = () => {
+  return `https://api.ssok.info/api/oauth/refresh`;
+};
+
+export const refreshTokens = async (
+  refreshTokenRequest: RefreshTokenRequest,
+  options?: RequestInit,
+): Promise<refreshTokensResponse> => {
+  return http<refreshTokensResponse>(getRefreshTokensUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(refreshTokenRequest),
+  });
+};
+
+export const getRefreshTokensMutationOptions = <
+  TError = StandardResponseTokenSuccessResponse,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof refreshTokens>>,
+    TError,
+    { data: RefreshTokenRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof refreshTokens>>,
+  TError,
+  { data: RefreshTokenRequest },
+  TContext
+> => {
+  const mutationKey = ["refreshTokens"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof refreshTokens>>,
+    { data: RefreshTokenRequest }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return refreshTokens(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type RefreshTokensMutationResult = NonNullable<
+  Awaited<ReturnType<typeof refreshTokens>>
+>;
+export type RefreshTokensMutationBody = RefreshTokenRequest;
+export type RefreshTokensMutationError = StandardResponseTokenSuccessResponse;
+
+/**
+ * @summary 리프레시 토큰 재발급
+ */
+export const useRefreshTokens = <
+  TError = StandardResponseTokenSuccessResponse,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof refreshTokens>>,
+      TError,
+      { data: RefreshTokenRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof refreshTokens>>,
+  TError,
+  { data: RefreshTokenRequest },
+  TContext
+> => {
+  const mutationOptions = getRefreshTokensMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -2077,6 +2333,311 @@ export const useToggleInvitationActive = <TError = unknown, TContext = unknown>(
 
   return useMutation(mutationOptions, queryClient);
 };
+
+/**
+ * 현재 로그인한 사용자의 기본 정보(닉네임, 프로필 이미지)를 조회합니다.
+ * @summary 사용자 정보 조회
+ */
+export type getUserInfoResponse200 = {
+  data: StandardResponseUserInfoResponse;
+  status: 200;
+};
+
+export type getUserInfoResponse401 = {
+  data: StandardResponseUserInfoResponse;
+  status: 401;
+};
+
+export type getUserInfoResponse404 = {
+  data: StandardResponseUserInfoResponse;
+  status: 404;
+};
+
+export type getUserInfoResponseComposite =
+  | getUserInfoResponse200
+  | getUserInfoResponse401
+  | getUserInfoResponse404;
+
+export type getUserInfoResponse = getUserInfoResponseComposite & {
+  headers: Headers;
+};
+
+export const getGetUserInfoUrl = () => {
+  return `https://api.ssok.info/api/users/me`;
+};
+
+export const getUserInfo = async (
+  options?: RequestInit,
+): Promise<getUserInfoResponse> => {
+  return http<getUserInfoResponse>(getGetUserInfoUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetUserInfoQueryKey = () => {
+  return [`https://api.ssok.info/api/users/me`] as const;
+};
+
+export const getGetUserInfoQueryOptions = <
+  TData = Awaited<ReturnType<typeof getUserInfo>>,
+  TError = StandardResponseUserInfoResponse | StandardResponseUserInfoResponse,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof getUserInfo>>, TError, TData>
+  >;
+  request?: SecondParameter<typeof http>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetUserInfoQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserInfo>>> = ({
+    signal,
+  }) => getUserInfo({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getUserInfo>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type GetUserInfoQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getUserInfo>>
+>;
+export type GetUserInfoQueryError =
+  | StandardResponseUserInfoResponse
+  | StandardResponseUserInfoResponse;
+
+export function useGetUserInfo<
+  TData = Awaited<ReturnType<typeof getUserInfo>>,
+  TError = StandardResponseUserInfoResponse | StandardResponseUserInfoResponse,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getUserInfo>>, TError, TData>
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUserInfo>>,
+          TError,
+          Awaited<ReturnType<typeof getUserInfo>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+export function useGetUserInfo<
+  TData = Awaited<ReturnType<typeof getUserInfo>>,
+  TError = StandardResponseUserInfoResponse | StandardResponseUserInfoResponse,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getUserInfo>>, TError, TData>
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUserInfo>>,
+          TError,
+          Awaited<ReturnType<typeof getUserInfo>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetUserInfo<
+  TData = Awaited<ReturnType<typeof getUserInfo>>,
+  TError = StandardResponseUserInfoResponse | StandardResponseUserInfoResponse,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getUserInfo>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+/**
+ * @summary 사용자 정보 조회
+ */
+
+export function useGetUserInfo<
+  TData = Awaited<ReturnType<typeof getUserInfo>>,
+  TError = StandardResponseUserInfoResponse | StandardResponseUserInfoResponse,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getUserInfo>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getGetUserInfoQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary 사용자 정보 조회
+ */
+export const prefetchGetUserInfoQuery = async <
+  TData = Awaited<ReturnType<typeof getUserInfo>>,
+  TError = StandardResponseUserInfoResponse | StandardResponseUserInfoResponse,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getUserInfo>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetUserInfoQueryOptions(options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetUserInfoSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getUserInfo>>,
+  TError = StandardResponseUserInfoResponse | StandardResponseUserInfoResponse,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof getUserInfo>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof http>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetUserInfoQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserInfo>>> = ({
+    signal,
+  }) => getUserInfo({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getUserInfo>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type GetUserInfoSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getUserInfo>>
+>;
+export type GetUserInfoSuspenseQueryError =
+  | StandardResponseUserInfoResponse
+  | StandardResponseUserInfoResponse;
+
+export function useGetUserInfoSuspense<
+  TData = Awaited<ReturnType<typeof getUserInfo>>,
+  TError = StandardResponseUserInfoResponse | StandardResponseUserInfoResponse,
+>(
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getUserInfo>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+export function useGetUserInfoSuspense<
+  TData = Awaited<ReturnType<typeof getUserInfo>>,
+  TError = StandardResponseUserInfoResponse | StandardResponseUserInfoResponse,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getUserInfo>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+export function useGetUserInfoSuspense<
+  TData = Awaited<ReturnType<typeof getUserInfo>>,
+  TError = StandardResponseUserInfoResponse | StandardResponseUserInfoResponse,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getUserInfo>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+};
+/**
+ * @summary 사용자 정보 조회
+ */
+
+export function useGetUserInfoSuspense<
+  TData = Awaited<ReturnType<typeof getUserInfo>>,
+  TError = StandardResponseUserInfoResponse | StandardResponseUserInfoResponse,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getUserInfo>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>;
+} {
+  const queryOptions = getGetUserInfoSuspenseQueryOptions(options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 /**
  * 여행 보드에서 현재 사용자의 초대 링크 정보를 조회합니다. 초대 코드, 활성화 상태 등의 정보를 포함합니다.

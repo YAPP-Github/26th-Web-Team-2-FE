@@ -1,3 +1,4 @@
+"use client";
 import { useRef, useState } from "react";
 import { useOutsideClickEffect } from "react-simplikit";
 import IcBookmark from "@/assets/icons/ic_bookmark.svg?react";

@@ -1,6 +1,7 @@
 import { exec } from "node:child_process";
 import { promisify } from "node:util";
 import react from "@vitejs/plugin-react";
+import preserveDirectives from "rollup-preserve-directives";
 import type { Plugin } from "vite";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
@@ -31,6 +32,7 @@ export default defineConfig({
       rollupTypes: true,
     }),
     tsconfigPaths(),
+    preserveDirectives(),
     externalizeDeps(),
   ],
   build: {
@@ -41,11 +43,12 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
+        entryFileNames: "index.js",
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
         },
-        entryFileNames: "index.js",
+        preserveModules: true,
       },
     },
     sourcemap: true,

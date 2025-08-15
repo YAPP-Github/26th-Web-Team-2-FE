@@ -60,6 +60,12 @@ export { Chip } from "@/components/chip";
 export type { ConfirmProps } from "@/components/confirm";
 export { Confirm } from "@/components/confirm";
 export { DateButton, type DateButtonProps } from "@/components/date-button";
+export {
+  DateRangePicker,
+  type DateRangePickerProps,
+  type DateRangePickerRenderProps,
+  type DateRangeValue,
+} from "@/components/date-range-picker";
 export { Graph } from "@/components/graph";
 export { AddIconButton } from "@/components/icon-button/add-icon-button";
 export { CheckIconButton } from "@/components/icon-button/check-icon-button";

@@ -17,33 +17,48 @@ export const AllKinds = () => {
     <div className="flex flex-col items-center gap-6 bg-gray-50 p-8">
       <div>
         <h3 className="mb-2 font-semibold text-lg">Hilton Tokyo 1</h3>
-        <Pin>Hilton Tokyo 1</Pin>
+        <Pin isActive={false}>Hilton Tokyo 1</Pin>
       </div>
 
       <div>
         <h3 className="mb-2 font-semibold text-lg">Hilton Tokyo 2 (hover)</h3>
-        <Pin className="border-neutral-60 before:border-t-neutral-60 after:border-t-neutral-100">
+        <Pin
+          isActive={false}
+          className="border-neutral-60 before:border-t-neutral-60 after:border-t-neutral-100"
+        >
           Hilton Tokyo 2
         </Pin>
       </div>
 
       <div>
         <h3 className="mb-2 font-semibold text-lg">Hilton Tokyo 3 (focus)</h3>
-        <Pin className="border-primary-5 bg-primary-5 text-primary-100 before:border-t-primary-5 after:border-t-primary-5 hover:after:border-t-primary-5">
+        <Pin
+          isActive
+          className="border-primary-5 bg-primary-5 text-primary-100 before:border-t-primary-5 after:border-t-primary-5 hover:after:border-t-primary-5"
+        >
           Hilton Tokyo 3
+        </Pin>
+      </div>
+
+      <div>
+        <h3 className="mb-2 text-center font-semibold text-lg">
+          긴 호텔명 예시{" "}
+        </h3>
+        <Pin isActive={false}>
+          호텔 히가시 신주쿠 도쿄 (E-Hotel Higashi Shinjuku Tokyo)
         </Pin>
       </div>
 
       <div>
         <h3 className="mb-2 font-semibold text-lg">Example Texts</h3>
         <div className="flex gap-4">
-          <Pin>Ssok 지수</Pin>
-          <Pin>Ssok 경민</Pin>
-          <Pin>Ssok 시언</Pin>
-          <Pin>Ssok 수빈</Pin>
-          <Pin>Ssok 고은</Pin>
-          <Pin>Ssok 세환</Pin>
-          <Pin>Ssok 성연</Pin>
+          <Pin isActive={false}>Ssok 지수</Pin>
+          <Pin isActive={false}>Ssok 경민</Pin>
+          <Pin isActive={false}>Ssok 시언</Pin>
+          <Pin isActive={false}>Ssok 수빈</Pin>
+          <Pin isActive={false}>Ssok 고은</Pin>
+          <Pin isActive={false}>Ssok 세환</Pin>
+          <Pin isActive={false}>Ssok 성연</Pin>
         </div>
       </div>
     </div>

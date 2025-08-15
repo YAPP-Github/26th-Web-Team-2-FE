@@ -25,7 +25,7 @@ const Profile = ({ size, imgUrl }: ProfileProps) => {
           height={size}
           loading="lazy"
           decoding="async"
-          className="rounded-[1000rem]"
+          className="aspect-square rounded-[1000rem]"
         />
       )}
       {!imgUrl && (

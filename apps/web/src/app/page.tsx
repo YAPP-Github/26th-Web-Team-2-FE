@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 const IndexPage = async () => {
-  redirect(`/dashboard`);
+  redirect(`/boards`);
 };
 
 export default IndexPage;

@@ -20,7 +20,7 @@ const BoardsIdComparesCompareIdPage = async ({
 
   const queryClient = getQueryClient();
   if (!Number.isNaN(tableId) && tableId > 0) {
-    const session = await auth.getSession();
+    const session = await auth.getSession({ refresh: false });
     await prefetchGetComparisonTableQuery(queryClient, tableId, {
       request: {
         headers: session

@@ -55,7 +55,12 @@ export class AuthClient {
 
   public async logout(request: NextRequest) {
     const cookieStore = await cookies();
-    cookieStore.delete(this.config.sessionCookieName);
+    cookieStore.delete({
+      name: this.config.sessionCookieName,
+      path: "/",
+      httpOnly: true,
+    });
+
     const to = request.nextUrl.searchParams.get("to") || "/";
     return NextResponse.redirect(new URL(to, request.url));
   }

@@ -128,9 +128,6 @@ const PlaceListSection = ({
 
   useCollapseOnScroll(listRef, isInputExpanded, handleCloseInputExpansion);
 
-  console.log("accommodationCountData", accommodations);
-  console.log("selectedPlaces", selectedPlaces);
-  console.log("participants", participants);
   return (
     <section
       className={cn(

@@ -31,7 +31,7 @@ export const Confirm = ({
       {/** biome-ignore lint/a11y/useKeyWithClickEvents: onClick 사용하여 팝업 닫기 구현 */}
       <div
         className={cn(
-          "flex w-full max-w-[40rem] flex-col items-end gap-[3.2rem] px-[2.4rem] py-[2rem]",
+          "flex w-full min-w-[40rem] flex-col items-end gap-[3.2rem] px-[2.4rem] py-[2rem]",
           "rounded-[1.2rem] border border-neutral-90 bg-white shadow-[4px_4px_8px_0px_rgba(0,0,0,0.15)]",
           className,
         )}
@@ -39,7 +39,9 @@ export const Confirm = ({
       >
         <div className="flex w-full flex-col gap-[1.6rem]">
           <h2 className="text-heading1-semi20 text-neutral-5">{title}</h2>
-          <p className="text-body1-medi16 text-neutral-20">{description}</p>
+          <p className="whitespace-pre-line text-body1-medi16 text-neutral-20">
+            {description}
+          </p>
           {children}
         </div>
         <div className="flex gap-[0.8rem]">

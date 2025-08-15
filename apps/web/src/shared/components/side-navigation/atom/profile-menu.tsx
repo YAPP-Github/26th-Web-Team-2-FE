@@ -23,12 +23,10 @@ const ProfileMenu = () => {
   const router = useRouter();
   const { accessToken } = useSession({ required: true });
   const { data: userInfo, isLoading } = useGetUserInfo({
-    query: {
-      enabled: !!accessToken,
-    },
+    query: { enabled: !!accessToken },
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
   });
-  const { mutate: withdrawUser } = useWithdrawUser({
+  const { mutate: withdraw } = useWithdrawUser({
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
   });
 
@@ -128,12 +126,7 @@ const ProfileMenu = () => {
           if (modalConfig === "logout") {
             logout();
           } else if (modalConfig === "withdraw") {
-            withdrawUser(undefined, {
-              onSuccess: () => {
-                logout();
-                router.push("/");
-              },
-            });
+            withdraw(undefined, { onSuccess: logout });
           }
         }}
       />

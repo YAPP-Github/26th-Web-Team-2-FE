@@ -1,13 +1,16 @@
 "use client";
 
 import { useGetTripBoardsInfinite } from "@ssok/api";
-import { ActionCard, TravelBoard } from "@ssok/ui";
-import { useEffect } from "react";
+import { ActionCard, Popup, TravelBoard } from "@ssok/ui";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import Header from "@/shared/components/header";
 import useSession from "@/shared/hooks/use-session";
+import BoardCreateForm from "../components/board-create-form";
 
 const DashboardView = () => {
   const { accessToken } = useSession({ required: true });
+  const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
 
   const {
     data: { pages } = {},
@@ -47,34 +50,39 @@ const DashboardView = () => {
         </h1>
         <ul className="grid grid-cols-3 gap-[4rem]">
           <li>
-            <ActionCard onClick={() => alert("여행생성")} className="w-full" />
+            <ActionCard
+              onClick={() => setIsCreateFormOpen(true)}
+              className="w-full"
+            />
           </li>
           {allTripBoards.map((tripBoard) => (
             <li key={tripBoard.tripBoardId}>
-              <TravelBoard
-                data={{
-                  boardId: tripBoard.tripBoardId!,
-                  boardName: tripBoard.boardName!,
-                  destination: tripBoard.destination!,
-                  startDate: tripBoard.startDate?.toString()!,
-                  endDate: tripBoard.endDate?.toString()!,
-                  participantCount: tripBoard.participantCount!,
-                  participants:
-                    tripBoard.participants?.map((p) => ({
-                      userId: p.userId ?? 0,
-                      profileImageUrl: p.profileImageUrl ?? "",
-                      nickname: p.nickname ?? "",
-                      role: p.role ?? "MEMBER",
-                    })) ?? [],
-                  accommodationCount: tripBoard.accommodationCount!,
-                }}
-                // TODOT: 핸들러 함수 api 부착
-                onDeleteClick={() => alert("여행 삭제")}
-                onEditClick={() => alert("여행 수정")}
-                onExitClick={() => alert("여행 나가기")}
-                onInviteClick={() => alert("여행 초대")}
-                className="w-full"
-              />
+              <Link href={`/boards/${tripBoard.tripBoardId}/lists`} prefetch>
+                <TravelBoard
+                  data={{
+                    boardId: tripBoard.tripBoardId!,
+                    boardName: tripBoard.boardName!,
+                    destination: tripBoard.destination!,
+                    startDate: tripBoard.startDate?.toString()!,
+                    endDate: tripBoard.endDate?.toString()!,
+                    participantCount: tripBoard.participantCount!,
+                    participants:
+                      tripBoard.participants?.map((p) => ({
+                        userId: p.userId ?? 0,
+                        profileImageUrl: p.profileImageUrl ?? "",
+                        nickname: p.nickname ?? "",
+                        role: p.role ?? "MEMBER",
+                      })) ?? [],
+                    accommodationCount: tripBoard.accommodationCount!,
+                  }}
+                  // TODOT: 핸들러 함수 api 부착
+                  onDeleteClick={() => alert("여행 삭제")}
+                  onEditClick={() => alert("여행 수정")}
+                  onExitClick={() => alert("여행 나가기")}
+                  onInviteClick={() => alert("여행 초대")}
+                  className="w-full"
+                />
+              </Link>
             </li>
           ))}
         </ul>
@@ -86,6 +94,13 @@ const DashboardView = () => {
           </div>
         )}
       </section>
+      <Popup
+        title="새 여행 만들기"
+        active={isCreateFormOpen}
+        onClose={() => setIsCreateFormOpen(false)}
+      >
+        <BoardCreateForm className="min-w-[51.1rem]" />
+      </Popup>
     </main>
   );
 };

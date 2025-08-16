@@ -2,13 +2,13 @@ import { IcAddBox, IcInfo } from "@ssok/ui";
 import type { ViewState } from "@/domains/compare/types";
 import { AddButton } from "@/shared/components/add-button";
 
-interface AddCellProps {
+export interface AddCellProps {
   onClick?: () => void;
   state?: ViewState;
   className?: string;
 }
 
-export const AddCell = ({ onClick, className }: AddCellProps) => {
+const AddCell = ({ onClick, className }: AddCellProps) => {
   return (
     <AddButton
       type="button"
@@ -23,3 +23,5 @@ export const AddCell = ({ onClick, className }: AddCellProps) => {
     </AddButton>
   );
 };
+
+export default AddCell;

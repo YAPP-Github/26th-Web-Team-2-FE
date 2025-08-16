@@ -3,7 +3,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import type { ComparisonFormData, ViewState } from "@/domains/compare/types";
 import Photo from "@/shared/components/photo";
 
-interface PhotoCellProps {
+export interface PhotoCellProps {
   images?: string[];
   accommodationName: string;
   siteName?: string;
@@ -12,7 +12,7 @@ interface PhotoCellProps {
   name: `accommodationRequestList.${number}.lowestPrice`;
 }
 
-export const PhotoCell = ({
+const PhotoCell = ({
   images,
   accommodationName,
   siteName,
@@ -84,3 +84,5 @@ const PriceInput = ({
     />
   );
 };
+
+export default PhotoCell;

@@ -3,13 +3,13 @@
 import { cn } from "@ssok/ui";
 import { Fragment } from "react";
 import { useFormContext } from "react-hook-form";
-import { AddCell } from "@/domains/compare/components/compare-table/add-cell";
-import { AmenitiesCell } from "@/domains/compare/components/compare-table/amenities-cell";
+import AddCell from "@/domains/compare/components/compare-table/add-cell";
+import AmenitiesCell from "@/domains/compare/components/compare-table/amenities-cell";
 import CheckInOutCell from "@/domains/compare/components/compare-table/check-in-out-cell";
 import CleanlinessScoreCell from "@/domains/compare/components/compare-table/cleanliness-score-cell";
 import NearbyPlacesCell from "@/domains/compare/components/compare-table/nearby-places-cell.tsx";
-import { PhotoCell } from "@/domains/compare/components/compare-table/photo-cell";
-import { ReviewScoreCell } from "@/domains/compare/components/compare-table/review-score-cell";
+import PhotoCell from "@/domains/compare/components/compare-table/photo-cell";
+import ReviewScoreCell from "@/domains/compare/components/compare-table/review-score-cell";
 import ReviewSummaryCell from "@/domains/compare/components/compare-table/review-summary-cell";
 import useViewMode from "@/domains/compare/hooks/use-view-mode";
 import type {
@@ -18,7 +18,7 @@ import type {
   ViewState,
 } from "@/domains/compare/types";
 
-interface CompareTableProps {
+export interface CompareTableProps {
   state: ViewState;
   className?: string;
 }

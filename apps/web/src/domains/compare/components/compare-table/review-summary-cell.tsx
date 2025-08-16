@@ -2,7 +2,7 @@ import { Textarea } from "@ssok/ui";
 import { Controller, useFormContext } from "react-hook-form";
 import type { ComparisonFormData, ViewState } from "@/domains/compare/types";
 
-interface ReviewSummaryCellProps {
+export interface ReviewSummaryCellProps {
   state: ViewState;
   name: `accommodationRequestList.${number}.reviewSummary`;
 }

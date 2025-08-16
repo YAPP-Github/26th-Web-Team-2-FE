@@ -32,7 +32,7 @@ const Confirm = ({
       {/** biome-ignore lint/a11y/useKeyWithClickEvents: onClick 사용하여 팝업 닫기 구현 */}
       <div
         className={cn(
-          "flex w-full min-w-[40rem] flex-col items-end gap-[3.2rem] px-[2.4rem] py-[2rem]",
+          "flex w-full max-w-[40rem] flex-col items-end gap-[3.2rem] px-[2.4rem] py-[2rem]",
           "rounded-[1.2rem] border border-neutral-90 bg-white shadow-[4px_4px_8px_0px_rgba(0,0,0,0.15)]",
           className,
         )}

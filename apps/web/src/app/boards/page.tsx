@@ -1,5 +1,13 @@
-import { prefetchGetTripBoardsInfiniteQuery } from "@ssok/api";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import {
+  getGetTripBoardsInfiniteQueryOptions,
+  type getTripBoards,
+  prefetchGetTripBoardsInfiniteQuery,
+} from "@ssok/api";
+import {
+  dehydrate,
+  HydrationBoundary,
+  type InfiniteData,
+} from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import { auth } from "@/domains/auth";
 import DashboardView from "@/domains/dashboard/views/dashboard-view";
@@ -23,6 +31,15 @@ const DashboardPage = async () => {
       },
     },
   );
+
+  const data = queryClient.getQueryData<
+    InfiniteData<Awaited<ReturnType<typeof getTripBoards>>>
+  >(getGetTripBoardsInfiniteQueryOptions({ page: 0, size: 10 }).queryKey);
+  const savedList = data?.pages[0]?.data?.result?.tripBoards;
+
+  if (!savedList || savedList.length === 0) {
+    redirect("/boards/new");
+  }
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

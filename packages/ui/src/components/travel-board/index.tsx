@@ -103,7 +103,11 @@ const TravelBoard = ({
             type="button"
             onMouseEnter={() => setMoreHover(true)}
             onMouseLeave={() => setMoreHover(false)}
-            onClick={handleDropdownToggle}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleDropdownToggle();
+            }}
             className="rounded-[1.2rem] p-[0.8rem] hover:bg-neutral-98 focus:bg-neutral-95"
           >
             <IcMore width={32} height={32} className="text-neutral-50" />

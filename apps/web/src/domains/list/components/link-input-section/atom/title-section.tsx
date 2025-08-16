@@ -1,14 +1,14 @@
 import { IcCollapse, IcExpand, IcInfo, TextWithIcon } from "@ssok/ui";
 import BubbleInfo from "./bubble-info";
 
-interface TitleContainerProps {
+export interface TitleContainerProps {
   isInputExpanded: boolean; // 입력창 확장 여부
   isTooltipVisible: boolean; // 툴팁 표시 여부
   toggleInputExpansion: () => void; // 입력창 확장/축소 토글 함수
   handleTooltipVisible: (visible: boolean) => void; // 툴팁 표시/숨김 함수
 }
 
-export const TitleContainer = ({
+const TitleContainer = ({
   isInputExpanded,
   isTooltipVisible,
   toggleInputExpansion,
@@ -47,3 +47,5 @@ export const TitleContainer = ({
     </div>
   );
 };
+
+export default TitleContainer;

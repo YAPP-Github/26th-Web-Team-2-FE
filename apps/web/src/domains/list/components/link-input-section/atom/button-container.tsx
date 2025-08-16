@@ -8,7 +8,7 @@ type FormData = {
   memo?: string;
 };
 
-interface ButtonContainerProps {
+export interface ButtonContainerProps {
   isMemoInputVisible: boolean; // 메모 입력창 표시 여부
   memoText: string; // 메모 텍스트
   maxChars: number; // 최대 글자 수
@@ -16,7 +16,7 @@ interface ButtonContainerProps {
   handleMemoInputToggle: () => void; // 메모 입력창 토글 함수
 }
 
-export const ButtonContainer = ({
+const ButtonContainer = ({
   isMemoInputVisible,
   memoText,
   maxChars,
@@ -99,3 +99,5 @@ export const ButtonContainer = ({
     </div>
   );
 };
+
+export default ButtonContainer;

@@ -12,7 +12,7 @@ import { useAccommodationDataContext } from "../../contexts/accomodation-data-co
 import { usePlaceSelectionContext } from "../../contexts/place-select-context";
 import useDeleteAccommodationWithOptimisticUpdate from "../../hooks/use-accommodation-del";
 import useCollapseOnScroll from "../../hooks/use-collapse-on-scroll";
-import { DropDown } from "./atom/drop-down";
+import DropDown from "./atom/drop-down";
 import EmptyListContainer from "./atom/empty-list-container";
 
 export interface PlaceListSectionProps {

@@ -32,7 +32,7 @@ const ProfileMenu = () => {
     query: { enabled: !!accessToken },
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
   });
-  const { mutate: withdraw } = useWithdrawUser({
+  const { mutate: withdraw, isPending } = useWithdrawUser({
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
   });
 
@@ -136,7 +136,7 @@ const ProfileMenu = () => {
           }
         }}
       />
-      <LoadingIndicator active={isLoading} />
+      <LoadingIndicator active={isLoading || isPending} />
     </>
   );
 };

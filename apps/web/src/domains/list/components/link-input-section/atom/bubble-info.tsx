@@ -1,8 +1,8 @@
-export interface BubbleInfoProps {
+interface BubbleInfoProps {
   children: React.ReactNode;
 }
 
-const BubbleInfo = ({ children }: BubbleInfoProps) => {
+export const BubbleInfo = ({ children }: BubbleInfoProps) => {
   return (
     <div className="relative w-max max-w-[90%] rounded-[0.8rem] bg-neutral-variant-20 px-2 py-1.5 text-caption1-semi12 text-secondary-99">
       {/* 꼬리 삼각형 */}
@@ -12,5 +12,3 @@ const BubbleInfo = ({ children }: BubbleInfoProps) => {
     </div>
   );
 };
-
-export default BubbleInfo;

@@ -21,4 +21,3 @@ const SsokUiProvider = ({ toast, children }: SsokUiProviderProps) => {
 };
 
 export default SsokUiProvider;
-export { SsokUiProvider };

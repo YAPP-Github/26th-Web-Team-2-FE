@@ -73,7 +73,7 @@ const PlaceSelectionProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const usePlaceSelectionContext = () => {
+export const usePlaceSelectionContext = () => {
   const context = useContext(PlaceSelectionContext);
   if (!context) {
     throw new Error("PlaceSelectionProvider 내부에서 사용하세요");
@@ -82,4 +82,3 @@ const usePlaceSelectionContext = () => {
 };
 
 export default PlaceSelectionProvider;
-export { usePlaceSelectionContext };

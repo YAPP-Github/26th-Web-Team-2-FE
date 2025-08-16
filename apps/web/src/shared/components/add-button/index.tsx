@@ -1,11 +1,15 @@
 import { cn } from "@ssok/ui";
 import type { ComponentProps } from "react";
 
-export interface AddButtonProps extends ComponentProps<"button"> {
+interface AddButtonProps extends ComponentProps<"button"> {
   className?: string;
 }
 
-const AddButton = ({ children, className, ...props }: AddButtonProps) => {
+export const AddButton = ({
+  children,
+  className,
+  ...props
+}: AddButtonProps) => {
   return (
     <button
       type="button"
@@ -21,5 +25,3 @@ const AddButton = ({ children, className, ...props }: AddButtonProps) => {
     </button>
   );
 };
-
-export default AddButton;

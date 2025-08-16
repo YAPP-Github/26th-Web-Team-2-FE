@@ -31,7 +31,7 @@ const PanelProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const usePanelContext = () => {
+export const usePanelContext = () => {
   const context = useContext(PanelContext);
   if (!context) {
     throw new Error("panelProvider 내부에서 사용하세요");
@@ -40,4 +40,3 @@ const usePanelContext = () => {
 };
 
 export default PanelProvider;
-export { usePanelContext };

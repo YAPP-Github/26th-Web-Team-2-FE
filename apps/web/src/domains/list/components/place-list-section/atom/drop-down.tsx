@@ -3,14 +3,14 @@ import { useRef } from "react";
 import { filter } from "@/domains/list/hooks/use-dropdown";
 import useOutsideClick from "@/domains/list/hooks/use-outside-click";
 
-export interface DropDownProps {
+interface DropDownProps {
   handleFilterSelect: (id: string) => void;
   handleToggleDropdown: () => void;
   isOpen: boolean;
   selectedFilter: string;
 }
 
-const DropDown = ({
+export const DropDown = ({
   handleFilterSelect,
   handleToggleDropdown,
   isOpen,
@@ -78,5 +78,3 @@ const DropDown = ({
     </div>
   );
 };
-
-export default DropDown;

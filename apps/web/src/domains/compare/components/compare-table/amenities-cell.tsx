@@ -22,13 +22,17 @@ import type {
   ViewState,
 } from "@/domains/compare/types";
 
-export interface AmenitiesCellProps {
+interface AmenitiesCellProps {
   amenities: NonNullable<Accommodation["amenities"]>;
   state: ViewState;
   name: `accommodationRequestList.${number}.amenities`;
 }
 
-const AmenitiesCell = ({ amenities, state, name }: AmenitiesCellProps) => {
+export const AmenitiesCell = ({
+  amenities,
+  state,
+  name,
+}: AmenitiesCellProps) => {
   return (
     <section className="flex flex-col gap-[1.6rem] rounded-[1.2rem] bg-neutral-98 p-[1.6rem]">
       {amenities.map((amenity, index) => {
@@ -159,5 +163,3 @@ const useAmenity = ({ amenity }: { amenity: AmenityUpdate }) => {
   }
   return null;
 };
-
-export default AmenitiesCell;

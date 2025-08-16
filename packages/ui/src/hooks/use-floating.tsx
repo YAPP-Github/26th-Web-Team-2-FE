@@ -112,4 +112,3 @@ const useFloating = <R extends HTMLElement, F extends HTMLElement>({
 };
 
 export default useFloating;
-export { useFloating };

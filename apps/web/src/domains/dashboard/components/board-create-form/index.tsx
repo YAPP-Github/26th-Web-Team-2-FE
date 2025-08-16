@@ -11,11 +11,11 @@ import useSession from "@/shared/hooks/use-session";
 import { formatDate } from "@/shared/utils/date";
 import type { BoardCreateFormData } from "../../types";
 
-export interface BoardCreateFormProps {
+interface BoardCreateFormProps {
   className?: string;
 }
 
-const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
+export const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -167,5 +167,3 @@ const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
     </form>
   );
 };
-
-export default BoardCreateForm;

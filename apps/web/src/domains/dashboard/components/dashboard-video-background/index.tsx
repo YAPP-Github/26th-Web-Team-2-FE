@@ -5,11 +5,11 @@ import { useMemo, useRef } from "react";
 
 import useVideoLoop from "../../hooks/use-video-loop";
 
-export interface DashboardVideoBackgroundProps {
+interface DashboardVideoBackgroundProps {
   className?: string;
 }
 
-const DashboardVideoBackground = ({
+export const DashboardVideoBackground = ({
   className,
 }: DashboardVideoBackgroundProps) => {
   const video1Ref = useRef<HTMLVideoElement>(null);
@@ -44,5 +44,3 @@ const DashboardVideoBackground = ({
     </div>
   );
 };
-
-export default DashboardVideoBackground;

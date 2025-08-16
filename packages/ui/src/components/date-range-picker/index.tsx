@@ -5,7 +5,7 @@ import type { DateRange } from "react-day-picker";
 import { useOutsideClickEffect } from "react-simplikit";
 import Calendar from "@/components/calendar";
 import DateButton from "@/components/date-button";
-import { useFloating } from "@/hooks/use-floating";
+import useFloating from "@/hooks/use-floating";
 import { cn } from "@/utils";
 
 export interface DateRangeValue {

@@ -8,17 +8,17 @@ import type {
   UseFormWatch,
 } from "react-hook-form";
 import useSession from "@/shared/hooks/use-session";
-import ButtonContainer from "./atom/button-container";
-import LinkInputContainer from "./atom/link-input-container";
+import { ButtonContainer } from "./atom/button-container";
+import { LinkInputContainer } from "./atom/link-input-container";
 import OnboardingBubble from "./atom/onboarding-bubble";
-import TitleContainer from "./atom/title-section";
+import { TitleContainer } from "./atom/title-section";
 
 type FormData = {
   link: string;
   memo?: string;
 };
 
-export interface LinkInputSectionProps {
+interface LinkInputSectionProps {
   isDragging: boolean;
   isInputExpanded: boolean;
   isTooltipVisible: boolean;

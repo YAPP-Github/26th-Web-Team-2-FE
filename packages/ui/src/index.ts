@@ -61,8 +61,7 @@ export {
   default as Card,
 } from "@/components/card";
 export { type ChipProps, default as Chip } from "@/components/chip";
-export type { ConfirmProps } from "@/components/confirm";
-export { default as Confirm } from "@/components/confirm";
+export { type ConfirmProps, default as Confirm } from "@/components/confirm";
 export {
   type DateButtonProps,
   default as DateButton,
@@ -98,8 +97,11 @@ export {
   default as SolidExpand,
   type SolidExpandProps,
 } from "@/components/icon-button/solid-expand";
-export type { IconTabsOption, IconTabsProps } from "@/components/icon-tabs";
-export { default as IconTabs } from "@/components/icon-tabs";
+export {
+  default as IconTabs,
+  type IconTabsOption,
+  type IconTabsProps,
+} from "@/components/icon-tabs";
 export { default as Pin, type PinProps } from "@/components/pin";
 export { default as Popup, type PopupProps } from "@/components/popup";
 export {
@@ -111,10 +113,10 @@ export {
   default as TimePicker,
   type TimePickerProps,
 } from "@/components/time-picker";
-export { useFloating } from "@/hooks/use-floating";
+export { default as useFloating } from "@/hooks/use-floating";
 export { default as useToast } from "@/hooks/use-toast";
 export { default as useToggle } from "@/hooks/use-toggle";
-export { SsokUiProvider } from "@/providers/ssok-ui-provider";
+export { default as SsokUiProvider } from "@/providers/ssok-ui-provider";
 export { cn } from "@/utils";
 export {
   type ActionCardProps,

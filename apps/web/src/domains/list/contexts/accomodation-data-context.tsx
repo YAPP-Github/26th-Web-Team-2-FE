@@ -10,10 +10,10 @@ import {
 
 type NonNullableAccommodation = NonNullable<AccommodationResponse>;
 
-type AccommodationDataContextType = {
+interface AccommodationDataContextType {
   accommodations: NonNullableAccommodation[];
   updateAccommodations: (list: NonNullableAccommodation[]) => void;
-};
+}
 
 const AccommodationDataContext =
   createContext<AccommodationDataContextType | null>(null);
@@ -39,7 +39,7 @@ const AccommodationDataProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const useAccommodationDataContext = () => {
+export const useAccommodationDataContext = () => {
   const context = useContext(AccommodationDataContext);
   if (!context) {
     throw new Error("AccommodationDataProvider 내부에서 사용하세요");
@@ -48,4 +48,3 @@ const useAccommodationDataContext = () => {
 };
 
 export default AccommodationDataProvider;
-export { useAccommodationDataContext };

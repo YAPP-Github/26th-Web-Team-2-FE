@@ -1,18 +1,27 @@
 import type { TripBoardSummaryResponse } from "@ssok/api/schemas";
 import { Button, IcArrowLeft, IcPerson } from "@ssok/ui";
+import { useRouter } from "next/navigation";
 import { formatDate } from "@/shared/utils/date";
 
 const HeaderSection = (tripBoardDetail: TripBoardSummaryResponse) => {
+  const router = useRouter();
   const { boardName, startDate, endDate, participantCount, destination } =
     tripBoardDetail;
   const start = startDate ? new Date(startDate) : undefined;
   const end = endDate ? new Date(endDate) : undefined;
+
+  const onBackClick = () => {
+    router.push("/boards");
+  };
   return (
     <header className="flex w-full items-center justify-between p-2 pr-8 pl-2">
       {/* 헤더 좌측  */}
       <div className="flex items-center gap-[1.2rem]">
         <div className="flex items-center gap-[0.8rem]">
-          <IcArrowLeft width={24} height={24} className="text-neutral-40" />
+          <button type="button" onClick={onBackClick}>
+            <IcArrowLeft width={24} height={24} className="text-neutral-40" />
+          </button>
+
           <span className="text-body1-medi16 text-neutral-25">{boardName}</span>
         </div>
         <div className="flex items-center gap-[0.8rem]">

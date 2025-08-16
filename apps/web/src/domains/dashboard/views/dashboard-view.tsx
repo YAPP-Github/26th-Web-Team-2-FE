@@ -139,6 +139,7 @@ const DashboardView = () => {
             className="min-w-[51.1rem]"
             tripBoardId={modalState.tripBoardId}
             data={modalState.data}
+            handleModalClose={handleModalClose}
           />
         )}
       </Popup>

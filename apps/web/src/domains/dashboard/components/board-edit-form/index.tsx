@@ -1,9 +1,9 @@
 "use client";
 
-import { useUpdateTripBoard } from "@ssok/api";
+import { getGetTripBoardsQueryKey, useUpdateTripBoard } from "@ssok/api";
 import type { TripBoardUpdateRequest } from "@ssok/api/schemas";
 import { Button, cn, TextField } from "@ssok/ui";
-import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import useSession from "@/shared/hooks/use-session";
 import { formatDate } from "@/shared/utils/date";
@@ -14,21 +14,26 @@ interface BoardEditFormProps {
   className?: string;
   tripBoardId: number;
   data: TripBoardUpdateRequest;
+  handleModalClose: () => void;
 }
 
 const BoardEditForm = ({
   className,
   tripBoardId,
   data,
+  handleModalClose,
 }: BoardEditFormProps) => {
-  const router = useRouter();
-
+  const queryClient = useQueryClient();
   const { accessToken } = useSession({ required: true });
   const { mutateAsync, isPending } = useUpdateTripBoard({
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
   });
 
-  const { handleSubmit, watch, control } = useForm<BoardEditFormData>({
+  const {
+    handleSubmit,
+    control,
+    formState: { isValid },
+  } = useForm<BoardEditFormData>({
     defaultValues: {
       boardName: data.boardName,
       destination: data.destination,
@@ -40,49 +45,42 @@ const BoardEditForm = ({
     mode: "onChange",
   });
 
-  const [destination, dateRange, boardName] = watch([
-    "destination",
-    "dateRange",
-    "boardName",
-  ]);
-  const isValid =
-    !!destination && !!dateRange?.from && !!dateRange?.to && !!boardName;
-
   const onSubmit = async ({
     destination,
     dateRange,
     boardName,
   }: BoardEditFormData) => {
-    if (!isValid || !dateRange.from || !dateRange.to || !boardName) {
+    if (!dateRange.from || !dateRange.to || !boardName) {
       return;
     }
 
-    try {
-      const startDate = formatDate(dateRange.from, { format: "YYYY-MM-DD" });
-      const endDate = formatDate(dateRange.to, { format: "YYYY-MM-DD" });
+    const startDate = formatDate(dateRange.from, { format: "YYYY-MM-DD" });
+    const endDate = formatDate(dateRange.to, { format: "YYYY-MM-DD" });
 
-      const data: TripBoardUpdateRequest = {
-        destination,
-        boardName: boardName.trim() === "" ? `${destination} 여행` : boardName,
-        startDate: startDate as unknown as Date,
-        endDate: endDate as unknown as Date,
-      };
+    const data: TripBoardUpdateRequest = {
+      destination,
+      boardName: boardName.trim() === "" ? `${destination} 여행` : boardName,
+      startDate: startDate as unknown as Date,
+      endDate: endDate as unknown as Date,
+    };
 
-      const response = await mutateAsync({
+    await mutateAsync(
+      {
         tripBoardId,
         data,
-      });
-
-      if (response.data.result?.tripBoardId) {
-        router.push(`/boards/${response.data.result.tripBoardId}/lists`);
-      } else {
-        console.error(response.data);
-        throw new Error(`보드 수정 API 요청 실패`);
-      }
-    } catch (error) {
-      console.error(`보드 수정 실패: ${error}`);
-    } finally {
-    }
+      },
+      {
+        onSuccess: () => {
+          handleModalClose();
+          queryClient.refetchQueries({
+            queryKey: getGetTripBoardsQueryKey({ page: 0, size: 10 }),
+          });
+        },
+        onError: (_error) => {
+          console.error("여행 보드 수정 실패", _error);
+        },
+      },
+    );
   };
 
   return (

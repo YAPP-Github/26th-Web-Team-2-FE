@@ -1,5 +1,5 @@
 import {
-  getGetTripBoardsInfiniteQueryOptions,
+  getGetTripBoardsQueryKey,
   type getTripBoards,
   prefetchGetTripBoardsInfiniteQuery,
 } from "@ssok/api";
@@ -34,7 +34,7 @@ const DashboardPage = async () => {
 
   const data = queryClient.getQueryData<
     InfiniteData<Awaited<ReturnType<typeof getTripBoards>>>
-  >(getGetTripBoardsInfiniteQueryOptions({ page: 0, size: 10 }).queryKey);
+  >(getGetTripBoardsQueryKey({ page: 0, size: 10 }));
   const savedList = data?.pages[0]?.data?.result?.tripBoards;
 
   if (!savedList || savedList.length === 0) {

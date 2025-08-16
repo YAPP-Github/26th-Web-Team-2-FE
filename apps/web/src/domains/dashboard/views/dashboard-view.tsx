@@ -1,12 +1,12 @@
 "use client";
 
 import { useGetTripBoardsInfinite } from "@ssok/api";
-import { ActionCard, Popup, TravelBoard } from "@ssok/ui";
-import Link from "next/link";
+import { ActionCard, Popup } from "@ssok/ui";
 import { useEffect, useState } from "react";
 import Header from "@/shared/components/header";
 import useSession from "@/shared/hooks/use-session";
 import BoardCreateForm from "../components/board-create-form";
+import DashboardTripBoard from "../components/dashboard-trip-board";
 
 const DashboardView = () => {
   const { accessToken } = useSession({ required: true });
@@ -57,32 +57,7 @@ const DashboardView = () => {
           </li>
           {allTripBoards.map((tripBoard) => (
             <li key={tripBoard.tripBoardId}>
-              <Link href={`/boards/${tripBoard.tripBoardId}/lists`} prefetch>
-                <TravelBoard
-                  data={{
-                    boardId: tripBoard.tripBoardId!,
-                    boardName: tripBoard.boardName!,
-                    destination: tripBoard.destination!,
-                    startDate: tripBoard.startDate?.toString()!,
-                    endDate: tripBoard.endDate?.toString()!,
-                    participantCount: tripBoard.participantCount!,
-                    participants:
-                      tripBoard.participants?.map((p) => ({
-                        userId: p.userId ?? 0,
-                        profileImageUrl: p.profileImageUrl ?? "",
-                        nickname: p.nickname ?? "",
-                        role: p.role ?? "MEMBER",
-                      })) ?? [],
-                    accommodationCount: tripBoard.accommodationCount!,
-                  }}
-                  // TODOT: 핸들러 함수 api 부착
-                  onDeleteClick={() => alert("여행 삭제")}
-                  onEditClick={() => alert("여행 수정")}
-                  onExitClick={() => alert("여행 나가기")}
-                  onInviteClick={() => alert("여행 초대")}
-                  className="w-full"
-                />
-              </Link>
+              <DashboardTripBoard data={tripBoard} className="w-full" />
             </li>
           ))}
         </ul>

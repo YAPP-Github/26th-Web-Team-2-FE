@@ -1,3 +1,4 @@
+import type { KeyboardEvent, MouseEvent, PropsWithChildren } from "react";
 import { cn } from "@/utils";
 
 interface DropdownProps {
@@ -5,14 +6,16 @@ interface DropdownProps {
   children: React.ReactNode;
 }
 
-interface DropdownOptionProps {
-  onClick: () => void;
-  children: React.ReactNode;
-  icon: React.ReactNode;
-}
+interface DropdownOptionProps
+  extends PropsWithChildren<{
+    onClick: (e: MouseEvent | KeyboardEvent) => void;
+    icon: React.ReactNode;
+  }> {}
 
 const DropdownMenu = ({ isOpen, children }: DropdownProps) => {
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <ul className="absolute top-[7.3rem] right-0 z-1 flex flex-col items-start gap-[0.8rem] rounded-[1.2rem] border border-neutral-70 bg-primary-100 p-[0.8rem] shadow-[4px_4px_8px_0_rgba(0,0,0,0.15)]">
@@ -25,7 +28,7 @@ const DropdownOption = ({ onClick, children, icon }: DropdownOptionProps) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      onClick?.();
+      onClick?.(e);
     }
   };
   return (

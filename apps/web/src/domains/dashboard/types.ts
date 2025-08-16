@@ -1,7 +1,3 @@
-import type { TripBoardCreateRequest } from "@ssok/api/schemas";
-import type { DateRangeValue } from "@ssok/ui";
+import type { TripBoardSummaryResponse } from "@ssok/api/schemas";
 
-export interface BoardCreateFormData
-  extends Omit<TripBoardCreateRequest, "boardName" | "startDate" | "endDate"> {
-  dateRange: DateRangeValue;
-}
+export interface TripBoardSummary extends TripBoardSummaryResponse {}

@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { type MouseEvent, useRef, useState } from "react";
 import { useOutsideClickEffect } from "react-simplikit";
 import IcBookmark from "@/assets/icons/ic_bookmark.svg?react";
 import IcDelete from "@/assets/icons/ic_delete.svg?react";
@@ -58,7 +58,7 @@ const TravelBoard = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownWrapperRef = useRef<HTMLDivElement | null>(null);
 
-  const handleDropdownToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleDropdownToggle = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     e.preventDefault();
     setIsDropdownOpen((prev) => !prev);
@@ -112,16 +112,44 @@ const TravelBoard = ({
           </button>
           {/* 드롭다운 */}
           <ActionOption.Menu isOpen={isDropdownOpen}>
-            <ActionOption.Option onClick={onInviteClick} icon={<IcInvite />}>
+            <ActionOption.Option
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                onInviteClick();
+              }}
+              icon={<IcInvite />}
+            >
               멤버 초대하기
             </ActionOption.Option>
-            <ActionOption.Option onClick={onEditClick} icon={<IcEdit />}>
+            <ActionOption.Option
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                onEditClick();
+              }}
+              icon={<IcEdit />}
+            >
               수정하기
             </ActionOption.Option>
-            <ActionOption.Option onClick={onExitClick} icon={<IcExit />}>
+            <ActionOption.Option
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                onExitClick();
+              }}
+              icon={<IcExit />}
+            >
               나가기
             </ActionOption.Option>
-            <ActionOption.Option onClick={onDeleteClick} icon={<IcDelete />}>
+            <ActionOption.Option
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                onDeleteClick();
+              }}
+              icon={<IcDelete />}
+            >
               삭제하기
             </ActionOption.Option>
           </ActionOption.Menu>

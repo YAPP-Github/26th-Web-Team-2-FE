@@ -130,6 +130,10 @@ export {
   default as AvatarGroup,
   type ProfileGroupProps,
 } from "./components/avatar-profile-group";
+export {
+  default as LoadingIndicator,
+  type LoadingIndicatorProps,
+} from "./components/loading-indicator";
 export { default as TextWithIcon } from "./components/text-with-icon";
 export {
   default as TravelBoard,

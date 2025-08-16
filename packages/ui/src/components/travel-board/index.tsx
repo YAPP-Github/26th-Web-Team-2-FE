@@ -58,7 +58,9 @@ const TravelBoard = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownWrapperRef = useRef<HTMLDivElement | null>(null);
 
-  const handleDropdownToggle = () => {
+  const handleDropdownToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
     setIsDropdownOpen((prev) => !prev);
   };
 

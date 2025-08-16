@@ -2,7 +2,7 @@
 
 import { getGetTripBoardsQueryKey, useUpdateTripBoard } from "@ssok/api";
 import type { TripBoardUpdateRequest } from "@ssok/api/schemas";
-import { Button, cn, TextField } from "@ssok/ui";
+import { Button, cn, TextField, useToast } from "@ssok/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import useSession from "@/shared/hooks/use-session";
@@ -23,6 +23,7 @@ const BoardEditForm = ({
   data,
   handleModalClose,
 }: BoardEditFormProps) => {
+  const { toast } = useToast();
   const queryClient = useQueryClient();
   const { accessToken } = useSession({ required: true });
   const { mutateAsync, isPending } = useUpdateTripBoard({
@@ -32,7 +33,7 @@ const BoardEditForm = ({
   const {
     handleSubmit,
     control,
-    formState: { isValid },
+    formState: { isValid, isDirty },
   } = useForm<BoardEditFormData>({
     defaultValues: {
       boardName: data.boardName,
@@ -50,7 +51,7 @@ const BoardEditForm = ({
     dateRange,
     boardName,
   }: BoardEditFormData) => {
-    if (!dateRange.from || !dateRange.to || !boardName) {
+    if (!dateRange.from || !dateRange.to || !destination) {
       return;
     }
 
@@ -59,7 +60,7 @@ const BoardEditForm = ({
 
     const data: TripBoardUpdateRequest = {
       destination,
-      boardName: boardName.trim() === "" ? `${destination} 여행` : boardName,
+      boardName: boardName || `${destination}여행`,
       startDate: startDate as unknown as Date,
       endDate: endDate as unknown as Date,
     };
@@ -75,6 +76,7 @@ const BoardEditForm = ({
           queryClient.refetchQueries({
             queryKey: getGetTripBoardsQueryKey({ page: 0, size: 10 }),
           });
+          toast.success("변경사항이 저장되었어요.");
         },
         onError: (_error) => {
           console.error("여행 보드 수정 실패", _error);
@@ -100,7 +102,7 @@ const BoardEditForm = ({
           name="boardName"
           control={control}
           rules={{
-            required: true,
+            required: false,
             maxLength: 20,
             pattern: /^[가-힣a-zA-Z\s]+$/,
           }}
@@ -120,7 +122,7 @@ const BoardEditForm = ({
         type="submit"
         variant="primary"
         size="lg"
-        disabled={!isValid || isPending}
+        disabled={!isDirty || !isValid || isPending}
         className="w-full justify-center"
       >
         수정하기

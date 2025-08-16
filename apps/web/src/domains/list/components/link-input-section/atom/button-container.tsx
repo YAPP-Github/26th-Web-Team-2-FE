@@ -1,20 +1,20 @@
 import { Button, cn, IcAddMemo, IcMemoFilled, IcUpload } from "@ssok/ui";
 import { useRef, useState } from "react";
 import type { UseFormRegister } from "react-hook-form";
-import { useOutsideClick } from "@/domains/list/hooks/use-outside-click";
+import useOutsideClick from "@/domains/list/hooks/use-outside-click";
 
 type FormData = {
   link: string;
   memo?: string;
 };
 
-type ButtonSectionProps = {
+export interface ButtonContainerProps {
   isMemoInputVisible: boolean; // 메모 입력창 표시 여부
   memoText: string; // 메모 텍스트
   maxChars: number; // 최대 글자 수
   register: UseFormRegister<FormData>; // react-hook-form 등록 함수
   handleMemoInputToggle: () => void; // 메모 입력창 토글 함수
-};
+}
 
 const ButtonContainer = ({
   isMemoInputVisible,
@@ -22,7 +22,7 @@ const ButtonContainer = ({
   maxChars,
   register,
   handleMemoInputToggle,
-}: ButtonSectionProps) => {
+}: ButtonContainerProps) => {
   const memoRef = useRef<HTMLDivElement>(null);
   useOutsideClick(memoRef, handleMemoInputToggle, isMemoInputVisible);
   const [isMemoFilled, setIsMemoFilled] = useState(false);

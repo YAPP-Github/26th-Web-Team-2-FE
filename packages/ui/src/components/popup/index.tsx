@@ -1,16 +1,17 @@
 import type { PropsWithChildren } from "react";
-import { Backdrop } from "@/components/backdrop";
-import { IcClose } from "@/index";
+import IcClose from "@/assets/icons/ic_close.svg?react";
+import Backdrop from "@/components/backdrop";
 import { cn } from "@/utils";
 
-export type PopupProps = PropsWithChildren<{
-  active?: boolean;
-  onClose: () => void;
-  title?: string;
-  className?: string;
-}>;
+export interface PopupProps
+  extends PropsWithChildren<{
+    active?: boolean;
+    onClose: () => void;
+    title?: string;
+    className?: string;
+  }> {}
 
-export const Popup = ({
+const Popup = ({
   title,
   children,
   onClose,
@@ -48,3 +49,5 @@ export const Popup = ({
     </Backdrop>
   );
 };
+
+export default Popup;

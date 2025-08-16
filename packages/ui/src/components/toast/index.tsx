@@ -1,10 +1,10 @@
 "use client";
 
 import { useToastContext } from "@/providers/toast-provider";
-import { CreatePortal } from "@/utils/create-portal";
-import { ToastItem } from "./toast-item";
+import CreatePortal from "@/utils/create-portal";
+import ToastItem from "./toast-item";
 
-export const ToastContainer = () => {
+const ToastContainer = () => {
   const { toasts } = useToastContext();
   if (toasts.length === 0) {
     return null;
@@ -20,3 +20,5 @@ export const ToastContainer = () => {
     </CreatePortal>
   );
 };
+
+export default ToastContainer;

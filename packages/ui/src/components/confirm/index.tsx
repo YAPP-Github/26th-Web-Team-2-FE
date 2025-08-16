@@ -1,20 +1,21 @@
 import type { PropsWithChildren } from "react";
-import { Backdrop } from "@/components/backdrop";
-import { Button } from "@/components/button";
+import Backdrop from "@/components/backdrop";
+import Button from "@/components/button";
 import { cn } from "@/utils";
 
-export type ConfirmProps = PropsWithChildren<{
-  title: string;
-  description: string;
-  cancelText?: string;
-  confirmText?: string;
-  onCancel?: () => void;
-  onConfirm?: () => void;
-  className?: string;
-  active?: boolean;
-}>;
+export interface ConfirmProps
+  extends PropsWithChildren<{
+    title: string;
+    description: string;
+    cancelText?: string;
+    confirmText?: string;
+    onCancel?: () => void;
+    onConfirm?: () => void;
+    className?: string;
+    active?: boolean;
+  }> {}
 
-export const Confirm = ({
+const Confirm = ({
   title,
   description,
   cancelText = "취소",
@@ -61,3 +62,5 @@ export const Confirm = ({
     </Backdrop>
   );
 };
+
+export default Confirm;

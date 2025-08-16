@@ -8,11 +8,11 @@ import IcArrowRight from "@/assets/icons/ic_arrow_right.svg?react";
 import "react-day-picker/dist/style.css";
 import { ko } from "react-day-picker/locale";
 
-type CalendarProps = {
+interface CalendarProps {
   selectedDate: DateRange | undefined;
   onDateSelect: (date: DateRange | undefined) => void;
   onApplyDate: () => void;
-};
+}
 
 const Calendar = ({
   selectedDate,
@@ -63,12 +63,12 @@ const Calendar = ({
   );
 };
 
-type ChevronProps = {
+interface ChevronProps {
   className?: string;
   size?: number;
   disabled?: boolean;
   orientation?: "left" | "right" | "up" | "down";
-};
+}
 
 const Chevron = ({
   className,

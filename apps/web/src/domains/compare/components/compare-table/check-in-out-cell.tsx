@@ -2,7 +2,7 @@ import { useFormContext } from "react-hook-form";
 import type { ComparisonFormData, ViewState } from "@/domains/compare/types";
 import TableTimeContents from "../table-time-contents";
 
-interface CheckInOutCellProps {
+export interface CheckInOutCellProps {
   state: ViewState;
   checkInName: `accommodationRequestList.${number}.checkInTime`;
   checkOutName: `accommodationRequestList.${number}.checkOutTime`;

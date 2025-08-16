@@ -2,7 +2,7 @@ import type { Meta, StoryFn } from "@storybook/react-vite";
 import IcArrowRight from "@/assets/icons/ic_arrow_right.svg?react";
 import IcVariant from "@/assets/icons/ic_variant.svg?react";
 
-import { FloatingIconButton } from ".";
+import FloatingIconButton from ".";
 
 export default {
   title: "Components/IconButton/Floating",

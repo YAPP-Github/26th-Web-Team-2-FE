@@ -1,11 +1,11 @@
 import IcPerson from "@/assets/icons/ic_person.svg?react";
-import { ImageCard } from "@/components/image-card";
+import ImageCard from "@/components/image-card";
 import { cn } from "@/utils";
 
-type ProfileProps = {
+export interface ProfileProps {
   size: 32 | 40 | 48;
   imgUrl?: string;
-};
+}
 
 const Profile = ({ size, imgUrl }: ProfileProps) => {
   return (

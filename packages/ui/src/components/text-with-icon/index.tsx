@@ -1,10 +1,11 @@
 import type { ComponentProps, PropsWithChildren, ReactNode } from "react";
 import { cn } from "@/utils";
 
-export type TextWithIconProps = {
+export interface TextWithIconProps
+  extends PropsWithChildren<ComponentProps<"div">> {
   icon?: ReactNode;
   className?: string;
-} & PropsWithChildren<ComponentProps<"div">>;
+}
 
 const TextWithIcon = ({
   icon,

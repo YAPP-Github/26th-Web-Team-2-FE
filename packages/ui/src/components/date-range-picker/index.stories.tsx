@@ -1,7 +1,6 @@
 import type { Meta, StoryFn } from "@storybook/react-vite";
 import { useState } from "react";
-import {
-  DateRangePicker,
+import DateRangePicker, {
   type DateRangePickerProps,
   type DateRangeValue,
 } from "./";

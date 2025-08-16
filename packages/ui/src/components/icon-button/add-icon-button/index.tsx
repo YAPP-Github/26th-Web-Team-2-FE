@@ -4,12 +4,13 @@ import IcAdd from "@/assets/icons/ic_round-plus.svg?react";
 import { cn } from "@/utils";
 import { addbutton } from "./add-icon-button.variant";
 
-type AddIconButtonProps = {
+export interface AddIconButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   selected: boolean;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
+}
 
-export const AddIconButton = ({
+const AddIconButton = ({
   className,
   selected,
   ...props
@@ -41,3 +42,5 @@ export const AddIconButton = ({
     </button>
   );
 };
+
+export default AddIconButton;

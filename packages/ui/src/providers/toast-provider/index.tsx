@@ -25,11 +25,11 @@ export interface ToastProviderProps {
   children: ReactNode;
 }
 
-export function ToastProvider({
+const ToastProvider = ({
   maxToasts = 5,
   defaultDuration = 3_000,
   children,
-}: ToastProviderProps) {
+}: ToastProviderProps) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const timersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
 
@@ -112,12 +112,14 @@ export function ToastProvider({
       {children}
     </ToastContext.Provider>
   );
-}
+};
 
-export function useToastContext() {
+export const useToastContext = () => {
   const context = useContext(ToastContext);
   if (!context) {
     throw new Error("useToastContext must be used within a ToastProvider");
   }
   return context;
-}
+};
+
+export default ToastProvider;

@@ -3,7 +3,7 @@
 import { cn } from "@ssok/ui";
 import { useMemo, useRef } from "react";
 
-import { useVideoLoop } from "../../hooks/use-video-loop";
+import useVideoLoop from "../../hooks/use-video-loop";
 
 interface DashboardVideoBackgroundProps {
   className?: string;

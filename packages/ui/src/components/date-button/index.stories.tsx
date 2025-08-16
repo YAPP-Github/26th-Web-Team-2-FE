@@ -1,5 +1,5 @@
 import type { Meta, StoryFn } from "@storybook/react-vite";
-import { DateButton, type DateButtonProps } from "./";
+import DateButton, { type DateButtonProps } from "./";
 
 const meta: Meta<DateButtonProps> = {
   title: "Components/DateButton",

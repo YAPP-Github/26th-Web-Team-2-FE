@@ -11,14 +11,14 @@ import NearbyPlacesCell from "@/domains/compare/components/compare-table/nearby-
 import PhotoCell from "@/domains/compare/components/compare-table/photo-cell";
 import ReviewScoreCell from "@/domains/compare/components/compare-table/review-score-cell";
 import ReviewSummaryCell from "@/domains/compare/components/compare-table/review-summary-cell";
-import { useViewMode } from "@/domains/compare/hooks/use-view-mode";
+import useViewMode from "@/domains/compare/hooks/use-view-mode";
 import type {
   Accommodation,
   ComparisonFormData,
   ViewState,
 } from "@/domains/compare/types";
 
-interface CompareTableProps {
+export interface CompareTableProps {
   state: ViewState;
   className?: string;
 }

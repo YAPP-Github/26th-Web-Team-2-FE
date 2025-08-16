@@ -6,9 +6,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 import type { ComparisonFormData } from "@/domains/compare/types";
 import { transformComparisonTableResponseToFormData } from "@/domains/compare/utils/form";
-import { useSession } from "@/shared/hooks/use-session";
+import useSession from "@/shared/hooks/use-session";
 
-export const useComparisonTable = ({
+const useComparisonTable = ({
   boardId,
   tableId,
 }: {
@@ -37,3 +37,5 @@ export const useComparisonTable = ({
 
   return { formData, response: data?.data.result };
 };
+
+export default useComparisonTable;

@@ -10,19 +10,15 @@ import {
 
 type NonNullableAccommodation = NonNullable<AccommodationResponse>;
 
-type AccommodationDataContextType = {
+interface AccommodationDataContextType {
   accommodations: NonNullableAccommodation[];
   updateAccommodations: (list: NonNullableAccommodation[]) => void;
-};
+}
 
 const AccommodationDataContext =
   createContext<AccommodationDataContextType | null>(null);
 
-export const AccommodationDataProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+const AccommodationDataProvider = ({ children }: { children: ReactNode }) => {
   const [accommodations, setAccommodations] = useState<
     NonNullableAccommodation[]
   >([]);
@@ -50,3 +46,5 @@ export const useAccommodationDataContext = () => {
   }
   return context;
 };
+
+export default AccommodationDataProvider;

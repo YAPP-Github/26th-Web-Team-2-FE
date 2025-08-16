@@ -1,6 +1,6 @@
 import type { Meta, StoryFn } from "@storybook/react-vite";
 import { useState } from "react";
-import { Card, type CardProps } from ".";
+import Card, { type CardProps } from ".";
 
 export default {
   title: "Components/Card",

@@ -2,11 +2,12 @@ import type { ButtonHTMLAttributes } from "react";
 import IcDeletd from "@/assets/icons/ic_delete.svg?react";
 import { cn } from "@/utils";
 
-type IconButtonProps = {
+export interface DeleteIconButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
+}
 
-export const DeleteIconButton = ({ className, ...props }: IconButtonProps) => {
+const DeleteIconButton = ({ className, ...props }: DeleteIconButtonProps) => {
   return (
     <button
       aria-label="삭제 버튼"
@@ -23,3 +24,5 @@ export const DeleteIconButton = ({ className, ...props }: IconButtonProps) => {
     </button>
   );
 };
+
+export default DeleteIconButton;

@@ -1,6 +1,6 @@
 import type { Meta, StoryFn } from "@storybook/react-vite";
 import { useState } from "react";
-import { TimePicker, type TimePickerProps } from "@/components/time-picker";
+import TimePicker, { type TimePickerProps } from "@/components/time-picker";
 
 const meta: Meta<TimePickerProps> = {
   title: "Components/TimePicker",

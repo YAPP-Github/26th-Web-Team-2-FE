@@ -2,7 +2,7 @@ import { TimePicker } from "@ssok/ui";
 import SymbolTableTimeRightArrow from "@/domains/compare/assets/symbol_table_time_right_arrow.svg";
 import type { ViewState } from "@/domains/compare/types";
 
-interface TableTimeContentsProps {
+export interface TableTimeContentsProps {
   checkInAt: string | null; // "HH:MM"
   checkOutAt: string | null; // "HH:MM"
   onCheckInChange?: (time: string) => void; // "HH:MM"

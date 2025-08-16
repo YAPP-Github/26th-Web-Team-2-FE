@@ -2,8 +2,8 @@ import { useGetUserInfo, useWithdrawUser } from "@ssok/api";
 import { AvatarProfile, Confirm, cn, useToggle } from "@ssok/ui";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { useOutsideClick } from "@/domains/list/hooks/use-outside-click";
-import { useSession } from "@/shared/hooks/use-session";
+import useOutsideClick from "@/domains/list/hooks/use-outside-click";
+import useSession from "@/shared/hooks/use-session";
 
 export const ModalConfig = {
   logout: {

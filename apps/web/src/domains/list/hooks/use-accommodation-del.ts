@@ -7,7 +7,7 @@ import { type InfiniteData, useQueryClient } from "@tanstack/react-query";
 
 type AccommodationListData = StandardResponseAccommodationPageResponse;
 
-export const useDeleteAccommodationWithOptimisticUpdate = ({
+const useDeleteAccommodationWithOptimisticUpdate = ({
   accessToken,
   tripBoardId,
   userId,
@@ -91,3 +91,5 @@ export const useDeleteAccommodationWithOptimisticUpdate = ({
     },
   });
 };
+
+export default useDeleteAccommodationWithOptimisticUpdate;

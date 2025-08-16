@@ -4,7 +4,7 @@ import type { ViewMode } from "@/domains/compare/hooks/use-view-mode";
 import type { ComparisonFormData } from "@/domains/compare/types";
 import PageTitle from "./page-title";
 
-interface ComparePageTitleProps {
+export interface ComparePageTitleProps {
   currentView: ViewMode;
   onViewChange: (view: ViewMode) => void;
   onSave: () => void;

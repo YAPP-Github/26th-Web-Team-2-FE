@@ -1,13 +1,13 @@
 import { cn } from "@/utils";
 import Profile from "../avatar-profile";
 
-export type ProfileGroupProps = {
+export interface ProfileGroupProps {
   size: 32 | 40 | 48;
   profiles: Array<{
     userId: number;
     profileImageUrl?: string;
   }>;
-};
+}
 
 const ProfileGroup = ({ size, profiles }: ProfileGroupProps) => {
   return (

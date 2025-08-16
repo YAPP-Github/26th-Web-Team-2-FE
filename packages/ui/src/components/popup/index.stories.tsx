@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Button } from "@/components/button";
-import { Popup } from "./index";
+import Button from "@/components/button";
+import Popup from "./index";
 
 const meta: Meta<typeof Popup> = {
   title: "Components/Popup",

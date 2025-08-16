@@ -4,7 +4,7 @@ import { useToastContext } from "@/providers/toast-provider";
 
 type Toaster = (content: string, duration?: number) => void;
 
-export const useToast = () => {
+const useToast = () => {
   const { addToast } = useToastContext();
 
   const toast: { success: Toaster } = useMemo(
@@ -18,3 +18,5 @@ export const useToast = () => {
 
   return { toast };
 };
+
+export default useToast;

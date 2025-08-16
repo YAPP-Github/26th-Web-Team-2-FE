@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ToastItem } from "@/components/toast/toast-item";
-import { useToast } from "@/hooks/use-toast";
-import { SsokUiProvider } from "@/providers/ssok-ui-provider";
-import { Button } from "../button";
+import ToastItem from "@/components/toast/toast-item";
+import useToast from "@/hooks/use-toast";
+import SsokUiProvider from "@/providers/ssok-ui-provider";
+import Button from "../button";
 
 const ToastDemo = () => {
   const { toast } = useToast();

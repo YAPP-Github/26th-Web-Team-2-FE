@@ -26,7 +26,7 @@ export interface UseSessionResult {
   refetch: () => void;
 }
 
-export const useSession = ({
+const useSession = ({
   required,
 }: {
   required?: boolean;
@@ -67,3 +67,5 @@ export const useSession = ({
     refetch: query.refetch,
   };
 };
+
+export default useSession;

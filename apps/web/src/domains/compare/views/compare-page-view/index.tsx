@@ -11,11 +11,11 @@ import { FormProvider, useForm } from "react-hook-form";
 import ComparePageHeader from "@/domains/compare/components/compare-page-header";
 import ComparePageTitle from "@/domains/compare/components/compare-page-title";
 import CompareTable from "@/domains/compare/components/compare-table";
-import { useComparisonTable } from "@/domains/compare/hooks/use-comparison-table";
-import { useViewMode } from "@/domains/compare/hooks/use-view-mode";
+import useComparisonTable from "@/domains/compare/hooks/use-comparison-table";
+import useViewMode from "@/domains/compare/hooks/use-view-mode";
 import type { ComparisonFormData } from "@/domains/compare/types";
 import { transformFormDataToUpdateComparisonTableRequest } from "@/domains/compare/utils/form";
-import { useSession } from "@/shared/hooks/use-session";
+import useSession from "@/shared/hooks/use-session";
 
 interface ComparePageViewProps {
   boardId: number;

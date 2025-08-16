@@ -20,11 +20,7 @@ const PlaceSelectionContext = createContext<PlaceSelectionContextType | null>(
   null,
 );
 
-export const PlaceSelectionProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+const PlaceSelectionProvider = ({ children }: { children: ReactNode }) => {
   const [selectedPlaces, setSelectedPlaces] = useState<number[]>([]);
   const [lastSelectedPlace, setLastSelectedPlace] = useState<number | null>(
     null,
@@ -84,3 +80,5 @@ export const usePlaceSelectionContext = () => {
   }
   return context;
 };
+
+export default PlaceSelectionProvider;

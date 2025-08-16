@@ -8,7 +8,7 @@ interface CreatePortalProps {
   children: ReactNode;
 }
 
-export const CreatePortal = ({ container, children }: CreatePortalProps) => {
+const CreatePortal = ({ container, children }: CreatePortalProps) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -22,3 +22,5 @@ export const CreatePortal = ({ container, children }: CreatePortalProps) => {
 
   return createPortal(children, container || document.body);
 };
+
+export default CreatePortal;

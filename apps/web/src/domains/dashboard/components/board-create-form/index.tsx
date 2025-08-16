@@ -2,9 +2,8 @@
 
 import { useCreateTripBoard } from "@ssok/api";
 import type { TripBoardCreateRequest } from "@ssok/api/schemas";
-import { Button, cn } from "@ssok/ui";
+import { Button, cn, LoadingIndicator } from "@ssok/ui";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import useSession from "@/shared/hooks/use-session";
 import { formatDate } from "@/shared/utils/date";
@@ -17,7 +16,6 @@ interface BoardCreateFormProps {
 
 const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
   const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { accessToken } = useSession({ required: true });
   const createTripBoardMutation = useCreateTripBoard({
@@ -39,11 +37,14 @@ const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
   const isValid = !!destination && !!dateRange?.from && !!dateRange?.to;
 
   const onSubmit = async ({ destination, dateRange }: BoardCreateFormData) => {
-    if (!isValid || isSubmitting || !dateRange.from || !dateRange.to) {
+    if (
+      !isValid ||
+      !dateRange.from ||
+      !dateRange.to ||
+      createTripBoardMutation.isPending
+    ) {
       return;
     }
-
-    setIsSubmitting(true);
 
     try {
       const startDate = formatDate(dateRange.from, { format: "YYYY-MM-DD" });
@@ -66,8 +67,6 @@ const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
       }
     } catch (error) {
       console.error(`보드 생성 실패: ${error}`);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -81,11 +80,12 @@ const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
         type="submit"
         variant="primary"
         size="lg"
-        disabled={!isValid || isSubmitting}
+        disabled={!isValid || createTripBoardMutation.isPending}
         className="w-full justify-center"
       >
         보드 생성하기
       </Button>
+      <LoadingIndicator active={createTripBoardMutation.isPending} />
     </form>
   );
 };

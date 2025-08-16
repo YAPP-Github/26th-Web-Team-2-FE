@@ -1,5 +1,11 @@
 import { useGetUserInfo, useWithdrawUser } from "@ssok/api";
-import { AvatarProfile, Confirm, cn, useToggle } from "@ssok/ui";
+import {
+  AvatarProfile,
+  Confirm,
+  cn,
+  LoadingIndicator,
+  useToggle,
+} from "@ssok/ui";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import useOutsideClick from "@/domains/list/hooks/use-outside-click";
@@ -26,7 +32,7 @@ const ProfileMenu = () => {
     query: { enabled: !!accessToken },
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
   });
-  const { mutate: withdraw } = useWithdrawUser({
+  const { mutate: withdraw, isPending } = useWithdrawUser({
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
   });
 
@@ -130,14 +136,7 @@ const ProfileMenu = () => {
           }
         }}
       />
-      {/* TODO: 스피너 컴포넌트 제작 후 반영 */}
-      {isLoading && (
-        <main className="absolute z-10 flex h-full w-full items-center justify-center ">
-          <div
-            className={`h-[2.4rem] w-[2.4rem] animate-spin rounded-full border-4 border-t-transparent bg-primary`}
-          />
-        </main>
-      )}
+      <LoadingIndicator active={isLoading || isPending} />
     </>
   );
 };

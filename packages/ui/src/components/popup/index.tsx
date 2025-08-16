@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
+import IcClose from "@/assets/icons/ic_close.svg?react";
 import Backdrop from "@/components/backdrop";
-import { IcClose } from "@/index";
 import { cn } from "@/utils";
 
 export interface PopupProps

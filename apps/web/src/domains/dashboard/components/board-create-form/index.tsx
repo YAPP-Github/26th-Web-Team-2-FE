@@ -59,7 +59,7 @@ const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
       const response = await createTripBoardMutation.mutateAsync({ data });
 
       if (response.data.result?.tripBoardId) {
-        router.push(`/boards/${response.data.result.tripBoardId}`);
+        router.push(`/boards/${response.data.result.tripBoardId}/lists`);
       } else {
         console.error(response.data);
         throw new Error(`보드 생성 API 요청 실패`);

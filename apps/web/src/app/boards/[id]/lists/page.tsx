@@ -1,6 +1,6 @@
 "use client";
 import { useGetTripBoardDetail } from "@ssok/api";
-import { cn, SolidExpand } from "@ssok/ui";
+import { cn, LoadingIndicator, SolidExpand } from "@ssok/ui";
 import { AnimatePresence, motion } from "framer-motion";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -153,14 +153,7 @@ const BoardsIdListsPage = () => {
           isPanelExpanded ? "right-[-5.5%]" : "right-[-4rem]",
         )}
       />
-      {loading ||
-        (isFetchingNextPage && (
-          <main className="absolute z-10 flex h-full w-full items-center justify-center ">
-            <div
-              className={`h-[2.4rem] w-[2.4rem] animate-spin rounded-full border-4 border-t-transparent bg-primary`}
-            />
-          </main>
-        ))}
+      <LoadingIndicator active={loading || isFetchingNextPage} />
     </main>
   );
 };

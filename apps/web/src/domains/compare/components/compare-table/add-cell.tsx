@@ -1,6 +1,6 @@
 import { IcAddBox, IcInfo } from "@ssok/ui";
 import type { ViewState } from "@/domains/compare/types";
-import { AddButton } from "@/shared/components/add-button";
+import AddButton from "@/shared/components/add-button";
 
 export interface AddCellProps {
   onClick?: () => void;

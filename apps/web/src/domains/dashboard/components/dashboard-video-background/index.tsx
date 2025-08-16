@@ -9,7 +9,7 @@ interface DashboardVideoBackgroundProps {
   className?: string;
 }
 
-export const DashboardVideoBackground = ({
+const DashboardVideoBackground = ({
   className,
 }: DashboardVideoBackgroundProps) => {
   const video1Ref = useRef<HTMLVideoElement>(null);
@@ -44,3 +44,5 @@ export const DashboardVideoBackground = ({
     </div>
   );
 };
+
+export default DashboardVideoBackground;

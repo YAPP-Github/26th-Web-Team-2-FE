@@ -1,5 +1,5 @@
 import Header from "@/shared/components/header";
-import { BoardCreateForm } from "../../components/board-create-form";
+import BoardCreateForm from "../../components/board-create-form";
 import { DashboardVideoBackground } from "../../components/dashboard-video-background";
 
 const NewUserBoardCreateView = () => {

@@ -1,5 +1,5 @@
 import { IcCollapse, IcExpand, IcInfo, TextWithIcon } from "@ssok/ui";
-import { BubbleInfo } from "./bubble-info";
+import BubbleInfo from "./bubble-info";
 
 interface TitleContainerProps {
   isInputExpanded: boolean; // 입력창 확장 여부

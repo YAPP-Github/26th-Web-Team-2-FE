@@ -5,11 +5,7 @@ interface AddButtonProps extends ComponentProps<"button"> {
   className?: string;
 }
 
-export const AddButton = ({
-  children,
-  className,
-  ...props
-}: AddButtonProps) => {
+const AddButton = ({ children, className, ...props }: AddButtonProps) => {
   return (
     <button
       type="button"
@@ -25,3 +21,5 @@ export const AddButton = ({
     </button>
   );
 };
+
+export default AddButton;

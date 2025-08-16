@@ -15,7 +15,7 @@ interface BoardCreateFormProps {
   className?: string;
 }
 
-export const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
+const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -167,3 +167,5 @@ export const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
     </form>
   );
 };
+
+export default BoardCreateForm;

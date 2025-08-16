@@ -2,7 +2,7 @@
 
 import { getGetTripBoardsQueryKey, useUpdateTripBoard } from "@ssok/api";
 import type { TripBoardUpdateRequest } from "@ssok/api/schemas";
-import { Button, cn, TextField, useToast } from "@ssok/ui";
+import { Button, cn, LoadingIndicator, TextField, useToast } from "@ssok/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import useSession from "@/shared/hooks/use-session";
@@ -127,6 +127,7 @@ const BoardEditForm = ({
       >
         수정하기
       </Button>
+      <LoadingIndicator active={isPending} />
     </form>
   );
 };

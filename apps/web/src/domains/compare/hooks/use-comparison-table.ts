@@ -18,14 +18,17 @@ const useComparisonTable = ({
   const queryClient = useQueryClient();
   const { accessToken } = useSession({ required: true });
 
-  const { data } = useGetComparisonTable(tableId, {
-    query: {
-      enabled:
-        !!accessToken ||
-        !!queryClient.getQueryData(getGetComparisonTableQueryKey(tableId)),
+  const { data, isLoading: isMetaDataLoading } = useGetComparisonTable(
+    tableId,
+    {
+      query: {
+        enabled:
+          !!accessToken ||
+          !!queryClient.getQueryData(getGetComparisonTableQueryKey(tableId)),
+      },
+      request: { headers: { Authorization: `Bearer ${accessToken}` } },
     },
-    request: { headers: { Authorization: `Bearer ${accessToken}` } },
-  });
+  );
 
   const formData = useMemo((): ComparisonFormData => {
     const response = data?.data.result;
@@ -35,7 +38,7 @@ const useComparisonTable = ({
     return transformComparisonTableResponseToFormData({ boardId, response });
   }, [data, boardId]);
 
-  return { formData, response: data?.data.result };
+  return { formData, response: data?.data.result, isMetaDataLoading };
 };
 
 export default useComparisonTable;

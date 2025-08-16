@@ -4,7 +4,7 @@ import {
   getGetComparisonTableQueryKey,
   useUpdateComparisonTable,
 } from "@ssok/api";
-import { cn } from "@ssok/ui";
+import { cn, LoadingIndicator } from "@ssok/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -26,7 +26,10 @@ const ComparePageView = ({ boardId, tableId }: ComparePageViewProps) => {
   const { currentView, handleViewChange } = useViewMode();
   const queryClient = useQueryClient();
   const { accessToken } = useSession();
-  const { formData, response } = useComparisonTable({ boardId, tableId });
+  const { formData, response, isMetaDataLoading } = useComparisonTable({
+    boardId,
+    tableId,
+  });
   const mutation = useUpdateComparisonTable({
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
   });
@@ -82,6 +85,7 @@ const ComparePageView = ({ boardId, tableId }: ComparePageViewProps) => {
 
         <CompareTable state={currentView === "edit" ? "edit" : "default"} />
       </form>
+      <LoadingIndicator active={mutation.isPending || isMetaDataLoading} />
     </FormProvider>
   );
 };

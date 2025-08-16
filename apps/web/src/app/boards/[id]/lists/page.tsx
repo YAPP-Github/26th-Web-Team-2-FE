@@ -14,7 +14,7 @@ import useDragAndDrop from "@/domains/list/hooks/use-drag-and-drop";
 import useDropdown from "@/domains/list/hooks/use-dropdown";
 import useInputPanel from "@/domains/list/hooks/use-input-panel";
 import useRegisterUrlInput from "@/domains/list/hooks/use-register-url-input";
-import { useSession } from "@/shared/hooks/use-session";
+import useSession from "@/shared/hooks/use-session";
 
 const BoardsIdListsPage = () => {
   const {

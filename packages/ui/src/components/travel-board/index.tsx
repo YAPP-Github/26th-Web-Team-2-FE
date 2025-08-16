@@ -13,13 +13,13 @@ import ActionOption from "../action-option";
 import ProfileGroup from "../avatar-profile-group";
 import TextWithIcon from "../text-with-icon";
 
-type Participant = {
+export type Participant = {
   userId: number;
   profileImageUrl: string;
   nickname: string;
 };
 
-type TravelBoardProps = {
+export interface TravelBoardProps {
   data: {
     boardId: number;
     boardName: string;
@@ -36,7 +36,7 @@ type TravelBoardProps = {
   onEditClick: () => void;
   onExitClick: () => void;
   onDeleteClick: () => void;
-};
+}
 
 const TravelBoard = ({
   data,

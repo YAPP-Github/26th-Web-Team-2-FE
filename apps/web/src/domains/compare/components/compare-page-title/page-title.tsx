@@ -2,7 +2,7 @@ import { cn, IcEdit } from "@ssok/ui";
 import { useEffect, useRef, useState } from "react";
 import InputAutosize from "@/shared/components/input-autosize";
 
-interface PageTitleProps {
+export interface PageTitleProps {
   title: string;
   isEditingAvailable?: boolean;
   onTitleChange?: (newTitle: string) => void;

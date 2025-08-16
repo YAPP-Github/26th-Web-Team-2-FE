@@ -3,7 +3,7 @@ import { useState } from "react";
 import IcCar from "@/assets/icons/ic_car.svg?react";
 import IcKm from "@/assets/icons/ic_km.svg?react";
 import IcWalker from "@/assets/icons/ic_walker.svg?react";
-import { IconTabs, type IconTabsProps } from "./index";
+import IconTabs, { type IconTabsProps } from "./index";
 
 const meta: Meta<typeof IconTabs> = {
   title: "Components/IconTabs",

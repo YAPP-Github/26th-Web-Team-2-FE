@@ -1,6 +1,6 @@
 import type { Meta, StoryFn } from "@storybook/react-vite";
 import { useState } from "react";
-import { Textarea, type TextareaProps } from "@/components/textarea";
+import Textarea, { type TextareaProps } from "@/components/textarea";
 
 const meta: Meta<TextareaProps> = {
   title: "Components/Textarea",

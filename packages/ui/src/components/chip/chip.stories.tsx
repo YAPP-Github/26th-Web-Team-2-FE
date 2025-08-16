@@ -1,6 +1,6 @@
 import type { Meta, StoryFn } from "@storybook/react-vite";
 import IcVariant from "@/assets/icons/ic_variant.svg?react";
-import { Chip, type ChipProps } from "./index";
+import Chip, { type ChipProps } from "./index";
 
 const meta: Meta<typeof Chip> = {
   title: "Components/Chip",

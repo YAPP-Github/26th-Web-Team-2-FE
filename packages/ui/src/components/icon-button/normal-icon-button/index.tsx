@@ -6,13 +6,14 @@ import {
   type SVGProps,
 } from "react";
 import { cn } from "@/utils";
-import { NormalIconButton } from "./normal-icon-button.variant";
+import { normalIconButton } from "./normal-icon-button.variant";
 
-type IconButtonProps = {
+export interface IconButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   size: "sm" | "md" | "lg";
   children: React.ReactNode;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
+}
 
 const iconSizeMap = {
   sm: "20px",
@@ -20,7 +21,7 @@ const iconSizeMap = {
   lg: "32px",
 };
 
-export const IconButton = ({
+const IconButton = ({
   className,
   children,
   size,
@@ -37,8 +38,10 @@ export const IconButton = ({
     : children;
 
   return (
-    <button className={cn(NormalIconButton({ size }), className)} {...props}>
+    <button className={cn(normalIconButton({ size }), className)} {...props}>
       {styledChild || children}
     </button>
   );
 };
+
+export default IconButton;

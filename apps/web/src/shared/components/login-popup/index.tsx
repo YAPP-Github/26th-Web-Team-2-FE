@@ -5,7 +5,7 @@ import Link from "next/link";
 import LogoLarge from "@/shared/assets/logo-large.svg";
 import SocialKakao from "@/shared/assets/social-kakao.svg";
 
-interface LoginPopupProps extends Omit<PopupProps, "children"> {}
+export interface LoginPopupProps extends Omit<PopupProps, "children"> {}
 
 const LoginPopup = ({ className, ...props }: LoginPopupProps) => {
   return (

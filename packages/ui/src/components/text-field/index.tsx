@@ -37,7 +37,7 @@ const variants = cva(
   },
 );
 
-export const TextField = ({
+const TextField = ({
   className,
   icon,
   value,
@@ -114,3 +114,5 @@ export const TextField = ({
     </div>
   );
 };
+
+export default TextField;

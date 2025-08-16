@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SsokLogo from "@/shared/assets/ssok-logo.svg";
 
-interface HeaderProps {
+export interface HeaderProps {
   className?: string;
 }
 

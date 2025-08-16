@@ -1,7 +1,7 @@
 import { cn } from "@ssok/ui";
 import type { ComponentProps } from "react";
 
-interface AddButtonProps extends ComponentProps<"button"> {
+export interface AddButtonProps extends ComponentProps<"button"> {
   className?: string;
 }
 

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Confirm } from "./index";
+import Confirm from "./index";
 
 const meta = {
   title: "Components/Confirm",

@@ -2,7 +2,7 @@ import type { Meta, StoryFn } from "@storybook/react-vite";
 import IcAddMemo from "@/assets/icons/ic_add_memo.svg?react";
 import IcStarFull from "@/assets/icons/ic_star_full.svg?react";
 import IcVariant from "@/assets/icons/ic_variant.svg?react";
-import { IconButton } from "./index";
+import IconButton from "./index";
 
 export default {
   title: "Components/IconButton/Normal",

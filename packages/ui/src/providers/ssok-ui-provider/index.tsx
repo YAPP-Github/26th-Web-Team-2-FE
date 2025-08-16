@@ -1,9 +1,8 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { ToastContainer } from "@/components/toast";
-import {
-  ToastProvider,
+import ToastContainer from "@/components/toast";
+import ToastProvider, {
   type ToastProviderProps,
 } from "@/providers/toast-provider";
 
@@ -12,11 +11,14 @@ interface SsokUiProviderProps {
   children: ReactNode;
 }
 
-export function SsokUiProvider({ toast, children }: SsokUiProviderProps) {
+const SsokUiProvider = ({ toast, children }: SsokUiProviderProps) => {
   return (
     <ToastProvider {...toast}>
       {children}
       <ToastContainer />
     </ToastProvider>
   );
-}
+};
+
+export default SsokUiProvider;
+export { SsokUiProvider };

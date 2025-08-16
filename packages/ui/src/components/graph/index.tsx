@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { type ComponentProps, type ReactNode, useMemo } from "react";
-import { TextField } from "@/components/text-field";
+import TextField from "@/components/text-field";
 import { cn } from "@/utils";
 
 export interface GraphProps
@@ -32,7 +32,7 @@ const variants = cva(
   },
 );
 
-export const Graph = ({
+const Graph = ({
   state = "default",
   value,
   label,
@@ -111,3 +111,5 @@ export const Graph = ({
     </div>
   );
 };
+
+export default Graph;

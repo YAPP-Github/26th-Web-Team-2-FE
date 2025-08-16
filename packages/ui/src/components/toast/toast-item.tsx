@@ -8,7 +8,7 @@ interface ToastItemProps {
   className?: string;
 }
 
-export const ToastItem = ({ toast, className }: ToastItemProps) => {
+const ToastItem = ({ toast, className }: ToastItemProps) => {
   return (
     <div
       className={cn(
@@ -29,3 +29,5 @@ export const ToastItem = ({ toast, className }: ToastItemProps) => {
     </div>
   );
 };
+
+export default ToastItem;

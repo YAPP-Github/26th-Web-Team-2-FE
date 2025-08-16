@@ -1,6 +1,6 @@
 import type { Meta, StoryFn } from "@storybook/react-vite";
 import IcVariant from "@/assets/icons/ic_variant.svg?react";
-import { Button, type ButtonProps } from "./index";
+import Button, { type ButtonProps } from "./index";
 
 export default {
   title: "Components/Button",

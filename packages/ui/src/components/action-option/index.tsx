@@ -1,15 +1,15 @@
 import { cn } from "@/utils";
 
-type DropdownProps = {
+interface DropdownProps {
   isOpen: boolean;
   children: React.ReactNode;
-};
+}
 
-type DropdownOptionProps = {
+interface DropdownOptionProps {
   onClick: () => void;
   children: React.ReactNode;
   icon: React.ReactNode;
-};
+}
 
 const DropdownMenu = ({ isOpen, children }: DropdownProps) => {
   if (!isOpen) return null;

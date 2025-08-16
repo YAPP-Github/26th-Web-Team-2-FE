@@ -1,12 +1,13 @@
 import { cn } from "@/utils";
 
-export type PinProps = {
+export interface PinProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   isActive: boolean;
   children: React.ReactNode;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+}
 
-export const Pin = ({ children, className, isActive, ...props }: PinProps) => {
+const Pin = ({ children, className, isActive, ...props }: PinProps) => {
   return (
     <button
       type="button"
@@ -45,3 +46,5 @@ export const Pin = ({ children, className, isActive, ...props }: PinProps) => {
     </button>
   );
 };
+
+export default Pin;

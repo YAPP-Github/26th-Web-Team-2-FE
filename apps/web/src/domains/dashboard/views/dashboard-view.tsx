@@ -4,7 +4,7 @@ import { useGetTripBoardsInfinite } from "@ssok/api";
 import { ActionCard, TravelBoard } from "@ssok/ui";
 import { useEffect } from "react";
 import Header from "@/shared/components/header";
-import { useSession } from "@/shared/hooks/use-session";
+import useSession from "@/shared/hooks/use-session";
 
 const DashboardView = () => {
   const { accessToken } = useSession({ required: true });

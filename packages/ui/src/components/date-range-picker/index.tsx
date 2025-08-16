@@ -4,30 +4,30 @@ import { useRef, useState } from "react";
 import type { DateRange } from "react-day-picker";
 import { useOutsideClickEffect } from "react-simplikit";
 import Calendar from "@/components/calendar";
-import { DateButton } from "@/components/date-button";
+import DateButton from "@/components/date-button";
 import { useFloating } from "@/hooks/use-floating";
 import { cn } from "@/utils";
 
-export type DateRangeValue = {
+export interface DateRangeValue {
   from?: Date;
   to?: Date;
-};
+}
 
-export type DateRangePickerRenderProps = {
+export interface DateRangePickerRenderProps {
   from: React.ReactNode;
   to: React.ReactNode;
-};
+}
 
-export type DateRangePickerProps = {
+export interface DateRangePickerProps {
   value: DateRangeValue;
   onChange: (range: DateRangeValue) => void;
   render: (props: DateRangePickerRenderProps) => React.ReactNode;
   disabled?: boolean;
   placeholder?: { from: string; to: string };
   className?: string;
-};
+}
 
-export const DateRangePicker = ({
+const DateRangePicker = ({
   value,
   onChange,
   render,

@@ -20,11 +20,7 @@ const PlaceSelectionContext = createContext<PlaceSelectionContextType | null>(
   null,
 );
 
-export const PlaceSelectionProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+const PlaceSelectionProvider = ({ children }: { children: ReactNode }) => {
   const [selectedPlaces, setSelectedPlaces] = useState<number[]>([]);
   const [lastSelectedPlace, setLastSelectedPlace] = useState<number | null>(
     null,
@@ -77,10 +73,13 @@ export const PlaceSelectionProvider = ({
   );
 };
 
-export const usePlaceSelectionContext = () => {
+const usePlaceSelectionContext = () => {
   const context = useContext(PlaceSelectionContext);
   if (!context) {
     throw new Error("PlaceSelectionProvider 내부에서 사용하세요");
   }
   return context;
 };
+
+export default PlaceSelectionProvider;
+export { usePlaceSelectionContext };

@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react-vite";
-import { Pin } from "./index";
+import Pin from "./index";
 
 const meta: Meta<typeof Pin> = {
   title: "Components/Pin",

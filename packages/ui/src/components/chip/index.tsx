@@ -7,20 +7,21 @@ import {
 import { cn } from "@/utils";
 import { chip } from "./chip.variant";
 
-export type ChipProps = {
+export interface ChipProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   size: "xs" | "md";
   icon?: React.ReactNode;
   additionalText?: string;
   text: string;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+}
 
 const iconSizeMap = {
   xs: "12px",
   md: "14px",
 };
 
-export const Chip = ({
+const Chip = ({
   text,
   className,
   size,
@@ -56,3 +57,5 @@ export const Chip = ({
     </button>
   );
 };
+
+export default Chip;

@@ -2,13 +2,14 @@ import type { PropsWithChildren } from "react";
 import { useEffect } from "react";
 import { cn } from "@/utils";
 
-type BackdropProps = PropsWithChildren<{
-  active?: boolean;
-  onClose?: () => void;
-  className?: string;
-}>;
+export interface BackdropProps
+  extends PropsWithChildren<{
+    active?: boolean;
+    onClose?: () => void;
+    className?: string;
+  }> {}
 
-export const Backdrop = ({
+const Backdrop = ({
   children,
   active = true,
   onClose,
@@ -58,3 +59,5 @@ export const Backdrop = ({
     </div>
   );
 };
+
+export default Backdrop;

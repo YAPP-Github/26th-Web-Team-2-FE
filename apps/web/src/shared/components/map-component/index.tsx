@@ -7,7 +7,11 @@ import { usePlaceSelectionContext } from "@/domains/list/contexts/place-select-c
 import MapPin from "@/shared/components/map-component/map-pin";
 import { calculateCenter } from "@/shared/utils/map";
 
-const MapComponent = ({ className }: { className?: string }) => {
+export interface MapComponentProps {
+  className?: string;
+}
+
+const MapComponent = ({ className }: MapComponentProps) => {
   const { accommodations } = useAccommodationDataContext();
 
   const { onSelectPlace, lastSelectedPlace } = usePlaceSelectionContext();

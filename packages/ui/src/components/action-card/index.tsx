@@ -1,12 +1,12 @@
 import IcAdd from "@/assets/icons/ic_add.svg?react";
 import { cn } from "@/index";
 
-type ActionCardProps = {
+export interface ActionCardProps {
   onClick: () => void;
   icon?: React.ReactNode;
   text?: string;
   className?: string;
-};
+}
 
 const ActionCard = ({
   onClick,

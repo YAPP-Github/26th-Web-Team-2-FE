@@ -10,7 +10,7 @@ type PanelContextType = {
 
 const PanelContext = createContext<PanelContextType | null>(null);
 
-export const PanelProvider = ({ children }: { children: ReactNode }) => {
+const PanelProvider = ({ children }: { children: ReactNode }) => {
   const [isPanelExpanded, setIsPanelExpanded] = useState(true);
 
   const handlePanelToggle = () => setIsPanelExpanded((prev) => !prev);
@@ -31,10 +31,13 @@ export const PanelProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const usePanelContext = () => {
+const usePanelContext = () => {
   const context = useContext(PanelContext);
   if (!context) {
     throw new Error("panelProvider 내부에서 사용하세요");
   }
   return context;
 };
+
+export default PanelProvider;
+export { usePanelContext };

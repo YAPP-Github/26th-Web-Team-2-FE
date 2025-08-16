@@ -7,11 +7,11 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import SymbolRightArrow from "@/domains/dashboard/assets/symbol_arrow_right.svg";
-import { useSession } from "@/shared/hooks/use-session";
+import useSession from "@/shared/hooks/use-session";
 import { formatDate } from "@/shared/utils/date";
 import type { BoardCreateFormData } from "../../types";
 
-interface BoardCreateFormProps {
+export interface BoardCreateFormProps {
   className?: string;
 }
 

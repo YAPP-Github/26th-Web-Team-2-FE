@@ -18,11 +18,7 @@ type AccommodationDataContextType = {
 const AccommodationDataContext =
   createContext<AccommodationDataContextType | null>(null);
 
-export const AccommodationDataProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+const AccommodationDataProvider = ({ children }: { children: ReactNode }) => {
   const [accommodations, setAccommodations] = useState<
     NonNullableAccommodation[]
   >([]);
@@ -43,10 +39,13 @@ export const AccommodationDataProvider = ({
   );
 };
 
-export const useAccommodationDataContext = () => {
+const useAccommodationDataContext = () => {
   const context = useContext(AccommodationDataContext);
   if (!context) {
     throw new Error("AccommodationDataProvider 내부에서 사용하세요");
   }
   return context;
 };
+
+export default AccommodationDataProvider;
+export { useAccommodationDataContext };

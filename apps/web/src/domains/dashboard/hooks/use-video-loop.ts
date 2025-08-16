@@ -1,6 +1,6 @@
 import { type RefObject, useEffect } from "react";
 
-export const useVideoLoop = (refs: RefObject<HTMLVideoElement | null>[]) => {
+const useVideoLoop = (refs: RefObject<HTMLVideoElement | null>[]) => {
   useEffect(() => {
     let index = -1;
 
@@ -35,3 +35,5 @@ export const useVideoLoop = (refs: RefObject<HTMLVideoElement | null>[]) => {
     };
   }, [refs]);
 };
+
+export default useVideoLoop;

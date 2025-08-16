@@ -6,12 +6,12 @@ type FormData = {
   memo?: string;
 };
 
-type LinkInputSectionProps = {
+export interface LinkInputContainerProps {
   register: UseFormRegister<FormData>;
   watch: UseFormWatch<FormData>;
-};
+}
 
-const LinkInputContainer = ({ register, watch }: LinkInputSectionProps) => {
+const LinkInputContainer = ({ register, watch }: LinkInputContainerProps) => {
   return (
     <div>
       <TextField

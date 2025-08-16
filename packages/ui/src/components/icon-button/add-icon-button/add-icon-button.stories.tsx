@@ -1,6 +1,6 @@
 import type { Meta, StoryFn } from "@storybook/react-vite";
 import { useState } from "react";
-import { AddIconButton } from ".";
+import AddIconButton from ".";
 
 export default {
   title: "Components/IconButton/Solid/Add",

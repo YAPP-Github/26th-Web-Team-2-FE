@@ -4,7 +4,7 @@ import { type ComponentProps, type KeyboardEvent, useState } from "react";
 import { useOutsideClickEffect } from "react-simplikit";
 import IcCaretDown from "@/assets/icons/ic_caret_down.svg?react";
 import IcClock from "@/assets/icons/ic_clock.svg?react";
-import { Button, type ButtonProps } from "@/components/button";
+import Button, { type ButtonProps } from "@/components/button";
 import { useFloating } from "@/hooks/use-floating";
 import { cn } from "@/utils";
 import { formatTime, getCurrentTimeRounded } from "@/utils/date";
@@ -43,7 +43,7 @@ const variants = cva(
   },
 );
 
-export const TimePicker = ({
+const TimePicker = ({
   value,
   onChange,
   disabled,
@@ -202,6 +202,8 @@ export const TimePicker = ({
     </div>
   );
 };
+
+export default TimePicker;
 
 const ActionButton = ({
   children,

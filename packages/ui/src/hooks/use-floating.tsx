@@ -28,11 +28,11 @@ export interface UseFloatingReturn<
   refresh: () => void;
 }
 
-export function useFloating<R extends HTMLElement, F extends HTMLElement>({
+const useFloating = <R extends HTMLElement, F extends HTMLElement>({
   defaultPlacement = "bottom",
   offset = 8,
   enabled = true,
-}: UseFloatingOptions = {}): UseFloatingReturn<R, F> {
+}: UseFloatingOptions = {}): UseFloatingReturn<R, F> => {
   const events = ["resize", "scroll"];
   const [placement, setPlacement] = useState<Placement>(defaultPlacement);
   const [maxHeight, setMaxHeight] = useState<number>(0);
@@ -109,4 +109,7 @@ export function useFloating<R extends HTMLElement, F extends HTMLElement>({
     placement,
     refresh,
   };
-}
+};
+
+export default useFloating;
+export { useFloating };

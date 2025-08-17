@@ -1,22 +1,16 @@
 "use client";
 
 import { useGetTripBoardsInfinite } from "@ssok/api";
-import type { TripBoardUpdateRequest } from "@ssok/api/schemas";
-import { ActionCard, Popup, TravelBoard } from "@ssok/ui";
-import Link from "next/link";
+import { ActionCard, Popup } from "@ssok/ui";
 import { useEffect, useState } from "react";
 import Header from "@/shared/components/header";
 import useSession from "@/shared/hooks/use-session";
 import BoardCreateForm from "../components/board-create-form";
-import BoardEditForm from "../components/board-edit-form";
+import DashboardTripBoard from "../components/dashboard-trip-board";
 
 const DashboardView = () => {
   const { accessToken } = useSession({ required: true });
-  const [modalState, setModalState] = useState<
-    | { type: "createForm" }
-    | { type: "editForm"; tripBoardId: number; data: TripBoardUpdateRequest }
-    | null
-  >(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const {
     data: { pages } = {},
@@ -45,21 +39,6 @@ const DashboardView = () => {
     }
   }, [accessToken, hasNextPage, isFetching, fetchNextPage]);
 
-  const handleEditModal = (
-    tripBoardId: number,
-    data: TripBoardUpdateRequest,
-  ) => {
-    setModalState({ type: "editForm", tripBoardId, data });
-  };
-
-  const handleCreateModal = () => {
-    setModalState({ type: "createForm" });
-  };
-
-  const handleModalClose = () => {
-    setModalState(null);
-  };
-
   return (
     <main>
       {/* 페이지 헤더 */}
@@ -71,43 +50,14 @@ const DashboardView = () => {
         </h1>
         <ul className="grid grid-cols-3 gap-[4rem]">
           <li>
-            <ActionCard onClick={handleCreateModal} className="w-full" />
+            <ActionCard
+              onClick={() => setShowCreateModal(true)}
+              className="w-full"
+            />
           </li>
           {allTripBoards.map((tripBoard) => (
             <li key={tripBoard.tripBoardId}>
-              <Link href={`/boards/${tripBoard.tripBoardId}/lists`} prefetch>
-                <TravelBoard
-                  data={{
-                    boardId: tripBoard.tripBoardId!,
-                    boardName: tripBoard.boardName!,
-                    destination: tripBoard.destination!,
-                    startDate: tripBoard.startDate?.toString()!,
-                    endDate: tripBoard.endDate?.toString()!,
-                    participantCount: tripBoard.participantCount!,
-                    participants:
-                      tripBoard.participants?.map((p) => ({
-                        userId: p.userId ?? 0,
-                        profileImageUrl: p.profileImageUrl ?? "",
-                        nickname: p.nickname ?? "",
-                        role: p.role ?? "MEMBER",
-                      })) ?? [],
-                    accommodationCount: tripBoard.accommodationCount!,
-                  }}
-                  // TODOT: 핸들러 함수 api 부착
-                  onDeleteClick={() => alert("여행 삭제")}
-                  onEditClick={() =>
-                    handleEditModal(tripBoard.tripBoardId!, {
-                      boardName: tripBoard.boardName!,
-                      destination: tripBoard.destination!,
-                      startDate: tripBoard.startDate!,
-                      endDate: tripBoard.endDate!,
-                    })
-                  }
-                  onExitClick={() => alert("여행 나가기")}
-                  onInviteClick={() => alert("여행 초대")}
-                  className="w-full"
-                />
-              </Link>
+              <DashboardTripBoard data={tripBoard} className="w-full" />
             </li>
           ))}
         </ul>
@@ -120,28 +70,11 @@ const DashboardView = () => {
         )}
       </section>
       <Popup
-        title={
-          modalState?.type === "createForm"
-            ? "새 여행 만들기"
-            : "여행 보드 수정하기"
-        }
-        active={
-          !!modalState &&
-          (modalState.type === "createForm" || modalState.type === "editForm")
-        }
-        onClose={() => handleModalClose()}
+        title="새 여행 만들기"
+        active={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
       >
-        {modalState?.type === "createForm" && (
-          <BoardCreateForm className="min-w-[51.1rem]" />
-        )}
-        {modalState?.type === "editForm" && (
-          <BoardEditForm
-            className="min-w-[51.1rem]"
-            tripBoardId={modalState.tripBoardId}
-            data={modalState.data}
-            handleModalClose={handleModalClose}
-          />
-        )}
+        <BoardCreateForm className="min-w-[51.1rem]" />
       </Popup>
     </main>
   );

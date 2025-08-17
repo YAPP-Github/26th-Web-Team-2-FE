@@ -56,7 +56,7 @@ export const useBoardInvite = (
       await navigator.clipboard.writeText(inviteLink);
       setIsCopyBtnClicked(true);
       toast.success("링크가 복사되었어요");
-      // setTimeout(() => setIsCopyBtnClicked(false), 2000);
+      setTimeout(() => setIsCopyBtnClicked(false), 2000);
     } catch (_error) {
       console.error("링크 복사에 실패했어요", _error);
     }

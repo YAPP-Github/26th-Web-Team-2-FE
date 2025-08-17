@@ -1,7 +1,10 @@
 "use client";
 
 import { useGetTripBoardsInfinite } from "@ssok/api";
-import type { TripBoardUpdateRequest } from "@ssok/api/schemas";
+import type {
+  ParticipantProfileResponse,
+  TripBoardUpdateRequest,
+} from "@ssok/api/schemas";
 import { ActionCard, Popup, TravelBoard } from "@ssok/ui";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -9,11 +12,17 @@ import Header from "@/shared/components/header";
 import useSession from "@/shared/hooks/use-session";
 import BoardCreateForm from "../components/board-create-form";
 import BoardEditForm from "../components/board-edit-form";
+import BoardInviteModal from "../components/board-invite-modal";
 
 const DashboardView = () => {
   const { accessToken } = useSession({ required: true });
   const [modalState, setModalState] = useState<
     | { type: "createForm" }
+    | {
+        type: "inviteModal";
+        tripBoardId: number;
+        participants: ParticipantProfileResponse[];
+      }
     | { type: "editForm"; tripBoardId: number; data: TripBoardUpdateRequest }
     | null
   >(null);
@@ -54,6 +63,13 @@ const DashboardView = () => {
 
   const handleCreateModal = () => {
     setModalState({ type: "createForm" });
+  };
+
+  const handleInviteModal = (
+    tripBoardId: number,
+    participants: ParticipantProfileResponse[],
+  ) => {
+    setModalState({ type: "inviteModal", tripBoardId, participants });
   };
 
   const handleModalClose = () => {
@@ -104,7 +120,12 @@ const DashboardView = () => {
                     })
                   }
                   onExitClick={() => alert("여행 나가기")}
-                  onInviteClick={() => alert("여행 초대")}
+                  onInviteClick={() =>
+                    handleInviteModal(
+                      tripBoard.tripBoardId!,
+                      tripBoard.participants!,
+                    )
+                  }
                   className="w-full"
                 />
               </Link>
@@ -127,7 +148,9 @@ const DashboardView = () => {
         }
         active={
           !!modalState &&
-          (modalState.type === "createForm" || modalState.type === "editForm")
+          (modalState.type === "createForm" ||
+            modalState.type === "editForm" ||
+            modalState.type === "inviteModal")
         }
         onClose={() => handleModalClose()}
       >
@@ -140,6 +163,13 @@ const DashboardView = () => {
             tripBoardId={modalState.tripBoardId}
             data={modalState.data}
             handleModalClose={handleModalClose}
+          />
+        )}
+        {modalState?.type === "inviteModal" && (
+          <BoardInviteModal
+            tripBoardId={modalState.tripBoardId}
+            participants={modalState.participants}
+            className="min-w-[51.1rem]"
           />
         )}
       </Popup>

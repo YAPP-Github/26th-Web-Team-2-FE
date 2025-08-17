@@ -1,5 +1,10 @@
-import { useGetInvitationCode, useToggleInvitationActive } from "@ssok/api";
+import {
+  getGetInvitationCodeQueryKey,
+  useGetInvitationCode,
+  useToggleInvitationActive,
+} from "@ssok/api";
 import { useToast } from "@ssok/ui";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import useSession from "@/shared/hooks/use-session";
 
@@ -9,7 +14,7 @@ export const useBoardInvite = (
 ) => {
   const { accessToken } = useSession({ required: true });
   const { toast } = useToast();
-
+  const queryClient = useQueryClient();
   const {
     data: invitationCode,
     isLoading,
@@ -44,6 +49,9 @@ export const useBoardInvite = (
       toast.success(
         active ? "초대가 활성화되었어요" : "초대가 비활성화되었어요",
       );
+      queryClient.refetchQueries({
+        queryKey: getGetInvitationCodeQueryKey(tripBoardId),
+      });
     } catch (error) {
       console.error("초대 상태를 변경하는 중 오류", error);
     }

@@ -14,6 +14,12 @@ import BoardCreateForm from "../components/board-create-form";
 import BoardEditForm from "../components/board-edit-form";
 import BoardInviteModal from "../components/board-invite-modal";
 
+const popupTitles: Record<string, string> = {
+  createForm: "새 여행 만들기",
+  editForm: "여행 보드 수정하기",
+  inviteModal: "멤버 초대하기",
+};
+
 const DashboardView = () => {
   const { accessToken } = useSession({ required: true });
   const [modalState, setModalState] = useState<
@@ -141,11 +147,7 @@ const DashboardView = () => {
         )}
       </section>
       <Popup
-        title={
-          modalState?.type === "createForm"
-            ? "새 여행 만들기"
-            : "여행 보드 수정하기"
-        }
+        title={popupTitles[modalState?.type || "createForm"]}
         active={
           !!modalState &&
           (modalState.type === "createForm" ||

@@ -1,4 +1,3 @@
-import { useGetInvitationCode, useToggleInvitationActive } from "@ssok/api";
 import type { ParticipantProfileResponse } from "@ssok/api/schemas";
 import {
   AvatarProfile,
@@ -6,10 +5,8 @@ import {
   IcCheckFill,
   Switch,
   TextField,
-  useToast,
 } from "@ssok/ui";
-import { useEffect, useState } from "react";
-import useSession from "@/shared/hooks/use-session";
+import { useBoardInvite } from "../../hooks/use-invite";
 
 interface BoardInviteModalProps {
   className?: string;
@@ -28,56 +25,15 @@ const BoardInviteModal = ({
   tripBoardId,
   participants,
 }: BoardInviteModalProps) => {
-  const { accessToken } = useSession({ required: true });
-  const { toast } = useToast();
   const {
-    data: invitationCode,
+    inviteLink,
+    isInviteEnabled,
+    isCopyBtnClicked,
     isLoading,
     isFetching,
-  } = useGetInvitationCode(tripBoardId, {
-    query: {
-      enabled: !!accessToken,
-    },
-    request: { headers: { Authorization: `Bearer ${accessToken}` } },
-  });
-  const inviteData = invitationCode?.data.result;
-  const inviteLink = `https://www.ssok.info/boards/${tripBoardId}?code=${inviteData?.invitationCode}`;
-
-  const { mutateAsync: toggleInviteActive } = useToggleInvitationActive({
-    request: { headers: { Authorization: `Bearer ${accessToken}` } },
-  });
-
-  const [isInviteEnabled, setIsInviteEnabled] = useState(inviteData?.isActive);
-  const [isCopyBtnClicked, setIsCopyBtnClicked] = useState(false);
-  useEffect(() => {
-    setIsInviteEnabled(participants.length < 10 && inviteData?.isActive);
-  }, [inviteData?.isActive, participants.length]);
-
-  const handleInviteEnabledToggle = async () => {
-    try {
-      const res = await toggleInviteActive({ tripBoardId });
-      const active = res.data.result?.isActive;
-
-      setIsInviteEnabled(active);
-
-      toast.success(
-        active ? "초대가 활성화되었어요" : "초대가 비활성화되었어요",
-      );
-    } catch (_error) {
-      console.log("초대 상태를 변경하는 중 오류가 발생했어요", _error);
-    }
-  };
-
-  const handleCopyInviteLink = async () => {
-    if (!inviteLink || !isInviteEnabled) return;
-
-    await navigator.clipboard.writeText(inviteLink);
-    setIsCopyBtnClicked(true);
-    toast.success("링크가 복사되었어요");
-    setTimeout(() => {
-      setIsCopyBtnClicked(false);
-    }, 2000);
-  };
+    handleInviteEnabledToggle,
+    handleCopyInviteLink,
+  } = useBoardInvite(tripBoardId, participants.length);
 
   return (
     <section className={`flex flex-col gap-[4.8rem] ${className}`}>
@@ -103,15 +59,12 @@ const BoardInviteModal = ({
             size="lg"
             variant="primary"
             onClick={handleCopyInviteLink}
+            icon={
+              isCopyBtnClicked && <IcCheckFill width="2rem" height="2rem" />
+            }
             disabled={!isInviteEnabled || participants.length >= 10}
           >
-            {isCopyBtnClicked ? (
-              <span className="flex gap-[0.8rem] text-body1-bold16 text-primary100">
-                <IcCheckFill /> 복사됨
-              </span>
-            ) : (
-              "링크 복사"
-            )}
+            {isCopyBtnClicked ? "복사됨" : "링크 복사"}
           </Button>
         </div>
       </div>

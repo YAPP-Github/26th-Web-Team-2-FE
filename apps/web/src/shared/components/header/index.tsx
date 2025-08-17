@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SsokLogo from "@/shared/assets/ssok-logo.svg";
 
-interface HeaderProps {
+export interface HeaderProps {
   className?: string;
 }
 
@@ -21,7 +21,7 @@ const Header = ({ className }: HeaderProps) => {
     <header
       className={cn("w-full border-neutral-90 border-b bg-white", className)}
     >
-      <div className="mx-auto flex max-w-[123.2rem] items-center justify-between px-[2.4rem] py-[1.6rem]">
+      <div className="mx-auto flex w-full items-center justify-between px-[10.4rem] py-[1.6rem]">
         <div className="flex items-center gap-[6.4rem]">
           <Link href="/" className="flex items-center">
             <SsokLogo className="h-[3.2rem] w-[8rem]" />

@@ -3,22 +3,22 @@ import IcAddMemo from "@/assets/icons/ic_add_memo.svg?react";
 import IcInfo from "@/assets/icons/ic_info.svg?react";
 import IcLocation from "@/assets/icons/ic_location.svg?react";
 import IcMemo from "@/assets/icons/ic_memo.svg?react";
-import { Button } from "@/components/button";
-import { Chip } from "@/components/chip";
-import { AddIconButton } from "@/components/icon-button/add-icon-button";
-import { DeleteIconButton } from "@/components/icon-button/delete-icon-button";
-import { ImageCard } from "@/components/image-card";
+import Button from "@/components/button";
+import Chip from "@/components/chip";
+import AddIconButton from "@/components/icon-button/add-icon-button";
+import DeleteIconButton from "@/components/icon-button/delete-icon-button";
+import ImageCard from "@/components/image-card";
 import TextWithIcon from "@/components/text-with-icon";
 import { cn } from "@/utils";
 import { getAttractionDistance } from "./card.utils";
 import { card } from "./card.variant";
 
-type TransportInfo = {
+interface TransportInfo {
   distance?: string;
   time?: string;
-};
+}
 
-export type Attraction = {
+export interface Attraction {
   name?: string;
   type?: string;
   latitude?: number;
@@ -26,32 +26,33 @@ export type Attraction = {
   distance?: string;
   byFoot?: TransportInfo;
   byCar?: TransportInfo;
-};
+}
 
-export type CardProps = PropsWithChildren<{
-  className?: string;
-  selected: boolean;
-  onClick?: () => void;
-  onAddClick: () => void;
-  onDeleteClick: () => void;
+export interface CardProps
+  extends PropsWithChildren<{
+    className?: string;
+    selected: boolean;
+    onClick?: () => void;
+    onAddClick: () => void;
+    onDeleteClick: () => void;
 
-  images: string[];
-  address: string;
-  url: string;
-  logoUrl: string;
-  siteName: string;
-  accommodationName: string;
-  currency: string;
-  nearbyAttractions: Attraction[];
-  savedByText: string;
-  memo?: string;
+    images: string[];
+    address: string;
+    url: string;
+    logoUrl: string;
+    siteName: string;
+    accommodationName: string;
+    currency: string;
+    nearbyAttractions: Attraction[];
+    savedByText: string;
+    memo?: string;
 
-  // Optional props for next Image
-  imageAs?: React.ElementType;
-  logoAs?: React.ElementType;
-}>;
+    // Optional props for next Image
+    imageAs?: React.ElementType;
+    logoAs?: React.ElementType;
+  }> {}
 
-export const Card = ({
+const Card = ({
   className,
   selected,
   onAddClick,
@@ -219,3 +220,5 @@ export const Card = ({
     </section>
   );
 };
+
+export default Card;

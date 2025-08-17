@@ -5,7 +5,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
 import type { PropsWithChildren } from "react";
 
-interface PhotoProps {
+export interface PhotoProps {
   className?: string;
   state?: "default" | "edit" | "active";
   images: string[];

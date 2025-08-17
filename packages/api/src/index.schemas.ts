@@ -271,6 +271,43 @@ export interface WithdrawResponse {
   withdrawSuccess?: boolean;
 }
 
+/**
+ * 리프레시 토큰 재발급 요청
+ */
+export interface RefreshTokenRequest {
+  /**
+   * 리프레시 토큰
+   * @minLength 1
+   */
+  refreshToken?: string;
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseTokenSuccessResponseResponseType =
+  | "SUCCESS"
+  | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseTokenSuccessResponse {
+  /** 응답 유형 */
+  responseType?: StandardResponseTokenSuccessResponseResponseType;
+  /** 응답 결과 데이터 */
+  result?: TokenSuccessResponse;
+}
+
+/**
+ * 토큰 발급 응답
+ */
+export interface TokenSuccessResponse {
+  /** 액세스 토큰 */
+  readonly accessToken?: string;
+  /** 리프레시 토큰 */
+  readonly refreshToken?: string;
+}
+
 export interface LogoutResponse {
   logoutSuccess?: boolean;
 }
@@ -293,8 +330,13 @@ export interface StandardResponseLogoutResponse {
  * OAuth 로그인 응답
  */
 export interface OauthLoginResponse {
+  /** 사용자 ID */
   userId?: number;
+  /** 사용자 닉네임 */
   nickname?: string;
+  /** 사용자 이메일 */
+  email?: string;
+  /** 토큰 정보 */
   token?: TokenSuccessResponse;
 }
 
@@ -312,11 +354,6 @@ export interface StandardResponseOauthLoginResponse {
   responseType?: StandardResponseOauthLoginResponseResponseType;
   /** 응답 결과 데이터 */
   result?: OauthLoginResponse;
-}
-
-export interface TokenSuccessResponse {
-  accessToken?: string;
-  refreshToken?: string;
 }
 
 export interface CreateComparisonTableRequest {
@@ -502,6 +539,32 @@ export interface Transportation {
   distance?: string;
   byFoot?: DistanceInfo;
   byCar?: DistanceInfo;
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseUserInfoResponseResponseType = "SUCCESS" | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseUserInfoResponse {
+  /** 응답 유형 */
+  responseType?: StandardResponseUserInfoResponseResponseType;
+  /** 응답 결과 데이터 */
+  result?: UserInfoResponse;
+}
+
+/**
+ * 유저 정보 응답
+ */
+export interface UserInfoResponse {
+  /** 유저 닉네임 */
+  nickname?: string;
+  /** 유저 프로필 이미지 URL */
+  profileImageUrl?: string;
+  /** 사용자 이메일 */
+  email?: string;
 }
 
 export type ParticipantProfileResponseRole = "OWNER" | "MEMBER";
@@ -752,6 +815,27 @@ export interface StandardResponseTripBoardDeleteResponse {
 
 export interface TripBoardDeleteResponse {
   tripBoardId?: number;
+}
+
+export interface ComparisonTableDeleteResponse {
+  tableId?: number;
+  message?: string;
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseComparisonTableDeleteResponseResponseType =
+  | "SUCCESS"
+  | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseComparisonTableDeleteResponse {
+  /** 응답 유형 */
+  responseType?: StandardResponseComparisonTableDeleteResponseResponseType;
+  /** 응답 결과 데이터 */
+  result?: ComparisonTableDeleteResponse;
 }
 
 export interface AccommodationDeleteResponse {

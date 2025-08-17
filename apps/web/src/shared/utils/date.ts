@@ -1,5 +1,5 @@
 type FormatDateOptions = {
-  format?: "YY.MM.DD" | "YYYY.MM.DD";
+  format?: "YY.MM.DD" | "YYYY.MM.DD" | "YYYY-MM-DD";
 };
 
 export const formatDate = (
@@ -11,7 +11,9 @@ export const formatDate = (
     format === "YY.MM.DD" ? yearFull.slice(-2).padStart(2, "0") : yearFull;
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
-  return `${year}.${month}.${day}`;
+  return format === "YYYY-MM-DD"
+    ? `${year}-${month}-${day}`
+    : `${year}.${month}.${day}`;
 };
 
 /**

@@ -1,19 +1,19 @@
 import { IcCollapse, IcExpand, IcInfo, TextWithIcon } from "@ssok/ui";
 import BubbleInfo from "./bubble-info";
 
-type TitleSectionProps = {
+export interface TitleContainerProps {
   isInputExpanded: boolean; // 입력창 확장 여부
   isTooltipVisible: boolean; // 툴팁 표시 여부
   toggleInputExpansion: () => void; // 입력창 확장/축소 토글 함수
   handleTooltipVisible: (visible: boolean) => void; // 툴팁 표시/숨김 함수
-};
+}
 
 const TitleContainer = ({
   isInputExpanded,
   isTooltipVisible,
   toggleInputExpansion,
   handleTooltipVisible,
-}: TitleSectionProps) => {
+}: TitleContainerProps) => {
   return (
     <div className="flex justify-between">
       <div className="flex items-center gap-[0.8rem]">

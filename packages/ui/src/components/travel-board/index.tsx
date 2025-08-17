@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { type MouseEvent, useRef, useState } from "react";
 import { useOutsideClickEffect } from "react-simplikit";
 import IcBookmark from "@/assets/icons/ic_bookmark.svg?react";
 import IcDelete from "@/assets/icons/ic_delete.svg?react";
@@ -13,13 +13,13 @@ import ActionOption from "../action-option";
 import ProfileGroup from "../avatar-profile-group";
 import TextWithIcon from "../text-with-icon";
 
-type Participant = {
+export type Participant = {
   userId: number;
   profileImageUrl: string;
   nickname: string;
 };
 
-type TravelBoardProps = {
+export interface TravelBoardProps {
   data: {
     boardId: number;
     boardName: string;
@@ -36,7 +36,7 @@ type TravelBoardProps = {
   onEditClick: () => void;
   onExitClick: () => void;
   onDeleteClick: () => void;
-};
+}
 
 const TravelBoard = ({
   data,
@@ -58,7 +58,9 @@ const TravelBoard = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownWrapperRef = useRef<HTMLDivElement | null>(null);
 
-  const handleDropdownToggle = () => {
+  const handleDropdownToggle = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
     setIsDropdownOpen((prev) => !prev);
   };
 
@@ -110,16 +112,28 @@ const TravelBoard = ({
           </button>
           {/* 드롭다운 */}
           <ActionOption.Menu isOpen={isDropdownOpen}>
-            <ActionOption.Option onClick={onInviteClick} icon={<IcInvite />}>
+            <ActionOption.Option
+              onClick={() => onInviteClick()}
+              icon={<IcInvite />}
+            >
               멤버 초대하기
             </ActionOption.Option>
-            <ActionOption.Option onClick={onEditClick} icon={<IcEdit />}>
+            <ActionOption.Option
+              onClick={() => onEditClick()}
+              icon={<IcEdit />}
+            >
               수정하기
             </ActionOption.Option>
-            <ActionOption.Option onClick={onExitClick} icon={<IcExit />}>
+            <ActionOption.Option
+              onClick={() => onExitClick()}
+              icon={<IcExit />}
+            >
               나가기
             </ActionOption.Option>
-            <ActionOption.Option onClick={onDeleteClick} icon={<IcDelete />}>
+            <ActionOption.Option
+              onClick={() => onDeleteClick()}
+              icon={<IcDelete />}
+            >
               삭제하기
             </ActionOption.Option>
           </ActionOption.Menu>

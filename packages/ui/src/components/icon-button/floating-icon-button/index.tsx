@@ -7,16 +7,17 @@ import {
 } from "react";
 import { cn } from "@/utils";
 
-type IconButtonProps = {
+export interface FloatingIconButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   children: React.ReactNode;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
+}
 
-export const FloatingIconButton = ({
+const FloatingIconButton = ({
   className,
   children,
   ...props
-}: IconButtonProps) => {
+}: FloatingIconButtonProps) => {
   const styledChild = isValidElement(children)
     ? cloneElement(children as ReactElement<SVGProps<SVGSVGElement>>, {
         width: "3.2rem",
@@ -41,3 +42,5 @@ export const FloatingIconButton = ({
     </button>
   );
 };
+
+export default FloatingIconButton;

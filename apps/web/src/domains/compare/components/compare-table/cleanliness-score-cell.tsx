@@ -2,7 +2,7 @@ import { Graph } from "@ssok/ui";
 import { Controller, useFormContext } from "react-hook-form";
 import type { ComparisonFormData, ViewState } from "@/domains/compare/types";
 
-interface CleanlinessScoreCellProps {
+export interface CleanlinessScoreCellProps {
   state: ViewState;
   name: `accommodationRequestList.${number}.cleanlinessScore`;
 }

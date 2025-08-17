@@ -1,5 +1,5 @@
 import type { Meta, StoryFn } from "@storybook/react-vite";
-import { DeleteIconButton } from "./index";
+import DeleteIconButton from "./index";
 
 export default {
   title: "Components/IconButton/Solid/Delete",

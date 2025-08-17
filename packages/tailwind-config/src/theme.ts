@@ -239,4 +239,12 @@ export const theme: Config["theme"] = {
       rgba(255, 255, 255, 1) 100%
     )`,
   },
+  animation: {
+    "spin-reverse": "spin-reverse 1s linear infinite",
+  },
+  keyframes: {
+    "spin-reverse": {
+      "100%": { transform: "rotate(-360deg)" },
+    },
+  },
 };

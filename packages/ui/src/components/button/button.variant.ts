@@ -56,7 +56,7 @@ export const button = cva(
   },
 );
 
-export const buttonText = cva("m-0 text-center", {
+export const buttonText = cva("m-0 w-max whitespace-nowrap text-center", {
   variants: {
     size: {
       xxs: "text-caption1-semi12",

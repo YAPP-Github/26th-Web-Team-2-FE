@@ -1,3 +1,4 @@
+import { refreshTokens } from "@ssok/api";
 import * as jose from "jose";
 import { cookies } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
@@ -6,6 +7,7 @@ import {
   AuthError,
   type SessionData,
 } from "@/domains/auth/types";
+import { isTokenExpired } from "@/domains/auth/utils/jwt";
 import { state } from "@/domains/auth/utils/url";
 
 export class AuthClient {
@@ -53,7 +55,12 @@ export class AuthClient {
 
   public async logout(request: NextRequest) {
     const cookieStore = await cookies();
-    cookieStore.delete(this.config.sessionCookieName);
+    cookieStore.delete({
+      name: this.config.sessionCookieName,
+      path: "/",
+      httpOnly: true,
+    });
+
     const to = request.nextUrl.searchParams.get("to") || "/";
     return NextResponse.redirect(new URL(to, request.url));
   }
@@ -69,13 +76,27 @@ export class AuthClient {
     );
   }
 
-  public async getSession() {
+  public async getSession(options: { refresh?: boolean } = { refresh: true }) {
     const cookieStore = await cookies();
     const cookie = cookieStore.get(this.config.sessionCookieName);
     if (!cookie?.value) {
       return null;
     }
-    return (await this.decrypt(cookie.value)) as SessionData;
+
+    const session = (await this.decrypt(cookie.value)) as SessionData;
+    if (!session || !options.refresh) {
+      return session;
+    }
+    if (isTokenExpired(session.tokenSet.accessToken)) {
+      const refreshed = await this.refreshSession(session);
+      if (!refreshed) {
+        cookieStore.delete(this.config.sessionCookieName);
+        return null;
+      }
+      return refreshed;
+    }
+
+    return session;
   }
 
   public async getClientSession() {
@@ -89,9 +110,35 @@ export class AuthClient {
     };
   }
 
-  public async isAuthenticated(): Promise<boolean> {
-    const session = await this.getSession();
-    return !!session;
+  private async refreshSession({
+    tokenSet: { refreshToken },
+    ...prev
+  }: SessionData): Promise<SessionData | null> {
+    try {
+      const response = await refreshTokens({ refreshToken });
+
+      if (
+        response.status === 200 &&
+        response.data.result?.accessToken &&
+        response.data.result?.refreshToken
+      ) {
+        const session: SessionData = {
+          ...prev,
+          tokenSet: {
+            accessToken: response.data.result.accessToken,
+            refreshToken: response.data.result.refreshToken,
+          },
+        };
+
+        await this.setSession(session);
+        return session;
+      }
+
+      return null;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   }
 
   private get secret(): Uint8Array {

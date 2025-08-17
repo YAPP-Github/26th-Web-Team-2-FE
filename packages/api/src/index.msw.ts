@@ -19,12 +19,14 @@ import type {
   StandardResponseAuthorizeUrlResponse,
   StandardResponseBoolean,
   StandardResponseComparisonFactorList,
+  StandardResponseComparisonTableDeleteResponse,
   StandardResponseComparisonTableResponse,
   StandardResponseCreateComparisonTableResponse,
   StandardResponseInvitationCodeResponse,
   StandardResponseInvitationToggleResponse,
   StandardResponseLogoutResponse,
   StandardResponseOauthLoginResponse,
+  StandardResponseTokenSuccessResponse,
   StandardResponseTripBoardCreateResponse,
   StandardResponseTripBoardDeleteResponse,
   StandardResponseTripBoardJoinResponse,
@@ -32,6 +34,7 @@ import type {
   StandardResponseTripBoardPageResponse,
   StandardResponseTripBoardSummaryResponse,
   StandardResponseTripBoardUpdateResponse,
+  StandardResponseUserInfoResponse,
   StandardResponseWithdrawResponse,
 } from "./index.schemas";
 
@@ -564,6 +567,33 @@ export const getUpdateComparisonTableResponseMock = (
   ...overrideResponse,
 });
 
+export const getDeleteComparisonTableResponseMock = (
+  overrideResponse: Partial<StandardResponseComparisonTableDeleteResponse> = {},
+): StandardResponseComparisonTableDeleteResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      tableId: faker.helpers.arrayElement([
+        faker.number.int({
+          min: undefined,
+          max: undefined,
+          multipleOf: undefined,
+        }),
+        undefined,
+      ]),
+      message: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
+
 export const getAddAccommodationToComparisonTableResponseMock = (
   overrideResponse: Partial<StandardResponseComparisonTableResponse> = {},
 ): StandardResponseComparisonTableResponse => ({
@@ -1090,6 +1120,29 @@ export const getWithdrawUserResponseMock = (
   ...overrideResponse,
 });
 
+export const getRefreshTokensResponseMock = (
+  overrideResponse: Partial<StandardResponseTokenSuccessResponse> = {},
+): StandardResponseTokenSuccessResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      accessToken: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      refreshToken: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
+
 export const getLogoutResponseMock = (
   overrideResponse: Partial<StandardResponseLogoutResponse> = {},
 ): StandardResponseLogoutResponse => ({
@@ -1127,6 +1180,10 @@ export const getExchangeKakaoTokenResponseMock = (
         undefined,
       ]),
       nickname: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      email: faker.helpers.arrayElement([
         faker.string.alpha({ length: { min: 10, max: 20 } }),
         undefined,
       ]),
@@ -1217,6 +1274,33 @@ export const getToggleInvitationActiveResponseMock = (
         undefined,
       ]),
       invitationCode: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
+
+export const getGetUserInfoResponseMock = (
+  overrideResponse: Partial<StandardResponseUserInfoResponse> = {},
+): StandardResponseUserInfoResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      nickname: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      profileImageUrl: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      email: faker.helpers.arrayElement([
         faker.string.alpha({ length: { min: 10, max: 20 } }),
         undefined,
       ]),
@@ -2252,6 +2336,31 @@ export const getUpdateComparisonTableMockHandler = (
   });
 };
 
+export const getDeleteComparisonTableMockHandler = (
+  overrideResponse?:
+    | StandardResponseComparisonTableDeleteResponse
+    | ((
+        info: Parameters<Parameters<typeof http.delete>[1]>[0],
+      ) =>
+        | Promise<StandardResponseComparisonTableDeleteResponse>
+        | StandardResponseComparisonTableDeleteResponse),
+) => {
+  return http.delete("*/api/comparison/:tableId", async (info) => {
+    await delay(500);
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getDeleteComparisonTableResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  });
+};
+
 export const getAddAccommodationToComparisonTableMockHandler = (
   overrideResponse?:
     | StandardResponseComparisonTableResponse
@@ -2371,6 +2480,31 @@ export const getWithdrawUserMockHandler = (
             ? await overrideResponse(info)
             : overrideResponse
           : getWithdrawUserResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  });
+};
+
+export const getRefreshTokensMockHandler = (
+  overrideResponse?:
+    | StandardResponseTokenSuccessResponse
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) =>
+        | Promise<StandardResponseTokenSuccessResponse>
+        | StandardResponseTokenSuccessResponse),
+) => {
+  return http.post("*/api/oauth/refresh", async (info) => {
+    await delay(500);
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getRefreshTokensResponseMock(),
       ),
       { status: 200, headers: { "Content-Type": "application/json" } },
     );
@@ -2503,6 +2637,31 @@ export const getToggleInvitationActiveMockHandler = (
       );
     },
   );
+};
+
+export const getGetUserInfoMockHandler = (
+  overrideResponse?:
+    | StandardResponseUserInfoResponse
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) =>
+        | Promise<StandardResponseUserInfoResponse>
+        | StandardResponseUserInfoResponse),
+) => {
+  return http.get("*/api/users/me", async (info) => {
+    await delay(500);
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getGetUserInfoResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  });
 };
 
 export const getGetInvitationCodeMockHandler = (
@@ -2735,16 +2894,19 @@ export const getYapp26Web2Mock = () => [
   getDeleteTripBoardMockHandler(),
   getGetComparisonTableMockHandler(),
   getUpdateComparisonTableMockHandler(),
+  getDeleteComparisonTableMockHandler(),
   getAddAccommodationToComparisonTableMockHandler(),
   getCreateTripBoardMockHandler(),
   getLeaveTripBoardMockHandler(),
   getJoinTripBoardMockHandler(),
   getWithdrawUserMockHandler(),
+  getRefreshTokensMockHandler(),
   getLogoutMockHandler(),
   getExchangeKakaoTokenMockHandler(),
   getCreateComparisonTableMockHandler(),
   getRegisterAccommodationCardMockHandler(),
   getToggleInvitationActiveMockHandler(),
+  getGetUserInfoMockHandler(),
   getGetInvitationCodeMockHandler(),
   getGetTripBoardsMockHandler(),
   getGetKakaoAuthorizeUrlMockHandler(),

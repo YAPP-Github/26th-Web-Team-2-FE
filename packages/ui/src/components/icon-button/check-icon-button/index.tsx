@@ -3,18 +3,19 @@ import IcCheckFill from "@/assets/icons/ic_check_fill.svg?react";
 import { cn } from "@/utils";
 import { checkButton } from "./check-icon-button.variant";
 
-type IconButtonProps = {
+export interface CheckIconButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   size: "sm" | "md";
   selected: boolean;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
+}
 
-export const CheckIconButton = ({
+const CheckIconButton = ({
   className,
   selected,
   size,
   ...props
-}: IconButtonProps) => {
+}: CheckIconButtonProps) => {
   const iconSize = size === "sm" ? "20px" : "24px";
 
   return (
@@ -29,3 +30,5 @@ export const CheckIconButton = ({
     </button>
   );
 };
+
+export default CheckIconButton;

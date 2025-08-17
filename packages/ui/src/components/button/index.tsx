@@ -2,29 +2,29 @@ import type { ButtonHTMLAttributes } from "react";
 import { cn } from "@/utils";
 import { button, buttonText } from "./button.variant";
 
-type CommonProps = {
+interface CommonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   icon?: React.ReactNode;
   children: React.ReactNode;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
+}
 
-type ButtonBaseProps = {
+interface ButtonBaseProps extends CommonProps {
   size: "xxs" | "xs" | "sm" | "md" | "lg" | "sticky";
   variant: "primary" | "secondary" | "text" | "round" | "black";
   selected?: never;
   additionalText?: string;
-} & CommonProps;
+}
 
-type ButtonRoundProps = {
+interface ButtonRoundProps extends CommonProps {
   size?: never;
   variant: "round";
   selected: boolean;
   additionalText?: never;
-} & CommonProps;
+}
 
 export type ButtonProps = ButtonBaseProps | ButtonRoundProps;
 
-export const Button = ({
+const Button = ({
   children,
   className,
   size,
@@ -41,10 +41,14 @@ export const Button = ({
       {...props}
     >
       {icon && <>{icon}</>}
-      <span className={buttonText({ size })}>{children}</span>
+      <span className={cn(buttonText({ size }), !icon && "px-[5.5px]")}>
+        {children}
+      </span>
       {additionalText && (
         <span className="text-body2-medi14">{additionalText}</span>
       )}
     </button>
   );
 };
+
+export default Button;

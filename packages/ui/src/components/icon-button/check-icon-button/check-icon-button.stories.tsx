@@ -1,6 +1,6 @@
 import type { Meta, StoryFn } from "@storybook/react-vite";
 import { useEffect, useState } from "react";
-import { CheckIconButton } from "./index";
+import CheckIconButton from "./index";
 
 export default {
   title: "Components/IconButton/Solid/Check",

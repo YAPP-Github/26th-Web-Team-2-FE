@@ -13,7 +13,7 @@ export interface IconTabsProps<T extends string> {
   className?: string;
 }
 
-export const IconTabs = <T extends string>({
+const IconTabs = <T extends string>({
   value,
   onChange,
   options,
@@ -54,3 +54,5 @@ export const IconTabs = <T extends string>({
     </div>
   );
 };
+
+export default IconTabs;

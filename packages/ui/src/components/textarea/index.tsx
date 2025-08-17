@@ -31,7 +31,7 @@ const variants = cva(
   },
 );
 
-export const Textarea = ({
+const Textarea = ({
   hasError = false,
   minRows = 3,
   maxRows = 10,
@@ -61,3 +61,5 @@ export const Textarea = ({
     </div>
   );
 };
+
+export default Textarea;

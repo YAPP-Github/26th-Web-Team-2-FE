@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface SessionUser {
   userId: number;
@@ -26,11 +26,13 @@ export interface UseSessionResult {
   refetch: () => void;
 }
 
-export const useSession = ({
+const useSession = ({
   required,
 }: {
   required?: boolean;
 } = {}): UseSessionResult => {
+  const router = useRouter();
+
   const { data: { result } = {}, ...query } = useQuery({
     queryKey: ["/api/auth/session"],
     queryFn: async (): Promise<SessionResponse> => {
@@ -53,7 +55,7 @@ export const useSession = ({
   });
 
   if (required && !query.isLoading && !result?.tokenSet.accessToken) {
-    redirect("/api/auth/login");
+    router.push("/api/auth/login");
   }
 
   return {
@@ -65,3 +67,5 @@ export const useSession = ({
     refetch: query.refetch,
   };
 };
+
+export default useSession;

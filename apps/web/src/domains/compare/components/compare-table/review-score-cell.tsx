@@ -2,7 +2,7 @@ import { Graph, IcStarFull } from "@ssok/ui";
 import { Controller, useFormContext } from "react-hook-form";
 import type { ComparisonFormData, ViewState } from "@/domains/compare/types";
 
-interface ReviewScoreCellProps {
+export interface ReviewScoreCellProps {
   state: ViewState;
   name: `accommodationRequestList.${number}.reviewScore`;
 }

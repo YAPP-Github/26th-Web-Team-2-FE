@@ -20,8 +20,8 @@ export default defineConfig({
         mock: { arrayMin: 4, arrayMax: 4 },
         mutator: { path: "./src/api/http.ts", name: "http" },
         operations: {
-          getAccommodationByBoardIdAndUserId: {
-            query: { useInfinite: true },
+          getTripBoards: {
+            query: { useInfinite: true, useInfiniteQueryParam: "page" },
           },
         },
         query: { usePrefetch: true, useSuspenseQuery: true },

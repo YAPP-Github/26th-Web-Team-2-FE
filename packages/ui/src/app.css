@@ -39,4 +39,45 @@
   .rdp-range_end .rdp-day_button {
     @apply !bg-primary text-primary-100;
   }
+
+  /* Toast Animations */
+  @keyframes toast-enter {
+    from {
+      opacity: 0;
+      transform: translateY(1rem);
+      margin-bottom: 0;
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      margin-bottom: 0.8rem;
+    }
+  }
+
+  @keyframes toast-exit {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 100px;
+      margin-bottom: 0.8rem;
+      padding-top: 1.25rem;
+      padding-bottom: 1.25rem;
+    }
+    40% {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+      max-height: 100px;
+      margin-bottom: 0.8rem;
+      padding-top: 1.25rem;
+      padding-bottom: 1.25rem;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+      max-height: 0;
+      margin-bottom: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
 }

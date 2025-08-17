@@ -9,6 +9,7 @@
     { "url": "https://api.ssok.info", "description": "Generated server url" }
   ],
   "tags": [
+    { "name": "USER API", "description": "사용자 관련 API" },
     { "name": "숙소 API", "description": "숙소 관련 API" },
     { "name": "OAUTH API", "description": "소셜 로그인 API" },
     { "name": "비교표 API", "description": "비교표 관련 API" },
@@ -178,6 +179,74 @@
         },
         "security": [{ "JWT": [] }]
       },
+      "delete": {
+        "tags": ["비교표 API"],
+        "summary": "비교표 삭제",
+        "description": "사용자가 생성한 비교표를 삭제합니다. 생성자만 삭제할 수 있습니다. (Authorization 헤더에 Bearer 토큰 필요)",
+        "operationId": "deleteComparisonTable",
+        "parameters": [
+          {
+            "name": "tableId",
+            "in": "path",
+            "description": "삭제할 비교표의 ID",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "비교표 삭제 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTableDeleteResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "인증 실패 - 유효하지 않은 토큰 또는 인증 정보 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTableDeleteResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "권한 없음 - 비교표 생성자가 아님",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTableDeleteResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "비교표를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTableDeleteResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 내부 오류 - 비교표 삭제 중 오류 발생",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTableDeleteResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT": [] }]
+      },
       "patch": {
         "tags": ["비교표 API"],
         "summary": "비교표 숙소 추가",
@@ -335,6 +404,44 @@
         "security": [{ "JWT": [] }]
       }
     },
+    "/api/oauth/refresh": {
+      "post": {
+        "tags": ["OAUTH API"],
+        "summary": "리프레시 토큰 재발급",
+        "description": "유효한 리프레시 토큰을 사용하여 새로운 액세스 토큰과 리프레시 토큰을 발급받습니다. 기존 리프레시 토큰은 무효화되고 새로운 토큰 쌍이 생성됩니다. 토큰 회전(Token Rotation)을 통해 보안을 강화합니다. 이 API는 액세스 토큰이 만료된 상황에서 사용되므로 JWT 인증이 필요하지 않습니다.",
+        "operationId": "refreshTokens",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RefreshTokenRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "새로운 토큰이 성공적으로 발급되었습니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseTokenSuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "리프레시 토큰이 유효하지 않거나 만료되었습니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseTokenSuccessResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/oauth/logout": {
       "post": {
         "tags": ["OAUTH API"],
@@ -475,6 +582,47 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/StandardResponseInvitationToggleResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT": [] }]
+      }
+    },
+    "/api/users/me": {
+      "get": {
+        "tags": ["USER API"],
+        "summary": "사용자 정보 조회",
+        "description": "현재 로그인한 사용자의 기본 정보(닉네임, 프로필 이미지)를 조회합니다.",
+        "operationId": "getUserInfo",
+        "responses": {
+          "200": {
+            "description": "사용자 정보 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseUserInfoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "인증되지 않은 사용자",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseUserInfoResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "사용자를 찾을 수 없음 또는 탈퇴한 사용자",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseUserInfoResponse"
                 }
               }
             }
@@ -1102,6 +1250,51 @@
         "type": "object",
         "properties": { "withdrawSuccess": { "type": "boolean" } }
       },
+      "RefreshTokenRequest": {
+        "type": "object",
+        "description": "리프레시 토큰 재발급 요청",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "description": "리프레시 토큰",
+            "minLength": 1
+          }
+        }
+      },
+      "StandardResponseTokenSuccessResponse": {
+        "type": "object",
+        "description": "API 응답의 표준 형식을 정의하는 클래스",
+        "properties": {
+          "responseType": {
+            "type": "string",
+            "description": "응답 유형",
+            "enum": ["SUCCESS", "ERROR"],
+            "example": "SUCCESS"
+          },
+          "result": {
+            "$ref": "#/components/schemas/TokenSuccessResponse",
+            "description": "응답 결과 데이터"
+          }
+        }
+      },
+      "TokenSuccessResponse": {
+        "type": "object",
+        "description": "토큰 발급 응답",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "액세스 토큰",
+            "example": "access-token-example",
+            "readOnly": true
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "리프레시 토큰",
+            "example": "refresh-token-example",
+            "readOnly": true
+          }
+        }
+      },
       "LogoutResponse": {
         "type": "object",
         "properties": { "logoutSuccess": { "type": "boolean" } }
@@ -1126,9 +1319,26 @@
         "type": "object",
         "description": "OAuth 로그인 응답",
         "properties": {
-          "userId": { "type": "integer", "format": "int64" },
-          "nickname": { "type": "string" },
-          "token": { "$ref": "#/components/schemas/TokenSuccessResponse" }
+          "userId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "사용자 ID",
+            "example": 12345
+          },
+          "nickname": {
+            "type": "string",
+            "description": "사용자 닉네임",
+            "example": "홍길동"
+          },
+          "email": {
+            "type": "string",
+            "description": "사용자 이메일",
+            "example": "abc1234@gmail.com"
+          },
+          "token": {
+            "$ref": "#/components/schemas/TokenSuccessResponse",
+            "description": "토큰 정보"
+          }
         }
       },
       "StandardResponseOauthLoginResponse": {
@@ -1145,13 +1355,6 @@
             "$ref": "#/components/schemas/OauthLoginResponse",
             "description": "응답 결과 데이터"
           }
-        }
-      },
-      "TokenSuccessResponse": {
-        "type": "object",
-        "properties": {
-          "accessToken": { "type": "string" },
-          "refreshToken": { "type": "string" }
         }
       },
       "CreateComparisonTableRequest": {
@@ -1388,6 +1591,43 @@
           "distance": { "type": "string" },
           "byFoot": { "$ref": "#/components/schemas/DistanceInfo" },
           "byCar": { "$ref": "#/components/schemas/DistanceInfo" }
+        }
+      },
+      "StandardResponseUserInfoResponse": {
+        "type": "object",
+        "description": "API 응답의 표준 형식을 정의하는 클래스",
+        "properties": {
+          "responseType": {
+            "type": "string",
+            "description": "응답 유형",
+            "enum": ["SUCCESS", "ERROR"],
+            "example": "SUCCESS"
+          },
+          "result": {
+            "$ref": "#/components/schemas/UserInfoResponse",
+            "description": "응답 결과 데이터"
+          }
+        }
+      },
+      "UserInfoResponse": {
+        "type": "object",
+        "description": "유저 정보 응답",
+        "properties": {
+          "nickname": {
+            "type": "string",
+            "description": "유저 닉네임",
+            "example": "홍길동"
+          },
+          "profileImageUrl": {
+            "type": "string",
+            "description": "유저 프로필 이미지 URL",
+            "example": "https://example.com/profile/user123.jpg"
+          },
+          "email": {
+            "type": "string",
+            "description": "사용자 이메일",
+            "example": "abc1234@gmail.com"
+          }
         }
       },
       "ParticipantProfileResponse": {
@@ -1690,6 +1930,29 @@
         "type": "object",
         "properties": {
           "tripBoardId": { "type": "integer", "format": "int64" }
+        }
+      },
+      "ComparisonTableDeleteResponse": {
+        "type": "object",
+        "properties": {
+          "tableId": { "type": "integer", "format": "int64" },
+          "message": { "type": "string" }
+        }
+      },
+      "StandardResponseComparisonTableDeleteResponse": {
+        "type": "object",
+        "description": "API 응답의 표준 형식을 정의하는 클래스",
+        "properties": {
+          "responseType": {
+            "type": "string",
+            "description": "응답 유형",
+            "enum": ["SUCCESS", "ERROR"],
+            "example": "SUCCESS"
+          },
+          "result": {
+            "$ref": "#/components/schemas/ComparisonTableDeleteResponse",
+            "description": "응답 결과 데이터"
+          }
         }
       },
       "AccommodationDeleteResponse": {

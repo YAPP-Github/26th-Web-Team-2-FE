@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react";
-import { AccommodationDataProvider } from "@/domains/list/contexts/accomodation-data-context";
-import { PanelProvider } from "@/domains/list/contexts/pannel-context";
-import { PlaceSelectionProvider } from "@/domains/list/contexts/place-select-context";
+import AccommodationDataProvider from "@/domains/list/contexts/accomodation-data-context";
+import PanelProvider from "@/domains/list/contexts/pannel-context";
+import PlaceSelectionProvider from "@/domains/list/contexts/place-select-context";
 import MapComponent from "@/shared/components/map-component";
 import SideNavigation from "@/shared/components/side-navigation";
 

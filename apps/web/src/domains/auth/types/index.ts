@@ -23,9 +23,10 @@ export class AuthError extends Error {
   }
 }
 
-export type CookieOptions = NonNullable<
-  Parameters<Awaited<ReturnType<typeof cookies>>["set"]>[2]
->;
+export interface CookieOptions
+  extends NonNullable<
+    Parameters<Awaited<ReturnType<typeof cookies>>["set"]>[2]
+  > {}
 
 export interface SessionData {
   user: {

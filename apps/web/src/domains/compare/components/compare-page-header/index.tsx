@@ -1,7 +1,7 @@
 import { cn } from "@ssok/ui";
 import { formatDate } from "@/shared/utils/date";
 
-interface ComparePageHeaderProps {
+export interface ComparePageHeaderProps {
   title: string;
   creator: string;
   createdAt: Date;

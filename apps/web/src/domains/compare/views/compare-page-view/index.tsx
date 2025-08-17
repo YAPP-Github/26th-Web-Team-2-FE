@@ -4,18 +4,18 @@ import {
   getGetComparisonTableQueryKey,
   useUpdateComparisonTable,
 } from "@ssok/api";
-import { cn } from "@ssok/ui";
+import { cn, LoadingIndicator } from "@ssok/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import ComparePageHeader from "@/domains/compare/components/compare-page-header";
 import ComparePageTitle from "@/domains/compare/components/compare-page-title";
 import CompareTable from "@/domains/compare/components/compare-table";
-import { useComparisonTable } from "@/domains/compare/hooks/use-comparison-table";
-import { useViewMode } from "@/domains/compare/hooks/use-view-mode";
+import useComparisonTable from "@/domains/compare/hooks/use-comparison-table";
+import useViewMode from "@/domains/compare/hooks/use-view-mode";
 import type { ComparisonFormData } from "@/domains/compare/types";
 import { transformFormDataToUpdateComparisonTableRequest } from "@/domains/compare/utils/form";
-import { useSession } from "@/shared/hooks/use-session";
+import useSession from "@/shared/hooks/use-session";
 
 interface ComparePageViewProps {
   boardId: number;
@@ -26,7 +26,10 @@ const ComparePageView = ({ boardId, tableId }: ComparePageViewProps) => {
   const { currentView, handleViewChange } = useViewMode();
   const queryClient = useQueryClient();
   const { accessToken } = useSession();
-  const { formData, response } = useComparisonTable({ boardId, tableId });
+  const { formData, response, isMetaDataLoading } = useComparisonTable({
+    boardId,
+    tableId,
+  });
   const mutation = useUpdateComparisonTable({
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
   });
@@ -82,6 +85,7 @@ const ComparePageView = ({ boardId, tableId }: ComparePageViewProps) => {
 
         <CompareTable state={currentView === "edit" ? "edit" : "default"} />
       </form>
+      <LoadingIndicator active={mutation.isPending || isMetaDataLoading} />
     </FormProvider>
   );
 };

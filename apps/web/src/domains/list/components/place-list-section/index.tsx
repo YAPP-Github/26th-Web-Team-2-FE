@@ -6,16 +6,16 @@ import type { ParticipantProfileResponse } from "@ssok/api/schemas";
 import { Button, Card, cn } from "@ssok/ui";
 import { useParams, useRouter } from "next/navigation";
 import { useRef } from "react";
-import { useSession } from "@/shared/hooks/use-session";
+import useSession from "@/shared/hooks/use-session";
 import useInfiniteScroll from "../../../../shared/hooks/use-infinite-scroll";
 import { useAccommodationDataContext } from "../../contexts/accomodation-data-context";
 import { usePlaceSelectionContext } from "../../contexts/place-select-context";
-import { useDeleteAccommodationWithOptimisticUpdate } from "../../hooks/use-accommodation-del";
+import useDeleteAccommodationWithOptimisticUpdate from "../../hooks/use-accommodation-del";
 import useCollapseOnScroll from "../../hooks/use-collapse-on-scroll";
 import DropDown from "./atom/drop-down";
 import EmptyListContainer from "./atom/empty-list-container";
 
-type PlaceListSectionProps = {
+export interface PlaceListSectionProps {
   selectedPerson: number;
   handlePersonSelect: (id: number) => void;
   handleFilterSelect: (id: string) => void;
@@ -29,7 +29,7 @@ type PlaceListSectionProps = {
   hasNextPage?: boolean;
   isFetchingNextPage: boolean;
   participants: ParticipantProfileResponse[];
-};
+}
 
 const PlaceListSection = ({
   selectedPerson,
@@ -128,9 +128,6 @@ const PlaceListSection = ({
 
   useCollapseOnScroll(listRef, isInputExpanded, handleCloseInputExpansion);
 
-  console.log("accommodationCountData", accommodations);
-  console.log("selectedPlaces", selectedPlaces);
-  console.log("participants", participants);
   return (
     <section
       className={cn(

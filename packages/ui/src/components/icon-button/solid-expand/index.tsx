@@ -3,15 +3,16 @@ import IcArrowLeft from "@/assets/icons/ic_arrow_left.svg?react";
 import IcArrowRight from "@/assets/icons/ic_arrow_right.svg?react";
 import { cn } from "@/utils";
 
-type SolidExpandProps = {
+export interface SolidExpandProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   collapse: boolean;
   onMouseDown?: () => void;
   onMouseUp?: () => void;
   onMouseLeave?: () => void;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
+}
 
-export const SolidExpand = ({
+const SolidExpand = ({
   className,
   collapse,
   onMouseDown,
@@ -39,3 +40,5 @@ export const SolidExpand = ({
     </button>
   );
 };
+
+export default SolidExpand;

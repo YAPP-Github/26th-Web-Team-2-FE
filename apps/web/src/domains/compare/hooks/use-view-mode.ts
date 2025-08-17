@@ -3,7 +3,7 @@ import { useCallback, useMemo } from "react";
 
 export type ViewMode = "table" | "map" | "edit";
 
-export const useViewMode = () => {
+const useViewMode = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -26,3 +26,5 @@ export const useViewMode = () => {
 
   return { currentView, handleViewChange };
 };
+
+export default useViewMode;

@@ -1,20 +1,21 @@
 import type { PropsWithChildren } from "react";
-import { Backdrop } from "@/components/backdrop";
-import { Button } from "@/components/button";
+import Backdrop from "@/components/backdrop";
+import Button from "@/components/button";
 import { cn } from "@/utils";
 
-export type ConfirmProps = PropsWithChildren<{
-  title: string;
-  description: string;
-  cancelText?: string;
-  confirmText?: string;
-  onCancel?: () => void;
-  onConfirm?: () => void;
-  className?: string;
-  active?: boolean;
-}>;
+export interface ConfirmProps
+  extends PropsWithChildren<{
+    title: string;
+    description: string;
+    cancelText?: string;
+    confirmText?: string;
+    onCancel?: () => void;
+    onConfirm?: () => void;
+    className?: string;
+    active?: boolean;
+  }> {}
 
-export const Confirm = ({
+const Confirm = ({
   title,
   description,
   cancelText = "취소",
@@ -39,7 +40,9 @@ export const Confirm = ({
       >
         <div className="flex w-full flex-col gap-[1.6rem]">
           <h2 className="text-heading1-semi20 text-neutral-5">{title}</h2>
-          <p className="text-body1-medi16 text-neutral-20">{description}</p>
+          <p className="whitespace-pre-line text-body1-medi16 text-neutral-20">
+            {description}
+          </p>
           {children}
         </div>
         <div className="flex gap-[0.8rem]">
@@ -59,3 +62,5 @@ export const Confirm = ({
     </Backdrop>
   );
 };
+
+export default Confirm;

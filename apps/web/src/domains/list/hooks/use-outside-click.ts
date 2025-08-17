@@ -12,7 +12,7 @@ import { useEffect } from "react";
  * const ref = useRef(null);
  * useOutsideClick(ref, () => setOpen(false), isOpen);
  */
-export const useOutsideClick = <T extends HTMLElement | null>(
+const useOutsideClick = <T extends HTMLElement | null>(
   ref: React.RefObject<T>,
   callback: () => void,
   enabled: boolean = true,
@@ -33,3 +33,5 @@ export const useOutsideClick = <T extends HTMLElement | null>(
     };
   }, [ref, callback, enabled]);
 };
+
+export default useOutsideClick;

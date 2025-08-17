@@ -1,18 +1,36 @@
 import type { TripBoardSummaryResponse } from "@ssok/api/schemas";
-import { Button, IcArrowLeft, IcPerson } from "@ssok/ui";
+import { Button, IcArrowLeft, IcPerson, Popup, useToggle } from "@ssok/ui";
+import { useRouter } from "next/navigation";
+import BoardInviteModal from "@/domains/dashboard/components/board-invite-modal";
 import { formatDate } from "@/shared/utils/date";
 
 const HeaderSection = (tripBoardDetail: TripBoardSummaryResponse) => {
-  const { boardName, startDate, endDate, participantCount, destination } =
-    tripBoardDetail;
+  const router = useRouter();
+  const {
+    boardName,
+    startDate,
+    endDate,
+    participantCount,
+    destination,
+    participants,
+    tripBoardId,
+  } = tripBoardDetail;
   const start = startDate ? new Date(startDate) : undefined;
   const end = endDate ? new Date(endDate) : undefined;
+  const { active, activate, deactivate } = useToggle(false);
+
+  const onBackClick = () => {
+    router.push("/boards");
+  };
   return (
     <header className="flex w-full items-center justify-between p-2 pr-8 pl-2">
       {/* 헤더 좌측  */}
       <div className="flex items-center gap-[1.2rem]">
         <div className="flex items-center gap-[0.8rem]">
-          <IcArrowLeft width={24} height={24} className="text-neutral-40" />
+          <button type="button" onClick={onBackClick}>
+            <IcArrowLeft width={24} height={24} className="text-neutral-40" />
+          </button>
+
           <span className="text-body1-medi16 text-neutral-25">{boardName}</span>
         </div>
         <div className="flex items-center gap-[0.8rem]">
@@ -32,10 +50,17 @@ const HeaderSection = (tripBoardDetail: TripBoardSummaryResponse) => {
             {participantCount}
           </p>
         </span>
-        <Button size="xxs" variant="black">
+        <Button size="xxs" variant="black" onClick={activate}>
           초대하기
         </Button>
       </div>
+      <Popup title="멤버 초대하기" active={active} onClose={deactivate}>
+        <BoardInviteModal
+          className="min-w-[51.1rem]"
+          tripBoardId={tripBoardId || 0}
+          participants={participants || []}
+        />
+      </Popup>
     </header>
   );
 };

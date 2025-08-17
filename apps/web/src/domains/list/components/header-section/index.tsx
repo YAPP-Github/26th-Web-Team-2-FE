@@ -1,7 +1,6 @@
 import type { TripBoardSummaryResponse } from "@ssok/api/schemas";
-import { Button, IcArrowLeft, IcPerson, Popup } from "@ssok/ui";
+import { Button, IcArrowLeft, IcPerson, Popup, useToggle } from "@ssok/ui";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import BoardInviteModal from "@/domains/dashboard/components/board-invite-modal";
 import { formatDate } from "@/shared/utils/date";
 
@@ -18,7 +17,7 @@ const HeaderSection = (tripBoardDetail: TripBoardSummaryResponse) => {
   } = tripBoardDetail;
   const start = startDate ? new Date(startDate) : undefined;
   const end = endDate ? new Date(endDate) : undefined;
-  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  const { active, activate, deactivate } = useToggle(false);
 
   const onBackClick = () => {
     router.push("/boards");
@@ -51,19 +50,11 @@ const HeaderSection = (tripBoardDetail: TripBoardSummaryResponse) => {
             {participantCount}
           </p>
         </span>
-        <Button
-          size="xxs"
-          variant="black"
-          onClick={() => setIsInviteModalOpen(true)}
-        >
+        <Button size="xxs" variant="black" onClick={activate}>
           초대하기
         </Button>
       </div>
-      <Popup
-        title="멤버 초대하기"
-        active={isInviteModalOpen}
-        onClose={() => setIsInviteModalOpen(false)}
-      >
+      <Popup title="멤버 초대하기" active={active} onClose={deactivate}>
         <BoardInviteModal
           className="min-w-[51.1rem]"
           tripBoardId={tripBoardId || 0}

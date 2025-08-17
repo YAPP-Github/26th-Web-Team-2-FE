@@ -12,6 +12,7 @@ import Link from "next/link";
 import useSession from "@/shared/hooks/use-session";
 import type { TripBoardSummary } from "../../types";
 import BoardEditForm from "../board-edit-form";
+import BoardInviteModal from "../board-invite-modal";
 
 export interface DashboardTripBoardProps {
   data: TripBoardSummary;
@@ -23,6 +24,7 @@ const DashboardTripBoard = ({ data, className }: DashboardTripBoardProps) => {
   const exitModal = useToggle(false);
   const deleteModal = useToggle(false);
   const editModal = useToggle(false);
+  const inviteModal = useToggle(false);
   const { accessToken } = useSession({ required: true });
 
   const { mutate: leaveTripBoard, isPending: isLeaving } = useLeaveTripBoard({
@@ -115,7 +117,7 @@ const DashboardTripBoard = ({ data, className }: DashboardTripBoardProps) => {
           onDeleteClick={() => deleteModal.activate()}
           onEditClick={() => editModal.activate()}
           onExitClick={() => exitModal.activate()}
-          onInviteClick={() => alert("여행 초대")}
+          onInviteClick={() => inviteModal.activate()}
           className={className}
         />
       </Link>
@@ -147,6 +149,17 @@ const DashboardTripBoard = ({ data, className }: DashboardTripBoardProps) => {
           tripBoardId={data.tripBoardId || 0}
           data={editFormData}
           handleModalClose={handleEditModalClose}
+        />
+      </Popup>
+      <Popup
+        title="멤버 초대하기"
+        active={inviteModal.active}
+        onClose={inviteModal.deactivate}
+      >
+        <BoardInviteModal
+          className="min-w-[51.1rem]"
+          tripBoardId={data.tripBoardId || 0}
+          participants={data.participants || []}
         />
       </Popup>
     </>

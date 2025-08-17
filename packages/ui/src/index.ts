@@ -134,6 +134,7 @@ export {
   default as LoadingIndicator,
   type LoadingIndicatorProps,
 } from "./components/loading-indicator";
+export { default as Switch, type SwitchProps } from "./components/switch";
 export { default as TextWithIcon } from "./components/text-with-icon";
 export {
   default as TravelBoard,

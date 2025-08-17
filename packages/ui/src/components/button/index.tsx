@@ -41,7 +41,9 @@ const Button = ({
       {...props}
     >
       {icon && <>{icon}</>}
-      <span className={buttonText({ size })}>{children}</span>
+      <span className={cn(buttonText({ size }), !icon && "px-[5.5px]")}>
+        {children}
+      </span>
       {additionalText && (
         <span className="text-body2-medi14">{additionalText}</span>
       )}

@@ -70,5 +70,6 @@ export const useBoardInvite = (
     isFetching,
     handleInviteEnabledToggle,
     handleCopyInviteLink,
+    accessToken,
   };
 };

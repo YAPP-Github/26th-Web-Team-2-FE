@@ -1,3 +1,4 @@
+import { useGetUserInfo } from "@ssok/api";
 import type { ParticipantProfileResponse } from "@ssok/api/schemas";
 import {
   AvatarProfile,
@@ -31,9 +32,17 @@ const BoardInviteModal = ({
     isCopyBtnClicked,
     isLoading,
     isFetching,
+    accessToken,
     handleInviteEnabledToggle,
     handleCopyInviteLink,
   } = useBoardInvite(tripBoardId, participants.length);
+
+  const { data: userInfo } = useGetUserInfo({
+    query: { enabled: !!accessToken },
+    request: { headers: { Authorization: `Bearer ${accessToken}` } },
+  });
+
+  const userNickname = userInfo?.data.result?.nickname;
 
   return (
     <section className={`flex flex-col gap-[4.8rem] ${className}`}>
@@ -90,7 +99,7 @@ const BoardInviteModal = ({
         <h2 className="text-heading2-semi18 text-neutral-30">
           이 여행에 함께하는 멤버들
         </h2>
-        <p className="text-body2-regular14 text-neutral-40">
+        <p className="mb-[0.5rem] text-body2-regular14 text-neutral-40">
           {participants?.length || 0}명 참여 중
         </p>
         <ul className="mb-[1.2rem] grid grid-cols-2 gap-x-[2.4rem] gap-y-[1.2rem]">
@@ -100,9 +109,12 @@ const BoardInviteModal = ({
               className="flex items-center gap-[0.8rem] text-body2-regular14 text-neutral-40"
             >
               <AvatarProfile size={32} imgUrl={participant?.profileImageUrl} />
-              <div>
+              <div className="flex gap-[0.2rem]">
                 <span className="text-body2-medi14 text-neutral-25">
                   {participant?.nickname}
+                </span>
+                <span className="text-body2-medi14 text-neutral-50">
+                  {userNickname === participant?.nickname && " (나)"}
                 </span>
               </div>
             </li>

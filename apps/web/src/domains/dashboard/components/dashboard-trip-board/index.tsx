@@ -5,11 +5,13 @@ import {
   useDeleteTripBoard,
   useLeaveTripBoard,
 } from "@ssok/api";
-import { Confirm, TravelBoard, useToggle } from "@ssok/ui";
+import type { TripBoardUpdateRequest } from "@ssok/api/schemas";
+import { Confirm, Popup, TravelBoard, useToggle } from "@ssok/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import useSession from "@/shared/hooks/use-session";
 import type { TripBoardSummary } from "../../types";
+import BoardEditForm from "../board-edit-form";
 
 export interface DashboardTripBoardProps {
   data: TripBoardSummary;
@@ -20,6 +22,7 @@ const DashboardTripBoard = ({ data, className }: DashboardTripBoardProps) => {
   const queryClient = useQueryClient();
   const exitModal = useToggle(false);
   const deleteModal = useToggle(false);
+  const editModal = useToggle(false);
   const { accessToken } = useSession({ required: true });
 
   const { mutate: leaveTripBoard, isPending: isLeaving } = useLeaveTripBoard({
@@ -76,6 +79,17 @@ const DashboardTripBoard = ({ data, className }: DashboardTripBoardProps) => {
     }
   };
 
+  const handleEditModalClose = () => {
+    editModal.deactivate();
+  };
+
+  const editFormData: TripBoardUpdateRequest = {
+    boardName: data.boardName || "",
+    destination: data.destination || "",
+    startDate: data.startDate || new Date(),
+    endDate: data.endDate || new Date(),
+  };
+
   const travelBoardData = {
     boardId: data.tripBoardId || 0,
     boardName: data.boardName || "",
@@ -99,7 +113,7 @@ const DashboardTripBoard = ({ data, className }: DashboardTripBoardProps) => {
         <TravelBoard
           data={travelBoardData}
           onDeleteClick={() => deleteModal.activate()}
-          onEditClick={() => alert("여행 수정")}
+          onEditClick={() => editModal.activate()}
           onExitClick={() => exitModal.activate()}
           onInviteClick={() => alert("여행 초대")}
           className={className}
@@ -123,6 +137,18 @@ const DashboardTripBoard = ({ data, className }: DashboardTripBoardProps) => {
         onCancel={isDeleting ? undefined : handleCancel}
         onConfirm={isDeleting ? undefined : handleDeleteConfirm}
       />
+      <Popup
+        title="여행 보드 수정하기"
+        active={editModal.active}
+        onClose={handleEditModalClose}
+      >
+        <BoardEditForm
+          className="min-w-[51.1rem]"
+          tripBoardId={data.tripBoardId || 0}
+          data={editFormData}
+          handleModalClose={handleEditModalClose}
+        />
+      </Popup>
     </>
   );
 };

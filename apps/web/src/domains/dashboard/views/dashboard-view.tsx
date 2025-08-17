@@ -10,7 +10,7 @@ import DashboardTripBoard from "../components/dashboard-trip-board";
 
 const DashboardView = () => {
   const { accessToken } = useSession({ required: true });
-  const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const {
     data: { pages } = {},
@@ -51,7 +51,7 @@ const DashboardView = () => {
         <ul className="grid grid-cols-3 gap-[4rem]">
           <li>
             <ActionCard
-              onClick={() => setIsCreateFormOpen(true)}
+              onClick={() => setShowCreateModal(true)}
               className="w-full"
             />
           </li>
@@ -71,8 +71,8 @@ const DashboardView = () => {
       </section>
       <Popup
         title="새 여행 만들기"
-        active={isCreateFormOpen}
-        onClose={() => setIsCreateFormOpen(false)}
+        active={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
       >
         <BoardCreateForm className="min-w-[51.1rem]" />
       </Popup>

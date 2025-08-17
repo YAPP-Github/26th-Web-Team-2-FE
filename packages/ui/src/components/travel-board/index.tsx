@@ -113,41 +113,25 @@ const TravelBoard = ({
           {/* 드롭다운 */}
           <ActionOption.Menu isOpen={isDropdownOpen}>
             <ActionOption.Option
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                onInviteClick();
-              }}
+              onClick={() => onInviteClick()}
               icon={<IcInvite />}
             >
               멤버 초대하기
             </ActionOption.Option>
             <ActionOption.Option
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                onEditClick();
-              }}
+              onClick={() => onEditClick()}
               icon={<IcEdit />}
             >
               수정하기
             </ActionOption.Option>
             <ActionOption.Option
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                onExitClick();
-              }}
+              onClick={() => onExitClick()}
               icon={<IcExit />}
             >
               나가기
             </ActionOption.Option>
             <ActionOption.Option
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                onDeleteClick();
-              }}
+              onClick={() => onDeleteClick()}
               icon={<IcDelete />}
             >
               삭제하기

@@ -38,7 +38,11 @@ const DropdownOption = ({ onClick, children, icon }: DropdownOptionProps) => {
         "bg-primary-100 text-neutral-20",
         "hover:bg-neutral-95 active:bg-neutral-90",
       )}
-      onClick={onClick}
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        onClick(e);
+      }}
       onKeyDown={handleKeyDown}
     >
       {icon}

@@ -51,7 +51,7 @@ const Tile = ({
   return (
     <section
       className={cn(
-        `relative flex items-center rounded-[1.6rem] p-[2.4rem] py-[2rem] pl-[2rem]`,
+        `relative flex items-center justify-between rounded-[1.6rem] p-[2.4rem] py-[2rem] pl-[2rem]`,
         `border border-neutral-95 bg-neutral-100`,
         `hover:border-neutral-80 hover:bg-neutral-98`,
         moreHover &&

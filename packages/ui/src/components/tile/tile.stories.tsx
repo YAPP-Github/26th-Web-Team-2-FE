@@ -4,6 +4,7 @@ import Tile from ".";
 const meta: Meta<typeof Tile> = {
   title: "Components/Tile",
   component: Tile,
+  tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },
@@ -36,7 +37,7 @@ export const Default: Story = {
 
 export const MultipleTiles: Story = {
   render: () => (
-    <div className="flex flex-wrap justify-center gap-6">
+    <div className="flex flex-col justify-center gap-6">
       <Tile
         data={{
           tableName: "가성비 숙소 비교표1",

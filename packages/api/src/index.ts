@@ -4378,6 +4378,238 @@ export const getGetComparisonTablesByTripBoardQueryKey = (
   ] as const;
 };
 
+export const getGetComparisonTablesByTripBoardInfiniteQueryOptions = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+    GetComparisonTablesByTripBoardParams["page"]
+  >,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData,
+        QueryKey,
+        GetComparisonTablesByTripBoardParams["page"]
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetComparisonTablesByTripBoardQueryKey(tripBoardId, params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+    QueryKey,
+    GetComparisonTablesByTripBoardParams["page"]
+  > = ({ signal, pageParam }) =>
+    getComparisonTablesByTripBoard(
+      tripBoardId,
+      { ...params, page: pageParam || params?.page },
+      { signal, ...requestOptions },
+    );
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!tripBoardId,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+    TError,
+    TData,
+    QueryKey,
+    GetComparisonTablesByTripBoardParams["page"]
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetComparisonTablesByTripBoardInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>
+>;
+export type GetComparisonTablesByTripBoardInfiniteQueryError = unknown;
+
+export function useGetComparisonTablesByTripBoardInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+    GetComparisonTablesByTripBoardParams["page"]
+  >,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData,
+        QueryKey,
+        GetComparisonTablesByTripBoardParams["page"]
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+          TError,
+          Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+          QueryKey
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonTablesByTripBoardInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+    GetComparisonTablesByTripBoardParams["page"]
+  >,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData,
+        QueryKey,
+        GetComparisonTablesByTripBoardParams["page"]
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+          TError,
+          Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+          QueryKey
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonTablesByTripBoardInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+    GetComparisonTablesByTripBoardParams["page"]
+  >,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData,
+        QueryKey,
+        GetComparisonTablesByTripBoardParams["page"]
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary 여행보드의 비교표 리스트 조회
+ */
+
+export function useGetComparisonTablesByTripBoardInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+    GetComparisonTablesByTripBoardParams["page"]
+  >,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData,
+        QueryKey,
+        GetComparisonTablesByTripBoardParams["page"]
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetComparisonTablesByTripBoardInfiniteQueryOptions(
+    tripBoardId,
+    params,
+    options,
+  );
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary 여행보드의 비교표 리스트 조회
+ */
+export const prefetchGetComparisonTablesByTripBoardInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+  TError = unknown,
+>(
+  queryClient: QueryClient,
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData,
+        QueryKey,
+        GetComparisonTablesByTripBoardParams["page"]
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetComparisonTablesByTripBoardInfiniteQueryOptions(
+    tripBoardId,
+    params,
+    options,
+  );
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
+};
+
 export const getGetComparisonTablesByTripBoardQueryOptions = <
   TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
   TError = unknown,

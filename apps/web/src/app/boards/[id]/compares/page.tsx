@@ -1,5 +1,13 @@
-import { prefetchGetComparisonTablesByTripBoardInfiniteQuery } from "@ssok/api";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import {
+  type getComparisonTablesByTripBoard,
+  getGetComparisonTablesByTripBoardQueryKey,
+  prefetchGetComparisonTablesByTripBoardInfiniteQuery,
+} from "@ssok/api";
+import {
+  dehydrate,
+  HydrationBoundary,
+  type InfiniteData,
+} from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import { auth } from "@/domains/auth";
 import CompareListView from "@/domains/compare/views/compare-list-view";
@@ -38,6 +46,15 @@ const BoardsIdComparesPage = async ({ params }: BoardsIdComparesPageProps) => {
         },
       },
     );
+  }
+
+  const data = queryClient.getQueryData<
+    InfiniteData<Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>>
+  >(getGetComparisonTablesByTripBoardQueryKey(boardId, { size: 10, page: 0 }));
+  const savedList = data?.pages[0]?.data?.result?.comparisonTables;
+
+  if (savedList?.length === 1) {
+    redirect(`/boards/${boardId}/compares/${savedList[0].tableId}`);
   }
 
   return (

@@ -4,12 +4,13 @@ import {
   useGetComparisonTablesByTripBoardInfinite,
   useGetTripBoardDetail,
 } from "@ssok/api";
-import { cn, LoadingIndicator, Tile } from "@ssok/ui";
+import { cn, LoadingIndicator, Tile, useToggle } from "@ssok/ui";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import HeaderSection from "@/domains/list/components/header-section";
 import useSession from "@/shared/hooks/use-session";
 import { formatDate } from "@/shared/utils/date";
+import CompareShareModal from "../../components/compare-share-modal";
 
 interface CompareListViewProps {
   tripBoardId: number;
@@ -17,6 +18,12 @@ interface CompareListViewProps {
 
 const CompareListView = ({ tripBoardId }: CompareListViewProps) => {
   const { accessToken } = useSession({ required: true });
+  const [shareCode, setShareCode] = useState<string | undefined>();
+  const {
+    activate: openShareModal,
+    deactivate: closeShareModal,
+    active: isShareModalOpen,
+  } = useToggle();
 
   const {
     data: { pages } = {},
@@ -54,6 +61,11 @@ const CompareListView = ({ tripBoardId }: CompareListViewProps) => {
     }
   }, [accessToken, hasNextPage, isFetching, fetchNextPage]);
 
+  const onClickShare = (code: string) => {
+    setShareCode(code);
+    openShareModal();
+  };
+
   return (
     <section className="flex h-screen w-full flex-col gap-[1.6rem] bg-neutral-98 p-[2.4rem] [&+div]:w-0">
       <HeaderSection {...tripBoardDetail?.data.result} />
@@ -86,7 +98,7 @@ const CompareListView = ({ tripBoardId }: CompareListViewProps) => {
                 }}
                 onDeleteClick={() => {}}
                 onEditClick={() => {}}
-                onShareClick={() => {}}
+                onShareClick={() => onClickShare(table.shareCode ?? "")}
               />
             </Link>
           ))}
@@ -98,6 +110,11 @@ const CompareListView = ({ tripBoardId }: CompareListViewProps) => {
           )}
         </ul>
       </div>
+      <CompareShareModal
+        shareCode={shareCode}
+        active={isShareModalOpen}
+        deactivate={closeShareModal}
+      />
       <LoadingIndicator active={isFetching || isTripBoardLoading} />
     </section>
   );

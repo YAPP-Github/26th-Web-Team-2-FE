@@ -67,7 +67,7 @@ const Tile = ({
           <p className="w-[9.7rem] overflow-hidden text-ellipsis whitespace-nowrap">
             {accommodationNames[0]}
           </p>
-          <p>외 {accommodationCount - 1} 곳</p>
+          <p className=" whitespace-nowrap">외 {accommodationCount - 1} 곳</p>
         </span>
         {/* 수정일 */}
         <span className="whitespace-nowrap rounded-[0.4rem] bg-neutral-95 px-[0.8rem] py-[0.3rem] text-caption1-medi12 text-neutral-60">

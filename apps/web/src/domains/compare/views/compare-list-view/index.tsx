@@ -5,6 +5,7 @@ import {
   useGetTripBoardDetail,
 } from "@ssok/api";
 import { cn, LoadingIndicator, Tile } from "@ssok/ui";
+import Link from "next/link";
 import { useEffect } from "react";
 import HeaderSection from "@/domains/list/components/header-section";
 import useSession from "@/shared/hooks/use-session";
@@ -66,20 +67,28 @@ const CompareListView = ({ tripBoardId }: CompareListViewProps) => {
         </h1>
         <ul className="grid grid-cols-2 gap-[1.6rem] p-[2.4rem]">
           {allTripBoards.map((table) => (
-            <Tile
+            <Link
               key={table.tableId}
-              data={{
-                tableName: table.tableName ?? "",
-                accommodationCount: table.accommodationCount ?? 0,
-                accommodationNames: table.accommodationNames ?? [],
-                lastModifiedAt: formatDate(table.lastModifiedAt ?? new Date(), {
-                  format: "YY.MM.DD",
-                }),
-              }}
-              onDeleteClick={() => {}}
-              onEditClick={() => {}}
-              onShareClick={() => {}}
-            />
+              href={`/boards/${tripBoardId}/compares/${table.tableId}`}
+            >
+              <Tile
+                key={table.tableId}
+                data={{
+                  tableName: table.tableName ?? "",
+                  accommodationCount: table.accommodationCount ?? 0,
+                  accommodationNames: table.accommodationNames ?? [],
+                  lastModifiedAt: formatDate(
+                    table.lastModifiedAt ?? new Date(),
+                    {
+                      format: "YY.MM.DD",
+                    },
+                  ),
+                }}
+                onDeleteClick={() => {}}
+                onEditClick={() => {}}
+                onShareClick={() => {}}
+              />
+            </Link>
           ))}
           {/* TODO: empty list 반영 */}
           {allTripBoards.length === 0 && (

@@ -70,6 +70,7 @@ const ComparePageView = ({ boardId, tableId }: ComparePageViewProps) => {
           className="mb-[1.6rem] shrink-0"
         />
         <ComparePageTitle
+          shareCode={response?.shareCode}
           currentView={currentView}
           onViewChange={handleViewChange}
           onSave={async () => {

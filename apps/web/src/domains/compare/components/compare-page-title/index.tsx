@@ -1,10 +1,21 @@
-import { Button, cn, IcEdit, IcMap, IcSave, IcShare, IcTable } from "@ssok/ui";
+import {
+  Button,
+  cn,
+  IcEdit,
+  IcMap,
+  IcSave,
+  IcShare,
+  IcTable,
+  useToggle,
+} from "@ssok/ui";
 import { Controller, useFormContext } from "react-hook-form";
 import type { ViewMode } from "@/domains/compare/hooks/use-view-mode";
 import type { ComparisonFormData } from "@/domains/compare/types";
+import CompareShareModal from "../compare-share-modal";
 import PageTitle from "./page-title";
 
 export interface ComparePageTitleProps {
+  shareCode?: string;
   currentView: ViewMode;
   onViewChange: (view: ViewMode) => void;
   onSave: () => void;
@@ -13,6 +24,7 @@ export interface ComparePageTitleProps {
 }
 
 const ComparePageTitle = ({
+  shareCode,
   currentView,
   onViewChange,
   onSave,
@@ -20,6 +32,11 @@ const ComparePageTitle = ({
   className,
 }: ComparePageTitleProps) => {
   const { control } = useFormContext<ComparisonFormData>();
+  const {
+    activate: openShareModal,
+    deactivate: closeShareModal,
+    active: isShareModalOpen,
+  } = useToggle();
   return (
     <div className={cn("flex items-center justify-between", className)}>
       <Controller
@@ -38,20 +55,25 @@ const ComparePageTitle = ({
           <>
             <MapButton onClick={() => onViewChange("map")} />
             <EditButton onClick={() => onViewChange("edit")} />
-            <ShareButton onClick={() => {}} />
+            <ShareButton onClick={openShareModal} />
           </>
         )}
         {currentView === "map" && (
           <>
             <TableButton onClick={() => onViewChange("table")} />
             <EditButton onClick={() => onViewChange("edit")} />
-            <ShareButton onClick={() => {}} />
+            <ShareButton onClick={openShareModal} />
           </>
         )}
         {currentView === "edit" && (
           <SaveButton onClick={onSave} isLoading={isLoading} />
         )}
       </div>
+      <CompareShareModal
+        shareCode={shareCode}
+        active={isShareModalOpen}
+        deactivate={closeShareModal}
+      />
     </div>
   );
 };

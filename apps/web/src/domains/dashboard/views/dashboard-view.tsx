@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetTripBoardsInfinite } from "@ssok/api";
-import { ActionCard, Popup } from "@ssok/ui";
+import { ActionCard, LoadingIndicator, Popup } from "@ssok/ui";
 import { useEffect, useState } from "react";
 import Header from "@/shared/components/header";
 import useSession from "@/shared/hooks/use-session";
@@ -61,13 +61,7 @@ const DashboardView = () => {
             </li>
           ))}
         </ul>
-        {isFetching && (
-          <div className="mt-[2rem] text-center">
-            <p className="text-body2-medi14 text-neutral-60">
-              데이터를 불러오는 중...
-            </p>
-          </div>
-        )}
+        <LoadingIndicator active={isFetching} />
       </section>
       <Popup
         title="새 여행 만들기"

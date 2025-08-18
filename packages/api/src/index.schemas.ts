@@ -511,8 +511,10 @@ export interface ComparisonTableResponse {
   tableId?: number;
   tableName?: string;
   accommodationResponsesList?: AccommodationResponse[];
+  shareCode?: string;
   factorsList?: ComparisonTableResponseFactorsListItem[];
   createdBy?: number;
+  creatorName?: string;
 }
 
 /**
@@ -678,6 +680,45 @@ export interface StandardResponseAuthorizeUrlResponse {
   responseType?: StandardResponseAuthorizeUrlResponseResponseType;
   /** 응답 결과 데이터 */
   result?: AuthorizeUrlResponse;
+}
+
+export interface ComparisonTablePageResponse {
+  comparisonTables?: ComparisonTableSummaryResponse[];
+  hasNext?: boolean;
+}
+
+/**
+ * 비교표 목록 조회 응답
+ */
+export interface ComparisonTableSummaryResponse {
+  /** 비교표 ID */
+  tableId?: number;
+  /** 비교표 이름 */
+  tableName?: string;
+  /** 포함된 숙소 개수 */
+  accommodationCount?: number;
+  /** 포함된 숙소 이름들 */
+  accommodationNames?: string[];
+  /** 최근 수정일 (UTC) */
+  lastModifiedAt?: Date;
+  /** 공유 코드 */
+  readonly shareCode?: string;
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseComparisonTablePageResponseResponseType =
+  | "SUCCESS"
+  | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseComparisonTablePageResponse {
+  /** 응답 유형 */
+  responseType?: StandardResponseComparisonTablePageResponseResponseType;
+  /** 응답 결과 데이터 */
+  result?: ComparisonTablePageResponse;
 }
 
 export type ComparisonFactorListFactorsItem =
@@ -878,6 +919,24 @@ export type GetTripBoardsParams = {
 
 export type GetKakaoAuthorizeUrlParams = {
   baseUrl: string;
+};
+
+export type GetComparisonTableByShareCodeParams = {
+  /**
+   * 비교표 공유 코드
+   */
+  shareCode: string;
+};
+
+export type GetComparisonTablesByTripBoardParams = {
+  /**
+   * 페이지 번호 (0부터 시작)
+   */
+  page: number;
+  /**
+   * 페이지 크기
+   */
+  size: number;
 };
 
 export type GetAccommodationByTripBoardIdAndUserIdParams = {

@@ -1,7 +1,7 @@
 "use client";
 
-import { useGetTripBoardsInfinite } from "@ssok/api";
-import { ActionCard, Popup } from "@ssok/ui";
+import { useGetTripBoardsInfinite, useGetUserInfo } from "@ssok/api";
+import { ActionCard, LoadingIndicator, Popup } from "@ssok/ui";
 import { useEffect, useState } from "react";
 import Header from "@/shared/components/header";
 import useSession from "@/shared/hooks/use-session";
@@ -30,6 +30,11 @@ const DashboardView = () => {
     },
   );
 
+  const { data: userInfo, isLoading } = useGetUserInfo({
+    query: { enabled: !!accessToken },
+    request: { headers: { Authorization: `Bearer ${accessToken}` } },
+  });
+
   const allTripBoards =
     pages?.flatMap((page) => page?.data.result?.tripBoards ?? []) ?? [];
 
@@ -42,7 +47,7 @@ const DashboardView = () => {
   return (
     <main>
       {/* 페이지 헤더 */}
-      <Header />
+      <Header userInfo={userInfo?.data?.result} />
       {/* 제목 + 여행 보드 목록 */}
       <section className="px-[10.4rem] pt-[7.2rem]">
         <h1 className="mb-[3.6rem] text-neutral-10 text-title1-semi36">
@@ -61,13 +66,7 @@ const DashboardView = () => {
             </li>
           ))}
         </ul>
-        {isFetching && (
-          <div className="mt-[2rem] text-center">
-            <p className="text-body2-medi14 text-neutral-60">
-              데이터를 불러오는 중...
-            </p>
-          </div>
-        )}
+        {isFetching && <LoadingIndicator active={isFetching || isLoading} />}
       </section>
       <Popup
         title="새 여행 만들기"

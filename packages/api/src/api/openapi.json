@@ -116,7 +116,7 @@
       "get": {
         "tags": ["비교표 API"],
         "summary": "비교표 조회",
-        "description": "비교표 메타 데이터와 포함된 숙소 정보 리스트를 조회합니다. (Authorization 헤더에 Bearer 토큰 필요)",
+        "description": "비교표 메타 데이터와 포함된 숙소 정보 리스트를 조회합니다. JWT 인증이 필요하며, 비교표 생성자 또는 여행보드 참여자만 접근 가능합니다.",
         "operationId": "getComparisonTable",
         "parameters": [
           {
@@ -129,7 +129,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "비교표 조회 성공",
             "content": {
               "*/*": {
                 "schema": {
@@ -724,6 +724,86 @@
             }
           }
         }
+      }
+    },
+    "/api/comparison/{tableId}/shared": {
+      "get": {
+        "tags": ["비교표 API"],
+        "summary": "shareCode를 통한 비교표 조회",
+        "description": "shareCode를 사용하여 인증 없이 비교표를 조회합니다. 유효한 shareCode가 필요합니다.",
+        "operationId": "getComparisonTableByShareCode",
+        "parameters": [
+          {
+            "name": "tableId",
+            "in": "path",
+            "description": "숙소가 포함된 테이블의 ID",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "shareCode",
+            "in": "query",
+            "description": "비교표 공유 코드",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "비교표 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTableResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/comparison/trip-board/{tripBoardId}": {
+      "get": {
+        "tags": ["비교표 API"],
+        "summary": "여행보드의 비교표 리스트 조회",
+        "description": "특정 여행보드에 생성된 모든 비교표의 리스트를 무한스크롤 페이지네이션으로 조회합니다. 각 비교표의 기본 정보와 포함된 숙소 정보를 제공합니다.",
+        "operationId": "getComparisonTablesByTripBoard",
+        "parameters": [
+          {
+            "name": "tripBoardId",
+            "in": "path",
+            "description": "조회할 여행보드의 ID",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "페이지 번호 (0부터 시작)",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "페이지 크기",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "비교표 리스트 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTablePageResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT": [] }]
       }
     },
     "/api/comparison/factors": {
@@ -1546,6 +1626,7 @@
             "type": "array",
             "items": { "$ref": "#/components/schemas/AccommodationResponse" }
           },
+          "shareCode": { "type": "string" },
           "factorsList": {
             "type": "array",
             "items": {
@@ -1562,7 +1643,8 @@
               ]
             }
           },
-          "createdBy": { "type": "integer", "format": "int64" }
+          "createdBy": { "type": "integer", "format": "int64" },
+          "creatorName": { "type": "string" }
         }
       },
       "StandardResponseComparisonTableResponse": {
@@ -1764,6 +1846,75 @@
           },
           "result": {
             "$ref": "#/components/schemas/AuthorizeUrlResponse",
+            "description": "응답 결과 데이터"
+          }
+        }
+      },
+      "ComparisonTablePageResponse": {
+        "type": "object",
+        "properties": {
+          "comparisonTables": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ComparisonTableSummaryResponse"
+            }
+          },
+          "hasNext": { "type": "boolean" }
+        }
+      },
+      "ComparisonTableSummaryResponse": {
+        "type": "object",
+        "description": "비교표 목록 조회 응답",
+        "properties": {
+          "tableId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "비교표 ID",
+            "example": 1
+          },
+          "tableName": {
+            "type": "string",
+            "description": "비교표 이름",
+            "example": "제주도 숙소 비교"
+          },
+          "accommodationCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "포함된 숙소 개수",
+            "example": 3
+          },
+          "accommodationNames": {
+            "type": "array",
+            "description": "포함된 숙소 이름들",
+            "example": ["호텔 신라", "롯데 호텔", "그랜드 하이얏트"],
+            "items": { "type": "string" }
+          },
+          "lastModifiedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "최근 수정일 (UTC)",
+            "example": "2025-08-15T08:30:00Z"
+          },
+          "shareCode": {
+            "type": "string",
+            "description": "공유 코드",
+            "example": "4473fa9aed7044c7a94fa6e99..",
+            "readOnly": true
+          }
+        }
+      },
+      "StandardResponseComparisonTablePageResponse": {
+        "type": "object",
+        "description": "API 응답의 표준 형식을 정의하는 클래스",
+        "properties": {
+          "responseType": {
+            "type": "string",
+            "description": "응답 유형",
+            "enum": ["SUCCESS", "ERROR"],
+            "example": "SUCCESS"
+          },
+          "result": {
+            "$ref": "#/components/schemas/ComparisonTablePageResponse",
             "description": "응답 결과 데이터"
           }
         }

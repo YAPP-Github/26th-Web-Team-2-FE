@@ -9,22 +9,13 @@ import type {
   ComparisonTableSummaryResponse,
   UpdateAccommodationRequest,
 } from "@ssok/api/schemas";
-import {
-  Button,
-  Confirm,
-  LoadingIndicator,
-  Popup,
-  TextField,
-  Tile,
-  useToast,
-  useToggle,
-} from "@ssok/ui";
+import { Confirm, LoadingIndicator, Tile, useToast, useToggle } from "@ssok/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import useSession from "@/shared/hooks/use-session";
 import { formatDate } from "@/shared/utils/date";
+import CompareEditModal from "../compare-edit-modal";
 import CompareShareModal from "../compare-share-modal";
 
 interface CompareTileProps {
@@ -85,12 +76,6 @@ const CompareTile = ({ table, tripBoardId }: CompareTileProps) => {
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
   });
 
-  const { register, handleSubmit } = useForm<{ tableName: string }>({
-    defaultValues: {
-      tableName: table.tableName,
-    },
-  });
-
   const onClickShare = (code: string) => {
     setShareCode(code);
     shareModal.activate();
@@ -116,6 +101,11 @@ const CompareTile = ({ table, tripBoardId }: CompareTileProps) => {
 
     if (newTableName === "") newTableName = table.tableName || "비교표";
 
+    const accommodationIds =
+      comparisonTable?.data.result?.accommodationResponsesList
+        ?.map((acc) => acc.id)
+        .filter((id): id is number => id !== undefined) || [];
+
     updateTable({
       tableId: table.tableId,
       data: {
@@ -125,8 +115,10 @@ const CompareTile = ({ table, tripBoardId }: CompareTileProps) => {
             ?.accommodationResponsesList as UpdateAccommodationRequest[]) ||
             []),
         ],
+        factorList: comparisonTable?.data.result?.factorsList || [],
         ...comparisonTable?.data.result,
         tableName: newTableName,
+        accommodationIdList: accommodationIds,
       },
     });
   };
@@ -161,37 +153,12 @@ const CompareTile = ({ table, tripBoardId }: CompareTileProps) => {
         onCancel={isDeleting ? undefined : handleCancel}
         onConfirm={isDeleting ? undefined : onClickDeleteConfirm}
       />
-      <Popup
-        title="표 수정하기"
+      <CompareEditModal
         active={editModal.active}
+        initialName={table.tableName || ""}
         onClose={editModal.deactivate}
-      >
-        <form
-          className="w-[59.9rem]"
-          onSubmit={handleSubmit(onClickEditConfirm)}
-        >
-          <div className="flex flex-col gap-[0.8rem] px-[2.4rem] py-[2rem]">
-            <p className="text-heading2-semi18 text-neutral-30">
-              이 표를 어떻게 부를까요?
-            </p>
-            <TextField
-              maxLength={20}
-              placeholder="입력하지 않으면 기존 이름으로 저장돼요."
-              {...register("tableName")}
-            />
-          </div>
-          <div className="w-full p-[2.4rem]">
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              className="flex w-full justify-center"
-            >
-              수정하기
-            </Button>
-          </div>
-        </form>
-      </Popup>
+        onConfirm={onClickEditConfirm}
+      />
       <CompareShareModal
         shareCode={shareCode}
         active={shareModal.active}

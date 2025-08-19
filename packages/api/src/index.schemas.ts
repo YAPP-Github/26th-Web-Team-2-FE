@@ -90,6 +90,10 @@ export interface UpdateAccommodationRequest {
    */
   memo?: string;
   lowestPrice?: number;
+  /**
+   * @minLength 0
+   * @maxLength 3
+   */
   currency?: string;
   reviewScore?: number;
   cleanlinessScore?: number;
@@ -498,7 +502,7 @@ export interface CheckTime {
   to?: string;
 }
 
-export type ComparisonTableResponseFactorsListItem =
+export type ComparisonTableResponseFactorListItem =
   | "REVIEW_SCORE"
   | "ATTRACTION"
   | "TRANSPORTATION"
@@ -512,7 +516,9 @@ export interface ComparisonTableResponse {
   tableName?: string;
   accommodationResponsesList?: AccommodationResponse[];
   shareCode?: string;
-  factorsList?: ComparisonTableResponseFactorsListItem[];
+  factorList?: ComparisonTableResponseFactorListItem[];
+  createdAt?: Date;
+  lastModifiedAt?: Date;
   createdBy?: number;
   creatorName?: string;
 }

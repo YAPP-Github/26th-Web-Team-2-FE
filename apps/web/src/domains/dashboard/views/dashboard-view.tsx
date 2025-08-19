@@ -1,6 +1,7 @@
 "use client";
 
-import { useGetTripBoardsInfinite } from "@ssok/api";
+import { useGetTripBoardsInfinite, useGetUserInfo } from "@ssok/api";
+
 import { ActionCard, LoadingIndicator, Popup } from "@ssok/ui";
 import { useEffect, useState } from "react";
 import Header from "@/shared/components/header";
@@ -30,6 +31,11 @@ const DashboardView = () => {
     },
   );
 
+  const { data: userInfo, isLoading } = useGetUserInfo({
+    query: { enabled: !!accessToken },
+    request: { headers: { Authorization: `Bearer ${accessToken}` } },
+  });
+
   const allTripBoards =
     pages?.flatMap((page) => page?.data.result?.tripBoards ?? []) ?? [];
 
@@ -42,7 +48,7 @@ const DashboardView = () => {
   return (
     <main>
       {/* 페이지 헤더 */}
-      <Header />
+      <Header userInfo={userInfo?.data?.result || null} />
       {/* 제목 + 여행 보드 목록 */}
       <section className="px-[10.4rem] pt-[7.2rem]">
         <h1 className="mb-[3.6rem] text-neutral-10 text-title1-semi36">
@@ -61,7 +67,7 @@ const DashboardView = () => {
             </li>
           ))}
         </ul>
-        <LoadingIndicator active={isFetching} />
+        <LoadingIndicator active={isFetching || isLoading} />
       </section>
       <Popup
         title="새 여행 만들기"

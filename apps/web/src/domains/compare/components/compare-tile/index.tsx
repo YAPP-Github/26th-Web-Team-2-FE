@@ -11,10 +11,10 @@ import useSession from "@/shared/hooks/use-session";
 import { formatDate } from "@/shared/utils/date";
 import CompareShareModal from "../compare-share-modal";
 
-type CompareTileProps = {
+interface CompareTileProps {
   table: ComparisonTableSummaryResponse;
   tripBoardId: number;
-};
+}
 
 const CompareTile = ({ table, tripBoardId }: CompareTileProps) => {
   const { toast } = useToast();

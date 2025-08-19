@@ -1,8 +1,7 @@
-// import { redirect } from "next/navigation";
+import IndexPageView from "@/domains/landing/views/index-page-view";
 
-const IndexPage = async () => {
-  // redirect(`/boards`);
-  return <div>메인 페이지</div>;
+const IndexPage = () => {
+  return <IndexPageView />;
 };
 
 export default IndexPage;

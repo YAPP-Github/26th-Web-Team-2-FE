@@ -534,7 +534,7 @@ export const getGetComparisonTableResponseMock = (
         faker.string.alpha({ length: { min: 10, max: 20 } }),
         undefined,
       ]),
-      factorsList: faker.helpers.arrayElement([
+      factorList: faker.helpers.arrayElement([
         faker.helpers.arrayElements([
           "REVIEW_SCORE",
           "ATTRACTION",
@@ -545,6 +545,14 @@ export const getGetComparisonTableResponseMock = (
           "REVIEW_SUMMARY",
           "MEMO",
         ] as const),
+        undefined,
+      ]),
+      createdAt: faker.helpers.arrayElement([
+        new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
+        undefined,
+      ]),
+      lastModifiedAt: faker.helpers.arrayElement([
+        new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
         undefined,
       ]),
       createdBy: faker.helpers.arrayElement([
@@ -933,7 +941,7 @@ export const getAddAccommodationToComparisonTableResponseMock = (
         faker.string.alpha({ length: { min: 10, max: 20 } }),
         undefined,
       ]),
-      factorsList: faker.helpers.arrayElement([
+      factorList: faker.helpers.arrayElement([
         faker.helpers.arrayElements([
           "REVIEW_SCORE",
           "ATTRACTION",
@@ -944,6 +952,14 @@ export const getAddAccommodationToComparisonTableResponseMock = (
           "REVIEW_SUMMARY",
           "MEMO",
         ] as const),
+        undefined,
+      ]),
+      createdAt: faker.helpers.arrayElement([
+        new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
+        undefined,
+      ]),
+      lastModifiedAt: faker.helpers.arrayElement([
+        new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
         undefined,
       ]),
       createdBy: faker.helpers.arrayElement([
@@ -1818,7 +1834,7 @@ export const getGetComparisonTableByShareCodeResponseMock = (
         faker.string.alpha({ length: { min: 10, max: 20 } }),
         undefined,
       ]),
-      factorsList: faker.helpers.arrayElement([
+      factorList: faker.helpers.arrayElement([
         faker.helpers.arrayElements([
           "REVIEW_SCORE",
           "ATTRACTION",
@@ -1829,6 +1845,14 @@ export const getGetComparisonTableByShareCodeResponseMock = (
           "REVIEW_SUMMARY",
           "MEMO",
         ] as const),
+        undefined,
+      ]),
+      createdAt: faker.helpers.arrayElement([
+        new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
+        undefined,
+      ]),
+      lastModifiedAt: faker.helpers.arrayElement([
+        new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
         undefined,
       ]),
       createdBy: faker.helpers.arrayElement([

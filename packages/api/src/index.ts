@@ -40,6 +40,8 @@ import type {
   ExchangeKakaoTokenParams,
   GetAccommodationByTripBoardIdAndUserIdParams,
   GetAccommodationCountByTripBoardIdParams,
+  GetComparisonTableByShareCodeParams,
+  GetComparisonTablesByTripBoardParams,
   GetKakaoAuthorizeUrlParams,
   GetTripBoardsParams,
   RefreshTokenRequest,
@@ -53,6 +55,7 @@ import type {
   StandardResponseBoolean,
   StandardResponseComparisonFactorList,
   StandardResponseComparisonTableDeleteResponse,
+  StandardResponseComparisonTablePageResponse,
   StandardResponseComparisonTableResponse,
   StandardResponseCreateComparisonTableResponse,
   StandardResponseInvitationCodeResponse,
@@ -627,7 +630,7 @@ export const useDeleteTripBoard = <TError = unknown, TContext = unknown>(
 };
 
 /**
- * 비교표 메타 데이터와 포함된 숙소 정보 리스트를 조회합니다. (Authorization 헤더에 Bearer 토큰 필요)
+ * 비교표 메타 데이터와 포함된 숙소 정보 리스트를 조회합니다. JWT 인증이 필요하며, 비교표 생성자 또는 여행보드 참여자만 접근 가능합니다.
  * @summary 비교표 조회
  */
 export type getComparisonTableResponse200 = {
@@ -3898,6 +3901,1040 @@ export function useGetKakaoAuthorizeUrlSuspense<
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetKakaoAuthorizeUrlSuspenseQueryOptions(
+    params,
+    options,
+  );
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * shareCode를 사용하여 인증 없이 비교표를 조회합니다. 유효한 shareCode가 필요합니다.
+ * @summary shareCode를 통한 비교표 조회
+ */
+export type getComparisonTableByShareCodeResponse200 = {
+  data: StandardResponseComparisonTableResponse;
+  status: 200;
+};
+
+export type getComparisonTableByShareCodeResponseComposite =
+  getComparisonTableByShareCodeResponse200;
+
+export type getComparisonTableByShareCodeResponse =
+  getComparisonTableByShareCodeResponseComposite & {
+    headers: Headers;
+  };
+
+export const getGetComparisonTableByShareCodeUrl = (
+  tableId: number,
+  params: GetComparisonTableByShareCodeParams,
+) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `https://api.ssok.info/api/comparison/${tableId}/shared?${stringifiedParams}`
+    : `https://api.ssok.info/api/comparison/${tableId}/shared`;
+};
+
+export const getComparisonTableByShareCode = async (
+  tableId: number,
+  params: GetComparisonTableByShareCodeParams,
+  options?: RequestInit,
+): Promise<getComparisonTableByShareCodeResponse> => {
+  return http<getComparisonTableByShareCodeResponse>(
+    getGetComparisonTableByShareCodeUrl(tableId, params),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getGetComparisonTableByShareCodeQueryKey = (
+  tableId?: number,
+  params?: GetComparisonTableByShareCodeParams,
+) => {
+  return [
+    `https://api.ssok.info/api/comparison/${tableId}/shared`,
+    ...(params ? [params] : []),
+  ] as const;
+};
+
+export const getGetComparisonTableByShareCodeQueryOptions = <
+  TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+  TError = unknown,
+>(
+  tableId: number,
+  params: GetComparisonTableByShareCodeParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetComparisonTableByShareCodeQueryKey(tableId, params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getComparisonTableByShareCode>>
+  > = ({ signal }) =>
+    getComparisonTableByShareCode(tableId, params, {
+      signal,
+      ...requestOptions,
+    });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!tableId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetComparisonTableByShareCodeQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getComparisonTableByShareCode>>
+>;
+export type GetComparisonTableByShareCodeQueryError = unknown;
+
+export function useGetComparisonTableByShareCode<
+  TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+  TError = unknown,
+>(
+  tableId: number,
+  params: GetComparisonTableByShareCodeParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+          TError,
+          Awaited<ReturnType<typeof getComparisonTableByShareCode>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonTableByShareCode<
+  TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+  TError = unknown,
+>(
+  tableId: number,
+  params: GetComparisonTableByShareCodeParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+          TError,
+          Awaited<ReturnType<typeof getComparisonTableByShareCode>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonTableByShareCode<
+  TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+  TError = unknown,
+>(
+  tableId: number,
+  params: GetComparisonTableByShareCodeParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary shareCode를 통한 비교표 조회
+ */
+
+export function useGetComparisonTableByShareCode<
+  TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+  TError = unknown,
+>(
+  tableId: number,
+  params: GetComparisonTableByShareCodeParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetComparisonTableByShareCodeQueryOptions(
+    tableId,
+    params,
+    options,
+  );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary shareCode를 통한 비교표 조회
+ */
+export const prefetchGetComparisonTableByShareCodeQuery = async <
+  TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+  TError = unknown,
+>(
+  queryClient: QueryClient,
+  tableId: number,
+  params: GetComparisonTableByShareCodeParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetComparisonTableByShareCodeQueryOptions(
+    tableId,
+    params,
+    options,
+  );
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetComparisonTableByShareCodeSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+  TError = unknown,
+>(
+  tableId: number,
+  params: GetComparisonTableByShareCodeParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetComparisonTableByShareCodeQueryKey(tableId, params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getComparisonTableByShareCode>>
+  > = ({ signal }) =>
+    getComparisonTableByShareCode(tableId, params, {
+      signal,
+      ...requestOptions,
+    });
+
+  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetComparisonTableByShareCodeSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getComparisonTableByShareCode>>
+>;
+export type GetComparisonTableByShareCodeSuspenseQueryError = unknown;
+
+export function useGetComparisonTableByShareCodeSuspense<
+  TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+  TError = unknown,
+>(
+  tableId: number,
+  params: GetComparisonTableByShareCodeParams,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonTableByShareCodeSuspense<
+  TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+  TError = unknown,
+>(
+  tableId: number,
+  params: GetComparisonTableByShareCodeParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonTableByShareCodeSuspense<
+  TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+  TError = unknown,
+>(
+  tableId: number,
+  params: GetComparisonTableByShareCodeParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary shareCode를 통한 비교표 조회
+ */
+
+export function useGetComparisonTableByShareCodeSuspense<
+  TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+  TError = unknown,
+>(
+  tableId: number,
+  params: GetComparisonTableByShareCodeParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetComparisonTableByShareCodeSuspenseQueryOptions(
+    tableId,
+    params,
+    options,
+  );
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * 특정 여행보드에 생성된 모든 비교표의 리스트를 무한스크롤 페이지네이션으로 조회합니다. 각 비교표의 기본 정보와 포함된 숙소 정보를 제공합니다.
+ * @summary 여행보드의 비교표 리스트 조회
+ */
+export type getComparisonTablesByTripBoardResponse200 = {
+  data: StandardResponseComparisonTablePageResponse;
+  status: 200;
+};
+
+export type getComparisonTablesByTripBoardResponseComposite =
+  getComparisonTablesByTripBoardResponse200;
+
+export type getComparisonTablesByTripBoardResponse =
+  getComparisonTablesByTripBoardResponseComposite & {
+    headers: Headers;
+  };
+
+export const getGetComparisonTablesByTripBoardUrl = (
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `https://api.ssok.info/api/comparison/trip-board/${tripBoardId}?${stringifiedParams}`
+    : `https://api.ssok.info/api/comparison/trip-board/${tripBoardId}`;
+};
+
+export const getComparisonTablesByTripBoard = async (
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: RequestInit,
+): Promise<getComparisonTablesByTripBoardResponse> => {
+  return http<getComparisonTablesByTripBoardResponse>(
+    getGetComparisonTablesByTripBoardUrl(tripBoardId, params),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getGetComparisonTablesByTripBoardQueryKey = (
+  tripBoardId?: number,
+  params?: GetComparisonTablesByTripBoardParams,
+) => {
+  return [
+    `https://api.ssok.info/api/comparison/trip-board/${tripBoardId}`,
+    ...(params ? [params] : []),
+  ] as const;
+};
+
+export const getGetComparisonTablesByTripBoardInfiniteQueryOptions = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+    GetComparisonTablesByTripBoardParams["page"]
+  >,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData,
+        QueryKey,
+        GetComparisonTablesByTripBoardParams["page"]
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetComparisonTablesByTripBoardQueryKey(tripBoardId, params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+    QueryKey,
+    GetComparisonTablesByTripBoardParams["page"]
+  > = ({ signal, pageParam }) =>
+    getComparisonTablesByTripBoard(
+      tripBoardId,
+      { ...params, page: pageParam || params?.page },
+      { signal, ...requestOptions },
+    );
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!tripBoardId,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+    TError,
+    TData,
+    QueryKey,
+    GetComparisonTablesByTripBoardParams["page"]
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetComparisonTablesByTripBoardInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>
+>;
+export type GetComparisonTablesByTripBoardInfiniteQueryError = unknown;
+
+export function useGetComparisonTablesByTripBoardInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+    GetComparisonTablesByTripBoardParams["page"]
+  >,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData,
+        QueryKey,
+        GetComparisonTablesByTripBoardParams["page"]
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+          TError,
+          Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+          QueryKey
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonTablesByTripBoardInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+    GetComparisonTablesByTripBoardParams["page"]
+  >,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData,
+        QueryKey,
+        GetComparisonTablesByTripBoardParams["page"]
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+          TError,
+          Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+          QueryKey
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonTablesByTripBoardInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+    GetComparisonTablesByTripBoardParams["page"]
+  >,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData,
+        QueryKey,
+        GetComparisonTablesByTripBoardParams["page"]
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary 여행보드의 비교표 리스트 조회
+ */
+
+export function useGetComparisonTablesByTripBoardInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+    GetComparisonTablesByTripBoardParams["page"]
+  >,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData,
+        QueryKey,
+        GetComparisonTablesByTripBoardParams["page"]
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetComparisonTablesByTripBoardInfiniteQueryOptions(
+    tripBoardId,
+    params,
+    options,
+  );
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary 여행보드의 비교표 리스트 조회
+ */
+export const prefetchGetComparisonTablesByTripBoardInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+  TError = unknown,
+>(
+  queryClient: QueryClient,
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData,
+        QueryKey,
+        GetComparisonTablesByTripBoardParams["page"]
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetComparisonTablesByTripBoardInfiniteQueryOptions(
+    tripBoardId,
+    params,
+    options,
+  );
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetComparisonTablesByTripBoardQueryOptions = <
+  TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetComparisonTablesByTripBoardQueryKey(tripBoardId, params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>
+  > = ({ signal }) =>
+    getComparisonTablesByTripBoard(tripBoardId, params, {
+      signal,
+      ...requestOptions,
+    });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!tripBoardId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetComparisonTablesByTripBoardQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>
+>;
+export type GetComparisonTablesByTripBoardQueryError = unknown;
+
+export function useGetComparisonTablesByTripBoard<
+  TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+          TError,
+          Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonTablesByTripBoard<
+  TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+          TError,
+          Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonTablesByTripBoard<
+  TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary 여행보드의 비교표 리스트 조회
+ */
+
+export function useGetComparisonTablesByTripBoard<
+  TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetComparisonTablesByTripBoardQueryOptions(
+    tripBoardId,
+    params,
+    options,
+  );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary 여행보드의 비교표 리스트 조회
+ */
+export const prefetchGetComparisonTablesByTripBoardQuery = async <
+  TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+  TError = unknown,
+>(
+  queryClient: QueryClient,
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetComparisonTablesByTripBoardQueryOptions(
+    tripBoardId,
+    params,
+    options,
+  );
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetComparisonTablesByTripBoardSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetComparisonTablesByTripBoardQueryKey(tripBoardId, params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>
+  > = ({ signal }) =>
+    getComparisonTablesByTripBoard(tripBoardId, params, {
+      signal,
+      ...requestOptions,
+    });
+
+  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetComparisonTablesByTripBoardSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>
+>;
+export type GetComparisonTablesByTripBoardSuspenseQueryError = unknown;
+
+export function useGetComparisonTablesByTripBoardSuspense<
+  TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonTablesByTripBoardSuspense<
+  TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetComparisonTablesByTripBoardSuspense<
+  TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary 여행보드의 비교표 리스트 조회
+ */
+
+export function useGetComparisonTablesByTripBoardSuspense<
+  TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+  TError = unknown,
+>(
+  tripBoardId: number,
+  params: GetComparisonTablesByTripBoardParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetComparisonTablesByTripBoardSuspenseQueryOptions(
+    tripBoardId,
     params,
     options,
   );

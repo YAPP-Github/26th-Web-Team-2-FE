@@ -1,6 +1,7 @@
 "use client";
 
 import { useGetTripBoardsInfinite, useGetUserInfo } from "@ssok/api";
+
 import { ActionCard, LoadingIndicator, Popup } from "@ssok/ui";
 import { useEffect, useState } from "react";
 import Header from "@/shared/components/header";
@@ -66,7 +67,7 @@ const DashboardView = () => {
             </li>
           ))}
         </ul>
-        {isFetching && <LoadingIndicator active={isFetching || isLoading} />}
+        <LoadingIndicator active={isFetching || isLoading} />
       </section>
       <Popup
         title="새 여행 만들기"

@@ -23,6 +23,9 @@ export default defineConfig({
           getTripBoards: {
             query: { useInfinite: true, useInfiniteQueryParam: "page" },
           },
+          getComparisonTablesByTripBoard: {
+            query: { useInfinite: true, useInfiniteQueryParam: "page" },
+          },
         },
         query: { usePrefetch: true, useSuspenseQuery: true },
         useDates: true,

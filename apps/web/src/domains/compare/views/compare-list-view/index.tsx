@@ -4,13 +4,11 @@ import {
   useGetComparisonTablesByTripBoardInfinite,
   useGetTripBoardDetail,
 } from "@ssok/api";
-import { cn, LoadingIndicator, Tile, useToggle } from "@ssok/ui";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { cn, LoadingIndicator } from "@ssok/ui";
+import { useEffect } from "react";
 import HeaderSection from "@/domains/list/components/header-section";
 import useSession from "@/shared/hooks/use-session";
-import { formatDate } from "@/shared/utils/date";
-import CompareShareModal from "../../components/compare-share-modal";
+import CompareTile from "../../components/compare-tile";
 
 interface CompareListViewProps {
   tripBoardId: number;
@@ -18,12 +16,6 @@ interface CompareListViewProps {
 
 const CompareListView = ({ tripBoardId }: CompareListViewProps) => {
   const { accessToken } = useSession({ required: true });
-  const [shareCode, setShareCode] = useState<string | undefined>();
-  const {
-    activate: openShareModal,
-    deactivate: closeShareModal,
-    active: isShareModalOpen,
-  } = useToggle();
 
   const {
     data: { pages } = {},
@@ -61,11 +53,6 @@ const CompareListView = ({ tripBoardId }: CompareListViewProps) => {
     }
   }, [accessToken, hasNextPage, isFetching, fetchNextPage]);
 
-  const onClickShare = (code: string) => {
-    setShareCode(code);
-    openShareModal();
-  };
-
   return (
     <section className="flex h-screen w-full flex-col gap-[1.6rem] bg-neutral-98 p-[2.4rem] [&+div]:w-0">
       <HeaderSection {...tripBoardDetail?.data.result} />
@@ -79,28 +66,9 @@ const CompareListView = ({ tripBoardId }: CompareListViewProps) => {
         </h1>
         <ul className="grid grid-cols-2 gap-[1.6rem] p-[2.4rem]">
           {allTripBoards.map((table) => (
-            <Link
-              key={table.tableId}
-              href={`/boards/${tripBoardId}/compares/${table.tableId}`}
-            >
-              <Tile
-                key={table.tableId}
-                data={{
-                  tableName: table.tableName ?? "",
-                  accommodationCount: table.accommodationCount ?? 0,
-                  accommodationNames: table.accommodationNames ?? [],
-                  lastModifiedAt: formatDate(
-                    table.lastModifiedAt ?? new Date(),
-                    {
-                      format: "YY.MM.DD",
-                    },
-                  ),
-                }}
-                onDeleteClick={() => {}}
-                onEditClick={() => {}}
-                onShareClick={() => onClickShare(table.shareCode ?? "")}
-              />
-            </Link>
+            <li key={table.tableId}>
+              <CompareTile table={table} tripBoardId={tripBoardId} />
+            </li>
           ))}
           {/* TODO: empty list 반영 */}
           {allTripBoards.length === 0 && (
@@ -110,11 +78,6 @@ const CompareListView = ({ tripBoardId }: CompareListViewProps) => {
           )}
         </ul>
       </div>
-      <CompareShareModal
-        shareCode={shareCode}
-        active={isShareModalOpen}
-        deactivate={closeShareModal}
-      />
       <LoadingIndicator active={isFetching || isTripBoardLoading} />
     </section>
   );

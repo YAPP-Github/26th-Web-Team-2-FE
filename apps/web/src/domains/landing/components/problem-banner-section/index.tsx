@@ -1,4 +1,4 @@
-import LandingSectionContainer from "./landing-section-container";
+import LandingSectionContainer from "../landing-section-container";
 
 const ProblemBannerSection = () => {
   return (

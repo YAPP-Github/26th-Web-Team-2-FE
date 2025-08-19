@@ -1,5 +1,5 @@
 import { cn } from "@ssok/ui";
-import LandingSectionContainer from "./landing-section-container";
+import LandingSectionContainer from "../landing-section-container";
 
 const ProblemSections = () => {
   const problems = [

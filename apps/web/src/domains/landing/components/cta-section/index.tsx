@@ -2,7 +2,7 @@
 
 import { Button, cn } from "@ssok/ui";
 import Link from "next/link";
-import LandingSectionContainer from "./landing-section-container";
+import LandingSectionContainer from "../landing-section-container";
 
 const CTASection = () => {
   return (

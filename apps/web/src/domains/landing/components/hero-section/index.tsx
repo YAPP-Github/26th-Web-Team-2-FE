@@ -3,7 +3,7 @@
 import { Button, cn, IcArrowRight } from "@ssok/ui";
 import Link from "next/link";
 import SsokIcon from "@/shared/assets/ssok-icon.svg";
-import LandingSectionContainer from "./landing-section-container";
+import LandingSectionContainer from "../landing-section-container";
 
 const HeroSection = () => {
   return (

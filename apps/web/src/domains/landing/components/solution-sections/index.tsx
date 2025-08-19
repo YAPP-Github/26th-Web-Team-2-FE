@@ -1,6 +1,6 @@
 import { cn } from "@ssok/ui";
 import type { PropsWithChildren } from "react";
-import LandingSectionContainer from "./landing-section-container";
+import LandingSectionContainer from "../landing-section-container";
 
 const SolutionSections = () => {
   const solutions = [

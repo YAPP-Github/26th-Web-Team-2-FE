@@ -8,10 +8,10 @@ import SsokLogo from "@/shared/assets/ssok-logo.svg";
 
 export interface HeaderProps {
   className?: string;
-  userInfo: getUserInfoResponse["data"]["result"];
+  userInfo?: getUserInfoResponse["data"]["result"] | null;
 }
 
-const Header = ({ className, userInfo }: HeaderProps) => {
+const Header = ({ className, userInfo = null }: HeaderProps) => {
   const _pathname = usePathname();
 
   const navItems = [

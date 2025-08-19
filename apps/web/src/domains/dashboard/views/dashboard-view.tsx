@@ -48,7 +48,7 @@ const DashboardView = () => {
   return (
     <main>
       {/* 페이지 헤더 */}
-      <Header userInfo={userInfo?.data?.result} />
+      <Header userInfo={userInfo?.data?.result || {}} />
       {/* 제목 + 여행 보드 목록 */}
       <section className="px-[10.4rem] pt-[7.2rem]">
         <h1 className="mb-[3.6rem] text-neutral-10 text-title1-semi36">

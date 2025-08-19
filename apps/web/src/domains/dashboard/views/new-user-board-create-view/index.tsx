@@ -1,11 +1,24 @@
+"use client";
+
+import { useGetUserInfo } from "@ssok/api";
+import { LoadingIndicator } from "@ssok/ui";
 import Header from "@/shared/components/header";
+import useSession from "@/shared/hooks/use-session";
 import BoardCreateForm from "../../components/board-create-form";
 import DashboardVideoBackground from "../../components/dashboard-video-background";
 
 const NewUserBoardCreateView = () => {
+  const { accessToken } = useSession({ required: true });
+  const { data: userInfo, isLoading } = useGetUserInfo({
+    query: { enabled: !!accessToken },
+    request: { headers: { Authorization: `Bearer ${accessToken}` } },
+  });
   return (
     <div className="flex h-screen flex-col bg-neutral-98">
-      <Header className="shrink-0 grow-0" />
+      <Header
+        className="shrink-0 grow-0"
+        userInfo={userInfo?.data.result || {}}
+      />
       <div className="flex flex-1">
         <DashboardVideoBackground className="h-full w-full max-w-[min(calc(100%-52rem),81.6rem)] max-md:hidden" />
 
@@ -21,6 +34,7 @@ const NewUserBoardCreateView = () => {
           <BoardCreateForm className="mr-auto w-full max-w-[45.6rem]" />
         </section>
       </div>
+      <LoadingIndicator active={isLoading} />
     </div>
   );
 };

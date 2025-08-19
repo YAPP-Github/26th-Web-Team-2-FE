@@ -1,14 +1,21 @@
 import {
+  getGetComparisonTableQueryKey,
   getGetComparisonTablesByTripBoardQueryKey,
   useDeleteComparisonTable,
+  useGetComparisonTable,
+  useUpdateComparisonTable,
 } from "@ssok/api";
-import type { ComparisonTableSummaryResponse } from "@ssok/api/schemas";
-import { Confirm, Tile, useToast, useToggle } from "@ssok/ui";
+import type {
+  ComparisonTableSummaryResponse,
+  UpdateAccommodationRequest,
+} from "@ssok/api/schemas";
+import { Confirm, LoadingIndicator, Tile, useToast, useToggle } from "@ssok/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useState } from "react";
 import useSession from "@/shared/hooks/use-session";
 import { formatDate } from "@/shared/utils/date";
+import CompareEditModal from "../compare-edit-modal";
 import CompareShareModal from "../compare-share-modal";
 
 interface CompareTileProps {
@@ -21,9 +28,21 @@ const CompareTile = ({ table, tripBoardId }: CompareTileProps) => {
   const [shareCode, setShareCode] = useState<string | undefined>();
   const shareModal = useToggle();
   const deleteModal = useToggle();
+  const editModal = useToggle();
 
   const { accessToken } = useSession({ required: true });
   const queryClient = useQueryClient();
+  const { data: comparisonTable, isLoading: isMetaDataLoading } =
+    useGetComparisonTable(table.tableId || 0, {
+      query: {
+        enabled:
+          !!accessToken ||
+          !!queryClient.getQueryData(
+            getGetComparisonTableQueryKey(table.tableId),
+          ),
+      },
+      request: { headers: { Authorization: `Bearer ${accessToken}` } },
+    });
   const { mutate: deleteTable, isPending: isDeleting } =
     useDeleteComparisonTable({
       mutation: {
@@ -40,6 +59,22 @@ const CompareTile = ({ table, tripBoardId }: CompareTileProps) => {
       },
       request: { headers: { Authorization: `Bearer ${accessToken}` } },
     });
+
+  const { mutate: updateTable } = useUpdateComparisonTable({
+    mutation: {
+      onSuccess: () => {
+        editModal.deactivate();
+        queryClient.invalidateQueries({
+          queryKey: getGetComparisonTablesByTripBoardQueryKey(tripBoardId),
+        });
+        toast.success("표가 수정되었어요");
+      },
+      onError: (error) => {
+        console.error("표 수정 실패:", error);
+      },
+    },
+    request: { headers: { Authorization: `Bearer ${accessToken}` } },
+  });
 
   const onClickShare = (code: string) => {
     setShareCode(code);
@@ -59,6 +94,34 @@ const CompareTile = ({ table, tripBoardId }: CompareTileProps) => {
     deleteTable({ tableId: table.tableId });
   };
 
+  const onClickEditConfirm = (data: { tableName: string }) => {
+    if (!table.tableId) return;
+
+    let newTableName = data.tableName.trim();
+
+    if (newTableName === "") newTableName = table.tableName || "비교표";
+
+    const accommodationIds =
+      comparisonTable?.data.result?.accommodationResponsesList
+        ?.map((acc) => acc.id)
+        .filter((id): id is number => id !== undefined) || [];
+
+    updateTable({
+      tableId: table.tableId,
+      data: {
+        tripBoardId: tripBoardId,
+        accommodationRequestList: [
+          ...((comparisonTable?.data.result
+            ?.accommodationResponsesList as UpdateAccommodationRequest[]) ||
+            []),
+        ],
+        ...comparisonTable?.data.result,
+        tableName: newTableName,
+        accommodationIdList: accommodationIds,
+      },
+    });
+  };
+
   return (
     <>
       <Link
@@ -76,7 +139,7 @@ const CompareTile = ({ table, tripBoardId }: CompareTileProps) => {
             }),
           }}
           onDeleteClick={() => deleteModal.activate()}
-          onEditClick={() => {}}
+          onEditClick={() => editModal.activate()}
           onShareClick={() => onClickShare(table.shareCode ?? "")}
         />
       </Link>
@@ -89,11 +152,18 @@ const CompareTile = ({ table, tripBoardId }: CompareTileProps) => {
         onCancel={isDeleting ? undefined : handleCancel}
         onConfirm={isDeleting ? undefined : onClickDeleteConfirm}
       />
+      <CompareEditModal
+        active={editModal.active}
+        initialName={table.tableName || ""}
+        onClose={editModal.deactivate}
+        onConfirm={onClickEditConfirm}
+      />
       <CompareShareModal
         shareCode={shareCode}
         active={shareModal.active}
         deactivate={shareModal.deactivate}
       />
+      <LoadingIndicator active={isMetaDataLoading} />
     </>
   );
 };

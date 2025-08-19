@@ -115,7 +115,6 @@ const CompareTile = ({ table, tripBoardId }: CompareTileProps) => {
             ?.accommodationResponsesList as UpdateAccommodationRequest[]) ||
             []),
         ],
-        factorList: comparisonTable?.data.result?.factorsList || [],
         ...comparisonTable?.data.result,
         tableName: newTableName,
         accommodationIdList: accommodationIds,

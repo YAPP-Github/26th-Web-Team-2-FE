@@ -2,6 +2,16 @@ import type { Config } from "tailwindcss";
 
 export const theme: Config["theme"] = {
   fontSize: {
+    // Display styles
+    "display1-bold56": [
+      "5.6rem",
+      { fontWeight: "700", lineHeight: "1.4", letterSpacing: "-0.08rem" },
+    ],
+    "display2-bold36": [
+      "3.6rem",
+      { fontWeight: "700", lineHeight: "1.4", letterSpacing: "-0.06rem" },
+    ],
+
     // Title styles
     "title1-semi36": [
       "3.6rem",
@@ -18,6 +28,10 @@ export const theme: Config["theme"] = {
     "title3-bold24": [
       "2.4rem",
       { fontWeight: "700", lineHeight: "1.5", letterSpacing: "0rem" },
+    ],
+    "title4-medi22": [
+      "2.2rem",
+      { fontWeight: "500", lineHeight: "1.5", letterSpacing: "0rem" },
     ],
 
     // Heading styles
@@ -238,6 +252,8 @@ export const theme: Config["theme"] = {
       rgba(255, 255, 255, 0.98) 95%,
       rgba(255, 255, 255, 1) 100%
     )`,
+    "gradient-cta":
+      "linear-gradient(180deg, rgba(148, 255, 176, 0.35) 0%, rgba(177, 183, 230, 0.35) 60%, rgba(191, 150, 255, 0.35) 93%)",
   },
   animation: {
     "spin-reverse": "spin-reverse 1s linear infinite",

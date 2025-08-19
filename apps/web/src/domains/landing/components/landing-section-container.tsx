@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@ssok/ui";
 import type { CSSProperties, ReactNode } from "react";
 
@@ -14,10 +16,7 @@ const LandingSectionContainer = ({
 }: LandingSectionContainerProps) => {
   return (
     <section
-      className={cn(
-        "flex w-full flex-col items-center px-[10.4rem] py-[10.4rem]",
-        className,
-      )}
+      className={cn("w-full px-[10.4rem] max-md:px-[4rem]", className)}
       style={style}
     >
       {children}

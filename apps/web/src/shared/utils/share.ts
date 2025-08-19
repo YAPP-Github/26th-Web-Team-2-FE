@@ -1,18 +1,26 @@
 "use client";
-export const isShareSupported = (): boolean =>
-  typeof window !== "undefined" && !!navigator.share;
 
 export const share = async (
   data: ShareData,
 ): Promise<"shared" | "copiedToClipboard" | "failed"> => {
   try {
-    if (isShareSupported()) {
-      await navigator.share(data);
+    if (window.navigator.share) {
+      await window.navigator.share(data);
       return "shared";
     }
 
-    if (data.url && typeof navigator.clipboard !== "undefined") {
+    if (data.url && navigator.clipboard) {
       await navigator.clipboard.writeText(data.url);
+      return "copiedToClipboard";
+    }
+
+    if (data.url) {
+      const textArea = document.createElement("textarea");
+      textArea.value = data.url.toString();
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
       return "copiedToClipboard";
     }
 

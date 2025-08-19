@@ -17,8 +17,8 @@ const Dialog = ({ active }: DialogProps) => {
       text: "ssok은 데스크탑 화면으로 만나보세요",
     });
     if (res === "copiedToClipboard")
-      toast.success("링크가 클립보드에 복사되었습니다.");
-    else if (res === "failed") toast.success("링크 공유에 실패했습니다.");
+      toast.success(`링크가 클립보드에 복사되었습니다`);
+    else if (res === "failed") toast.success(`링크 공유에 실패했습니다.`);
   };
 
   return (

@@ -137,6 +137,46 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "인증 실패 - 유효하지 않은 토큰 또는 인증 정보 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTableResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "비교표 조회 권한이 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTableResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "비교표, 숙소 등 관련 리소스를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTableResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 내부 오류 - 비교표 조회 중 오류 발생",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTableResponse"
+                }
+              }
+            }
           }
         },
         "security": [{ "JWT": [] }]
@@ -167,7 +207,47 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "비교표 수정 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseBoolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "인증 실패 - 유효하지 않은 토큰 또는 인증 정보 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseBoolean"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "비교표 수정 권한이 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseBoolean"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "비교표, 숙소, 여행 보드 등 관련 리소스를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseBoolean"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 내부 오류 - 비교표 수정 중 오류 발생",
             "content": {
               "*/*": {
                 "schema": {
@@ -273,7 +353,47 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "비교표에 숙소 추가 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTableResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "인증 실패 - 유효하지 않은 토큰 또는 인증 정보 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTableResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "비교표 수정 권한이 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTableResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "비교표, 숙소 등 관련 리소스를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTableResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 내부 오류 - 비교표 수정 중 오류 발생",
             "content": {
               "*/*": {
                 "schema": {
@@ -515,7 +635,47 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "비교표 생성 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseCreateComparisonTableResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "인증 실패 - 유효하지 않은 토큰 또는 인증 정보 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseCreateComparisonTableResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "비교표 생성 권한이 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseCreateComparisonTableResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "비교표, 숙소 등 관련 리소스를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseCreateComparisonTableResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 내부 오류 - 비교표 생성 중 오류 발생",
             "content": {
               "*/*": {
                 "schema": {
@@ -758,6 +918,36 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "공유 코드가 유효하지 않음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTableResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "비교표, 숙소 등 관련 리소스를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTableResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 내부 오류 - 비교표 조회 중 오류 발생",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTableResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -801,6 +991,46 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "인증 실패 - 유효하지 않은 토큰 또는 인증 정보 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTablePageResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "권한 없음 - 여행보드 멤버가 아님",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTablePageResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "여행보드 등 관련 리소스를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTablePageResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 내부 오류 - 비교표 리스트 조회 중 오류 발생",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseComparisonTablePageResponse"
+                }
+              }
+            }
           }
         },
         "security": [{ "JWT": [] }]
@@ -810,7 +1040,7 @@
       "get": {
         "tags": ["비교표 API"],
         "summary": "비교표 기준 항목 Enum 리스트",
-        "description": "비교 기준 항목 Enum 리스트를 반환합니다.",
+        "description": "비교 기준 항목 Enum 리스트를 반환합니다. (인증 불필요)",
         "operationId": "getComparisonFactorList",
         "responses": {
           "200": {
@@ -830,7 +1060,7 @@
       "get": {
         "tags": ["비교표 API"],
         "summary": "편의 서비스 Enum 리스트",
-        "description": "편의 서비스 항목 Enum 리스트를 반환합니다.",
+        "description": "편의 서비스 항목 Enum 리스트를 반환합니다. (인증 불필요)",
         "operationId": "getAmenityFactorList",
         "responses": {
           "200": {
@@ -1097,7 +1327,7 @@
           "id": { "type": "integer", "format": "int64" },
           "memo": { "type": "string", "maxLength": 100, "minLength": 0 },
           "lowestPrice": { "type": "integer", "format": "int32" },
-          "currency": { "type": "string" },
+          "currency": { "type": "string", "maxLength": 3, "minLength": 0 },
           "reviewScore": { "type": "number", "format": "double" },
           "cleanlinessScore": { "type": "number", "format": "double" },
           "reviewSummary": {
@@ -1627,7 +1857,7 @@
             "items": { "$ref": "#/components/schemas/AccommodationResponse" }
           },
           "shareCode": { "type": "string" },
-          "factorsList": {
+          "factorList": {
             "type": "array",
             "items": {
               "type": "string",
@@ -1643,6 +1873,8 @@
               ]
             }
           },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "lastModifiedAt": { "type": "string", "format": "date-time" },
           "createdBy": { "type": "integer", "format": "int64" },
           "creatorName": { "type": "string" }
         }

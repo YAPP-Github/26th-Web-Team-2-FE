@@ -638,7 +638,32 @@ export type getComparisonTableResponse200 = {
   status: 200;
 };
 
-export type getComparisonTableResponseComposite = getComparisonTableResponse200;
+export type getComparisonTableResponse401 = {
+  data: StandardResponseComparisonTableResponse;
+  status: 401;
+};
+
+export type getComparisonTableResponse403 = {
+  data: StandardResponseComparisonTableResponse;
+  status: 403;
+};
+
+export type getComparisonTableResponse404 = {
+  data: StandardResponseComparisonTableResponse;
+  status: 404;
+};
+
+export type getComparisonTableResponse500 = {
+  data: StandardResponseComparisonTableResponse;
+  status: 500;
+};
+
+export type getComparisonTableResponseComposite =
+  | getComparisonTableResponse200
+  | getComparisonTableResponse401
+  | getComparisonTableResponse403
+  | getComparisonTableResponse404
+  | getComparisonTableResponse500;
 
 export type getComparisonTableResponse = getComparisonTableResponseComposite & {
   headers: Headers;
@@ -664,7 +689,11 @@ export const getGetComparisonTableQueryKey = (tableId?: number) => {
 
 export const getGetComparisonTableQueryOptions = <
   TData = Awaited<ReturnType<typeof getComparisonTable>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   options?: {
@@ -703,11 +732,19 @@ export const getGetComparisonTableQueryOptions = <
 export type GetComparisonTableQueryResult = NonNullable<
   Awaited<ReturnType<typeof getComparisonTable>>
 >;
-export type GetComparisonTableQueryError = unknown;
+export type GetComparisonTableQueryError =
+  | StandardResponseComparisonTableResponse
+  | StandardResponseComparisonTableResponse
+  | StandardResponseComparisonTableResponse
+  | StandardResponseComparisonTableResponse;
 
 export function useGetComparisonTable<
   TData = Awaited<ReturnType<typeof getComparisonTable>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   options: {
@@ -734,7 +771,11 @@ export function useGetComparisonTable<
 };
 export function useGetComparisonTable<
   TData = Awaited<ReturnType<typeof getComparisonTable>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   options?: {
@@ -761,7 +802,11 @@ export function useGetComparisonTable<
 };
 export function useGetComparisonTable<
   TData = Awaited<ReturnType<typeof getComparisonTable>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   options?: {
@@ -784,7 +829,11 @@ export function useGetComparisonTable<
 
 export function useGetComparisonTable<
   TData = Awaited<ReturnType<typeof getComparisonTable>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   options?: {
@@ -818,7 +867,11 @@ export function useGetComparisonTable<
  */
 export const prefetchGetComparisonTableQuery = async <
   TData = Awaited<ReturnType<typeof getComparisonTable>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   queryClient: QueryClient,
   tableId: number,
@@ -842,7 +895,11 @@ export const prefetchGetComparisonTableQuery = async <
 
 export const getGetComparisonTableSuspenseQueryOptions = <
   TData = Awaited<ReturnType<typeof getComparisonTable>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   options?: {
@@ -876,11 +933,19 @@ export const getGetComparisonTableSuspenseQueryOptions = <
 export type GetComparisonTableSuspenseQueryResult = NonNullable<
   Awaited<ReturnType<typeof getComparisonTable>>
 >;
-export type GetComparisonTableSuspenseQueryError = unknown;
+export type GetComparisonTableSuspenseQueryError =
+  | StandardResponseComparisonTableResponse
+  | StandardResponseComparisonTableResponse
+  | StandardResponseComparisonTableResponse
+  | StandardResponseComparisonTableResponse;
 
 export function useGetComparisonTableSuspense<
   TData = Awaited<ReturnType<typeof getComparisonTable>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   options: {
@@ -899,7 +964,11 @@ export function useGetComparisonTableSuspense<
 };
 export function useGetComparisonTableSuspense<
   TData = Awaited<ReturnType<typeof getComparisonTable>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   options?: {
@@ -918,7 +987,11 @@ export function useGetComparisonTableSuspense<
 };
 export function useGetComparisonTableSuspense<
   TData = Awaited<ReturnType<typeof getComparisonTable>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   options?: {
@@ -941,7 +1014,11 @@ export function useGetComparisonTableSuspense<
 
 export function useGetComparisonTableSuspense<
   TData = Awaited<ReturnType<typeof getComparisonTable>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   options?: {
@@ -984,8 +1061,32 @@ export type updateComparisonTableResponse200 = {
   status: 200;
 };
 
+export type updateComparisonTableResponse401 = {
+  data: StandardResponseBoolean;
+  status: 401;
+};
+
+export type updateComparisonTableResponse403 = {
+  data: StandardResponseBoolean;
+  status: 403;
+};
+
+export type updateComparisonTableResponse404 = {
+  data: StandardResponseBoolean;
+  status: 404;
+};
+
+export type updateComparisonTableResponse500 = {
+  data: StandardResponseBoolean;
+  status: 500;
+};
+
 export type updateComparisonTableResponseComposite =
-  updateComparisonTableResponse200;
+  | updateComparisonTableResponse200
+  | updateComparisonTableResponse401
+  | updateComparisonTableResponse403
+  | updateComparisonTableResponse404
+  | updateComparisonTableResponse500;
 
 export type updateComparisonTableResponse =
   updateComparisonTableResponseComposite & {
@@ -1013,7 +1114,11 @@ export const updateComparisonTable = async (
 };
 
 export const getUpdateComparisonTableMutationOptions = <
-  TError = unknown,
+  TError =
+    | StandardResponseBoolean
+    | StandardResponseBoolean
+    | StandardResponseBoolean
+    | StandardResponseBoolean,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -1054,12 +1159,23 @@ export type UpdateComparisonTableMutationResult = NonNullable<
   Awaited<ReturnType<typeof updateComparisonTable>>
 >;
 export type UpdateComparisonTableMutationBody = UpdateComparisonTableRequest;
-export type UpdateComparisonTableMutationError = unknown;
+export type UpdateComparisonTableMutationError =
+  | StandardResponseBoolean
+  | StandardResponseBoolean
+  | StandardResponseBoolean
+  | StandardResponseBoolean;
 
 /**
  * @summary 비교표 수정
  */
-export const useUpdateComparisonTable = <TError = unknown, TContext = unknown>(
+export const useUpdateComparisonTable = <
+  TError =
+    | StandardResponseBoolean
+    | StandardResponseBoolean
+    | StandardResponseBoolean
+    | StandardResponseBoolean,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof updateComparisonTable>>,
@@ -1232,8 +1348,32 @@ export type addAccommodationToComparisonTableResponse200 = {
   status: 200;
 };
 
+export type addAccommodationToComparisonTableResponse401 = {
+  data: StandardResponseComparisonTableResponse;
+  status: 401;
+};
+
+export type addAccommodationToComparisonTableResponse403 = {
+  data: StandardResponseComparisonTableResponse;
+  status: 403;
+};
+
+export type addAccommodationToComparisonTableResponse404 = {
+  data: StandardResponseComparisonTableResponse;
+  status: 404;
+};
+
+export type addAccommodationToComparisonTableResponse500 = {
+  data: StandardResponseComparisonTableResponse;
+  status: 500;
+};
+
 export type addAccommodationToComparisonTableResponseComposite =
-  addAccommodationToComparisonTableResponse200;
+  | addAccommodationToComparisonTableResponse200
+  | addAccommodationToComparisonTableResponse401
+  | addAccommodationToComparisonTableResponse403
+  | addAccommodationToComparisonTableResponse404
+  | addAccommodationToComparisonTableResponse500;
 
 export type addAccommodationToComparisonTableResponse =
   addAccommodationToComparisonTableResponseComposite & {
@@ -1261,7 +1401,11 @@ export const addAccommodationToComparisonTable = async (
 };
 
 export const getAddAccommodationToComparisonTableMutationOptions = <
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -1303,13 +1447,21 @@ export type AddAccommodationToComparisonTableMutationResult = NonNullable<
 >;
 export type AddAccommodationToComparisonTableMutationBody =
   AddAccommodationRequest;
-export type AddAccommodationToComparisonTableMutationError = unknown;
+export type AddAccommodationToComparisonTableMutationError =
+  | StandardResponseComparisonTableResponse
+  | StandardResponseComparisonTableResponse
+  | StandardResponseComparisonTableResponse
+  | StandardResponseComparisonTableResponse;
 
 /**
  * @summary 비교표 숙소 추가
  */
 export const useAddAccommodationToComparisonTable = <
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
   TContext = unknown,
 >(
   options?: {
@@ -2053,8 +2205,32 @@ export type createComparisonTableResponse200 = {
   status: 200;
 };
 
+export type createComparisonTableResponse401 = {
+  data: StandardResponseCreateComparisonTableResponse;
+  status: 401;
+};
+
+export type createComparisonTableResponse403 = {
+  data: StandardResponseCreateComparisonTableResponse;
+  status: 403;
+};
+
+export type createComparisonTableResponse404 = {
+  data: StandardResponseCreateComparisonTableResponse;
+  status: 404;
+};
+
+export type createComparisonTableResponse500 = {
+  data: StandardResponseCreateComparisonTableResponse;
+  status: 500;
+};
+
 export type createComparisonTableResponseComposite =
-  createComparisonTableResponse200;
+  | createComparisonTableResponse200
+  | createComparisonTableResponse401
+  | createComparisonTableResponse403
+  | createComparisonTableResponse404
+  | createComparisonTableResponse500;
 
 export type createComparisonTableResponse =
   createComparisonTableResponseComposite & {
@@ -2078,7 +2254,11 @@ export const createComparisonTable = async (
 };
 
 export const getCreateComparisonTableMutationOptions = <
-  TError = unknown,
+  TError =
+    | StandardResponseCreateComparisonTableResponse
+    | StandardResponseCreateComparisonTableResponse
+    | StandardResponseCreateComparisonTableResponse
+    | StandardResponseCreateComparisonTableResponse,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -2119,12 +2299,23 @@ export type CreateComparisonTableMutationResult = NonNullable<
   Awaited<ReturnType<typeof createComparisonTable>>
 >;
 export type CreateComparisonTableMutationBody = CreateComparisonTableRequest;
-export type CreateComparisonTableMutationError = unknown;
+export type CreateComparisonTableMutationError =
+  | StandardResponseCreateComparisonTableResponse
+  | StandardResponseCreateComparisonTableResponse
+  | StandardResponseCreateComparisonTableResponse
+  | StandardResponseCreateComparisonTableResponse;
 
 /**
  * @summary 비교표 생성
  */
-export const useCreateComparisonTable = <TError = unknown, TContext = unknown>(
+export const useCreateComparisonTable = <
+  TError =
+    | StandardResponseCreateComparisonTableResponse
+    | StandardResponseCreateComparisonTableResponse
+    | StandardResponseCreateComparisonTableResponse
+    | StandardResponseCreateComparisonTableResponse,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof createComparisonTable>>,
@@ -3926,8 +4117,26 @@ export type getComparisonTableByShareCodeResponse200 = {
   status: 200;
 };
 
+export type getComparisonTableByShareCodeResponse403 = {
+  data: StandardResponseComparisonTableResponse;
+  status: 403;
+};
+
+export type getComparisonTableByShareCodeResponse404 = {
+  data: StandardResponseComparisonTableResponse;
+  status: 404;
+};
+
+export type getComparisonTableByShareCodeResponse500 = {
+  data: StandardResponseComparisonTableResponse;
+  status: 500;
+};
+
 export type getComparisonTableByShareCodeResponseComposite =
-  getComparisonTableByShareCodeResponse200;
+  | getComparisonTableByShareCodeResponse200
+  | getComparisonTableByShareCodeResponse403
+  | getComparisonTableByShareCodeResponse404
+  | getComparisonTableByShareCodeResponse500;
 
 export type getComparisonTableByShareCodeResponse =
   getComparisonTableByShareCodeResponseComposite & {
@@ -3979,7 +4188,10 @@ export const getGetComparisonTableByShareCodeQueryKey = (
 
 export const getGetComparisonTableByShareCodeQueryOptions = <
   TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   params: GetComparisonTableByShareCodeParams,
@@ -4023,11 +4235,17 @@ export const getGetComparisonTableByShareCodeQueryOptions = <
 export type GetComparisonTableByShareCodeQueryResult = NonNullable<
   Awaited<ReturnType<typeof getComparisonTableByShareCode>>
 >;
-export type GetComparisonTableByShareCodeQueryError = unknown;
+export type GetComparisonTableByShareCodeQueryError =
+  | StandardResponseComparisonTableResponse
+  | StandardResponseComparisonTableResponse
+  | StandardResponseComparisonTableResponse;
 
 export function useGetComparisonTableByShareCode<
   TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   params: GetComparisonTableByShareCodeParams,
@@ -4055,7 +4273,10 @@ export function useGetComparisonTableByShareCode<
 };
 export function useGetComparisonTableByShareCode<
   TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   params: GetComparisonTableByShareCodeParams,
@@ -4083,7 +4304,10 @@ export function useGetComparisonTableByShareCode<
 };
 export function useGetComparisonTableByShareCode<
   TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   params: GetComparisonTableByShareCodeParams,
@@ -4107,7 +4331,10 @@ export function useGetComparisonTableByShareCode<
 
 export function useGetComparisonTableByShareCode<
   TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   params: GetComparisonTableByShareCodeParams,
@@ -4146,7 +4373,10 @@ export function useGetComparisonTableByShareCode<
  */
 export const prefetchGetComparisonTableByShareCodeQuery = async <
   TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   queryClient: QueryClient,
   tableId: number,
@@ -4175,7 +4405,10 @@ export const prefetchGetComparisonTableByShareCodeQuery = async <
 
 export const getGetComparisonTableByShareCodeSuspenseQueryOptions = <
   TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   params: GetComparisonTableByShareCodeParams,
@@ -4214,11 +4447,17 @@ export const getGetComparisonTableByShareCodeSuspenseQueryOptions = <
 export type GetComparisonTableByShareCodeSuspenseQueryResult = NonNullable<
   Awaited<ReturnType<typeof getComparisonTableByShareCode>>
 >;
-export type GetComparisonTableByShareCodeSuspenseQueryError = unknown;
+export type GetComparisonTableByShareCodeSuspenseQueryError =
+  | StandardResponseComparisonTableResponse
+  | StandardResponseComparisonTableResponse
+  | StandardResponseComparisonTableResponse;
 
 export function useGetComparisonTableByShareCodeSuspense<
   TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   params: GetComparisonTableByShareCodeParams,
@@ -4238,7 +4477,10 @@ export function useGetComparisonTableByShareCodeSuspense<
 };
 export function useGetComparisonTableByShareCodeSuspense<
   TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   params: GetComparisonTableByShareCodeParams,
@@ -4258,7 +4500,10 @@ export function useGetComparisonTableByShareCodeSuspense<
 };
 export function useGetComparisonTableByShareCodeSuspense<
   TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   params: GetComparisonTableByShareCodeParams,
@@ -4282,7 +4527,10 @@ export function useGetComparisonTableByShareCodeSuspense<
 
 export function useGetComparisonTableByShareCodeSuspense<
   TData = Awaited<ReturnType<typeof getComparisonTableByShareCode>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse
+    | StandardResponseComparisonTableResponse,
 >(
   tableId: number,
   params: GetComparisonTableByShareCodeParams,
@@ -4327,8 +4575,32 @@ export type getComparisonTablesByTripBoardResponse200 = {
   status: 200;
 };
 
+export type getComparisonTablesByTripBoardResponse401 = {
+  data: StandardResponseComparisonTablePageResponse;
+  status: 401;
+};
+
+export type getComparisonTablesByTripBoardResponse403 = {
+  data: StandardResponseComparisonTablePageResponse;
+  status: 403;
+};
+
+export type getComparisonTablesByTripBoardResponse404 = {
+  data: StandardResponseComparisonTablePageResponse;
+  status: 404;
+};
+
+export type getComparisonTablesByTripBoardResponse500 = {
+  data: StandardResponseComparisonTablePageResponse;
+  status: 500;
+};
+
 export type getComparisonTablesByTripBoardResponseComposite =
-  getComparisonTablesByTripBoardResponse200;
+  | getComparisonTablesByTripBoardResponse200
+  | getComparisonTablesByTripBoardResponse401
+  | getComparisonTablesByTripBoardResponse403
+  | getComparisonTablesByTripBoardResponse404
+  | getComparisonTablesByTripBoardResponse500;
 
 export type getComparisonTablesByTripBoardResponse =
   getComparisonTablesByTripBoardResponseComposite & {
@@ -4383,7 +4655,11 @@ export const getGetComparisonTablesByTripBoardInfiniteQueryOptions = <
     Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
     GetComparisonTablesByTripBoardParams["page"]
   >,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse,
 >(
   tripBoardId: number,
   params: GetComparisonTablesByTripBoardParams,
@@ -4434,14 +4710,22 @@ export const getGetComparisonTablesByTripBoardInfiniteQueryOptions = <
 export type GetComparisonTablesByTripBoardInfiniteQueryResult = NonNullable<
   Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>
 >;
-export type GetComparisonTablesByTripBoardInfiniteQueryError = unknown;
+export type GetComparisonTablesByTripBoardInfiniteQueryError =
+  | StandardResponseComparisonTablePageResponse
+  | StandardResponseComparisonTablePageResponse
+  | StandardResponseComparisonTablePageResponse
+  | StandardResponseComparisonTablePageResponse;
 
 export function useGetComparisonTablesByTripBoardInfinite<
   TData = InfiniteData<
     Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
     GetComparisonTablesByTripBoardParams["page"]
   >,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse,
 >(
   tripBoardId: number,
   params: GetComparisonTablesByTripBoardParams,
@@ -4475,7 +4759,11 @@ export function useGetComparisonTablesByTripBoardInfinite<
     Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
     GetComparisonTablesByTripBoardParams["page"]
   >,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse,
 >(
   tripBoardId: number,
   params: GetComparisonTablesByTripBoardParams,
@@ -4509,7 +4797,11 @@ export function useGetComparisonTablesByTripBoardInfinite<
     Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
     GetComparisonTablesByTripBoardParams["page"]
   >,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse,
 >(
   tripBoardId: number,
   params: GetComparisonTablesByTripBoardParams,
@@ -4538,7 +4830,11 @@ export function useGetComparisonTablesByTripBoardInfinite<
     Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
     GetComparisonTablesByTripBoardParams["page"]
   >,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse,
 >(
   tripBoardId: number,
   params: GetComparisonTablesByTripBoardParams,
@@ -4581,7 +4877,11 @@ export function useGetComparisonTablesByTripBoardInfinite<
  */
 export const prefetchGetComparisonTablesByTripBoardInfiniteQuery = async <
   TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse,
 >(
   queryClient: QueryClient,
   tripBoardId: number,
@@ -4612,7 +4912,11 @@ export const prefetchGetComparisonTablesByTripBoardInfiniteQuery = async <
 
 export const getGetComparisonTablesByTripBoardQueryOptions = <
   TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse,
 >(
   tripBoardId: number,
   params: GetComparisonTablesByTripBoardParams,
@@ -4656,11 +4960,19 @@ export const getGetComparisonTablesByTripBoardQueryOptions = <
 export type GetComparisonTablesByTripBoardQueryResult = NonNullable<
   Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>
 >;
-export type GetComparisonTablesByTripBoardQueryError = unknown;
+export type GetComparisonTablesByTripBoardQueryError =
+  | StandardResponseComparisonTablePageResponse
+  | StandardResponseComparisonTablePageResponse
+  | StandardResponseComparisonTablePageResponse
+  | StandardResponseComparisonTablePageResponse;
 
 export function useGetComparisonTablesByTripBoard<
   TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse,
 >(
   tripBoardId: number,
   params: GetComparisonTablesByTripBoardParams,
@@ -4688,7 +5000,11 @@ export function useGetComparisonTablesByTripBoard<
 };
 export function useGetComparisonTablesByTripBoard<
   TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse,
 >(
   tripBoardId: number,
   params: GetComparisonTablesByTripBoardParams,
@@ -4716,7 +5032,11 @@ export function useGetComparisonTablesByTripBoard<
 };
 export function useGetComparisonTablesByTripBoard<
   TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse,
 >(
   tripBoardId: number,
   params: GetComparisonTablesByTripBoardParams,
@@ -4740,7 +5060,11 @@ export function useGetComparisonTablesByTripBoard<
 
 export function useGetComparisonTablesByTripBoard<
   TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse,
 >(
   tripBoardId: number,
   params: GetComparisonTablesByTripBoardParams,
@@ -4779,7 +5103,11 @@ export function useGetComparisonTablesByTripBoard<
  */
 export const prefetchGetComparisonTablesByTripBoardQuery = async <
   TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse,
 >(
   queryClient: QueryClient,
   tripBoardId: number,
@@ -4808,7 +5136,11 @@ export const prefetchGetComparisonTablesByTripBoardQuery = async <
 
 export const getGetComparisonTablesByTripBoardSuspenseQueryOptions = <
   TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse,
 >(
   tripBoardId: number,
   params: GetComparisonTablesByTripBoardParams,
@@ -4847,11 +5179,19 @@ export const getGetComparisonTablesByTripBoardSuspenseQueryOptions = <
 export type GetComparisonTablesByTripBoardSuspenseQueryResult = NonNullable<
   Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>
 >;
-export type GetComparisonTablesByTripBoardSuspenseQueryError = unknown;
+export type GetComparisonTablesByTripBoardSuspenseQueryError =
+  | StandardResponseComparisonTablePageResponse
+  | StandardResponseComparisonTablePageResponse
+  | StandardResponseComparisonTablePageResponse
+  | StandardResponseComparisonTablePageResponse;
 
 export function useGetComparisonTablesByTripBoardSuspense<
   TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse,
 >(
   tripBoardId: number,
   params: GetComparisonTablesByTripBoardParams,
@@ -4871,7 +5211,11 @@ export function useGetComparisonTablesByTripBoardSuspense<
 };
 export function useGetComparisonTablesByTripBoardSuspense<
   TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse,
 >(
   tripBoardId: number,
   params: GetComparisonTablesByTripBoardParams,
@@ -4891,7 +5235,11 @@ export function useGetComparisonTablesByTripBoardSuspense<
 };
 export function useGetComparisonTablesByTripBoardSuspense<
   TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse,
 >(
   tripBoardId: number,
   params: GetComparisonTablesByTripBoardParams,
@@ -4915,7 +5263,11 @@ export function useGetComparisonTablesByTripBoardSuspense<
 
 export function useGetComparisonTablesByTripBoardSuspense<
   TData = Awaited<ReturnType<typeof getComparisonTablesByTripBoard>>,
-  TError = unknown,
+  TError =
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse
+    | StandardResponseComparisonTablePageResponse,
 >(
   tripBoardId: number,
   params: GetComparisonTablesByTripBoardParams,
@@ -4952,7 +5304,7 @@ export function useGetComparisonTablesByTripBoardSuspense<
 }
 
 /**
- * 비교 기준 항목 Enum 리스트를 반환합니다.
+ * 비교 기준 항목 Enum 리스트를 반환합니다. (인증 불필요)
  * @summary 비교표 기준 항목 Enum 리스트
  */
 export type getComparisonFactorListResponse200 = {
@@ -5277,7 +5629,7 @@ export function useGetComparisonFactorListSuspense<
 }
 
 /**
- * 편의 서비스 항목 Enum 리스트를 반환합니다.
+ * 편의 서비스 항목 Enum 리스트를 반환합니다. (인증 불필요)
  * @summary 편의 서비스 Enum 리스트
  */
 export type getAmenityFactorListResponse200 = {

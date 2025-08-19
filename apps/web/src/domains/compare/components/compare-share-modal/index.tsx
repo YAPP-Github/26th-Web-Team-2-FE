@@ -15,8 +15,9 @@ const CompareShareModal = ({
   const onClick = async () => {
     if (!shareCode) return;
     try {
-      const url = `${window.location.href}?shareCode=${shareCode}`;
-      await navigator.clipboard.writeText(url);
+      const url = new URL(window.location.href);
+      url.searchParams.set("shareCode", shareCode);
+      await navigator.clipboard.writeText(url.toString());
       toast.success("링크가 복사되었어요");
     } catch (error) {
       console.error("링크 복사에 실패했어요", error);

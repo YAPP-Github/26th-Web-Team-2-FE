@@ -6,7 +6,7 @@ import {
   useLeaveTripBoard,
 } from "@ssok/api";
 import type { TripBoardUpdateRequest } from "@ssok/api/schemas";
-import { Confirm, Popup, TravelBoard, useToggle } from "@ssok/ui";
+import { Confirm, Popup, TravelBoard, useToast, useToggle } from "@ssok/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import useSession from "@/shared/hooks/use-session";
@@ -25,6 +25,7 @@ const DashboardTripBoard = ({ data, className }: DashboardTripBoardProps) => {
   const deleteModal = useToggle(false);
   const editModal = useToggle(false);
   const inviteModal = useToggle(false);
+  const { toast } = useToast();
   const { accessToken } = useSession({ required: true });
 
   const { mutate: leaveTripBoard, isPending: isLeaving } = useLeaveTripBoard({
@@ -32,6 +33,7 @@ const DashboardTripBoard = ({ data, className }: DashboardTripBoardProps) => {
       onSuccess: () => {
         exitModal.deactivate();
         queryClient.invalidateQueries({ queryKey: getGetTripBoardsQueryKey() });
+        toast.success("여행에서 나갔어요");
       },
       onError: (error) => {
         console.error("보드 나가기 실패:", error);
@@ -48,6 +50,7 @@ const DashboardTripBoard = ({ data, className }: DashboardTripBoardProps) => {
           queryClient.invalidateQueries({
             queryKey: getGetTripBoardsQueryKey(),
           });
+          toast.success("여행이 삭제되었어요");
         },
         onError: (error) => {
           console.error("보드 삭제 실패:", error);

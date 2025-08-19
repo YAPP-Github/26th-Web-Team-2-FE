@@ -79,7 +79,8 @@ export const transformComparisonTableResponseToFormData = ({
     accommodationIdList: response.accommodationResponsesList
       ?.filter((acc) => acc.id)
       .map((acc) => acc.id as number),
-    factorList: response.factorsList || [],
+
+    factorList: response.factorList || [],
   };
 };
 

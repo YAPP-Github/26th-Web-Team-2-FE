@@ -137,6 +137,10 @@ export {
 export { default as Switch, type SwitchProps } from "./components/switch";
 export { default as TextWithIcon } from "./components/text-with-icon";
 export {
+  default as Tile,
+  type TileProps,
+} from "./components/tile";
+export {
   default as TravelBoard,
   type Participant,
   type TravelBoardProps,

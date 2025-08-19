@@ -252,8 +252,6 @@ export const theme: Config["theme"] = {
       rgba(255, 255, 255, 0.98) 95%,
       rgba(255, 255, 255, 1) 100%
     )`,
-    "gradient-cta":
-      "linear-gradient(180deg, rgba(148, 255, 176, 0.35) 0%, rgba(177, 183, 230, 0.35) 60%, rgba(191, 150, 255, 0.35) 93%)",
   },
   animation: {
     "spin-reverse": "spin-reverse 1s linear infinite",

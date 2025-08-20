@@ -1,5 +1,6 @@
 import {
   getGetInvitationCodeQueryKey,
+  type getInvitationCode,
   useGetInvitationCode,
   useToggleInvitationActive,
 } from "@ssok/api";
@@ -7,6 +8,10 @@ import { useToast } from "@ssok/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import useSession from "@/shared/hooks/use-session";
+
+interface InvitationContext {
+  prevState?: Awaited<ReturnType<typeof getInvitationCode>>;
+}
 
 export const useBoardInvite = (
   tripBoardId: number,
@@ -28,13 +33,50 @@ export const useBoardInvite = (
   const inviteLink = `https://www.ssok.info/boards/${tripBoardId}?code=${inviteData?.invitationCode}`;
 
   const { mutateAsync: toggleInviteActive } = useToggleInvitationActive({
+    mutation: {
+      onMutate: async (): Promise<InvitationContext> => {
+        await queryClient.cancelQueries({
+          queryKey: getGetInvitationCodeQueryKey(tripBoardId),
+        });
+
+        const prevState = queryClient.getQueryData<
+          Awaited<ReturnType<typeof getInvitationCode>>
+        >(getGetInvitationCodeQueryKey(tripBoardId));
+
+        queryClient.setQueryData(getGetInvitationCodeQueryKey(tripBoardId), {
+          ...prevState,
+          data: {
+            ...prevState?.data,
+            result: {
+              ...prevState?.data.result,
+              isActive: !prevState?.data.result?.isActive,
+            },
+          },
+        });
+
+        return { prevState };
+      },
+      onError: (_error, _variables, context: InvitationContext | undefined) => {
+        if (context?.prevState !== undefined) {
+          queryClient.setQueryData(
+            getGetInvitationCodeQueryKey(tripBoardId),
+            context.prevState,
+          );
+        }
+        console.error("초대 활성화 상태 변경 실패:", _error);
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({
+          queryKey: getGetInvitationCodeQueryKey(tripBoardId),
+        });
+      },
+    },
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
   });
 
   const [isInviteEnabled, setIsInviteEnabled] = useState(inviteData?.isActive);
   const [isCopyBtnClicked, setIsCopyBtnClicked] = useState(false);
 
-  // 초대 활성화 초기화 & participants 길이 반영
   useEffect(() => {
     setIsInviteEnabled(participantsLength < 10 && inviteData?.isActive);
   }, [inviteData?.isActive, participantsLength]);

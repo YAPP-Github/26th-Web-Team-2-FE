@@ -41,7 +41,7 @@ const HeroSection = () => {
             )}
           >
             <span className="text-title3-semi24">
-              신나는 여행 준비 시작하기
+              설레는 여행 준비 시작하기
             </span>
             <IcArrowRight className="h-[3.2rem] w-[3.2rem]" />
           </Button>

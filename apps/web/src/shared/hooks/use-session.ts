@@ -55,7 +55,8 @@ const useSession = ({
   });
 
   if (required && !query.isLoading && !result?.tokenSet.accessToken) {
-    router.push("/api/auth/login");
+    const to = window.location.pathname + window.location.search;
+    router.push(`/api/auth/login?to=${encodeURIComponent(to)}`);
   }
 
   return {

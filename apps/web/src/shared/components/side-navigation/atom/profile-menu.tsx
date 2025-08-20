@@ -27,7 +27,7 @@ export const ModalConfig = {
 
 const ProfileMenu = () => {
   const router = useRouter();
-  const { accessToken } = useSession({ required: true });
+  const { accessToken, isPending: isSessionPending } = useSession();
   const { data: userInfo, isLoading } = useGetUserInfo({
     query: { enabled: !!accessToken },
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
@@ -52,6 +52,10 @@ const ProfileMenu = () => {
   const onToggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   useOutsideClick(menuRef, () => onCloseMenu());
+
+  if (!accessToken && !isSessionPending) {
+    return null;
+  }
 
   return (
     <>

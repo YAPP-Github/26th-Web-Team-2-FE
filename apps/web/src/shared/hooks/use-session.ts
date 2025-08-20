@@ -22,6 +22,7 @@ export interface UseSessionResult {
   accessToken: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  isPending: boolean;
   error: Error | null;
   refetch: () => void;
 }
@@ -64,6 +65,7 @@ const useSession = ({
     accessToken: result?.tokenSet.accessToken || null,
     isAuthenticated: Boolean(result?.tokenSet.accessToken),
     isLoading: query.isLoading,
+    isPending: query.isPending,
     error: query.error,
     refetch: query.refetch,
   };

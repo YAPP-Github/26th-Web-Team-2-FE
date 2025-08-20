@@ -4,7 +4,7 @@ import {
   getGetComparisonTableQueryKey,
   useUpdateComparisonTable,
 } from "@ssok/api";
-import { cn, LoadingIndicator } from "@ssok/ui";
+import { Confirm, cn, LoadingIndicator, useToggle } from "@ssok/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -15,6 +15,7 @@ import useComparisonTable from "@/domains/compare/hooks/use-comparison-table";
 import useViewMode from "@/domains/compare/hooks/use-view-mode";
 import type { ComparisonFormData } from "@/domains/compare/types";
 import { transformFormDataToUpdateComparisonTableRequest } from "@/domains/compare/utils/form";
+import LoginPopup from "@/shared/components/login-popup";
 import useSession from "@/shared/hooks/use-session";
 
 interface ComparePageViewProps {
@@ -31,6 +32,19 @@ const ComparePageView = ({
   const { currentView, handleViewChange } = useViewMode();
   const queryClient = useQueryClient();
   const { accessToken, isAuthenticated } = useSession();
+
+  // 팝업 상태 관리
+  const {
+    activate: openLoginPopup,
+    deactivate: closeLoginPopup,
+    active: isLoginPopupOpen,
+  } = useToggle();
+
+  const {
+    activate: openShareCodeConfirm,
+    deactivate: closeShareCodeConfirm,
+    active: isShareCodeConfirmOpen,
+  } = useToggle();
   const { formData, response, isMetaDataLoading } = useComparisonTable({
     boardId,
     tableId,
@@ -44,6 +58,15 @@ const ComparePageView = ({
   useEffect(() => {
     methods.reset(formData);
   }, [methods, formData]);
+
+  // AddCell 클릭 핸들러
+  const handleAddCellClick = () => {
+    if (!isAuthenticated) {
+      openLoginPopup();
+    } else if (shareCode) {
+      openShareCodeConfirm();
+    }
+  };
 
   const onSubmit = async (formData: ComparisonFormData) => {
     const data = transformFormDataToUpdateComparisonTableRequest(formData);
@@ -92,9 +115,30 @@ const ComparePageView = ({
           className="mb-[3.2rem] shrink-0"
         />
 
-        <CompareTable state={currentView === "edit" ? "edit" : "default"} />
+        <CompareTable
+          state={currentView === "edit" ? "edit" : "default"}
+          isAuthenticated={isAuthenticated}
+          isAccessedByShareCode={Boolean(shareCode)}
+          onAddCellClick={handleAddCellClick}
+        />
       </form>
       <LoadingIndicator active={mutation.isPending || isMetaDataLoading} />
+
+      <LoginPopup
+        active={isLoginPopupOpen}
+        onClose={closeLoginPopup}
+        to={`/boards/${boardId}/compares/${tableId}`}
+      />
+
+      <Confirm
+        active={isShareCodeConfirmOpen}
+        onCancel={closeShareCodeConfirm}
+        onConfirm={closeShareCodeConfirm}
+        title="멤버만 수정할 수 있어요"
+        description="이 표는 읽기 전용이에요. 이 여행의 멤버로 참여를 요청해보세요."
+        confirmText="닫기"
+        confirmVariant="primary"
+      />
     </FormProvider>
   );
 };

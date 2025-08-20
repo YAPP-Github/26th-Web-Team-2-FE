@@ -15,12 +15,14 @@ export const ModalConfig = {
   logout: {
     title: "로그아웃 하시겠어요?",
     description: "",
+    cancelText: "취소",
     confirmText: "로그아웃",
   },
   withdraw: {
     title: "탈퇴를 진행하시겠어요?",
     description:
       "함께 만든 여행 정보가 사라져요.\n숙소 링크나 반응은 그대로 남을 수 있어요.\n원하신다면, 탈퇴전 미리 정리해주세요.",
+    cancelText: "취소",
     confirmText: "탈퇴하기",
   },
 };

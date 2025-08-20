@@ -9,6 +9,7 @@ export interface ConfirmProps
     description: string;
     cancelText?: string;
     confirmText?: string;
+    confirmVariant?: "primary" | "error";
     onCancel?: () => void;
     onConfirm?: () => void;
     className?: string;
@@ -18,8 +19,9 @@ export interface ConfirmProps
 const Confirm = ({
   title,
   description,
-  cancelText = "취소",
+  cancelText,
   confirmText = "확인",
+  confirmVariant = "error",
   onCancel,
   onConfirm,
   className,
@@ -46,14 +48,20 @@ const Confirm = ({
           {children}
         </div>
         <div className="flex gap-[0.8rem]">
-          <Button variant="text" size="md" onClick={onCancel}>
-            {cancelText}
-          </Button>
+          {!!cancelText && (
+            <Button variant="text" size="md" onClick={onCancel}>
+              {cancelText}
+            </Button>
+          )}
           <Button
             variant="primary"
             size="md"
             onClick={onConfirm}
-            className="bg-error-60 hover:bg-error-50 focus:bg-error-50 active:bg-error-50"
+            className={
+              confirmVariant === "error"
+                ? "bg-error-60 hover:bg-error-50 focus:bg-error-50 active:bg-error-50"
+                : ""
+            }
           >
             {confirmText}
           </Button>

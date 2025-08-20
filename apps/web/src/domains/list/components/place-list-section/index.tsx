@@ -2,8 +2,15 @@ import {
   useCreateComparisonTable,
   useGetAccommodationCountByTripBoardId,
 } from "@ssok/api";
-import type { ParticipantProfileResponse } from "@ssok/api/schemas";
-import { Button, Card, cn } from "@ssok/ui";
+import type { TripBoardSummaryResponse } from "@ssok/api/schemas";
+import {
+  Button,
+  Card,
+  cn,
+  LoadingIndicator,
+  SkeletonCard,
+  useToast,
+} from "@ssok/ui";
 import { useParams, useRouter } from "next/navigation";
 import { useRef } from "react";
 import useSession from "@/shared/hooks/use-session";
@@ -25,10 +32,11 @@ export interface PlaceListSectionProps {
   isOpen: boolean;
   selectedFilter: string;
   isLoading: boolean;
+  isGeneratingCard: boolean;
   fetchNextPage: () => void;
   hasNextPage?: boolean;
   isFetchingNextPage: boolean;
-  participants: ParticipantProfileResponse[];
+  tripBoardDetailData: TripBoardSummaryResponse;
 }
 
 const PlaceListSection = ({
@@ -41,28 +49,32 @@ const PlaceListSection = ({
   isOpen,
   selectedFilter,
   isLoading,
+  isGeneratingCard,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
-  participants,
+  tripBoardDetailData,
 }: PlaceListSectionProps) => {
+  const { toast } = useToast();
   const router = useRouter();
   const { accommodations } = useAccommodationDataContext();
   const { accessToken } = useSession({ required: true });
   const params = useParams();
   const id = params.id;
-  const { data: accommodationCountData } =
-    useGetAccommodationCountByTripBoardId(
-      {
-        tripBoardId: Number(id),
+  const {
+    data: accommodationCountData,
+    isLoading: isLoadingAccommodationCount,
+  } = useGetAccommodationCountByTripBoardId(
+    {
+      tripBoardId: Number(id),
+    },
+    {
+      query: {
+        enabled: !!accessToken,
       },
-      {
-        query: {
-          enabled: !!accessToken,
-        },
-        request: { headers: { Authorization: `Bearer ${accessToken}` } },
-      },
-    );
+      request: { headers: { Authorization: `Bearer ${accessToken}` } },
+    },
+  );
 
   const { mutate: deleteAccommodation } =
     useDeleteAccommodationWithOptimisticUpdate({
@@ -72,10 +84,13 @@ const PlaceListSection = ({
       size: 10,
       sort: selectedFilter,
     });
-  const { selectedPlaces, togglePlaceSelect, removePlace } =
+  const { selectedPlaces, togglePlaceSelect, removePlace, resetSelection } =
     usePlaceSelectionContext();
   const listRef = useRef<HTMLUListElement | null>(null);
-  const { mutateAsync: createComparisonTable } = useCreateComparisonTable({
+  const {
+    mutateAsync: createComparisonTable,
+    isPending: isCreatingComparisonTable,
+  } = useCreateComparisonTable({
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
   });
 
@@ -85,18 +100,18 @@ const PlaceListSection = ({
         // TODO: 보드 단건 조회 api 연결 후, tableName 변수 연결
         data: {
           tripBoardId: Number(id),
-          tableName: "도키도키 나고야",
+          tableName: `${tripBoardDetailData.boardName || ""} 비교표`,
           accommodationIdList: selectedPlaces,
           factorList: [],
         },
       },
       {
         onSuccess: (data) => {
+          resetSelection();
           router.push(`/boards/${id}/compares/${data?.data?.result?.tableId}`);
         },
         onError: (err) => {
-          // TODO: 에러 처리 toast popup
-          alert(`비교 테이블 생성에 실패했습니다. ${err}`);
+          console.error(`비교 테이블 생성에 실패했습니다. ${err}`);
         },
       },
     );
@@ -107,14 +122,11 @@ const PlaceListSection = ({
       { accommodationId },
       {
         onSuccess: () => {
-          // TODO: 성공 처리 toast popup
           removePlace(accommodationId);
-          alert(`숙소 삭제에 성공했습니다.`);
+          toast.success(`숙소를 삭제했습니다`);
         },
         onError: (err) => {
-          // TODO: 에러 처리 toast popup
           console.error("숙소 삭제 실패:", err);
-          alert(`숙소 삭제에 실패했습니다. ${err}`);
         },
       },
     );
@@ -149,7 +161,7 @@ const PlaceListSection = ({
             </Button>
           </li>
 
-          {participants.map((person) => (
+          {tripBoardDetailData?.participants?.map((person) => (
             <li key={person.userId}>
               <Button
                 variant="round"
@@ -176,6 +188,12 @@ const PlaceListSection = ({
         ref={listRef}
         className="flex h-[40rem] min-w-[60rem] flex-col gap-[1.2rem] overflow-y-scroll"
       >
+        {/* 숙소 리스트_skeleton UI */}
+        {isGeneratingCard && (
+          <li>
+            <SkeletonCard />
+          </li>
+        )}
         {accommodations?.map((place) => {
           const isLast = accommodations[accommodations.length - 1] === place;
           return (
@@ -190,7 +208,7 @@ const PlaceListSection = ({
                 address={place.address || "주소정보 없음"}
                 nearbyAttractions={place.nearbyAttractions?.slice(0, 2) || []}
                 savedByText={
-                  participants.find(
+                  tripBoardDetailData?.participants?.find(
                     (member) => member?.userId === place?.createdBy,
                   )?.nickname || "알 수 없음"
                 }
@@ -230,6 +248,11 @@ const PlaceListSection = ({
             <EmptyListContainer />
           )}
       </ul>
+      <LoadingIndicator
+        active={
+          isLoading || isLoadingAccommodationCount || isCreatingComparisonTable
+        }
+      />
     </section>
   );
 };

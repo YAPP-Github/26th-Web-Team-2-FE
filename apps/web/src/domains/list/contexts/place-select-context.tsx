@@ -14,6 +14,7 @@ type PlaceSelectionContextType = {
   removePlace: (id: number) => void;
   lastSelectedPlace: number | null;
   onSelectPlace: (id: number) => void;
+  resetSelection: () => void;
 };
 
 const PlaceSelectionContext = createContext<PlaceSelectionContextType | null>(
@@ -58,6 +59,11 @@ const PlaceSelectionProvider = ({ children }: { children: ReactNode }) => {
     setSelectedPlaces((prev) => prev.filter((placeId) => placeId !== id));
   }, []);
 
+  const resetSelection = useCallback(() => {
+    setSelectedPlaces([]);
+    setLastSelectedPlace(null);
+  }, []);
+
   return (
     <PlaceSelectionContext.Provider
       value={{
@@ -66,6 +72,7 @@ const PlaceSelectionProvider = ({ children }: { children: ReactNode }) => {
         removePlace,
         lastSelectedPlace,
         onSelectPlace,
+        resetSelection,
       }}
     >
       {children}

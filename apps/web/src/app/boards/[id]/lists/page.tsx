@@ -1,9 +1,10 @@
 "use client";
-import { useGetTripBoardDetail } from "@ssok/api";
+import { useGetTripBoardDetail, useRegisterAccommodationCard } from "@ssok/api";
 import { cn, LoadingIndicator, SolidExpand } from "@ssok/ui";
 import { AnimatePresence, motion } from "framer-motion";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import type { FieldErrors } from "react-hook-form";
 import HeaderSection from "@/domains/list/components/header-section";
 import LinkInputSection from "@/domains/list/components/link-input-section";
 import PlaceListSection from "@/domains/list/components/place-list-section";
@@ -15,6 +16,11 @@ import useDropdown from "@/domains/list/hooks/use-dropdown";
 import useInputPanel from "@/domains/list/hooks/use-input-panel";
 import useRegisterUrlInput from "@/domains/list/hooks/use-register-url-input";
 import useSession from "@/shared/hooks/use-session";
+
+type FormData = {
+  link: string;
+  memo?: string;
+};
 
 const BoardsIdListsPage = () => {
   const {
@@ -31,7 +37,7 @@ const BoardsIdListsPage = () => {
     useDragAndDrop((url) => {
       setValue("link", url);
     });
-  // TODO: 메모 입력 관련 로직 커스텀훅 분리
+
   const {
     isMemoInputVisible,
     register,
@@ -39,12 +45,37 @@ const BoardsIdListsPage = () => {
     handleMemoInputToggle,
     memoText,
     maxChars,
-    setValue,
     watch,
+    setValue,
   } = useRegisterUrlInput();
+
   const params = useParams();
   const id = params.id;
   const { accessToken } = useSession({ required: true });
+  const { mutate, isPending: IsGeneratingCard } = useRegisterAccommodationCard({
+    request: { headers: { Authorization: `Bearer ${accessToken}` } },
+  });
+
+  const onValid = (data: FormData) => {
+    if (id === undefined) return;
+    mutate(
+      {
+        data: { url: data.link, memo: data.memo, tripBoardId: Number(id) },
+      },
+      {
+        onSuccess: () => {
+          window.location.reload();
+        },
+      },
+    );
+    console.log("폼 제출 성공:", data);
+  };
+
+  const onInvalid = (errors: FieldErrors<FormData>) => {
+    alert("url은 필수로 입력해야 합니다! ✈️");
+    console.error("폼 유효성 오류:", errors);
+  };
+
   const { data: tripBoardDetail, isLoading: isTripBoardLoading } =
     useGetTripBoardDetail(Number(id), {
       query: {
@@ -112,7 +143,6 @@ const BoardsIdListsPage = () => {
             <HeaderSection {...tripBoardDetail?.data.result} />
             {/* 링크 저장 */}
             <LinkInputSection
-              watch={watch}
               isDragging={isDragging}
               isInputExpanded={isInputExpanded}
               isMemoInputVisible={isMemoInputVisible}
@@ -121,7 +151,10 @@ const BoardsIdListsPage = () => {
               handleMemoInputToggle={handleMemoInputToggle}
               handleTooltipvisible={handleTooltipvisible}
               register={register}
+              watch={watch}
               handleSubmit={handleSubmit}
+              onValid={onValid}
+              onInvalid={onInvalid}
               memoText={memoText}
               maxChars={maxChars}
             />
@@ -136,10 +169,11 @@ const BoardsIdListsPage = () => {
               isOpen={isOpen}
               selectedFilter={selectedFilter}
               isLoading={accommodationDataLoading}
+              isGeneratingCard={IsGeneratingCard}
               fetchNextPage={fetchNextPage}
               hasNextPage={hasNextPage}
               isFetchingNextPage={isFetchingNextPage}
-              participants={tripBoardDetail?.data.result?.participants || []}
+              tripBoardDetailData={tripBoardDetail?.data.result || {}}
             />
           </motion.div>
         )}

@@ -3,7 +3,7 @@ import {
   useGetAccommodationCountByTripBoardId,
 } from "@ssok/api";
 import type { ParticipantProfileResponse } from "@ssok/api/schemas";
-import { Button, Card, cn } from "@ssok/ui";
+import { Button, Card, cn, LoadingIndicator, SkeletonCard } from "@ssok/ui";
 import { useParams, useRouter } from "next/navigation";
 import { useRef } from "react";
 import useSession from "@/shared/hooks/use-session";
@@ -25,6 +25,7 @@ export interface PlaceListSectionProps {
   isOpen: boolean;
   selectedFilter: string;
   isLoading: boolean;
+  isGeneratingCard: boolean;
   fetchNextPage: () => void;
   hasNextPage?: boolean;
   isFetchingNextPage: boolean;
@@ -41,6 +42,7 @@ const PlaceListSection = ({
   isOpen,
   selectedFilter,
   isLoading,
+  isGeneratingCard,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
@@ -51,18 +53,20 @@ const PlaceListSection = ({
   const { accessToken } = useSession({ required: true });
   const params = useParams();
   const id = params.id;
-  const { data: accommodationCountData } =
-    useGetAccommodationCountByTripBoardId(
-      {
-        tripBoardId: Number(id),
+  const {
+    data: accommodationCountData,
+    isLoading: isLoadingAccommodationCount,
+  } = useGetAccommodationCountByTripBoardId(
+    {
+      tripBoardId: Number(id),
+    },
+    {
+      query: {
+        enabled: !!accessToken,
       },
-      {
-        query: {
-          enabled: !!accessToken,
-        },
-        request: { headers: { Authorization: `Bearer ${accessToken}` } },
-      },
-    );
+      request: { headers: { Authorization: `Bearer ${accessToken}` } },
+    },
+  );
 
   const { mutate: deleteAccommodation } =
     useDeleteAccommodationWithOptimisticUpdate({
@@ -75,7 +79,10 @@ const PlaceListSection = ({
   const { selectedPlaces, togglePlaceSelect, removePlace } =
     usePlaceSelectionContext();
   const listRef = useRef<HTMLUListElement | null>(null);
-  const { mutateAsync: createComparisonTable } = useCreateComparisonTable({
+  const {
+    mutateAsync: createComparisonTable,
+    isPending: isCreatingComparisonTable,
+  } = useCreateComparisonTable({
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
   });
 
@@ -176,6 +183,12 @@ const PlaceListSection = ({
         ref={listRef}
         className="flex h-[40rem] min-w-[60rem] flex-col gap-[1.2rem] overflow-y-scroll"
       >
+        {/* 숙소 리스트_skeleton UI */}
+        {isGeneratingCard && (
+          <li>
+            <SkeletonCard />
+          </li>
+        )}
         {accommodations?.map((place) => {
           const isLast = accommodations[accommodations.length - 1] === place;
           return (
@@ -230,6 +243,11 @@ const PlaceListSection = ({
             <EmptyListContainer />
           )}
       </ul>
+      <LoadingIndicator
+        active={
+          isLoading || isLoadingAccommodationCount || isCreatingComparisonTable
+        }
+      />
     </section>
   );
 };

@@ -1,13 +1,10 @@
-import { useRegisterAccommodationCard } from "@ssok/api";
 import { cn, IcLink } from "@ssok/ui";
-import { useParams } from "next/navigation";
 import type {
   FieldErrors,
   UseFormHandleSubmit,
   UseFormRegister,
   UseFormWatch,
 } from "react-hook-form";
-import useSession from "@/shared/hooks/use-session";
 import ButtonContainer from "./atom/button-container";
 import LinkInputContainer from "./atom/link-input-container";
 import OnboardingBubble from "./atom/onboarding-bubble";
@@ -31,6 +28,8 @@ interface LinkInputSectionProps {
   handleSubmit: UseFormHandleSubmit<FormData>;
   memoText: string;
   maxChars: number;
+  onValid: (data: FormData) => void;
+  onInvalid: (errors: FieldErrors<FormData>) => void;
 }
 
 const LinkInputSection = ({
@@ -46,34 +45,9 @@ const LinkInputSection = ({
   handleSubmit,
   memoText,
   maxChars,
+  onValid,
+  onInvalid,
 }: LinkInputSectionProps) => {
-  const params = useParams();
-  const id = params.id;
-  const { accessToken } = useSession({ required: true });
-  const { mutate, isPending } = useRegisterAccommodationCard({
-    request: { headers: { Authorization: `Bearer ${accessToken}` } },
-  });
-
-  const onValid = (data: FormData) => {
-    if (id === undefined) return;
-    mutate(
-      {
-        data: { url: data.link, memo: data.memo, tripBoardId: Number(id) },
-      },
-      {
-        onSuccess: () => {
-          window.location.reload();
-        },
-      },
-    );
-    console.log("폼 제출 성공:", data);
-  };
-
-  const onInvalid = (errors: FieldErrors<FormData>) => {
-    alert("url은 필수로 입력해야 합니다! ✈️");
-    console.error("폼 유효성 오류:", errors);
-  };
-
   return (
     <section
       className={cn(
@@ -139,13 +113,6 @@ const LinkInputSection = ({
             </p>
           </div>
         </>
-      )}
-      {isPending && (
-        <main className="absolute z-10 flex h-full w-full items-center justify-center">
-          <div
-            className={`h-[2.4rem] w-[2.4rem] animate-spin rounded-full border-4 border-t-transparent bg-primary`}
-          />
-        </main>
       )}
     </section>
   );

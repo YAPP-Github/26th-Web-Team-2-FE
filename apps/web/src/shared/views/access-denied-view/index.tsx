@@ -7,7 +7,7 @@ export interface AccessDeniedViewProps {
   description: string;
   errorCode: string;
   buttonText: string;
-  onRetry?: () => void;
+  to?: string;
 }
 
 const AccessDeniedView = ({
@@ -15,11 +15,11 @@ const AccessDeniedView = ({
   description,
   errorCode,
   buttonText,
-  onRetry,
+  to,
 }: AccessDeniedViewProps) => {
   const handleRefresh = () => {
-    if (onRetry) {
-      onRetry();
+    if (to) {
+      window.location.href = to;
     } else {
       window.location.reload();
     }

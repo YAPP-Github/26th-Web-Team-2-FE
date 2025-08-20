@@ -27,9 +27,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       </head>
       <body className={Pretendard.variable}>
         <Providers>
+          {children}
           {/* TODO: fallback UI 수정 */}
-          <Suspense fallback={<div>로딩 중...</div>}>
-            {children}
+          <Suspense fallback={null}>
             <DialogProvider />
           </Suspense>
         </Providers>

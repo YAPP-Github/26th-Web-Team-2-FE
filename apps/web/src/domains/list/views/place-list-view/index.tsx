@@ -1,8 +1,8 @@
 "use client";
 import { useGetTripBoardDetail } from "@ssok/api";
-import { cn, LoadingIndicator, SolidExpand } from "@ssok/ui";
+import { cn, LoadingIndicator, SolidExpand, useToast } from "@ssok/ui";
 import { AnimatePresence, motion } from "framer-motion";
-import { useParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import HeaderSection from "@/domains/list/components/header-section";
 import LinkInputSection from "@/domains/list/components/link-input-section";
@@ -43,6 +43,9 @@ const PlaceListView = () => {
     watch,
   } = useRegisterUrlInput();
   const params = useParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { toast } = useToast();
   const id = params.id;
   const { accessToken } = useSession({ required: true });
   const { data: tripBoardDetail, isLoading: isTripBoardLoading } =
@@ -74,6 +77,16 @@ const PlaceListView = () => {
 
   const { updateAccommodations } = useAccommodationDataContext();
   const { handlePanelToggle, isPanelExpanded } = usePanelContext();
+
+  useEffect(() => {
+    if (searchParams.get("joined") === "true") {
+      toast.success("보드에 참여했습니다!");
+      const url = new URL(window.location.href);
+      url.searchParams.delete("joined");
+      router.replace(url.pathname + url.search);
+    }
+  }, [searchParams, toast, router]);
+
   useEffect(() => {
     const all =
       data?.pages?.flatMap((page) => page?.result?.accommodations ?? []) ?? [];

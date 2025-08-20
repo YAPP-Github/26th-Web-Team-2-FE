@@ -30,7 +30,7 @@ const ComparePageView = ({
 }: ComparePageViewProps) => {
   const { currentView, handleViewChange } = useViewMode();
   const queryClient = useQueryClient();
-  const { accessToken } = useSession();
+  const { accessToken, isAuthenticated } = useSession();
   const { formData, response, isMetaDataLoading } = useComparisonTable({
     boardId,
     tableId,
@@ -87,6 +87,8 @@ const ComparePageView = ({
             handleViewChange("table");
           }}
           isLoading={mutation.isPending}
+          isAuthenticated={isAuthenticated}
+          isAccessedByShareCode={Boolean(shareCode)}
           className="mb-[3.2rem] shrink-0"
         />
 

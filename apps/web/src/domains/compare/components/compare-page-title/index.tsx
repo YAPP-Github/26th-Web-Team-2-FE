@@ -20,6 +20,8 @@ export interface ComparePageTitleProps {
   onViewChange: (view: ViewMode) => void;
   onSave: () => void;
   isLoading?: boolean;
+  isAuthenticated: boolean;
+  isAccessedByShareCode: boolean;
   className?: string;
 }
 
@@ -29,6 +31,8 @@ const ComparePageTitle = ({
   onViewChange,
   onSave,
   isLoading = false,
+  isAuthenticated,
+  isAccessedByShareCode,
   className,
 }: ComparePageTitleProps) => {
   const { control } = useFormContext<ComparisonFormData>();
@@ -37,6 +41,9 @@ const ComparePageTitle = ({
     deactivate: closeShareModal,
     active: isShareModalOpen,
   } = useToggle();
+
+  const isBoardMember = isAuthenticated && !isAccessedByShareCode;
+
   return (
     <div className={cn("flex items-center justify-between", className)}>
       <Controller
@@ -54,20 +61,29 @@ const ComparePageTitle = ({
         {currentView === "table" && (
           <>
             <MapButton onClick={() => onViewChange("map")} />
-            <EditButton onClick={() => onViewChange("edit")} />
-            <ShareButton onClick={openShareModal} />
+            {isBoardMember && (
+              <>
+                <EditButton onClick={() => onViewChange("edit")} />
+                <ShareButton onClick={openShareModal} />
+              </>
+            )}
           </>
         )}
         {currentView === "map" && (
           <>
             <TableButton onClick={() => onViewChange("table")} />
-            <EditButton onClick={() => onViewChange("edit")} />
-            <ShareButton onClick={openShareModal} />
+            {isBoardMember && (
+              <>
+                <EditButton onClick={() => onViewChange("edit")} />
+                <ShareButton onClick={openShareModal} />
+              </>
+            )}
           </>
         )}
         {currentView === "edit" && (
           <SaveButton onClick={onSave} isLoading={isLoading} />
         )}
+        {!isAuthenticated && <LoginButton />}
       </div>
       <CompareShareModal
         shareCode={shareCode}
@@ -151,6 +167,22 @@ const SaveButton = ({
       disabled={isLoading}
     >
       저장하기
+    </Button>
+  );
+};
+
+const LoginButton = () => {
+  return (
+    <Button
+      type="button"
+      size="lg"
+      variant="primary"
+      onClick={() => {
+        const to = window.location.pathname + window.location.search;
+        window.location.href = `/api/auth/login?to=${encodeURIComponent(to)}`;
+      }}
+    >
+      로그인
     </Button>
   );
 };

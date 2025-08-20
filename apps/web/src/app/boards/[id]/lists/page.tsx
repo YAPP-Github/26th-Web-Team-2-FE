@@ -173,7 +173,7 @@ const BoardsIdListsPage = () => {
               fetchNextPage={fetchNextPage}
               hasNextPage={hasNextPage}
               isFetchingNextPage={isFetchingNextPage}
-              participants={tripBoardDetail?.data.result?.participants || []}
+              tripBoardDetailData={tripBoardDetail?.data.result || {}}
             />
           </motion.div>
         )}

@@ -255,10 +255,15 @@ export const theme: Config["theme"] = {
   },
   animation: {
     "spin-reverse": "spin-reverse 1s linear infinite",
+    shimmer: "shimmer 1.5s infinite",
   },
   keyframes: {
     "spin-reverse": {
       "100%": { transform: "rotate(-360deg)" },
+    },
+    shimmer: {
+      "0%": { transform: "translateX(-100%)" },
+      "100%": { transform: "translateX(100%)" },
     },
   },
 };

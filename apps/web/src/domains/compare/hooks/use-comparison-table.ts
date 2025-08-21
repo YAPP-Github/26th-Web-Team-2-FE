@@ -1,9 +1,5 @@
-import {
-  getGetComparisonTableQueryKey,
-  useGetComparisonTable,
-} from "@ssok/api";
-import { useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
+import { useComparisonTableQuery } from "@/domains/compare/api";
 import type { ComparisonFormData } from "@/domains/compare/types";
 import { transformComparisonTableResponseToFormData } from "@/domains/compare/utils/form";
 import useSession from "@/shared/hooks/use-session";
@@ -11,22 +7,25 @@ import useSession from "@/shared/hooks/use-session";
 const useComparisonTable = ({
   boardId,
   tableId,
+  shareCode,
 }: {
   boardId: number;
   tableId: number;
+  shareCode?: string;
 }) => {
-  const queryClient = useQueryClient();
-  const { accessToken } = useSession({ required: true });
+  const { accessToken } = useSession({ required: !shareCode });
 
-  const { data, isLoading: isMetaDataLoading } = useGetComparisonTable(
-    tableId,
+  const { data, isLoading: isMetaDataLoading } = useComparisonTableQuery(
+    { tableId, shareCode },
     {
       query: {
-        enabled:
-          !!accessToken ||
-          !!queryClient.getQueryData(getGetComparisonTableQueryKey(tableId)),
+        enabled: !!tableId && (!!accessToken || !!shareCode),
       },
-      request: { headers: { Authorization: `Bearer ${accessToken}` } },
+      request: {
+        headers: accessToken
+          ? { Authorization: `Bearer ${accessToken}` }
+          : undefined,
+      },
     },
   );
 

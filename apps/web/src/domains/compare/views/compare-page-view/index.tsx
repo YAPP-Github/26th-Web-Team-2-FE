@@ -20,15 +20,21 @@ import useSession from "@/shared/hooks/use-session";
 interface ComparePageViewProps {
   boardId: number;
   tableId: number;
+  shareCode?: string;
 }
 
-const ComparePageView = ({ boardId, tableId }: ComparePageViewProps) => {
+const ComparePageView = ({
+  boardId,
+  tableId,
+  shareCode,
+}: ComparePageViewProps) => {
   const { currentView, handleViewChange } = useViewMode();
   const queryClient = useQueryClient();
   const { accessToken } = useSession();
   const { formData, response, isMetaDataLoading } = useComparisonTable({
     boardId,
     tableId,
+    shareCode,
   });
   const mutation = useUpdateComparisonTable({
     request: { headers: { Authorization: `Bearer ${accessToken}` } },

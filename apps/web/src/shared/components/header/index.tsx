@@ -49,13 +49,15 @@ const Header = ({ className, userInfo = null }: HeaderProps) => {
         </div>
 
         {!userInfo && (
-          <Button
-            variant="primary"
-            size="xs"
-            className="rounded-[0.8rem] bg-neutral-20 px-[1.6rem] py-[0.8rem] text-body1-semi16 text-white hover:bg-neutral-30 focus:bg-neutral-30 active:bg-neutral-30"
-          >
-            가입하기
-          </Button>
+          <Link href="/api/auth/login?to=/boards">
+            <Button
+              variant="primary"
+              size="xs"
+              className="rounded-[0.8rem] bg-neutral-20 px-[1.6rem] py-[0.8rem] text-body1-semi16 text-white hover:bg-neutral-30 focus:bg-neutral-30 active:bg-neutral-30"
+            >
+              가입하기
+            </Button>
+          </Link>
         )}
         {userInfo && (
           <AvatarProfile imgUrl={userInfo?.profileImageUrl} size={32} />

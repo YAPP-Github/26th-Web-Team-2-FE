@@ -148,7 +148,7 @@ const PlaceListSection = ({
       )}
     >
       {/* 숙소 리스트_제목 */}
-      <div className="flex flex-col gap-[1.6rem] p-[2.4rem]">
+      <div className="flex flex-col gap-[1.6rem] pb-[2.4rem]">
         <h1 className="text-heading1-semi20"> 저장된 숙소</h1>
         <ul className="flex w-max flex-row gap-[0.8rem]">
           <li key="all">

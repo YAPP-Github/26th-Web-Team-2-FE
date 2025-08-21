@@ -20,10 +20,19 @@ import type {
 
 export interface CompareTableProps {
   state: ViewState;
+  isAuthenticated: boolean;
+  isAccessedByShareCode: boolean;
+  onAddCellClick: () => void;
   className?: string;
 }
 
-const CompareTable = ({ state, className }: CompareTableProps) => {
+const CompareTable = ({
+  state,
+  isAuthenticated,
+  isAccessedByShareCode,
+  onAddCellClick,
+  className,
+}: CompareTableProps) => {
   const { handleViewChange } = useViewMode();
   const { watch } = useFormContext<ComparisonFormData>();
 
@@ -40,7 +49,15 @@ const CompareTable = ({ state, className }: CompareTableProps) => {
     { key: "reviewSummary", label: "리뷰 요약" },
   ];
 
-  const handleAddCellClick = () => handleViewChange("edit");
+  const handleAddCellClick = () => {
+    // 인증된 사용자이고 shareCode로 접속하지 않은 경우에만 편집 모드로 이동
+    if (isAuthenticated && !isAccessedByShareCode) {
+      handleViewChange("edit");
+    } else {
+      // 그 외의 경우는 팝업 표시
+      onAddCellClick();
+    }
+  };
 
   const renderCellContent = (
     item: Accommodation,

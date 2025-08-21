@@ -5,9 +5,15 @@ import Link from "next/link";
 import LogoLarge from "@/shared/assets/logo-large.svg";
 import SocialKakao from "@/shared/assets/social-kakao.svg";
 
-interface LoginPopupProps extends Omit<PopupProps, "children"> {}
+interface LoginPopupProps extends Omit<PopupProps, "children"> {
+  to?: string;
+}
 
-const LoginPopup = ({ className, ...props }: LoginPopupProps) => {
+const LoginPopup = ({ className, to, ...props }: LoginPopupProps) => {
+  const url = to
+    ? `/api/auth/login?to=${encodeURIComponent(to)}`
+    : "/api/auth/login";
+
   return (
     <Popup className="w-full max-w-[40rem]" {...props}>
       <div className="flex flex-col items-center">
@@ -23,7 +29,7 @@ const LoginPopup = ({ className, ...props }: LoginPopupProps) => {
         </div>
 
         <Link
-          href="/api/auth/login"
+          href={url}
           className="flex h-[4.8rem] w-full items-center justify-center gap-[0.8rem] rounded-[1.2rem] bg-[#FEE500] px-[1.4rem] transition-opacity hover:opacity-70"
         >
           <SocialKakao className="h-[1.8rem] w-[1.8rem]" />

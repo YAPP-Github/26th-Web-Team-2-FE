@@ -56,8 +56,8 @@ const ProblemSections = () => {
         <LandingSectionContainer
           key={problem.id}
           className={cn(
-            "flex w-full items-start justify-between gap-[4rem] py-[16rem]",
-            "max-md:flex-col",
+            "[&>div]:flex [&>div]:w-full [&>div]:items-start [&>div]:justify-between [&>div]:gap-[4rem] [&>div]:py-[16rem]",
+            "[&>div]:max-md:flex-col",
             problem.background,
           )}
         >

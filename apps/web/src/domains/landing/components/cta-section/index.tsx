@@ -8,7 +8,7 @@ const CTASection = () => {
   return (
     <LandingSectionContainer
       className={cn(
-        "flex flex-col items-center gap-[2.4rem] py-[10.4rem]",
+        "[&>div]:flex [&>div]:flex-col [&>div]:items-center [&>div]:gap-[2.4rem] [&>div]:py-[10.4rem]",
         "bg-gradient-to-b from-0% from-[rgba(148,255,176,0.20)] via-50% via-[rgba(177,183,230,0.20)] to-100% to-[rgba(148,255,176,0.20)]",
       )}
     >

@@ -13,8 +13,10 @@ const LandingSectionContainer = ({
   className,
 }: LandingSectionContainerProps) => {
   return (
-    <section className={cn("w-full px-[10.4rem] max-md:px-[4rem]", className)}>
-      {children}
+    <section className={cn("w-full", className)}>
+      <div className="mx-auto max-w-[123.2rem] px-[10.4rem] max-md:px-[4rem]">
+        {children}
+      </div>
     </section>
   );
 };

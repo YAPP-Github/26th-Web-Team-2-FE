@@ -9,7 +9,7 @@ const HeroSection = () => {
   return (
     <LandingSectionContainer
       className={cn(
-        "flex flex-col items-center gap-[8rem] overflow-y-hidden pt-[8rem]",
+        "[&>div]:flex [&>div]:flex-col [&>div]:items-center [&>div]:gap-[8rem] [&>div]:overflow-y-hidden [&>div]:pt-[8rem]",
         "bg-gradient-to-b from-0% from-[rgba(148,255,176,0.35)] via-95% via-[rgba(177,183,230,0.35)] to-100% to-[rgba(191,150,255,0.2)]",
       )}
     >

@@ -15,7 +15,7 @@ const Pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "쏙 | ssok",
+  title: "쏙 | 여행 숙소 비교는 SSOK",
   description: "3일 걸리던 숙소 정하기, 쏙과 함께 3분만에 끝내보세요",
 };
 

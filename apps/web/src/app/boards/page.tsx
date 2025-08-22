@@ -2,6 +2,7 @@ import {
   getGetTripBoardsQueryKey,
   type getTripBoards,
   prefetchGetTripBoardsInfiniteQuery,
+  prefetchGetUserInfoQuery,
 } from "@ssok/api";
 import {
   dehydrate,
@@ -20,17 +21,27 @@ const DashboardPage = async () => {
   }
 
   const queryClient = getQueryClient();
-  await prefetchGetTripBoardsInfiniteQuery(
-    queryClient,
-    { page: 0, size: 10 },
-    {
+
+  await Promise.all([
+    prefetchGetUserInfoQuery(queryClient, {
       request: {
         headers: {
           Authorization: `Bearer ${session.tokenSet.accessToken}`,
         },
       },
-    },
-  );
+    }),
+    prefetchGetTripBoardsInfiniteQuery(
+      queryClient,
+      { page: 0, size: 10 },
+      {
+        request: {
+          headers: {
+            Authorization: `Bearer ${session.tokenSet.accessToken}`,
+          },
+        },
+      },
+    ),
+  ]);
 
   const data = queryClient.getQueryData<
     InfiniteData<Awaited<ReturnType<typeof getTripBoards>>>

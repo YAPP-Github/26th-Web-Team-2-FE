@@ -67,6 +67,7 @@ const PlaceListSection = ({
   } = useGetAccommodationCountByTripBoardId(
     {
       tripBoardId: Number(id),
+      userId: selectedPerson === 0 ? undefined : selectedPerson,
     },
     {
       query: {

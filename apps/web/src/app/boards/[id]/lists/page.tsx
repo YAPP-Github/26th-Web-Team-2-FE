@@ -6,6 +6,7 @@ import {
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import { auth } from "@/domains/auth";
+import { redirectToLogin } from "@/domains/auth/utils/url";
 import PlaceListView from "@/domains/list/views/place-list-view";
 import getQueryClient from "@/shared/configs/tanstack-query/get-query-client";
 
@@ -20,7 +21,7 @@ const BoardsIdListsPage = async ({ params }: BoardsIdListsPageProps) => {
 
   const session = await auth.getSession({ refresh: false });
   if (!session) {
-    redirect(`/api/auth/login?to=${encodeURIComponent(`/boards/${id}/lists`)}`);
+    return redirectToLogin();
   }
 
   const queryClient = getQueryClient();

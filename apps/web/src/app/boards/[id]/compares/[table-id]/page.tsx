@@ -1,6 +1,6 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { redirect } from "next/navigation";
 import { auth } from "@/domains/auth";
+import { redirectToLogin } from "@/domains/auth/utils/url";
 import { prefetchComparisonTableQuery } from "@/domains/compare/api";
 import ComparePageView from "@/domains/compare/views/compare-page-view";
 import getQueryClient from "@/shared/configs/tanstack-query/get-query-client";
@@ -26,8 +26,7 @@ const BoardsIdComparesCompareIdPage = async ({
   if (!Number.isNaN(tableId) && tableId > 0) {
     const session = await auth.getSession({ refresh: false });
     if (!session && !shareCode) {
-      const to = `/boards/${boardId}/compares/${tableId}`;
-      redirect(`/api/auth/login?to=${encodeURIComponent(to)}`);
+      return redirectToLogin();
     }
     await prefetchComparisonTableQuery(
       queryClient,

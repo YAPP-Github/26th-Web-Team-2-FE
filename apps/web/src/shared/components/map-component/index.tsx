@@ -35,6 +35,8 @@ const MapComponent = ({ className }: MapComponentProps) => {
         }
       : defaultCenter;
 
+  const zoom = lastSelectedPlace ? 15 : 11;
+
   return (
     <div className={cn("relative h-screen w-full", className)}>
       <GoogleMapReact
@@ -42,7 +44,7 @@ const MapComponent = ({ className }: MapComponentProps) => {
           key: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY,
         }}
         center={center}
-        defaultZoom={15}
+        zoom={zoom}
         // TODO: 지도 스타일링 옵션 변경
         options={{
           styles: [

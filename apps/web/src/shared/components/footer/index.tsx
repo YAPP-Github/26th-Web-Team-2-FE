@@ -9,24 +9,26 @@ const Footer = () => {
 
         <div className="flex gap-[5.6rem]">
           <Link
-            href="/rules/privacy"
+            href="https://jisuuuu.notion.site/248ca0b46ff280448723de5730098904?pvs=143"
             className="text-body3-semi15 text-neutral-15 transition-colors hover:text-neutral-40"
           >
             개인정보 처리방침
           </Link>
           <Link
-            href="/rules/service"
+            href="https://jisuuuu.notion.site/247ca0b46ff2805e9102f93a62f7c16d?source=copy_link"
             className="text-body3-semi15 text-neutral-15 transition-colors hover:text-neutral-40"
           >
             서비스 이용약관
           </Link>
           <div className="flex items-center gap-[0.8rem]">
-            <Link
-              href="mailto:ssok.contact@gmail.com"
+            <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=ssok.contact@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-body3-semi15 text-neutral-15 transition-colors hover:text-neutral-40"
             >
               문의하기
-            </Link>
+            </a>
             <span className="text-body1-medi16 text-neutral-50">
               ssok.contact@gmail.com
             </span>

@@ -68,7 +68,7 @@ const SolutionSections = () => {
   ];
 
   return (
-    <LandingSectionContainer className="flex flex-col gap-[16rem] bg-white py-[10.4rem]">
+    <LandingSectionContainer className="bg-white [&>div]:flex [&>div]:flex-col [&>div]:gap-[16rem] [&>div]:py-[10.4rem]">
       {solutions.map((solution) => (
         <div key={solution.id} className="flex w-full flex-col gap-[4.8rem]">
           <div className="flex flex-col gap-[1.6rem]">

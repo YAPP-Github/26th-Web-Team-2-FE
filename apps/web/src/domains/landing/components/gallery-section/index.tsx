@@ -24,13 +24,8 @@ const GallerySection = () => {
   ];
 
   return (
-    <LandingSectionContainer
-      className={cn(
-        "flex flex-col gap-[8rem] py-[10.4rem]",
-        "bg-gradient-to-b from-0% from-[rgba(217,244,255,1)] to-37% to-white",
-      )}
-    >
-      <div className="flex flex-col items-center gap-[1.6rem]">
+    <div className="flex w-full flex-col gap-[8rem] bg-gradient-to-b from-0% from-[rgba(217,244,255,1)] to-37% to-white py-[10.4rem]">
+      <LandingSectionContainer className="[&>div]:flex [&>div]:flex-col [&>div]:items-center [&>div]:gap-[1.6rem]">
         <div className="flex flex-wrap items-center justify-center gap-[1.2rem]">
           <div className="text-display1-bold56 text-secondary-15">귀찮음은</div>
           <SsokLogoWithIconAndGradient />
@@ -41,35 +36,37 @@ const GallerySection = () => {
         <div className="text-display2-bold36 text-secondary-15">
           여러분은 결정만 하세요.
         </div>
-      </div>
+      </LandingSectionContainer>
 
-      <div className="-mx-[10.4rem] max-md:-mx-[4rem] flex w-screen flex-col items-center gap-[1.6rem] overflow-hidden">
-        <div className="flex justify-center gap-[1.6rem]">
-          {galleryImages.slice(0, 4).map((image, index) => (
-            <Image
-              key={index}
-              src={image.src}
-              alt={image.alt}
-              width={364}
-              height={240}
-              className="shrink-0 rounded-[1.2rem] object-cover"
-            />
-          ))}
+      <section className="w-full">
+        <div className="flex w-full flex-col items-center gap-[1.6rem] overflow-hidden">
+          <div className="flex justify-center gap-[1.6rem]">
+            {galleryImages.slice(0, 4).map((image, index) => (
+              <Image
+                key={index}
+                src={image.src}
+                alt={image.alt}
+                width={364}
+                height={240}
+                className="shrink-0 rounded-[1.2rem] object-cover"
+              />
+            ))}
+          </div>
+          <div className="flex justify-center gap-[1.6rem]">
+            {galleryImages.slice(4, 8).map((image, index) => (
+              <Image
+                key={index}
+                src={image.src}
+                alt={image.alt}
+                width={364}
+                height={240}
+                className="shrink-0 rounded-[1.2rem] object-cover"
+              />
+            ))}
+          </div>
         </div>
-        <div className="flex justify-center gap-[1.6rem]">
-          {galleryImages.slice(4, 8).map((image, index) => (
-            <Image
-              key={index}
-              src={image.src}
-              alt={image.alt}
-              width={364}
-              height={240}
-              className="shrink-0 rounded-[1.2rem] object-cover"
-            />
-          ))}
-        </div>
-      </div>
-    </LandingSectionContainer>
+      </section>
+    </div>
   );
 };
 

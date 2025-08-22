@@ -8,6 +8,7 @@ export interface PhotoCellProps {
   accommodationName: string;
   siteName?: string;
   logoUrl?: string;
+  siteLink?: string;
   state: ViewState;
   name: `accommodationRequestList.${number}.lowestPrice`;
 }
@@ -18,6 +19,7 @@ const PhotoCell = ({
   siteName,
   logoUrl,
   state,
+  siteLink,
   name,
 }: PhotoCellProps) => {
   const defaultSiteName = siteName || "기본";
@@ -30,6 +32,7 @@ const PhotoCell = ({
         imgAlt="숙소 이미지"
         siteName={defaultSiteName}
         logoUrl={defaultLogoUrl}
+        siteLink={siteLink}
         placeName={accommodationName}
         className="mb-[1.6rem] h-[24.4rem] w-full"
       />

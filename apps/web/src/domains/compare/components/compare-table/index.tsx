@@ -79,6 +79,7 @@ const CompareTable = ({
             accommodationName={accommodationName}
             siteName={item.siteName}
             logoUrl={item.logoUrl}
+            siteLink={item.url}
             state={state}
             name={`accommodationRequestList.${index}.lowestPrice`}
           />

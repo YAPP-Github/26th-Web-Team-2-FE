@@ -10,6 +10,7 @@ export interface PhotoProps {
   state?: "default" | "edit" | "active";
   images: string[];
   imgAlt?: string;
+  siteLink?: string;
   siteName: string;
   logoUrl: string;
   placeName: string;
@@ -22,6 +23,7 @@ const Photo = ({
   imgAlt,
   siteName,
   logoUrl,
+  siteLink,
   placeName,
 }: PhotoProps) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
@@ -70,15 +72,28 @@ const Photo = ({
 
       <div
         className={cn(
-          "absolute bottom-0 z-10 flex w-full translate-y-full items-center rounded-b-[1.2rem] bg-gradient-to-r from-neutral-0/36 to-[#272727]/48 px-[1.2rem] py-[0.8rem]",
-          "transition-transform duration-300 ease-out group-hover:translate-y-0",
+          "absolute bottom-0 z-10 w-full translate-y-full rounded-b-[1.2rem] bg-gradient-to-r from-neutral-0/36 to-[#272727]/48 px-[1.2rem] py-[0.8rem]",
+          "transition-transform duration-300 ease-out group-hover:pointer-events-auto group-hover:translate-y-0",
           state === "active" && "translate-y-0",
         )}
       >
-        <div className="relative mr-[0.8rem] flex h-[3.2rem] w-[3.2rem] items-center justify-center overflow-hidden rounded-full border border-[#70737C]">
-          <Image src={logoUrl} alt={siteName} width={32} height={32} />
-        </div>
-        <span className="text-caption1-semi12 text-white">{siteName}</span>
+        <a
+          href={siteLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex cursor-pointer items-center"
+        >
+          <div className="relative mr-[0.8rem] flex h-[3.2rem] w-[3.2rem] items-center justify-center overflow-hidden rounded-full border border-[#70737C]">
+            <Image
+              src={logoUrl}
+              alt={siteName}
+              width={32}
+              height={32}
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <span className="text-caption1-semi12 text-white">{siteName}</span>
+        </a>
       </div>
     </div>
   );

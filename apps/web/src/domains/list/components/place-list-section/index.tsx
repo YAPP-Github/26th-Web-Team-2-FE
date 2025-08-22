@@ -100,7 +100,6 @@ const PlaceListSection = ({
         // TODO: 보드 단건 조회 api 연결 후, tableName 변수 연결
         data: {
           tripBoardId: Number(id),
-          tableName: `${tripBoardDetailData.boardName || ""} 비교표`,
           accommodationIdList: selectedPlaces,
           factorList: [],
         },
@@ -166,7 +165,7 @@ const PlaceListSection = ({
               <Button
                 variant="round"
                 selected={selectedPerson === person.userId}
-                onClick={() => handlePersonSelect(person.userId!)}
+                onClick={() => handlePersonSelect(person.userId ?? 0)}
               >
                 {person.nickname}
               </Button>

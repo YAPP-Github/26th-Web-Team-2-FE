@@ -93,16 +93,36 @@ export const transformFormDataToUpdateComparisonTableRequest = (
     return Number(numericString) || 0;
   };
 
+  // biome-ignore lint/suspicious/noExplicitAny: 어느 값이든 허용
+  const convertEmptyToUndefined = (value: any): string | undefined => {
+    return value === "" ? undefined : value;
+  };
+
   return {
     ...formData,
     accommodationRequestList: formData.accommodationRequestList.map((acc) => {
       return {
         ...acc,
         lowestPrice: acc.lowestPrice ? parsePrice(acc.lowestPrice) : undefined,
-        reviewScore: acc.reviewScore ? Number(acc.reviewScore) : undefined,
-        cleanlinessScore: acc.cleanlinessScore
+        reviewScore: acc.reviewScore?.trim()
+          ? Number(acc.reviewScore)
+          : undefined,
+        cleanlinessScore: acc.cleanlinessScore?.trim()
           ? Number(acc.cleanlinessScore)
           : undefined,
+        reviewSummary: convertEmptyToUndefined(acc.reviewSummary),
+        nearbyAttractions: acc.nearbyAttractions?.map((attraction) => ({
+          ...attraction,
+          name: convertEmptyToUndefined(attraction.name),
+        })),
+        nearbyTransportation: acc.nearbyTransportation?.map((transport) => ({
+          ...transport,
+          name: convertEmptyToUndefined(transport.name),
+        })),
+        amenities: acc.amenities?.map((amenity) => ({
+          ...amenity,
+          description: convertEmptyToUndefined(amenity.description),
+        })),
       } satisfies UpdateAccommodationRequest;
     }),
   };

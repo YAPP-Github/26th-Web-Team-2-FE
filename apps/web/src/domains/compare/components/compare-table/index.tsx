@@ -33,7 +33,7 @@ const CompareTable = ({
   onAddCellClick,
   className,
 }: CompareTableProps) => {
-  const { handleViewChange } = useViewMode();
+  const { handleViewChange, currentView } = useViewMode();
   const { watch } = useFormContext<ComparisonFormData>();
 
   const items = watch("accommodationRequestList") || [];
@@ -48,6 +48,11 @@ const CompareTable = ({
     { key: "checkInOut", label: "체크인 / 아웃 시간" },
     { key: "reviewSummary", label: "리뷰 요약" },
   ];
+
+  // biome-ignore lint/suspicious/noExplicitAny: 어느 값이든 허용
+  const isEmpty = (value: any): value is null | undefined | "" => {
+    return value === null || (["table", "map"].includes(currentView) && !value);
+  };
 
   const handleAddCellClick = () => {
     // 인증된 사용자이고 shareCode로 접속하지 않은 경우에만 편집 모드로 이동
@@ -79,7 +84,7 @@ const CompareTable = ({
           />
         );
       case "reviewScore":
-        if (!item.reviewScore) {
+        if (isEmpty(item.reviewScore)) {
           return <AddCell state={state} onClick={handleAddCellClick} />;
         }
         return (
@@ -89,7 +94,7 @@ const CompareTable = ({
           />
         );
       case "cleanlinessScore":
-        if (!item.cleanlinessScore) {
+        if (isEmpty(item.cleanlinessScore)) {
           return <AddCell state={state} onClick={handleAddCellClick} />;
         }
         return (
@@ -99,7 +104,7 @@ const CompareTable = ({
           />
         );
       case "nearbyAttractions":
-        if (!item.nearbyAttractions) {
+        if (isEmpty(item.nearbyAttractions)) {
           return <AddCell state={state} onClick={handleAddCellClick} />;
         }
         return (
@@ -110,7 +115,7 @@ const CompareTable = ({
           />
         );
       case "amenities":
-        if (!item.amenities) {
+        if (isEmpty(item.amenities)) {
           return <AddCell state={state} onClick={handleAddCellClick} />;
         }
         return (
@@ -121,7 +126,7 @@ const CompareTable = ({
           />
         );
       case "nearbyTransportation":
-        if (!item.nearbyTransportation) {
+        if (isEmpty(item.nearbyTransportation)) {
           return <AddCell state={state} onClick={handleAddCellClick} />;
         }
         return (
@@ -133,7 +138,11 @@ const CompareTable = ({
         );
       case "checkInOut": {
         const { checkInTime, checkOutTime } = item;
-        if (!checkInTime?.from && !checkOutTime?.to) {
+        const checkInOutData = {
+          from: checkInTime?.from,
+          to: checkOutTime?.to,
+        };
+        if (isEmpty(checkInOutData)) {
           return <AddCell state={state} onClick={handleAddCellClick} />;
         }
         return (
@@ -145,7 +154,7 @@ const CompareTable = ({
         );
       }
       case "reviewSummary":
-        if (!item.reviewSummary) {
+        if (isEmpty(item.reviewSummary)) {
           return <AddCell state={state} onClick={handleAddCellClick} />;
         }
         return (

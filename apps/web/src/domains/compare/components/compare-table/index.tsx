@@ -7,7 +7,7 @@ import AddCell from "@/domains/compare/components/compare-table/add-cell";
 import AmenitiesCell from "@/domains/compare/components/compare-table/amenities-cell";
 import CheckInOutCell from "@/domains/compare/components/compare-table/check-in-out-cell";
 import CleanlinessScoreCell from "@/domains/compare/components/compare-table/cleanliness-score-cell";
-import NearbyPlacesCell from "@/domains/compare/components/compare-table/nearby-places-cell.tsx";
+import NearbyPlacesCell from "@/domains/compare/components/compare-table/nearby-places-cell";
 import PhotoCell from "@/domains/compare/components/compare-table/photo-cell";
 import ReviewScoreCell from "@/domains/compare/components/compare-table/review-score-cell";
 import ReviewSummaryCell from "@/domains/compare/components/compare-table/review-summary-cell";
@@ -34,7 +34,7 @@ const CompareTable = ({
   className,
 }: CompareTableProps) => {
   const { handleViewChange, currentView } = useViewMode();
-  const { watch } = useFormContext<ComparisonFormData>();
+  const { watch, setValue } = useFormContext<ComparisonFormData>();
 
   const items = watch("accommodationRequestList") || [];
 
@@ -85,7 +85,15 @@ const CompareTable = ({
         );
       case "reviewScore":
         if (isEmpty(item.reviewScore)) {
-          return <AddCell state={state} onClick={handleAddCellClick} />;
+          return (
+            <AddCell
+              state={state}
+              onClick={() => {
+                setValue(`accommodationRequestList.${index}.reviewScore`, "0");
+                handleAddCellClick();
+              }}
+            />
+          );
         }
         return (
           <ReviewScoreCell
@@ -95,7 +103,18 @@ const CompareTable = ({
         );
       case "cleanlinessScore":
         if (isEmpty(item.cleanlinessScore)) {
-          return <AddCell state={state} onClick={handleAddCellClick} />;
+          return (
+            <AddCell
+              state={state}
+              onClick={() => {
+                setValue(
+                  `accommodationRequestList.${index}.cleanlinessScore`,
+                  "0",
+                );
+                handleAddCellClick();
+              }}
+            />
+          );
         }
         return (
           <CleanlinessScoreCell
@@ -105,7 +124,18 @@ const CompareTable = ({
         );
       case "nearbyAttractions":
         if (isEmpty(item.nearbyAttractions)) {
-          return <AddCell state={state} onClick={handleAddCellClick} />;
+          return (
+            <AddCell
+              state={state}
+              onClick={() => {
+                setValue(
+                  `accommodationRequestList.${index}.nearbyAttractions`,
+                  [],
+                );
+                handleAddCellClick();
+              }}
+            />
+          );
         }
         return (
           <NearbyPlacesCell
@@ -116,7 +146,15 @@ const CompareTable = ({
         );
       case "amenities":
         if (isEmpty(item.amenities)) {
-          return <AddCell state={state} onClick={handleAddCellClick} />;
+          return (
+            <AddCell
+              state={state}
+              onClick={() => {
+                setValue(`accommodationRequestList.${index}.amenities`, []);
+                handleAddCellClick();
+              }}
+            />
+          );
         }
         return (
           <AmenitiesCell
@@ -127,7 +165,18 @@ const CompareTable = ({
         );
       case "nearbyTransportation":
         if (isEmpty(item.nearbyTransportation)) {
-          return <AddCell state={state} onClick={handleAddCellClick} />;
+          return (
+            <AddCell
+              state={state}
+              onClick={() => {
+                setValue(
+                  `accommodationRequestList.${index}.nearbyTransportation`,
+                  [],
+                );
+                handleAddCellClick();
+              }}
+            />
+          );
         }
         return (
           <NearbyPlacesCell
@@ -143,7 +192,20 @@ const CompareTable = ({
           to: checkOutTime?.to,
         };
         if (isEmpty(checkInOutData)) {
-          return <AddCell state={state} onClick={handleAddCellClick} />;
+          return (
+            <AddCell
+              state={state}
+              onClick={() => {
+                setValue(`accommodationRequestList.${index}.checkInTime`, {
+                  from: "",
+                });
+                setValue(`accommodationRequestList.${index}.checkOutTime`, {
+                  to: "",
+                });
+                handleAddCellClick();
+              }}
+            />
+          );
         }
         return (
           <CheckInOutCell
@@ -155,7 +217,15 @@ const CompareTable = ({
       }
       case "reviewSummary":
         if (isEmpty(item.reviewSummary)) {
-          return <AddCell state={state} onClick={handleAddCellClick} />;
+          return (
+            <AddCell
+              state={state}
+              onClick={() => {
+                setValue(`accommodationRequestList.${index}.reviewSummary`, "");
+                handleAddCellClick();
+              }}
+            />
+          );
         }
         return (
           <ReviewSummaryCell

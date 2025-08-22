@@ -1671,7 +1671,7 @@
         "type": "object",
         "properties": {
           "tripBoardId": { "type": "integer", "format": "int64" },
-          "tableName": { "type": "string", "minLength": 1 },
+          "tableName": { "type": "string" },
           "accommodationIdList": {
             "type": "array",
             "items": { "type": "integer", "format": "int64" },

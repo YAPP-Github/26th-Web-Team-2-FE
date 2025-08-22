@@ -362,7 +362,6 @@ export interface StandardResponseOauthLoginResponse {
 
 export interface CreateComparisonTableRequest {
   tripBoardId: number;
-  /** @minLength 1 */
   tableName?: string;
   /** @minItems 1 */
   accommodationIdList?: number[];

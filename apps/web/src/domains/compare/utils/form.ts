@@ -47,8 +47,7 @@ export const transformComparisonTableResponseToFormData = ({
                 type: attraction.type,
                 latitude: attraction.latitude,
                 longitude: attraction.longitude,
-                distance:
-                  attraction.byFoot?.distance || attraction.byCar?.distance,
+                distance: attraction.distance || undefined,
                 byFoot: attraction.byFoot,
                 byCar: attraction.byCar,
               } satisfies AttractionUpdate;
@@ -59,8 +58,7 @@ export const transformComparisonTableResponseToFormData = ({
                 type: transport.type,
                 latitude: transport.latitude,
                 longitude: transport.longitude,
-                distance:
-                  transport.byFoot?.distance || transport.byCar?.distance,
+                distance: transport.distance || undefined,
                 byFoot: transport.byFoot,
                 byCar: transport.byCar,
               } satisfies TransportationUpdate;

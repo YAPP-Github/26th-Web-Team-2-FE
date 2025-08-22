@@ -36,7 +36,7 @@ const TitleContainer = ({
         )}
         {isTooltipVisible && (
           <BubbleInfo>
-            지금은 부킹닷컴, 아고다, 호텔스컴바인 링크만 지원 중이에요
+            지금은 부킹닷컴, 아고다 링크만 지원 중이에요
           </BubbleInfo>
         )}
       </div>

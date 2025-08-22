@@ -46,7 +46,7 @@ const ComparePageTitle = ({
           <PageTitle
             title={field.value !== undefined ? field.value : "비교표"}
             isEditingAvailable={currentView === "edit"}
-            onChange={(e) => field.onChange(e.target.value)}
+            onTitleChange={(newTitle) => field.onChange(newTitle)}
           />
         )}
       />

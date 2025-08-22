@@ -124,13 +124,17 @@ const NearbyPlace = ({
 
 const usePlaceChip = ({ place }: { place: ComparisonPlace }) => {
   return useMemo(() => {
-    if (place.byFoot?.time) {
-      return { type: "walk", icon: <IcWalker />, label: place.byFoot.time };
+    let label = "";
+    if (place.byFoot?.time || place.byCar?.distance) {
+      label = place.byFoot?.time || place.byCar?.distance || " ";
+      return { type: "walk", icon: <IcWalker />, label };
     }
-    if (place.byCar?.time) {
-      return { type: "car", icon: <IcCar />, label: place.byCar.time };
+    if (place.byCar?.time || place.byCar?.distance) {
+      label = place.byCar?.time || place.byCar?.distance || " ";
+      return { type: "car", icon: <IcCar />, label };
     }
-    return { type: "km", icon: <IcKm />, label: place.byCar?.distance || "0" };
+
+    return { type: "km", icon: <IcKm />, label: place.distance || "-" };
   }, [place]);
 };
 

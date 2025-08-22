@@ -28,7 +28,7 @@ export const ModalConfig = {
 };
 
 const ProfileMenu = () => {
-  const router = useRouter();
+  const _router = useRouter();
   const { accessToken, isPending: isSessionPending } = useSession();
   const { data: userInfo, isLoading } = useGetUserInfo({
     query: { enabled: !!accessToken },
@@ -39,7 +39,7 @@ const ProfileMenu = () => {
   });
 
   const logout = async () => {
-    router.push("/api/auth/logout?to=/");
+    window.location.href = "/api/auth/logout?to=/";
   };
 
   const { active, activate, deactivate } = useToggle(false);

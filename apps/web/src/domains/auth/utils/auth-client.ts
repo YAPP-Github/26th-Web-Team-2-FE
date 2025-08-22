@@ -57,8 +57,7 @@ export class AuthClient {
     const cookieStore = await cookies();
     cookieStore.delete({
       name: this.config.sessionCookieName,
-      path: "/",
-      httpOnly: true,
+      ...this.config.cookieOptions,
     });
 
     const to = request.nextUrl.searchParams.get("to") || "/";

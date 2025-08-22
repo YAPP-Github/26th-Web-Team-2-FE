@@ -79,11 +79,14 @@ export class AuthClient {
   public async getSession(options: { refresh?: boolean } = { refresh: true }) {
     const cookieStore = await cookies();
     const cookie = cookieStore.get(this.config.sessionCookieName);
+    console.log({ cookie });
+    console.log({ cookieValue: cookie?.value });
     if (!cookie?.value) {
       return null;
     }
 
     const session = (await this.decrypt(cookie.value)) as SessionData;
+    console.log({ session });
     if (!session || !options.refresh) {
       return session;
     }

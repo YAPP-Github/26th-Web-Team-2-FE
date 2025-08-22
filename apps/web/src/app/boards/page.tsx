@@ -11,13 +11,14 @@ import {
 } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import { auth } from "@/domains/auth";
+import { redirectToLogin } from "@/domains/auth/utils/url";
 import DashboardView from "@/domains/dashboard/views/dashboard-view";
 import getQueryClient from "@/shared/configs/tanstack-query/get-query-client";
 
 const DashboardPage = async () => {
   const session = await auth.getSession({ refresh: false });
   if (!session) {
-    redirect("/api/auth/login?to=/");
+    return redirectToLogin();
   }
 
   const queryClient = getQueryClient();

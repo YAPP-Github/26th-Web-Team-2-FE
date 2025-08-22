@@ -7,8 +7,8 @@ export const auth = new AuthClient({
   sessionCookieName: "ssok.session",
   cookieOptions: {
     httpOnly: true,
+    sameSite: "lax",
     secure: true,
-    sameSite: "strict",
     maxAge: 60 * 60 * 24 * 7, // 7 days
   },
   authorize: async (request: NextRequest) => {
@@ -36,6 +36,7 @@ export const auth = new AuthClient({
       !response.data.result.token.accessToken ||
       !response.data.result.token.refreshToken
     ) {
+      console.error({ data: response.data });
       return null;
     }
 

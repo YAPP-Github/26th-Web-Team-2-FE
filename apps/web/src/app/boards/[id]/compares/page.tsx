@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import { auth } from "@/domains/auth";
+import { redirectToLogin } from "@/domains/auth/utils/url";
 import CompareListView from "@/domains/compare/views/compare-list-view";
 import getQueryClient from "@/shared/configs/tanstack-query/get-query-client";
 
@@ -21,9 +22,8 @@ interface BoardsIdComparesPageProps {
 
 const BoardsIdComparesPage = async ({ params }: BoardsIdComparesPageProps) => {
   const session = await auth.getSession({ refresh: false });
-
   if (!session) {
-    redirect("/api/auth/login?to=/");
+    return redirectToLogin();
   }
 
   const searchParams = await params;

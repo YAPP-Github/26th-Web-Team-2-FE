@@ -1,6 +1,7 @@
 import { joinTripBoard } from "@ssok/api";
 import { redirect } from "next/navigation";
 import { auth } from "@/domains/auth";
+import { redirectToLogin } from "@/domains/auth/utils/url";
 
 export interface BoardsIdPageProps {
   params: Promise<{ id: string }>;
@@ -17,8 +18,7 @@ const BoardsIdPage = async ({ params, searchParams }: BoardsIdPageProps) => {
   try {
     const session = await auth.getSession({ refresh: false });
     if (!session) {
-      const to = `/boards/${id}?code=${code}`;
-      redirect(`/api/auth/login?to=${encodeURIComponent(to)}`);
+      return redirectToLogin();
     }
     await joinTripBoard(
       { invitationCode: code },

@@ -30,7 +30,7 @@ export const useBoardInvite = (
   });
 
   const inviteData = invitationCode?.data.result;
-  const inviteLink = `https://www.ssok.info/boards/${tripBoardId}?code=${inviteData?.invitationCode}`;
+  const inviteLink = `${window.location.origin}/boards/${tripBoardId}?code=${inviteData?.invitationCode}`;
 
   const { mutateAsync: toggleInviteActive } = useToggleInvitationActive({
     mutation: {

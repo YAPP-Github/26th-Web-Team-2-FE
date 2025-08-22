@@ -6,7 +6,6 @@ import {
 } from "@ssok/api";
 import { Confirm, cn, LoadingIndicator, useToggle } from "@ssok/ui";
 import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import ComparePageHeader from "@/domains/compare/components/compare-page-header";
 import ComparePageTitle from "@/domains/compare/components/compare-page-title";
@@ -31,7 +30,7 @@ const ComparePageView = ({
 }: ComparePageViewProps) => {
   const { currentView, handleViewChange } = useViewMode();
   const queryClient = useQueryClient();
-  const { accessToken, isAuthenticated } = useSession();
+  const { accessToken, isAuthenticated, isLoading } = useSession();
 
   // 팝업 상태 관리
   const {
@@ -55,12 +54,11 @@ const ComparePageView = ({
   });
   const methods = useForm<ComparisonFormData>({ defaultValues: formData });
 
-  useEffect(() => {
-    methods.reset(formData);
-  }, [methods, formData]);
-
-  // AddCell 클릭 핸들러
   const handleAddCellClick = () => {
+    if (isLoading) {
+      return;
+    }
+
     if (!isAuthenticated) {
       openLoginPopup();
     } else if (shareCode) {

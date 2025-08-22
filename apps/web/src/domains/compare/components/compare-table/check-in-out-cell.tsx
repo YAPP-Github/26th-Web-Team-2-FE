@@ -26,8 +26,6 @@ const CheckInOutCell = ({
     setValue(checkOutName, { ...checkOutTime, to: time });
   };
 
-  console.log({ checkInTime, checkOutTime });
-
   return (
     <TableTimeContents
       checkInAt={checkInTime?.from || null}

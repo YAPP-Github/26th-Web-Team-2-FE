@@ -21,14 +21,12 @@ const Footer = () => {
             서비스 이용약관
           </Link>
           <div className="flex items-center gap-[0.8rem]">
-            <a
+            <Link
               href="https://mail.google.com/mail/?view=cm&fs=1&to=ssok.contact@gmail.com"
-              target="_blank"
-              rel="noopener noreferrer"
               className="text-body3-semi15 text-neutral-15 transition-colors hover:text-neutral-40"
             >
               문의하기
-            </a>
+            </Link>
             <span className="text-body1-medi16 text-neutral-50">
               ssok.contact@gmail.com
             </span>

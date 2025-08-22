@@ -35,7 +35,7 @@ const TitleContainer = ({
           </TextWithIcon>
         )}
         {isTooltipVisible && (
-          <BubbleInfo>지금은·부킹닷컴,·아고다·링크만·지원·중이에요</BubbleInfo>
+          <BubbleInfo>지금은 부킹닷컴, 아고다 링크만 지원 중이에요</BubbleInfo>
         )}
       </div>
       <button type="button" onClick={toggleInputExpansion}>

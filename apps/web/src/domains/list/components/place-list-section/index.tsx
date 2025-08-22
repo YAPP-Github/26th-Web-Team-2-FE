@@ -10,15 +10,18 @@ import {
   LoadingIndicator,
   SkeletonCard,
   useToast,
+  useToggle,
 } from "@ssok/ui";
 import { useParams, useRouter } from "next/navigation";
 import { useRef } from "react";
+import { useForm } from "react-hook-form";
 import useSession from "@/shared/hooks/use-session";
 import useInfiniteScroll from "../../../../shared/hooks/use-infinite-scroll";
 import { useAccommodationDataContext } from "../../contexts/accomodation-data-context";
 import { usePlaceSelectionContext } from "../../contexts/place-select-context";
 import useDeleteAccommodationWithOptimisticUpdate from "../../hooks/use-accommodation-del";
 import useCollapseOnScroll from "../../hooks/use-collapse-on-scroll";
+import MemoInputBox from "../link-input-section/atom/memo-input";
 import DropDown from "./atom/drop-down";
 import EmptyListContainer from "./atom/empty-list-container";
 
@@ -56,6 +59,7 @@ const PlaceListSection = ({
   tripBoardDetailData,
 }: PlaceListSectionProps) => {
   const { toast } = useToast();
+  const { active, toggle, deactivate } = useToggle();
   const router = useRouter();
   const { accommodations } = useAccommodationDataContext();
   const { accessToken } = useSession({ required: true });
@@ -139,6 +143,14 @@ const PlaceListSection = ({
   });
 
   useCollapseOnScroll(listRef, isInputExpanded, handleCloseInputExpansion);
+
+  const { register, handleSubmit, watch } = useForm<{ memo: string }>();
+
+  const memoText = watch("memo") || "";
+
+  const onValid = (data: { memo: string }) => {
+    console.log("유효한 데이터:", data);
+  };
 
   return (
     <section
@@ -224,6 +236,18 @@ const PlaceListSection = ({
                   handleDeleteAccommodation(place.id);
                 }}
               />
+              {active && (
+                <form onSubmit={handleSubmit(onValid)}>
+                  <MemoInputBox
+                    memoText={memoText}
+                    maxChars={50}
+                    register={register}
+                    isVisible={active}
+                    onClose={deactivate}
+                    onSubmit={() => {}}
+                  />
+                </form>
+              )}
             </li>
           );
         })}

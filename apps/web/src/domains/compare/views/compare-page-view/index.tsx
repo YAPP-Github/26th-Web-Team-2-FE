@@ -6,6 +6,7 @@ import {
 } from "@ssok/api";
 import { Confirm, cn, LoadingIndicator, useToggle } from "@ssok/ui";
 import { useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import ComparePageHeader from "@/domains/compare/components/compare-page-header";
 import ComparePageTitle from "@/domains/compare/components/compare-page-title";
@@ -14,6 +15,7 @@ import useComparisonTable from "@/domains/compare/hooks/use-comparison-table";
 import useViewMode from "@/domains/compare/hooks/use-view-mode";
 import type { ComparisonFormData } from "@/domains/compare/types";
 import { transformFormDataToUpdateComparisonTableRequest } from "@/domains/compare/utils/form";
+import { useAccommodationDataContext } from "@/domains/list/contexts/accomodation-data-context";
 import LoginPopup from "@/shared/components/login-popup";
 import useSession from "@/shared/hooks/use-session";
 
@@ -78,6 +80,12 @@ const ComparePageView = ({
       handleViewChange("table");
     }
   };
+
+  const { updateAccommodations } = useAccommodationDataContext();
+
+  useEffect(() => {
+    updateAccommodations(response?.accommodationResponsesList || []);
+  }, [response, updateAccommodations]);
 
   return (
     <FormProvider {...methods}>

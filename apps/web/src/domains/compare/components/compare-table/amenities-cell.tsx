@@ -93,7 +93,7 @@ const TableAmenity = ({
               <TextField
                 {...field}
                 value={field.value as string}
-                placeholder="필요한 정보를 기입해보세요. (최대 45자)"
+                placeholder="필요한 정보를 기입해보세요."
                 maxLength={45}
                 className="mb-[0.8rem] rounded-[0.8rem] bg-white text-body2-medi14 [&>input]:p-[0.8rem]"
               />

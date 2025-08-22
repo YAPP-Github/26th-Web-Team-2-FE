@@ -39,8 +39,8 @@ const PageTitle = ({
 
   const handleSave = () => {
     setIsEditing(false);
-    if (value.trim() !== title && onTitleChange) {
-      onTitleChange(value.trim());
+    if (value !== title && onTitleChange) {
+      onTitleChange(value);
     }
   };
 
@@ -58,9 +58,17 @@ const PageTitle = ({
   };
 
   return (
-    <button
-      type="button"
+    // biome-ignore lint: biomelint/a11y/useSemanticElements
+    <div
+      role="button"
+      tabIndex={0}
       onClick={handleClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault(); // 스페이스 기본 동작 방지
+          handleClick();
+        }
+      }}
       className={cn(
         "group flex items-center gap-[1rem] rounded-[1.2rem] px-[0.8rem] py-[0.3rem] transition-colors duration-200",
         isEditingAvailable && "cursor-pointer hover:bg-neutral-90",
@@ -85,7 +93,7 @@ const PageTitle = ({
           className="text-neutral-70 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
         />
       )}
-    </button>
+    </div>
   );
 };
 

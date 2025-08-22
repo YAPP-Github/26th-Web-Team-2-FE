@@ -44,9 +44,9 @@ const ComparePageTitle = ({
         name="tableName"
         render={({ field }) => (
           <PageTitle
-            title={field.value || "비교표"}
+            title={field.value !== undefined ? field.value : "비교표"}
             isEditingAvailable={currentView === "edit"}
-            onTitleChange={field.onChange}
+            onChange={(e) => field.onChange(e.target.value)}
           />
         )}
       />

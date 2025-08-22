@@ -83,7 +83,7 @@ const Photo = ({
           rel="noopener noreferrer"
           className="flex cursor-pointer items-center"
         >
-          <div className="relative mr-[0.8rem] flex h-[3.2rem] w-[3.2rem] cursor-pointer items-center justify-center overflow-hidden rounded-full border border-[#70737C]">
+          <div className="relative mr-[0.8rem] flex h-[3.2rem] w-[3.2rem] items-center justify-center overflow-hidden rounded-full border border-[#70737C]">
             <Image
               src={logoUrl}
               alt={siteName}
@@ -92,9 +92,7 @@ const Photo = ({
               className="h-full w-full object-cover"
             />
           </div>
-          <span className="cursor-pointer text-caption1-semi12 text-white">
-            {siteName}
-          </span>
+          <span className="text-caption1-semi12 text-white">{siteName}</span>
         </a>
       </div>
     </div>

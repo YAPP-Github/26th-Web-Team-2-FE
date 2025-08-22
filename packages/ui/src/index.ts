@@ -118,6 +118,7 @@ export { default as useToast } from "@/hooks/use-toast";
 export { default as useToggle } from "@/hooks/use-toggle";
 export { default as SsokUiProvider } from "@/providers/ssok-ui-provider";
 export { cn } from "@/utils";
+export { default as getAttractionDistance } from "@/utils/get-attraction-distance";
 export {
   type ActionCardProps,
   default as ActionCard,

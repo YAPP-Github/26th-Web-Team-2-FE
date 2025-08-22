@@ -1,7 +1,7 @@
 import IcCar from "@/assets/icons/ic_car.svg?react";
 import IcKm from "@/assets/icons/ic_km.svg?react";
 import IcWalker from "@/assets/icons/ic_walker.svg?react";
-import type { Attraction } from ".";
+import type { Attraction } from "@/components/card";
 
 /**
  * 주어진 명소(Attraction) 객체에서 우선순위에 따라 거리 또는 시간을 추출하여,
@@ -17,7 +17,7 @@ import type { Attraction } from ".";
  *          value: 거리 또는 시간 값, 없으면 "-"
  *          icon: 거리/시간 타입에 따른 아이콘 컴포넌트
  */
-export const getAttractionDistance = (attraction: Attraction) => {
+const getAttractionDistance = (attraction: Attraction) => {
   let value = " ";
   let icon = <IcKm width="12px" height="12px" />;
 
@@ -40,3 +40,5 @@ export const getAttractionDistance = (attraction: Attraction) => {
 
   return { value, icon };
 };
+
+export default getAttractionDistance;

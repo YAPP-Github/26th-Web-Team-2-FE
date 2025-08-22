@@ -10,7 +10,7 @@ import DeleteIconButton from "@/components/icon-button/delete-icon-button";
 import ImageCard from "@/components/image-card";
 import TextWithIcon from "@/components/text-with-icon";
 import { cn } from "@/utils";
-import { getAttractionDistance } from "./card.utils";
+import getAttractionDistance from "@/utils/get-attraction-distance";
 import { card } from "./card.variant";
 
 interface TransportInfo {

@@ -60,12 +60,10 @@ const PageTitle = ({
   return (
     // biome-ignore lint: biomelint/a11y/useSemanticElements
     <div
-      role="button"
-      tabIndex={0}
       onClick={handleClick}
       onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault(); // 스페이스 기본 동작 방지
+        if (e.key === "Enter") {
+          e.preventDefault();
           handleClick();
         }
       }}

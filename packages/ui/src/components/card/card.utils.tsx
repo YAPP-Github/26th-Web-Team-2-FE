@@ -21,10 +21,16 @@ export const getAttractionDistance = (attraction: Attraction) => {
   let value = " ";
   let icon = <IcKm width="12px" height="12px" />;
 
-  if (attraction?.byFoot?.time || attraction?.byFoot?.distance) {
+  if (
+    attraction?.byFoot?.time !== null ||
+    attraction?.byFoot?.distance !== null
+  ) {
     value = attraction?.byFoot?.time ?? attraction?.byFoot?.distance ?? " ";
     icon = <IcWalker width="12px" height="12px" />;
-  } else if (attraction?.byCar?.time || attraction?.byCar?.distance) {
+  } else if (
+    attraction?.byCar?.time !== null ||
+    attraction?.byCar?.distance !== null
+  ) {
     value = attraction?.byCar?.time ?? attraction?.byCar?.distance ?? " ";
     icon = <IcCar width="12px" height="12px" />;
   } else if (attraction?.distance) {

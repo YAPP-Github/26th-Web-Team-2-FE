@@ -35,6 +35,7 @@ export interface CardProps
     onClick?: () => void;
     onAddClick: () => void;
     onDeleteClick: () => void;
+    onMemoToggle: () => void;
 
     images: string[];
     address: string;
@@ -57,6 +58,7 @@ const Card = ({
   selected,
   onAddClick,
   onDeleteClick,
+  onMemoToggle,
   images,
   logoUrl,
   url,
@@ -198,6 +200,10 @@ const Card = ({
             size="sm"
             icon={<IcAddMemo width="16px" height="16px" />}
             className="w-[6rem]"
+            onClick={(e) => {
+              e.stopPropagation();
+              onMemoToggle();
+            }}
           >
             메모
           </Button>

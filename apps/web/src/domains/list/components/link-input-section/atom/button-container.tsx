@@ -62,6 +62,7 @@ const ButtonContainer = ({
             maxChars={maxChars}
             register={register}
             fieldName="memo"
+            isListMemo={null}
             isVisible={isMemoInputVisible}
             onClose={handleMemoInput}
             onSubmit={handleCheckMemoFilled}

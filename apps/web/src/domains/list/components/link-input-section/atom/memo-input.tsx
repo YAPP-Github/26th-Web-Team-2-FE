@@ -9,8 +9,9 @@ interface MemoInputBoxProps<T extends { memo?: string }> {
   register: UseFormRegister<T>;
   fieldName?: keyof T;
   isVisible: boolean;
+  isListMemo: number | null;
   onClose: () => void;
-  onSubmit: () => void;
+  onSubmit?: () => void;
 }
 
 const MemoInputBox = <T extends { memo?: string }>({
@@ -19,6 +20,7 @@ const MemoInputBox = <T extends { memo?: string }>({
   register,
   fieldName = "memo" as keyof T,
   isVisible,
+  isListMemo,
   onClose,
   onSubmit,
 }: MemoInputBoxProps<T>) => {
@@ -30,7 +32,11 @@ const MemoInputBox = <T extends { memo?: string }>({
   return (
     <section
       ref={memoRef}
-      className="absolute bottom-[-12.5rem] left-0 z-5 flex w-[33.2rem] flex-col gap-[1.2rem] rounded-[1.2rem] border border-primary-60 bg-neutral-100 px-[1.6rem] py-[1.2rem] focus:outline-none"
+      className={cn(
+        "absolute z-5 flex w-[33.2rem] flex-col gap-[1.2rem] rounded-[1.2rem] border px-[1.6rem] py-[1.2rem] focus:outline-none",
+        " border-primary-60 bg-neutral-100",
+        isListMemo ? "bottom-[-10rem] left-[36%]" : "bottom-[-12.5rem] left-0",
+      )}
     >
       <textarea
         aria-label="메모 입력"
@@ -43,7 +49,11 @@ const MemoInputBox = <T extends { memo?: string }>({
         <span className="text-caption1-medi12 text-neutral-70">
           {memoText.length} / {maxChars}
         </span>
-        <button type="button" className="" onClick={onSubmit}>
+        <button
+          type={isListMemo ? "submit" : "button"}
+          className=""
+          onClick={isListMemo ? undefined : onSubmit}
+        >
           <IcUpload
             width="24"
             height="24"

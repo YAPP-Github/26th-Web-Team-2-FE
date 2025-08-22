@@ -10,7 +10,6 @@ import {
   LoadingIndicator,
   SkeletonCard,
   useToast,
-  useToggle,
 } from "@ssok/ui";
 import { useParams, useRouter } from "next/navigation";
 import { useRef } from "react";
@@ -21,6 +20,7 @@ import { useAccommodationDataContext } from "../../contexts/accomodation-data-co
 import { usePlaceSelectionContext } from "../../contexts/place-select-context";
 import useDeleteAccommodationWithOptimisticUpdate from "../../hooks/use-accommodation-del";
 import useCollapseOnScroll from "../../hooks/use-collapse-on-scroll";
+import useUpdateMemo from "../../hooks/use-update-memo";
 import MemoInputBox from "../link-input-section/atom/memo-input";
 import DropDown from "./atom/drop-down";
 import EmptyListContainer from "./atom/empty-list-container";
@@ -59,7 +59,6 @@ const PlaceListSection = ({
   tripBoardDetailData,
 }: PlaceListSectionProps) => {
   const { toast } = useToast();
-  const { active, toggle, deactivate } = useToggle();
   const router = useRouter();
   const { accommodations } = useAccommodationDataContext();
   const { accessToken } = useSession({ required: true });
@@ -144,12 +143,17 @@ const PlaceListSection = ({
 
   useCollapseOnScroll(listRef, isInputExpanded, handleCloseInputExpansion);
 
-  const { register, handleSubmit, watch } = useForm<{ memo: string }>();
+  const { saveMemo, onToggle, onClose, openedToggle, isUpdateMemoPending } =
+    useUpdateMemo(accessToken, selectedPerson, selectedFilter);
+  const { register, handleSubmit, watch, reset } = useForm<{ memo: string }>();
 
   const memoText = watch("memo") || "";
 
   const onValid = (data: { memo: string }) => {
-    console.log("유효한 데이터:", data);
+    if (openedToggle === null) return;
+    saveMemo(openedToggle, data);
+    reset();
+    onClose();
   };
 
   return (
@@ -209,7 +213,11 @@ const PlaceListSection = ({
         {accommodations?.map((place) => {
           const isLast = accommodations[accommodations.length - 1] === place;
           return (
-            <li key={`${place.id}-card`} ref={isLast ? lastItemRef : null}>
+            <li
+              key={`${place.id}-card`}
+              ref={isLast ? lastItemRef : null}
+              className="relative"
+            >
               <Card
                 images={place?.images || []}
                 siteName={place.siteName || "-"}
@@ -225,6 +233,9 @@ const PlaceListSection = ({
                   )?.nickname || "알 수 없음"
                 }
                 memo={place.memo}
+                onMemoToggle={() =>
+                  onToggle(place.id || null, place.createdBy || null)
+                }
                 selected={place.id ? selectedPlaces.includes(place.id) : false}
                 onClick={() => place.id && togglePlaceSelect(place.id)}
                 onAddClick={() => {
@@ -236,15 +247,15 @@ const PlaceListSection = ({
                   handleDeleteAccommodation(place.id);
                 }}
               />
-              {active && (
+              {openedToggle === place.id && (
                 <form onSubmit={handleSubmit(onValid)}>
                   <MemoInputBox
                     memoText={memoText}
                     maxChars={50}
                     register={register}
-                    isVisible={active}
-                    onClose={deactivate}
-                    onSubmit={() => {}}
+                    isVisible={openedToggle === place.id}
+                    onClose={onClose}
+                    isListMemo={place.id || 0}
                   />
                 </form>
               )}
@@ -274,7 +285,10 @@ const PlaceListSection = ({
       </ul>
       <LoadingIndicator
         active={
-          isLoading || isLoadingAccommodationCount || isCreatingComparisonTable
+          isLoading ||
+          isLoadingAccommodationCount ||
+          isCreatingComparisonTable ||
+          isUpdateMemoPending
         }
       />
     </section>

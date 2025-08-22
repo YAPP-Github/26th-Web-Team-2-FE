@@ -750,6 +750,56 @@
         "security": [{ "JWT": [] }]
       }
     },
+    "/api/accommodations/{accommodationId}/memo": {
+      "patch": {
+        "tags": ["숙소 API"],
+        "summary": "숙소 메모 수정",
+        "description": "기존에 등록된 숙소의 메모를 수정합니다. 메모는 최대 50자까지 입력 가능하며, null 또는 빈 문자열로 설정할 수 있습니다.",
+        "operationId": "updateAccommodationMemo",
+        "parameters": [
+          {
+            "name": "accommodationId",
+            "in": "path",
+            "description": "메모를 수정할 숙소의 ID",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" },
+            "example": 1
+          }
+        ],
+        "requestBody": {
+          "description": "숙소 메모 수정 요청 데이터",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccommodationMemoUpdateRequest"
+              },
+              "examples": {
+                "메모 수정 요청 예시": {
+                  "description": "메모 수정 요청 예시",
+                  "value": {
+                    "memo": "이 숙소는 바다 전망이 좋고 조식이 맛있어요!"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponseAccommodationMemoUpdateResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT": [] }]
+      }
+    },
     "/api/users/me": {
       "get": {
         "tags": ["USER API"],
@@ -1088,7 +1138,7 @@
             "in": "path",
             "description": "조회할 숙소의 ID",
             "required": true,
-            "schema": { "type": "integer", "format": "int64", "minimum": 1 }
+            "schema": { "type": "integer", "format": "int64" }
           }
         ],
         "responses": {
@@ -1116,7 +1166,7 @@
             "in": "path",
             "description": "삭제할 숙소의 ID",
             "required": true,
-            "schema": { "type": "integer", "format": "int64", "minimum": 1 }
+            "schema": { "type": "integer", "format": "int64" }
           }
         ],
         "responses": {
@@ -1146,21 +1196,21 @@
             "in": "query",
             "description": "숙소가 포함된 여행보드의 ID",
             "required": true,
-            "schema": { "type": "integer", "minimum": 1 }
+            "schema": { "type": "integer" }
           },
           {
             "name": "page",
             "in": "query",
             "description": "페이지 번호",
             "required": true,
-            "schema": { "type": "integer", "minimum": 0 }
+            "schema": { "type": "integer" }
           },
           {
             "name": "size",
             "in": "query",
             "description": "페이지 크기",
             "required": true,
-            "schema": { "type": "integer", "minimum": 1 }
+            "schema": { "type": "integer" }
           },
           {
             "name": "userId",
@@ -1204,7 +1254,7 @@
             "in": "query",
             "description": "숙소가 포함된 여행보드의 ID",
             "required": true,
-            "schema": { "type": "integer", "format": "int64", "minimum": 1 }
+            "schema": { "type": "integer", "format": "int64" }
           },
           {
             "name": "userId",
@@ -1671,7 +1721,7 @@
         "type": "object",
         "properties": {
           "tripBoardId": { "type": "integer", "format": "int64" },
-          "tableName": { "type": "string", "minLength": 1 },
+          "tableName": { "type": "string" },
           "accommodationIdList": {
             "type": "array",
             "items": { "type": "integer", "format": "int64" },
@@ -1905,6 +1955,58 @@
           "distance": { "type": "string" },
           "byFoot": { "$ref": "#/components/schemas/DistanceInfo" },
           "byCar": { "$ref": "#/components/schemas/DistanceInfo" }
+        }
+      },
+      "AccommodationMemoUpdateRequest": {
+        "type": "object",
+        "description": "숙소 메모 수정 요청",
+        "properties": {
+          "memo": {
+            "type": "string",
+            "description": "수정할 메모 내용",
+            "example": "이 숙소는 바다 전망이 좋고 조식이 맛있어요!",
+            "maxLength": 50,
+            "minLength": 0
+          }
+        }
+      },
+      "AccommodationMemoUpdateResponse": {
+        "type": "object",
+        "description": "숙소 메모 수정 응답",
+        "properties": {
+          "accommodationId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "숙소 ID",
+            "example": 1
+          },
+          "memo": {
+            "type": "string",
+            "description": "수정된 메모 내용",
+            "example": "이 숙소는 바다 전망이 좋고 조식이 맛있어요!"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "메모 수정 시간",
+            "example": "2024-01-15T10:30:00"
+          }
+        }
+      },
+      "StandardResponseAccommodationMemoUpdateResponse": {
+        "type": "object",
+        "description": "API 응답의 표준 형식을 정의하는 클래스",
+        "properties": {
+          "responseType": {
+            "type": "string",
+            "description": "응답 유형",
+            "enum": ["SUCCESS", "ERROR"],
+            "example": "SUCCESS"
+          },
+          "result": {
+            "$ref": "#/components/schemas/AccommodationMemoUpdateResponse",
+            "description": "응답 결과 데이터"
+          }
         }
       },
       "StandardResponseUserInfoResponse": {

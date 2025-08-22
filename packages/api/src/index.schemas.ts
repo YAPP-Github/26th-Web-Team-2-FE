@@ -362,7 +362,6 @@ export interface StandardResponseOauthLoginResponse {
 
 export interface CreateComparisonTableRequest {
   tripBoardId: number;
-  /** @minLength 1 */
   tableName?: string;
   /** @minItems 1 */
   accommodationIdList?: number[];
@@ -547,6 +546,46 @@ export interface Transportation {
   distance?: string;
   byFoot?: DistanceInfo;
   byCar?: DistanceInfo;
+}
+
+/**
+ * 숙소 메모 수정 요청
+ */
+export interface AccommodationMemoUpdateRequest {
+  /**
+   * 수정할 메모 내용
+   * @minLength 0
+   * @maxLength 50
+   */
+  memo?: string;
+}
+
+/**
+ * 숙소 메모 수정 응답
+ */
+export interface AccommodationMemoUpdateResponse {
+  /** 숙소 ID */
+  accommodationId?: number;
+  /** 수정된 메모 내용 */
+  memo?: string;
+  /** 메모 수정 시간 */
+  updatedAt?: Date;
+}
+
+/**
+ * 응답 유형
+ */
+export type StandardResponseAccommodationMemoUpdateResponseResponseType =
+  | "SUCCESS"
+  | "ERROR";
+/**
+ * API 응답의 표준 형식을 정의하는 클래스
+ */
+export interface StandardResponseAccommodationMemoUpdateResponse {
+  /** 응답 유형 */
+  responseType?: StandardResponseAccommodationMemoUpdateResponseResponseType;
+  /** 응답 결과 데이터 */
+  result?: AccommodationMemoUpdateResponse;
 }
 
 /**
@@ -948,17 +987,14 @@ export type GetComparisonTablesByTripBoardParams = {
 export type GetAccommodationByTripBoardIdAndUserIdParams = {
   /**
    * 숙소가 포함된 여행보드의 ID
-   * @minimum 1
    */
   tripBoardId: number;
   /**
    * 페이지 번호
-   * @minimum 0
    */
   page: number;
   /**
    * 페이지 크기
-   * @minimum 1
    */
   size: number;
   /**
@@ -974,7 +1010,6 @@ export type GetAccommodationByTripBoardIdAndUserIdParams = {
 export type GetAccommodationCountByTripBoardIdParams = {
   /**
    * 숙소가 포함된 여행보드의 ID
-   * @minimum 1
    */
   tripBoardId: number;
   /**

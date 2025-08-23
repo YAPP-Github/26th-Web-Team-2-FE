@@ -19,7 +19,7 @@ const ActionCard = ({
       type="button"
       onClick={onClick}
       className={cn(
-        `flex min-h-[24.2rem] min-w-[38.4rem] flex-col items-center justify-center gap-[0.8rem] rounded-[1.6rem]`,
+        `flex min-h-[24.2rem] flex-col items-center justify-center gap-[0.8rem] rounded-[1.6rem]`,
         `border border-dashed`,
         `border-neutral-80 bg-neutral-98`,
         `hover:border-neutral-70 hover:bg-neutral-95`,

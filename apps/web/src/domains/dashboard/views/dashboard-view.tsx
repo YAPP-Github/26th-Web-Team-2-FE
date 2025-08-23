@@ -49,7 +49,7 @@ const DashboardView = () => {
         <h1 className="mb-[3.6rem] text-neutral-10 text-title1-semi36">
           나의 여행
         </h1>
-        <ul className="grid grid-cols-3 gap-[4rem]">
+        <ul className="grid gap-[4rem] max-lg:gap-[2rem] max-xl:grid-cols-2 xl:grid-cols-3">
           <li>
             <ActionCard
               onClick={() => setShowCreateModal(true)}

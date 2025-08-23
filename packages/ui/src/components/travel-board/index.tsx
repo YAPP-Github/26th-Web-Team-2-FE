@@ -75,9 +75,9 @@ const TravelBoard = ({
   return (
     <section
       className={cn(
-        `relative flex min-h-[24.2rem] min-w-[38.4rem] flex-col rounded-[1.6rem] pt-[2.4rem] pr-[2.8rem] pb-[2.4rem] pl-[3.2rem]`,
-        `border border-neutral-90 bg-neutral-99`,
-        `hover:border-neutral-80 hover:bg-neutral-98`,
+        "relative flex min-h-[24.2rem] flex-col rounded-[1.6rem] py-[2.4rem] pr-[2.8rem] pl-[3.2rem]",
+        "border border-neutral-90 bg-neutral-99",
+        "hover:border-neutral-80 hover:bg-neutral-98",
         moreHover && "border hover:border-secondary-90 hover:bg-neutral-99",
         className,
       )}
@@ -106,9 +106,9 @@ const TravelBoard = ({
             onMouseEnter={() => setMoreHover(true)}
             onMouseLeave={() => setMoreHover(false)}
             onClick={handleDropdownToggle}
-            className="rounded-[1.2rem] p-[0.8rem] hover:bg-neutral-98 focus:bg-neutral-95"
+            className="cursor-pointer rounded-[1.2rem] p-0 hover:bg-neutral-98 focus:bg-neutral-95"
           >
-            <IcMore width={32} height={32} className="text-neutral-50" />
+            <IcMore className="h-[3.2rem] w-[3.2rem] text-neutral-50" />
           </button>
           {/* 드롭다운 */}
           <ActionOption.Menu isOpen={isDropdownOpen}>

@@ -144,7 +144,7 @@ const PlaceListSection = ({
   useCollapseOnScroll(listRef, isInputExpanded, handleCloseInputExpansion);
 
   const { saveMemo, onToggle, onClose, openedToggle, isUpdateMemoPending } =
-    useUpdateMemo(accessToken, selectedPerson, selectedFilter);
+    useUpdateMemo(accessToken, selectedPerson, selectedFilter, Number(id));
   const { register, handleSubmit, watch, reset } = useForm<{ memo: string }>();
 
   const memoText = watch("memo") || "";

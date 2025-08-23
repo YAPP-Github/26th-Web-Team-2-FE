@@ -7,6 +7,7 @@ const useUpdateMemo = (
   accessToken: string | null,
   selectedPerson: number | null,
   selectedFilter: string | null,
+  tripBoardId: number | null,
 ) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -35,7 +36,7 @@ const useUpdateMemo = (
           queryClient.invalidateQueries({
             queryKey: [
               "accommodations",
-              openedToggle,
+              tripBoardId,
               selectedPerson === 0 ? undefined : selectedPerson,
               10,
               selectedFilter,

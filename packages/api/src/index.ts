@@ -34,6 +34,7 @@ import {
 } from "@tanstack/react-query";
 import { http } from "./api/http";
 import type {
+  AccommodationMemoUpdateRequest,
   AccommodationRegisterRequest,
   AddAccommodationRequest,
   CreateComparisonTableRequest,
@@ -47,6 +48,7 @@ import type {
   RefreshTokenRequest,
   StandardResponseAccommodationCountResponse,
   StandardResponseAccommodationDeleteResponse,
+  StandardResponseAccommodationMemoUpdateResponse,
   StandardResponseAccommodationPageResponse,
   StandardResponseAccommodationRegisterResponse,
   StandardResponseAccommodationResponse,
@@ -2545,6 +2547,116 @@ export const useToggleInvitationActive = <TError = unknown, TContext = unknown>(
   TContext
 > => {
   const mutationOptions = getToggleInvitationActiveMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * 기존에 등록된 숙소의 메모를 수정합니다. 메모는 최대 50자까지 입력 가능하며, null 또는 빈 문자열로 설정할 수 있습니다.
+ * @summary 숙소 메모 수정
+ */
+export type updateAccommodationMemoResponse200 = {
+  data: StandardResponseAccommodationMemoUpdateResponse;
+  status: 200;
+};
+
+export type updateAccommodationMemoResponseComposite =
+  updateAccommodationMemoResponse200;
+
+export type updateAccommodationMemoResponse =
+  updateAccommodationMemoResponseComposite & {
+    headers: Headers;
+  };
+
+export const getUpdateAccommodationMemoUrl = (accommodationId: number) => {
+  return `https://api.ssok.info/api/accommodations/${accommodationId}/memo`;
+};
+
+export const updateAccommodationMemo = async (
+  accommodationId: number,
+  accommodationMemoUpdateRequest: AccommodationMemoUpdateRequest,
+  options?: RequestInit,
+): Promise<updateAccommodationMemoResponse> => {
+  return http<updateAccommodationMemoResponse>(
+    getUpdateAccommodationMemoUrl(accommodationId),
+    {
+      ...options,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(accommodationMemoUpdateRequest),
+    },
+  );
+};
+
+export const getUpdateAccommodationMemoMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateAccommodationMemo>>,
+    TError,
+    { accommodationId: number; data: AccommodationMemoUpdateRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateAccommodationMemo>>,
+  TError,
+  { accommodationId: number; data: AccommodationMemoUpdateRequest },
+  TContext
+> => {
+  const mutationKey = ["updateAccommodationMemo"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateAccommodationMemo>>,
+    { accommodationId: number; data: AccommodationMemoUpdateRequest }
+  > = (props) => {
+    const { accommodationId, data } = props ?? {};
+
+    return updateAccommodationMemo(accommodationId, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpdateAccommodationMemoMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateAccommodationMemo>>
+>;
+export type UpdateAccommodationMemoMutationBody =
+  AccommodationMemoUpdateRequest;
+export type UpdateAccommodationMemoMutationError = unknown;
+
+/**
+ * @summary 숙소 메모 수정
+ */
+export const useUpdateAccommodationMemo = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof updateAccommodationMemo>>,
+      TError,
+      { accommodationId: number; data: AccommodationMemoUpdateRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof updateAccommodationMemo>>,
+  TError,
+  { accommodationId: number; data: AccommodationMemoUpdateRequest },
+  TContext
+> => {
+  const mutationOptions = getUpdateAccommodationMemoMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };

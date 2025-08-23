@@ -76,13 +76,13 @@ const LinkInputSection = ({
           >
             {/* 링크 저장_입력란 */}
             <LinkInputContainer register={register} watch={watch} />
-            {/* 링크 저장_버튼 */}
+            {/* 메모 저장_버튼 */}
             <ButtonContainer
               isMemoInputVisible={isMemoInputVisible}
               register={register}
               memoText={memoText}
               maxChars={maxChars}
-              handleMemoInputToggle={handleMemoInputToggle}
+              handleMemoInput={handleMemoInputToggle}
             />
           </form>
         )}

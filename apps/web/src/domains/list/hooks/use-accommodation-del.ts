@@ -25,7 +25,7 @@ const useDeleteAccommodationWithOptimisticUpdate = ({
   const listQueryKey = [
     "accommodations",
     tripBoardId,
-    userId === 0 ? null : userId,
+    userId === 0 ? undefined : userId,
     size,
     sort,
   ];

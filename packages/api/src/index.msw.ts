@@ -12,6 +12,7 @@ import { delay, HttpResponse, http } from "msw";
 import type {
   StandardResponseAccommodationCountResponse,
   StandardResponseAccommodationDeleteResponse,
+  StandardResponseAccommodationMemoUpdateResponse,
   StandardResponseAccommodationPageResponse,
   StandardResponseAccommodationRegisterResponse,
   StandardResponseAccommodationResponse,
@@ -1308,6 +1309,37 @@ export const getToggleInvitationActiveResponseMock = (
       ]),
       invitationCode: faker.helpers.arrayElement([
         faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  ...overrideResponse,
+});
+
+export const getUpdateAccommodationMemoResponseMock = (
+  overrideResponse: Partial<StandardResponseAccommodationMemoUpdateResponse> = {},
+): StandardResponseAccommodationMemoUpdateResponse => ({
+  responseType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(["SUCCESS", "ERROR"] as const),
+    undefined,
+  ]),
+  result: faker.helpers.arrayElement([
+    {
+      accommodationId: faker.helpers.arrayElement([
+        faker.number.int({
+          min: undefined,
+          max: undefined,
+          multipleOf: undefined,
+        }),
+        undefined,
+      ]),
+      memo: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      updatedAt: faker.helpers.arrayElement([
+        new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
         undefined,
       ]),
     },
@@ -3103,6 +3135,34 @@ export const getToggleInvitationActiveMockHandler = (
   );
 };
 
+export const getUpdateAccommodationMemoMockHandler = (
+  overrideResponse?:
+    | StandardResponseAccommodationMemoUpdateResponse
+    | ((
+        info: Parameters<Parameters<typeof http.patch>[1]>[0],
+      ) =>
+        | Promise<StandardResponseAccommodationMemoUpdateResponse>
+        | StandardResponseAccommodationMemoUpdateResponse),
+) => {
+  return http.patch(
+    "*/api/accommodations/:accommodationId/memo",
+    async (info) => {
+      await delay(500);
+
+      return new HttpResponse(
+        JSON.stringify(
+          overrideResponse !== undefined
+            ? typeof overrideResponse === "function"
+              ? await overrideResponse(info)
+              : overrideResponse
+            : getUpdateAccommodationMemoResponseMock(),
+        ),
+        { status: 200, headers: { "Content-Type": "application/json" } },
+      );
+    },
+  );
+};
+
 export const getGetUserInfoMockHandler = (
   overrideResponse?:
     | StandardResponseUserInfoResponse
@@ -3420,6 +3480,7 @@ export const getYapp26Web2Mock = () => [
   getCreateComparisonTableMockHandler(),
   getRegisterAccommodationCardMockHandler(),
   getToggleInvitationActiveMockHandler(),
+  getUpdateAccommodationMemoMockHandler(),
   getGetUserInfoMockHandler(),
   getGetInvitationCodeMockHandler(),
   getGetTripBoardsMockHandler(),

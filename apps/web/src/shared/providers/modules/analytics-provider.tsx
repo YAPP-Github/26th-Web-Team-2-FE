@@ -8,9 +8,10 @@ import {
   useEffect,
   useState,
 } from "react";
-import type {
-  EventName,
-  EventParameterMap,
+import {
+  type EventName,
+  EventNameMapper,
+  type EventParameterMap,
 } from "@/shared/contants/analytics/mixpanel-event-parameter-map";
 
 type AnalyticsContextProps = {
@@ -65,9 +66,10 @@ const AnalyticsProvider = ({ children }: { children: React.ReactNode }) => {
       eventProperties: ReturnType<(typeof EventParameterMap)[T]>,
     ) => {
       if (!isReady) return console.warn("[TRACKING_ERROR] not ready");
+      const EventName = EventNameMapper[eventName];
       isDev
-        ? console.log("[TRACKING]", eventName, eventProperties)
-        : mixpanel.track(eventName, eventProperties);
+        ? console.log("[TRACKING]", EventName, eventProperties)
+        : mixpanel.track(EventNameMapper[eventName], eventProperties);
     },
     [isReady, isDev],
   );

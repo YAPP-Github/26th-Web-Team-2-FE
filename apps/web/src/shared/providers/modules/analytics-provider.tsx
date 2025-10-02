@@ -52,7 +52,7 @@ const AnalyticsProvider = ({ children }: { children: React.ReactNode }) => {
     mixpanel.init(MIXPANEL_KEY, {
       debug: isDev,
       loaded: () => setIsReady(true),
-      track_pageview: "url-with-path",
+      track_pageview: false,
       record_sessions_percent: 100,
       record_heatmap_data: true,
     });

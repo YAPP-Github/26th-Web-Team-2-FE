@@ -53,7 +53,7 @@ const AnalyticsProvider = ({ children }: { children: React.ReactNode }) => {
       debug: isDev,
       loaded: () => setIsReady(true),
       track_pageview: "url-with-path",
-      record_sessions_percent: 10,
+      record_sessions_percent: 100,
       record_heatmap_data: true,
     });
   }, [MIXPANEL_KEY, isDev]);

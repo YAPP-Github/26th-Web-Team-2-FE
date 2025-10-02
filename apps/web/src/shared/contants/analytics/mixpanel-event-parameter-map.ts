@@ -1,11 +1,11 @@
 import { makeClickFilterParameter } from "./parameters/make-click-filter-parameter";
 
-export const AmplitudeEventParameterMap = {
+export const EventParameterMap = {
   CLICK_FILTER: makeClickFilterParameter,
 } as const;
 
-export const AmlitudeEventNameMapper = {
+export const EventNameMapper = {
   CLICK_FILTER: "click_filter",
 } as const;
 
-export type AmplitudeEventName = keyof typeof AmplitudeEventParameterMap;
+export type EventName = keyof typeof EventParameterMap;

@@ -9,14 +9,14 @@ import {
   useState,
 } from "react";
 import type {
-  AmplitudeEventName,
-  AmplitudeEventParameterMap,
+  EventName,
+  EventParameterMap,
 } from "@/shared/contants/analytics/mixpanel-event-parameter-map";
 
 type AnalyticsContextProps = {
-  trackEvent: <T extends AmplitudeEventName>(
+  trackEvent: <T extends EventName>(
     eventName: T,
-    eventProperties: ReturnType<(typeof AmplitudeEventParameterMap)[T]>,
+    eventProperties: ReturnType<(typeof EventParameterMap)[T]>,
   ) => void;
   trackPageView: () => void;
   setUserProperty: (
@@ -60,9 +60,9 @@ const AnalyticsProvider = ({ children }: { children: React.ReactNode }) => {
 
   /** 이벤트 트래킹 */
   const trackEvent = useCallback(
-    <T extends AmplitudeEventName>(
+    <T extends EventName>(
       eventName: T,
-      eventProperties: ReturnType<(typeof AmplitudeEventParameterMap)[T]>,
+      eventProperties: ReturnType<(typeof EventParameterMap)[T]>,
     ) => {
       if (!isReady) return console.warn("[TRACKING_ERROR] not ready");
       isDev

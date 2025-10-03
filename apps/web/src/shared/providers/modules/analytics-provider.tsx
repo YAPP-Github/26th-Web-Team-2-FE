@@ -35,7 +35,7 @@ const AnalyticsProvider = ({ children }: { children: React.ReactNode }) => {
   const [isReady, setIsReady] = useState(false);
   const isDev = process.env.NODE_ENV === "development";
   const MIXPANEL_KEY = process.env.NEXT_PUBLIC_MIXPANEL_KEY;
-  const pathname = usePathname();
+  const _pathname = usePathname();
 
   /** 초기화 */
   useEffect(() => {
@@ -56,6 +56,7 @@ const AnalyticsProvider = ({ children }: { children: React.ReactNode }) => {
       track_pageview: false,
       record_sessions_percent: 100,
       record_heatmap_data: true,
+      autocapture: true,
     });
   }, [MIXPANEL_KEY, isDev]);
 
@@ -91,11 +92,10 @@ const AnalyticsProvider = ({ children }: { children: React.ReactNode }) => {
     [isReady, isDev],
   );
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: 페이지 이동 감지를 위해 pathname 의존성을 의도적으로 포함
-  useEffect(() => {
-    if (!isReady) return;
-    trackPageView();
-  }, [pathname, isReady, trackPageView]);
+  // useEffect(() => {
+  //   if (!isReady) return;
+  //   trackPageView();
+  // }, [pathname, isReady, trackPageView]);
 
   return (
     <AnalyticsContext.Provider

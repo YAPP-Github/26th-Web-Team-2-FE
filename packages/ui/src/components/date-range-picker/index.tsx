@@ -95,16 +95,29 @@ const DateRangePicker = ({
     if (!selected) {
       return;
     }
+    const { from: selectedFrom, to: selectedTo } = selected;
+    const { from: currentFrom, to: currentTo } = value || {};
 
+    // 여행 시작일 handler
     if (activeField === "from") {
-      if (selected.from) {
-        setFrom(selected.from);
-        // from 선택 후 to로 자동 전환
-        if (!value.to || selected.from > value.to) {
-          setActiveField("to");
-        }
+      // 시작일이 to로 들어간 경우 (기존 from 이 존재하는 경우)
+      const isSameFrom = currentFrom?.getTime() === selectedFrom?.getTime();
+
+      if (isSameFrom) {
+        const shouldResetTo = selectedTo && currentTo && selectedTo > currentTo;
+
+        if (shouldResetTo) onChange({ from: selectedTo, to: selectedTo });
+        else setFrom(selectedTo ?? currentTo);
+      } else if (selectedFrom) {
+        // 시작일이 from 으로 들어간 경우
+        onChange({ from: selectedFrom, to: selectedFrom });
       }
-    } else if (activeField === "to") {
+
+      setActiveField("to");
+      return;
+    }
+    // 여행 종료일 handler
+    if (activeField === "to") {
       if (selected.to || selected.from) {
         setTo(selected.to || selected.from);
       }
@@ -117,7 +130,7 @@ const DateRangePicker = ({
         from: (
           <DateButton
             ref={refs.from}
-            value={value.from}
+            value={value?.from}
             placeholder={placeholder.from}
             onClick={() => openCalendar("from")}
             disabled={disabled}
@@ -126,7 +139,7 @@ const DateRangePicker = ({
         to: (
           <DateButton
             ref={refs.to}
-            value={value.to}
+            value={value?.to}
             placeholder={placeholder.to}
             onClick={() => openCalendar("to")}
             disabled={disabled}
@@ -137,7 +150,7 @@ const DateRangePicker = ({
         <div ref={floatingRef} style={floatingStyles} className="w-fit">
           <Calendar
             selectedDate={
-              value.from ? { from: value.from, to: value.to } : undefined
+              value ? { from: value?.from, to: value?.to } : undefined
             }
             onDateSelect={handleDateSelect}
             onApplyDate={closeCalendar}

@@ -23,6 +23,13 @@ const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
   });
 
   const { handleSubmit, watch, control } = useForm<BoardCreateFormData>({
+    defaultValues: {
+      destination: "",
+      dateRange: {
+        from: undefined,
+        to: undefined,
+      },
+    },
     mode: "onChange",
   });
 

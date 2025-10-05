@@ -51,15 +51,19 @@ const DateRangePicker = ({
   const setActiveField = (field: "from" | "to" | null) => {
     setRawActiveField(field);
 
-    // reference 업데이트
     if (field === "from" && refs.from.current) {
+      // reference 업데이트
       referenceRef.current = refs.from.current;
     } else if (field === "to" && refs.to.current) {
       referenceRef.current = refs.to.current;
+    } else {
+      referenceRef.current = null;
     }
 
     refresh();
-    referenceRef.current?.focus();
+    if (field !== null) {
+      referenceRef.current?.focus();
+    }
   };
 
   useOutsideClickEffect(
@@ -80,7 +84,7 @@ const DateRangePicker = ({
 
   const closeCalendar = () => {
     setOpen(false);
-    setActiveField(null);
+    activeField === "to" ? setActiveField(null) : setActiveField("from");
   };
 
   const setFrom = (date: Date | undefined) => {

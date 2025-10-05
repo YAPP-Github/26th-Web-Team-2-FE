@@ -1,4 +1,5 @@
 "use client";
+import { useToast } from "@ssok/ui";
 import {
   createContext,
   type ReactNode,
@@ -22,6 +23,7 @@ const PlaceSelectionContext = createContext<PlaceSelectionContextType | null>(
 );
 
 const PlaceSelectionProvider = ({ children }: { children: ReactNode }) => {
+  const { toast } = useToast();
   const [selectedPlaces, setSelectedPlaces] = useState<number[]>([]);
   const [lastSelectedPlace, setLastSelectedPlace] = useState<number | null>(
     null,
@@ -31,6 +33,11 @@ const PlaceSelectionProvider = ({ children }: { children: ReactNode }) => {
 
   const togglePlaceSelect = useCallback(
     (id: number) => {
+      if (selectedPlaces.length >= 10) {
+        toast.success("최대 10개까지 선택할 수 있습니다.");
+        return;
+      }
+
       setSelectedPlaces((prev) => {
         const alreadySelected = prev.includes(id);
         const updated = alreadySelected
@@ -41,18 +48,23 @@ const PlaceSelectionProvider = ({ children }: { children: ReactNode }) => {
       setLastSelectedPlace(id);
       if (!isPanelExpanded) handlePanelExpand();
     },
-    [isPanelExpanded, handlePanelExpand],
+    [selectedPlaces, isPanelExpanded, handlePanelExpand, toast.success],
   );
 
   const onSelectPlace = useCallback(
     (id: number) => {
-      if (!selectedPlaces.includes(id)) {
-        setSelectedPlaces((prev) => [...prev, id]);
+      if (selectedPlaces.includes(id)) return;
+
+      if (selectedPlaces.length >= 10) {
+        toast.success("최대 10개까지 선택할 수 있습니다.");
+        return;
       }
+
+      setSelectedPlaces((prev) => [...prev, id]);
       setLastSelectedPlace(id);
       if (!isPanelExpanded) handlePanelExpand();
     },
-    [selectedPlaces, isPanelExpanded, handlePanelExpand],
+    [selectedPlaces, isPanelExpanded, handlePanelExpand, toast],
   );
 
   const removePlace = useCallback((id: number) => {

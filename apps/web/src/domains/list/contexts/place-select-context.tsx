@@ -33,22 +33,22 @@ const PlaceSelectionProvider = ({ children }: { children: ReactNode }) => {
 
   const togglePlaceSelect = useCallback(
     (id: number) => {
-      if (selectedPlaces.length >= 10) {
-        toast.success("최대 10개까지 선택할 수 있습니다.");
-        return;
-      }
-
       setSelectedPlaces((prev) => {
         const alreadySelected = prev.includes(id);
-        const updated = alreadySelected
-          ? prev.filter((placeId) => placeId !== id)
-          : [...prev, id];
-        return updated;
+        if (alreadySelected) {
+          return prev.filter((placeId) => placeId !== id);
+        }
+        if (prev.length >= 10) {
+          toast.success("최대 10개까지 선택할 수 있습니다.");
+          return prev;
+        }
+        return [...prev, id];
       });
+
       setLastSelectedPlace(id);
       if (!isPanelExpanded) handlePanelExpand();
     },
-    [selectedPlaces, isPanelExpanded, handlePanelExpand, toast.success],
+    [isPanelExpanded, handlePanelExpand, toast],
   );
 
   const onSelectPlace = useCallback(

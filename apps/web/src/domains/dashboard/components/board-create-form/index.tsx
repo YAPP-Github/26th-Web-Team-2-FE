@@ -26,8 +26,8 @@ const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
     defaultValues: {
       destination: "",
       dateRange: {
-        from: new Date(),
-        to: new Date(new Date().setDate(new Date().getDate() + 1)),
+        from: undefined,
+        to: undefined,
       },
     },
     mode: "onChange",

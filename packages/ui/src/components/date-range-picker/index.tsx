@@ -51,15 +51,19 @@ const DateRangePicker = ({
   const setActiveField = (field: "from" | "to" | null) => {
     setRawActiveField(field);
 
-    // reference 업데이트
     if (field === "from" && refs.from.current) {
+      // reference 업데이트
       referenceRef.current = refs.from.current;
     } else if (field === "to" && refs.to.current) {
       referenceRef.current = refs.to.current;
+    } else {
+      referenceRef.current = null;
     }
 
     refresh();
-    referenceRef.current?.focus();
+    if (field !== null) {
+      referenceRef.current?.focus();
+    }
   };
 
   useOutsideClickEffect(
@@ -80,7 +84,7 @@ const DateRangePicker = ({
 
   const closeCalendar = () => {
     setOpen(false);
-    setActiveField(null);
+    activeField === "to" ? setActiveField(null) : setActiveField("from");
   };
 
   const setFrom = (date: Date | undefined) => {
@@ -96,15 +100,28 @@ const DateRangePicker = ({
       return;
     }
 
+    // 여행 시작일 handler
     if (activeField === "from") {
-      if (selected.from) {
-        setFrom(selected.from);
-        // from 선택 후 to로 자동 전환
-        if (!value.to || selected.from > value.to) {
-          setActiveField("to");
+      // 시작일이 to로 들어간 경우 (기존 from 이 존재하는 경우)
+      if (value?.from?.getTime() === selected.from?.getTime()) {
+        const [selectedFrom, currentTo] = [selected.to, value?.to];
+
+        if (selectedFrom && currentTo && selectedFrom > currentTo) {
+          onChange({ from: selectedFrom, to: selectedFrom });
+        } else {
+          setFrom(selectedFrom ?? currentTo);
         }
+      } else if (selected.from) {
+        // 시작일이 from 으로 들어간 경우
+        const selectedFrom = selected.from;
+        onChange({ from: selectedFrom, to: selectedFrom });
       }
-    } else if (activeField === "to") {
+
+      setActiveField("to");
+      return;
+    }
+    // 여행 종료일 handler
+    if (activeField === "to") {
       if (selected.to || selected.from) {
         setTo(selected.to || selected.from);
       }
@@ -117,7 +134,7 @@ const DateRangePicker = ({
         from: (
           <DateButton
             ref={refs.from}
-            value={value.from}
+            value={value?.from}
             placeholder={placeholder.from}
             onClick={() => openCalendar("from")}
             disabled={disabled}
@@ -126,7 +143,7 @@ const DateRangePicker = ({
         to: (
           <DateButton
             ref={refs.to}
-            value={value.to}
+            value={value?.to}
             placeholder={placeholder.to}
             onClick={() => openCalendar("to")}
             disabled={disabled}
@@ -137,7 +154,7 @@ const DateRangePicker = ({
         <div ref={floatingRef} style={floatingStyles} className="w-fit">
           <Calendar
             selectedDate={
-              value.from ? { from: value.from, to: value.to } : undefined
+              value ? { from: value?.from, to: value?.to } : undefined
             }
             onDateSelect={handleDateSelect}
             onApplyDate={closeCalendar}

@@ -99,21 +99,21 @@ const DateRangePicker = ({
     if (!selected) {
       return;
     }
-    const { from: selectedFrom, to: selectedTo } = selected;
-    const { from: currentFrom, to: currentTo } = value || {};
 
     // 여행 시작일 handler
     if (activeField === "from") {
       // 시작일이 to로 들어간 경우 (기존 from 이 존재하는 경우)
-      const isSameFrom = currentFrom?.getTime() === selectedFrom?.getTime();
+      if (value?.from?.getTime() === selected.from?.getTime()) {
+        const [selectedFrom, currentTo] = [selected.to, value?.to];
 
-      if (isSameFrom) {
-        const shouldResetTo = selectedTo && currentTo && selectedTo > currentTo;
-
-        if (shouldResetTo) onChange({ from: selectedTo, to: selectedTo });
-        else setFrom(selectedTo ?? currentTo);
-      } else if (selectedFrom) {
+        if (selectedFrom && currentTo && selectedFrom > currentTo) {
+          onChange({ from: selectedFrom, to: selectedFrom });
+        } else {
+          setFrom(selectedFrom ?? currentTo);
+        }
+      } else if (selected.from) {
         // 시작일이 from 으로 들어간 경우
+        const selectedFrom = selected.from;
         onChange({ from: selectedFrom, to: selectedFrom });
       }
 

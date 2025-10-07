@@ -11,6 +11,10 @@ export interface GraphProps
   showGraph?: boolean;
   icon?: ReactNode;
   onChange?: (value: string) => void;
+  inputProps?: Omit<
+    ComponentProps<"input">,
+    "value" | "onChange" | "className"
+  >;
 }
 
 const variants = cva(
@@ -39,6 +43,7 @@ const Graph = ({
   icon,
   showGraph = true,
   onChange,
+  inputProps,
   className,
   ...props
 }: GraphProps) => {
@@ -87,6 +92,7 @@ const Graph = ({
                 "[&>input]:[-moz-appearance:_textfield] [&>input]:[&::-webkit-inner-spin-button]:appearance-none [&>input]:[&::-webkit-outer-spin-button]:appearance-none",
                 text,
               )}
+              {...inputProps}
             />
           ) : (
             <span className={cn("text-body1-semi16", text)}>

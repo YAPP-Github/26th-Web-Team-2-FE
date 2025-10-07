@@ -49,7 +49,7 @@ Default.args = {
 };
 
 export const WithGraph: StoryFn<GraphProps> = () => {
-  const [value, setValuee] = useState<number | null>(9.0);
+  const [value, setValuee] = useState<string>("9.0");
 
   return (
     <div className="space-y-8">
@@ -58,16 +58,16 @@ export const WithGraph: StoryFn<GraphProps> = () => {
         <div className="grid grid-cols-2 gap-4">
           <Graph
             showGraph={true}
-            value={9.5}
+            value="9.5"
             label="매우 깨끗"
             state="default"
           />
-          <Graph showGraph={true} value={7.5} label="깨끗" state="default" />
-          <Graph showGraph={true} value={5.0} label="보통" state="default" />
-          <Graph showGraph={true} value={3.0} label="나쁨" state="default" />
+          <Graph showGraph={true} value="7.5" label="깨끗" state="default" />
+          <Graph showGraph={true} value="5.0" label="보통" state="default" />
+          <Graph showGraph={true} value="3.0" label="나쁨" state="default" />
           <Graph
             showGraph={true}
-            value={1.0}
+            value="1.0"
             label="매우 나쁨"
             state="default"
           />
@@ -75,7 +75,7 @@ export const WithGraph: StoryFn<GraphProps> = () => {
       </div>
       <div className="space-y-4">
         <h3 className="font-semibold text-lg">Active State</h3>
-        <Graph showGraph={true} value={9.0} label="매우 깨끗" state="active" />
+        <Graph showGraph={true} value="9.0" label="매우 깨끗" state="active" />
       </div>
       <div className="space-y-4">
         <h3 className="font-semibold text-lg">Edit State</h3>
@@ -92,7 +92,7 @@ export const WithGraph: StoryFn<GraphProps> = () => {
 };
 
 export const WithoutGraph: StoryFn<GraphProps> = () => {
-  const [value, setValuee] = useState<number | null>(9.0);
+  const [value, setValuee] = useState<string>("9.0");
 
   return (
     <div className="space-y-8">
@@ -101,35 +101,35 @@ export const WithoutGraph: StoryFn<GraphProps> = () => {
         <div className="grid grid-cols-2 gap-4">
           <Graph
             showGraph={false}
-            value={9.5}
+            value="9.5"
             label="매우 좋음"
             icon={<IcStarFull />}
             state="default"
           />
           <Graph
             showGraph={false}
-            value={7.5}
+            value="7.5"
             label="좋음"
             icon={<IcStarFull />}
             state="default"
           />
           <Graph
             showGraph={false}
-            value={5.0}
+            value="5.0"
             label="보통"
             icon={<IcStarFull />}
             state="default"
           />
           <Graph
             showGraph={false}
-            value={3.0}
+            value="3.0"
             label="불만족"
             icon={<IcStarFull />}
             state="default"
           />
           <Graph
             showGraph={false}
-            value={1.0}
+            value="1.0"
             label="매우 불만족"
             icon={<IcStarFull />}
             state="default"
@@ -140,7 +140,7 @@ export const WithoutGraph: StoryFn<GraphProps> = () => {
         <h3 className="font-semibold text-lg">Active State</h3>
         <Graph
           showGraph={false}
-          value={9.0}
+          value="9.0"
           label="매우 좋음"
           icon={<IcStarFull />}
           state="active"

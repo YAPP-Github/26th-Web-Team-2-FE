@@ -49,7 +49,7 @@ Default.args = {
 };
 
 export const WithGraph: StoryFn<GraphProps> = () => {
-  const [value, setValuee] = useState<string>("9.0");
+  const [value, setValue] = useState<string>("9.0");
 
   return (
     <div className="space-y-8">
@@ -84,7 +84,7 @@ export const WithGraph: StoryFn<GraphProps> = () => {
           value={value}
           label="매우 깨끗"
           state="edit"
-          onChange={setValuee}
+          onChange={setValue}
         />
       </div>
     </div>
@@ -92,7 +92,7 @@ export const WithGraph: StoryFn<GraphProps> = () => {
 };
 
 export const WithoutGraph: StoryFn<GraphProps> = () => {
-  const [value, setValuee] = useState<string>("9.0");
+  const [value, setValue] = useState<string>("9.0");
 
   return (
     <div className="space-y-8">
@@ -154,7 +154,7 @@ export const WithoutGraph: StoryFn<GraphProps> = () => {
           label="매우 좋음"
           icon={<IcStarFull />}
           state="edit"
-          onChange={setValuee}
+          onChange={setValue}
         />
       </div>
     </div>

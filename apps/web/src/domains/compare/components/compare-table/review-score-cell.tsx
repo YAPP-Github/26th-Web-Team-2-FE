@@ -1,6 +1,7 @@
 import { Graph, IcStarFull } from "@ssok/ui";
 import { Controller, useFormContext } from "react-hook-form";
 import type { ComparisonFormData, ViewState } from "@/domains/compare/types";
+import { parseScore } from "@/domains/compare/utils/validation";
 
 export interface ReviewScoreCellProps {
   state: ViewState;
@@ -22,18 +23,17 @@ const ReviewScoreCell = ({ state, name }: ReviewScoreCellProps) => {
     <Controller
       control={control}
       name={name}
-      render={({ field }) => {
-        return (
-          <Graph
-            value={field.value || "0"}
-            label={getLabel(parseFloat(field.value || "0"))}
-            icon={<IcStarFull />}
-            showGraph={false}
-            state={state}
-            onChange={field.onChange}
-          />
-        );
-      }}
+      render={({ field }) => (
+        <Graph
+          value={field.value || "0"}
+          label={getLabel(parseFloat(field.value || "0"))}
+          icon={<IcStarFull />}
+          showGraph={false}
+          state={state}
+          onChange={(value) => field.onChange(parseScore(value))}
+          inputProps={{ type: "number", min: "0", max: "10", step: "0.1" }}
+        />
+      )}
     />
   );
 };

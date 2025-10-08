@@ -49,7 +49,7 @@ const NearbyPlace = ({
     } else if (type === "walk") {
       return `${name}.byFoot.time` as const;
     } else {
-      return `${name}.byCar.distance` as const;
+      return `${name}.distance` as const;
     }
   }, [type, name]);
 
@@ -66,8 +66,9 @@ const NearbyPlace = ({
       setValue(`${name}.byCar`, {}, options);
       setValue(`${name}.byFoot`, { time: label }, options);
     } else {
-      setValue(`${name}.byCar`, { distance: label }, options);
+      setValue(`${name}.byCar`, {}, options);
       setValue(`${name}.byFoot`, {}, options);
+      setValue(`${name}.distance`, label, options);
     }
   };
 
@@ -124,17 +125,17 @@ const NearbyPlace = ({
 
 const usePlaceChip = ({ place }: { place: ComparisonPlace }) => {
   return useMemo(() => {
-    let label = "";
-    if (place.byFoot?.time || place.byCar?.distance) {
-      label = place.byFoot?.time || place.byCar?.distance || " ";
+    if (place.byFoot?.time) {
+      const label = place.byFoot?.time || " ";
       return { type: "walk", icon: <IcWalker />, label };
     }
-    if (place.byCar?.time || place.byCar?.distance) {
-      label = place.byCar?.time || place.byCar?.distance || " ";
+    if (place.byCar?.time) {
+      const label = place.byCar?.time || " ";
       return { type: "car", icon: <IcCar />, label };
     }
 
-    return { type: "km", icon: <IcKm />, label: place.distance || "-" };
+    const label = place.distance || place.byCar?.distance || " ";
+    return { type: "km", icon: <IcKm />, label };
   }, [place]);
 };
 

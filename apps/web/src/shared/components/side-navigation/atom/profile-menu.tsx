@@ -6,10 +6,10 @@ import {
   LoadingIndicator,
   useToggle,
 } from "@ssok/ui";
-import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import useOutsideClick from "@/domains/list/hooks/use-outside-click";
 import useSession from "@/shared/hooks/use-session";
+import { useAnalytics } from "@/shared/providers/modules/analytics-provider";
 
 export const ModalConfig = {
   logout: {
@@ -28,7 +28,7 @@ export const ModalConfig = {
 };
 
 const ProfileMenu = () => {
-  const _router = useRouter();
+  const { trackEvent } = useAnalytics();
   const { accessToken, isPending: isSessionPending } = useSession();
   const { data: userInfo, isLoading } = useGetUserInfo({
     query: { enabled: !!accessToken },
@@ -39,7 +39,13 @@ const ProfileMenu = () => {
   });
 
   const logout = async () => {
-    window.location.href = "/api/auth/logout?to=/";
+    trackEvent("LOGOUT", {
+      page_referrer: window.location.href,
+    });
+
+    setTimeout(() => {
+      window.location.href = "/api/auth/logout?to=/";
+    }, 200);
   };
 
   const { active, activate, deactivate } = useToggle(false);
@@ -138,7 +144,15 @@ const ProfileMenu = () => {
           if (modalConfig === "logout") {
             logout();
           } else if (modalConfig === "withdraw") {
-            withdraw(undefined, { onSuccess: logout });
+            withdraw(undefined, {
+              onSuccess: () => {
+                trackEvent("SIGNOUT", {
+                  // TODO: 탈퇴 시점에 맞는 여행 갯수 전달 필요
+                  board_count: 10,
+                });
+                logout();
+              },
+            });
           }
         }}
       />

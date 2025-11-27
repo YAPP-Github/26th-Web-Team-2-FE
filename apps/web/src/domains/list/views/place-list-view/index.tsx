@@ -16,6 +16,7 @@ import useDropdown from "@/domains/list/hooks/use-dropdown";
 import useInputPanel from "@/domains/list/hooks/use-input-panel";
 import useRegisterUrlInput from "@/domains/list/hooks/use-register-url-input";
 import useSession from "@/shared/hooks/use-session";
+import { useAnalytics } from "@/shared/providers/modules/analytics-provider";
 
 type FormData = {
   link: string;
@@ -48,6 +49,7 @@ const PlaceListView = () => {
     watch,
     setValue,
   } = useRegisterUrlInput();
+  const { trackEvent } = useAnalytics();
 
   const params = useParams();
   const router = useRouter();
@@ -67,6 +69,12 @@ const PlaceListView = () => {
       },
       {
         onSuccess: () => {
+          // TODO: 서버 응답 변경 후 변경 필요
+          trackEvent("HOTEL_ADD", {
+            board_id: Number(id),
+            hotel_id: 0,
+            hotel_domain: "",
+          });
           window.location.reload();
         },
       },

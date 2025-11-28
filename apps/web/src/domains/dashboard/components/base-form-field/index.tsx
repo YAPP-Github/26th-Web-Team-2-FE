@@ -53,12 +53,7 @@ const BaseFormFields = ({ control }: BoardFormFieldsProps) => {
               const today = new Date();
               today.setHours(0, 0, 0, 0);
 
-              if (
-                !value.from ||
-                !value.to ||
-                value.from < today ||
-                value.to < value.from
-              ) {
+              if (!value.from || !value.to || value.to < value.from) {
                 return false;
               }
 

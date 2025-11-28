@@ -263,7 +263,7 @@ const PlaceListSection = ({
           );
         })}
         {selectedPlaces.length > 0 && (
-          <div className="sticky bottom-0 z-[1] w-full bg-primary-100 px-[2.4rem] pt-[0.8rem] pb-[1.6rem]">
+          <div className="sticky bottom-0 z-[1] w-full bg-primary-100 pt-[0.8rem] pb-[1.6rem]">
             <div
               aria-hidden="true"
               className="pointer-events-none absolute top-[-23%] left-0 h-[2.4rem] w-full bg-gradient-top-white"

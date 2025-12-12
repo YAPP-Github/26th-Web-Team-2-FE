@@ -41,12 +41,17 @@ export class AuthClient {
         return NextResponse.redirect(new URL("/error", request.url));
       }
       await this.setSession(session);
+
       const encoded = request.nextUrl.searchParams.get("state");
-      if (encoded) {
-        const { to } = state.decode<{ to: string }>(encoded);
-        return NextResponse.redirect(new URL(to, request.url));
+      const redirectUrl = new URL(
+        encoded ? state.decode<{ to: string }>(encoded).to : "/",
+        request.url,
+      );
+      redirectUrl.searchParams.set("auth", "callback");
+      if (session.user.newUser) {
+        redirectUrl.searchParams.set("newUser", "true");
       }
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(redirectUrl);
     } catch (error) {
       console.error(error);
       return NextResponse.redirect(new URL("/error", request.url));

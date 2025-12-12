@@ -2,6 +2,7 @@
 
 import { SsokUiProvider } from "@ssok/ui";
 import type { PropsWithChildren } from "react";
+import AuthCallbackTracker from "@/shared/components/auth-callback-tracker";
 import AnalyticsProvider from "./modules/analytics-provider";
 import JotaiProvider from "./modules/jotai-provider";
 import QueryProvider from "./modules/query-provider";
@@ -11,7 +12,10 @@ const Providers = ({ children }: PropsWithChildren) => {
     <JotaiProvider>
       <QueryProvider>
         <AnalyticsProvider>
-          <SsokUiProvider>{children}</SsokUiProvider>
+          <SsokUiProvider>
+            {children}
+            <AuthCallbackTracker />
+          </SsokUiProvider>
         </AnalyticsProvider>
       </QueryProvider>
     </JotaiProvider>

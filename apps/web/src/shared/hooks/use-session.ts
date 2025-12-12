@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 interface SessionUser {
   userId: number;
   nickname: string;
+  newUser: boolean;
 }
 
 interface SessionResponse {

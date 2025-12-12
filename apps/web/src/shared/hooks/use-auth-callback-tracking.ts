@@ -13,14 +13,18 @@ import { useAnalytics } from "@/shared/providers/modules/analytics-provider";
 export const useAuthCallbackTracking = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { trackEvent } = useAnalytics();
+  const { trackEvent, isReady } = useAnalytics();
   const { user } = useSession();
 
   useEffect(() => {
     const authCallback = searchParams.get("auth");
     const isNewUser = searchParams.get("newUser") === "true";
 
-    if (authCallback === "callback" && user) {
+    if (!isReady || !user) {
+      return;
+    }
+
+    if (authCallback === "callback") {
       // URL에서 쿼리 파라미터 제거
       const newUrl = new URL(window.location.href);
       newUrl.searchParams.delete("auth");
@@ -36,5 +40,5 @@ export const useAuthCallbackTracking = () => {
         trackEvent("LOGIN", makeLoginParameter("kakao"));
       }
     }
-  }, [searchParams, user, trackEvent, router]);
+  }, [searchParams, user, trackEvent, router, isReady]);
 };

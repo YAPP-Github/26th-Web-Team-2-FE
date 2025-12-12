@@ -1698,7 +1698,8 @@
           "token": {
             "$ref": "#/components/schemas/TokenSuccessResponse",
             "description": "토큰 정보"
-          }
+          },
+          "newUser": { "type": "boolean" }
         }
       },
       "StandardResponseOauthLoginResponse": {
@@ -1725,6 +1726,7 @@
           "accommodationIdList": {
             "type": "array",
             "items": { "type": "integer", "format": "int64" },
+            "maxItems": 10,
             "minItems": 1
           },
           "factorList": { "type": "array", "items": { "type": "string" } }
@@ -1763,7 +1765,8 @@
       "AccommodationRegisterResponse": {
         "type": "object",
         "properties": {
-          "accommodationId": { "type": "integer", "format": "int64" }
+          "accommodationId": { "type": "integer", "format": "int64" },
+          "accommodationName": { "type": "string" }
         }
       },
       "StandardResponseAccommodationRegisterResponse": {
@@ -2154,7 +2157,8 @@
             "type": "array",
             "items": { "$ref": "#/components/schemas/TripBoardSummaryResponse" }
           },
-          "hasNext": { "type": "boolean" }
+          "hasNext": { "type": "boolean" },
+          "totalCnt": { "type": "integer", "format": "int64" }
         }
       },
       "AuthorizeUrlResponse": {

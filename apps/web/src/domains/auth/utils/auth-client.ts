@@ -90,7 +90,6 @@ export class AuthClient {
     }
 
     const session = (await this.decrypt(cookie.value)) as SessionData;
-    console.log({ session });
     if (!session || !options.refresh) {
       return session;
     }

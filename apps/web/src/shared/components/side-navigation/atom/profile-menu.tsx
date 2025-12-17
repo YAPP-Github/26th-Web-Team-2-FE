@@ -1,4 +1,4 @@
-import { useGetUserInfo, useWithdrawUser } from "@ssok/api";
+import { useGetTripBoards, useGetUserInfo, useWithdrawUser } from "@ssok/api";
 import {
   AvatarProfile,
   Confirm,
@@ -30,6 +30,18 @@ export const ModalConfig = {
 const ProfileMenu = () => {
   const { trackEvent } = useAnalytics();
   const { accessToken, isPending: isSessionPending } = useSession();
+  const {
+    data: boardInfo,
+    isLoading: isBoardInfoLoading,
+    isPending: isBoardInfoPending,
+  } = useGetTripBoards(
+    { page: 0, size: 10 },
+    {
+      query: { enabled: !!accessToken },
+      request: { headers: { Authorization: `Bearer ${accessToken}` } },
+    },
+  );
+
   const { data: userInfo, isLoading } = useGetUserInfo({
     query: { enabled: !!accessToken },
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
@@ -39,10 +51,6 @@ const ProfileMenu = () => {
   });
 
   const logout = async () => {
-    trackEvent("LOGOUT", {
-      page_referrer: window.location.href,
-    });
-
     setTimeout(() => {
       window.location.href = "/api/auth/logout?to=/";
     }, 200);
@@ -143,12 +151,15 @@ const ProfileMenu = () => {
         onConfirm={() => {
           if (modalConfig === "logout") {
             logout();
+            trackEvent("LOGOUT", {
+              page_referrer: window.location.href,
+            });
           } else if (modalConfig === "withdraw") {
             withdraw(undefined, {
               onSuccess: () => {
+                const boardCount = boardInfo?.data.result?.totalCnt ?? 0;
                 trackEvent("SIGNOUT", {
-                  // TODO: 탈퇴 시점에 맞는 여행 갯수 전달 필요
-                  board_count: 10,
+                  board_count: boardCount,
                 });
                 logout();
               },
@@ -156,7 +167,11 @@ const ProfileMenu = () => {
           }
         }}
       />
-      <LoadingIndicator active={isLoading || isPending} />
+      <LoadingIndicator
+        active={
+          isLoading || isPending || isBoardInfoLoading || isBoardInfoPending
+        }
+      />
     </>
   );
 };

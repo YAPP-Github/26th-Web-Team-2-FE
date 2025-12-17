@@ -68,12 +68,11 @@ const PlaceListView = () => {
         data: { url: data.link, memo: data.memo, tripBoardId: Number(id) },
       },
       {
-        onSuccess: () => {
-          // TODO: 서버 응답 변경 후 변경 필요
+        onSuccess: (response) => {
           trackEvent("HOTEL_ADD", {
             board_id: Number(id),
-            hotel_id: 0,
-            hotel_domain: "",
+            hotel_id: response.data.result?.accommodationId ?? 0,
+            hotel_domain: response.data.result?.accommodationName ?? "",
           });
           window.location.reload();
         },

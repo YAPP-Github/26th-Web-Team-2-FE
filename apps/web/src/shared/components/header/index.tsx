@@ -3,7 +3,6 @@
 import { useGetUserInfo } from "@ssok/api";
 import { AvatarProfile, Button, cn } from "@ssok/ui";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import SsokLogo from "@/shared/assets/ssok-logo.svg";
 import useSession from "@/shared/hooks/use-session";
 
@@ -12,8 +11,6 @@ export interface HeaderProps {
 }
 
 const Header = ({ className }: HeaderProps) => {
-  const pathname = usePathname();
-
   const { accessToken } = useSession();
   const { data: userInfo } = useGetUserInfo({
     query: { enabled: !!accessToken },
@@ -38,23 +35,18 @@ const Header = ({ className }: HeaderProps) => {
         <Link href="/" className="flex items-center">
           <SsokLogo className="h-[3.2rem] w-[8rem]" />
         </Link>
-
         <nav className="flex items-center gap-[4rem]">
-          {navItems.map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "text-body3-semi15 transition-colors",
-                  isActive ? "text-primary-60" : "text-neutral-20",
-                )}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                "text-body3-semi15 text-neutral-20 transition-colors hover:text-primary-60",
+              )}
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
       </div>
 

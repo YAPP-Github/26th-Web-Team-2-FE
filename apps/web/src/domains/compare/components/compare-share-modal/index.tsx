@@ -1,4 +1,5 @@
 import { IcLink, Popup, useToast } from "@ssok/ui";
+import { useParams } from "next/navigation";
 import { useAnalytics } from "@/shared/providers/modules/analytics-provider";
 
 type CompareShareModalProps = {
@@ -12,6 +13,7 @@ const CompareShareModal = ({
   deactivate,
   shareCode,
 }: CompareShareModalProps) => {
+  const { id: boardId } = useParams<{ id: string }>();
   const { trackEvent } = useAnalytics();
   const { toast } = useToast();
   const onClick = async () => {
@@ -22,11 +24,9 @@ const CompareShareModal = ({
       await navigator.clipboard.writeText(url.toString());
       toast.success("링크가 복사되었어요");
 
-      const match = url.pathname.match(/\/boards\/(\d+)/);
-      const boardId = match ? Number(match[1]) : undefined;
       if (!boardId) return;
       trackEvent("TABLE_URL_SHARE", {
-        board_id: boardId,
+        board_id: Number(boardId),
       });
     } catch (error) {
       console.error("링크 복사에 실패했어요", error);

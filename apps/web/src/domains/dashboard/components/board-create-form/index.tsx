@@ -52,9 +52,10 @@ const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
       const startDate = formatDate(dateRange.from, { format: "YYYY-MM-DD" });
       const endDate = formatDate(dateRange.to, { format: "YYYY-MM-DD" });
 
+      const boardName = `${destination} 여행`;
       const data: TripBoardCreateRequest = {
         destination,
-        boardName: `${destination} 여행`,
+        boardName,
         startDate: startDate as unknown as Date,
         endDate: endDate as unknown as Date,
       };

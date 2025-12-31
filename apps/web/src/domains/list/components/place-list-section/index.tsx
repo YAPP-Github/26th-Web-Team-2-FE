@@ -119,7 +119,7 @@ const PlaceListSection = ({
           trackEvent("TABLE_CREATE", {
             board_id: Number(id),
             table_id: data?.data?.result?.tableId,
-            hotel_id: selectedPlaces,
+            hotel_ids: selectedPlaces,
             hotel_count: selectedPlaces.length,
           });
           router.push(`/boards/${id}/compares/${data?.data?.result?.tableId}`);

@@ -1,3 +1,3 @@
-export const makeBoardUrlInviteParameter = (board_id: number) => ({
-  board_id,
+export const makeBoardUrlInviteParameter = (boardId: number) => ({
+  board_id: boardId,
 });

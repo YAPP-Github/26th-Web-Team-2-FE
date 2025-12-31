@@ -1,3 +1,3 @@
-export const makeTableUrlShareParameter = (board_id: number) => ({
-  board_id,
+export const makeTableUrlShareParameter = (boardId: number) => ({
+  board_id: boardId,
 });

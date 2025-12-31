@@ -1,7 +1,7 @@
 export const makeBoardCreateParameter = (
-  board_id: number,
-  board_name: string,
+  boardId: number,
+  boardName: string,
 ) => ({
-  board_id,
-  board_name,
+  board_id: boardId,
+  board_name: boardName,
 });

@@ -1,3 +1,3 @@
-export const makeSignoutParameter = (board_count: number) => ({
-  board_count,
+export const makeSignoutParameter = (boardCount: number) => ({
+  board_count: boardCount,
 });

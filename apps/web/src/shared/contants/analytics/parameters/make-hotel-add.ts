@@ -1,10 +1,9 @@
 export const makeHotelAddParameter = (
-  board_id: number,
-  hotel_id: number,
-  hotel_domain: string,
-  _hotel_count: number,
+  boardId: number,
+  hotelId: number,
+  hotelDomain: string,
 ) => ({
-  board_id,
-  hotel_id,
-  hotel_domain,
+  board_id: boardId,
+  hotel_id: hotelId,
+  hotel_domain: hotelDomain,
 });

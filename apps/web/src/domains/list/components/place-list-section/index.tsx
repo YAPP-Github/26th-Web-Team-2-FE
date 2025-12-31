@@ -14,6 +14,7 @@ import {
 import { useParams, useRouter } from "next/navigation";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
+import { makeTableCreateParameter } from "@/shared/contants/analytics/parameters/make-table_create";
 import useSession from "@/shared/hooks/use-session";
 import { useAnalytics } from "@/shared/providers/modules/analytics-provider";
 import useInfiniteScroll from "../../../../shared/hooks/use-infinite-scroll";
@@ -116,12 +117,15 @@ const PlaceListSection = ({
             return;
           }
           resetSelection();
-          trackEvent("TABLE_CREATE", {
-            board_id: Number(id),
-            table_id: data?.data?.result?.tableId,
-            hotel_ids: selectedPlaces,
-            hotel_count: selectedPlaces.length,
-          });
+          trackEvent(
+            "TABLE_CREATE",
+            makeTableCreateParameter(
+              Number(id),
+              data?.data?.result?.tableId,
+              selectedPlaces,
+              selectedPlaces.length,
+            ),
+          );
           router.push(`/boards/${id}/compares/${data?.data?.result?.tableId}`);
         },
         onError: (err) => {

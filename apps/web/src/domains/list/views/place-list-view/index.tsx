@@ -15,6 +15,7 @@ import useDragAndDrop from "@/domains/list/hooks/use-drag-and-drop";
 import useDropdown from "@/domains/list/hooks/use-dropdown";
 import useInputPanel from "@/domains/list/hooks/use-input-panel";
 import useRegisterUrlInput from "@/domains/list/hooks/use-register-url-input";
+import { makeHotelAddParameter } from "@/shared/contants/analytics/parameters/make-hotel-add";
 import useSession from "@/shared/hooks/use-session";
 import { useAnalytics } from "@/shared/providers/modules/analytics-provider";
 
@@ -69,11 +70,14 @@ const PlaceListView = () => {
       },
       {
         onSuccess: (response) => {
-          trackEvent("HOTEL_ADD", {
-            board_id: Number(id),
-            hotel_id: response.data.result?.accommodationId ?? 0,
-            hotel_domain: response.data.result?.accommodationName ?? "",
-          });
+          trackEvent(
+            "HOTEL_ADD",
+            makeHotelAddParameter(
+              Number(id),
+              response.data.result?.accommodationId ?? 0,
+              response.data.result?.accommodationName ?? "",
+            ),
+          );
           window.location.reload();
         },
       },

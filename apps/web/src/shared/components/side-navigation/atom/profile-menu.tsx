@@ -8,6 +8,8 @@ import {
 } from "@ssok/ui";
 import { useRef, useState } from "react";
 import useOutsideClick from "@/domains/list/hooks/use-outside-click";
+import { makeLogoutParameter } from "@/shared/contants/analytics/parameters/make-logout-parameter";
+import { makeSignoutParameter } from "@/shared/contants/analytics/parameters/make-signout-parameter";
 import useSession from "@/shared/hooks/use-session";
 import { useAnalytics } from "@/shared/providers/modules/analytics-provider";
 
@@ -151,16 +153,12 @@ const ProfileMenu = () => {
         onConfirm={() => {
           if (modalConfig === "logout") {
             logout();
-            trackEvent("LOGOUT", {
-              page_referrer: window.location.href,
-            });
+            trackEvent("LOGOUT", makeLogoutParameter(window.location.href));
           } else if (modalConfig === "withdraw") {
             withdraw(undefined, {
               onSuccess: () => {
                 const boardCount = boardInfo?.data.result?.totalCnt ?? 0;
-                trackEvent("SIGNOUT", {
-                  board_count: boardCount,
-                });
+                trackEvent("SIGNOUT", makeSignoutParameter(boardCount));
                 logout();
               },
             });

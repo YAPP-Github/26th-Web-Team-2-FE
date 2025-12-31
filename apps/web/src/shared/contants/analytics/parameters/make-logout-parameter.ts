@@ -1,3 +1,3 @@
-export const makeLogoutParameter = (page_referrer: string) => ({
-  page_referrer,
+export const makeLogoutParameter = (pageReferrer: string) => ({
+  page_referrer: pageReferrer,
 });

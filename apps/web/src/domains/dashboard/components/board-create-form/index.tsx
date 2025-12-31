@@ -5,6 +5,7 @@ import type { TripBoardCreateRequest } from "@ssok/api/schemas";
 import { Button, cn, LoadingIndicator } from "@ssok/ui";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { makeBoardCreateParameter } from "@/shared/contants/analytics/parameters/make-board-create-parameter";
 import useSession from "@/shared/hooks/use-session";
 import { useAnalytics } from "@/shared/providers/modules/analytics-provider";
 import { formatDate } from "@/shared/utils/date";
@@ -63,10 +64,13 @@ const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
       const response = await createTripBoardMutation.mutateAsync({ data });
 
       if (response.data.result?.tripBoardId) {
-        trackEvent("BOARD_CREATE", {
-          board_id: response.data.result.tripBoardId,
-          board_name: `${destination} 여행`,
-        });
+        trackEvent(
+          "BOARD_CREATE",
+          makeBoardCreateParameter(
+            response.data.result.tripBoardId,
+            `${destination} 여행`,
+          ),
+        );
         router.push(`/boards/${response.data.result.tripBoardId}/lists`);
       } else {
         console.error(response.data);

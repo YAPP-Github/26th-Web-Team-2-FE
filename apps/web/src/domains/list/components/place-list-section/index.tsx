@@ -14,7 +14,9 @@ import {
 import { useParams, useRouter } from "next/navigation";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
+import { makeTableCreateParameter } from "@/shared/contants/analytics/parameters/make-table_create";
 import useSession from "@/shared/hooks/use-session";
+import { useAnalytics } from "@/shared/providers/modules/analytics-provider";
 import useInfiniteScroll from "../../../../shared/hooks/use-infinite-scroll";
 import { useAccommodationDataContext } from "../../contexts/accomodation-data-context";
 import { usePlaceSelectionContext } from "../../contexts/place-select-context";
@@ -58,6 +60,7 @@ const PlaceListSection = ({
   isFetchingNextPage,
   tripBoardDetailData,
 }: PlaceListSectionProps) => {
+  const { trackEvent } = useAnalytics();
   const { toast } = useToast();
   const router = useRouter();
   const { accommodations } = useAccommodationDataContext();
@@ -101,7 +104,6 @@ const PlaceListSection = ({
   const onCompareButtonClick = () => {
     createComparisonTable(
       {
-        // TODO: 보드 단건 조회 api 연결 후, tableName 변수 연결
         data: {
           tripBoardId: Number(id),
           accommodationIdList: selectedPlaces,
@@ -110,7 +112,20 @@ const PlaceListSection = ({
       },
       {
         onSuccess: (data) => {
+          if (!data?.data?.result?.tableId) {
+            console.error("비교 테이블 ID가 없습니다.");
+            return;
+          }
           resetSelection();
+          trackEvent(
+            "TABLE_CREATE",
+            makeTableCreateParameter(
+              Number(id),
+              data?.data?.result?.tableId,
+              selectedPlaces,
+              selectedPlaces.length,
+            ),
+          );
           router.push(`/boards/${id}/compares/${data?.data?.result?.tableId}`);
         },
         onError: (err) => {

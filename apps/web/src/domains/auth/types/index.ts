@@ -32,6 +32,7 @@ export interface SessionData {
   user: {
     userId: number;
     nickname: string;
+    newUser: boolean;
   };
   tokenSet: {
     accessToken: string;

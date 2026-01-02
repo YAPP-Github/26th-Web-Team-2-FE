@@ -1,4 +1,4 @@
-import { useGetUserInfo, useWithdrawUser } from "@ssok/api";
+import { useGetTripBoards, useGetUserInfo, useWithdrawUser } from "@ssok/api";
 import {
   AvatarProfile,
   Confirm,
@@ -6,10 +6,12 @@ import {
   LoadingIndicator,
   useToggle,
 } from "@ssok/ui";
-import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import useOutsideClick from "@/domains/list/hooks/use-outside-click";
+import { makeLogoutParameter } from "@/shared/contants/analytics/parameters/make-logout-parameter";
+import { makeSignoutParameter } from "@/shared/contants/analytics/parameters/make-signout-parameter";
 import useSession from "@/shared/hooks/use-session";
+import { useAnalytics } from "@/shared/providers/modules/analytics-provider";
 
 export const ModalConfig = {
   logout: {
@@ -28,8 +30,20 @@ export const ModalConfig = {
 };
 
 const ProfileMenu = () => {
-  const _router = useRouter();
+  const { trackEvent } = useAnalytics();
   const { accessToken, isPending: isSessionPending } = useSession();
+  const {
+    data: boardInfo,
+    isLoading: isBoardInfoLoading,
+    isPending: isBoardInfoPending,
+  } = useGetTripBoards(
+    { page: 0, size: 10 },
+    {
+      query: { enabled: !!accessToken },
+      request: { headers: { Authorization: `Bearer ${accessToken}` } },
+    },
+  );
+
   const { data: userInfo, isLoading } = useGetUserInfo({
     query: { enabled: !!accessToken },
     request: { headers: { Authorization: `Bearer ${accessToken}` } },
@@ -39,7 +53,9 @@ const ProfileMenu = () => {
   });
 
   const logout = async () => {
-    window.location.href = "/api/auth/logout?to=/";
+    setTimeout(() => {
+      window.location.href = "/api/auth/logout?to=/";
+    }, 200);
   };
 
   const { active, activate, deactivate } = useToggle(false);
@@ -137,12 +153,23 @@ const ProfileMenu = () => {
         onConfirm={() => {
           if (modalConfig === "logout") {
             logout();
+            trackEvent("LOGOUT", makeLogoutParameter(window.location.href));
           } else if (modalConfig === "withdraw") {
-            withdraw(undefined, { onSuccess: logout });
+            withdraw(undefined, {
+              onSuccess: () => {
+                const boardCount = boardInfo?.data.result?.totalCnt ?? 0;
+                trackEvent("SIGNOUT", makeSignoutParameter(boardCount));
+                logout();
+              },
+            });
           }
         }}
       />
-      <LoadingIndicator active={isLoading || isPending} />
+      <LoadingIndicator
+        active={
+          isLoading || isPending || isBoardInfoLoading || isBoardInfoPending
+        }
+      />
     </>
   );
 };

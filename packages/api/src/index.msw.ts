@@ -1234,6 +1234,10 @@ export const getExchangeKakaoTokenResponseMock = (
         },
         undefined,
       ]),
+      newUser: faker.helpers.arrayElement([
+        faker.datatype.boolean(),
+        undefined,
+      ]),
     },
     undefined,
   ]),
@@ -1278,6 +1282,10 @@ export const getRegisterAccommodationCardResponseMock = (
           max: undefined,
           multipleOf: undefined,
         }),
+        undefined,
+      ]),
+      accommodationName: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
         undefined,
       ]),
     },
@@ -1509,6 +1517,14 @@ export const getGetTripBoardsResponseMock = (
       ]),
       hasNext: faker.helpers.arrayElement([
         faker.datatype.boolean(),
+        undefined,
+      ]),
+      totalCnt: faker.helpers.arrayElement([
+        faker.number.int({
+          min: undefined,
+          max: undefined,
+          multipleOf: undefined,
+        }),
         undefined,
       ]),
     },

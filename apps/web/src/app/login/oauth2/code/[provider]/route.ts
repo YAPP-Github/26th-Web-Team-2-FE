@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 const handler = async (
   request: NextRequest,
-  { params }: { params: Promise<{ provider: string[] }> },
+  { params }: { params: Promise<{ provider: string }> },
 ) => {
   const { provider } = await params;
   const url = new URL(

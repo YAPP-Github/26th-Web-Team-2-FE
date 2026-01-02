@@ -69,7 +69,6 @@ const LinkInputSection = ({
         )}
       >
         {isInputExpanded && (
-          // TODO: submit 이벤트 핸들러 추가
           <form
             className="flex flex-col gap-[1.6rem]"
             onSubmit={handleSubmit(onValid, onInvalid)}

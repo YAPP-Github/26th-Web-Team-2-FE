@@ -44,6 +44,7 @@ export const auth = new AuthClient({
       user: {
         userId: response.data.result.userId,
         nickname: response.data.result.nickname,
+        newUser: response.data.result.newUser ?? false,
       },
       tokenSet: {
         accessToken: response.data.result.token.accessToken,

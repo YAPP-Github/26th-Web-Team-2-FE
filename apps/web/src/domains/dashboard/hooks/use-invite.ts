@@ -7,7 +7,9 @@ import {
 import { useToast } from "@ssok/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { makeBoardUrlInviteParameter } from "@/shared/contants/analytics/parameters/make-board-url-invite-parameter";
 import useSession from "@/shared/hooks/use-session";
+import { useAnalytics } from "@/shared/providers/modules/analytics-provider";
 
 interface InvitationContext {
   prevState?: Awaited<ReturnType<typeof getInvitationCode>>;
@@ -17,6 +19,7 @@ export const useBoardInvite = (
   tripBoardId: number,
   participantsLength: number,
 ) => {
+  const { trackEvent } = useAnalytics();
   const { accessToken } = useSession({ required: true });
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -107,6 +110,7 @@ export const useBoardInvite = (
       setIsCopyBtnClicked(true);
       toast.success("링크가 복사되었어요");
       setTimeout(() => setIsCopyBtnClicked(false), 2000);
+      trackEvent("BOARD_URL_INVITE", makeBoardUrlInviteParameter(tripBoardId));
     } catch (_error) {
       console.error("링크 복사에 실패했어요", _error);
     }

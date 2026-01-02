@@ -5,7 +5,9 @@ import type { TripBoardCreateRequest } from "@ssok/api/schemas";
 import { Button, cn, LoadingIndicator } from "@ssok/ui";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { makeBoardCreateParameter } from "@/shared/contants/analytics/parameters/make-board-create-parameter";
 import useSession from "@/shared/hooks/use-session";
+import { useAnalytics } from "@/shared/providers/modules/analytics-provider";
 import { formatDate } from "@/shared/utils/date";
 import type { BoardCreateFormData } from "../../types";
 import BaseFormFields from "../base-form-field";
@@ -16,6 +18,7 @@ interface BoardCreateFormProps {
 
 const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
   const router = useRouter();
+  const { trackEvent } = useAnalytics();
 
   const { accessToken } = useSession({ required: true });
   const createTripBoardMutation = useCreateTripBoard({
@@ -50,9 +53,10 @@ const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
       const startDate = formatDate(dateRange.from, { format: "YYYY-MM-DD" });
       const endDate = formatDate(dateRange.to, { format: "YYYY-MM-DD" });
 
+      const boardName = `${destination} 여행`;
       const data: TripBoardCreateRequest = {
         destination,
-        boardName: `${destination} 여행`,
+        boardName,
         startDate: startDate as unknown as Date,
         endDate: endDate as unknown as Date,
       };
@@ -60,6 +64,13 @@ const BoardCreateForm = ({ className }: BoardCreateFormProps) => {
       const response = await createTripBoardMutation.mutateAsync({ data });
 
       if (response.data.result?.tripBoardId) {
+        trackEvent(
+          "BOARD_CREATE",
+          makeBoardCreateParameter(
+            response.data.result.tripBoardId,
+            `${destination} 여행`,
+          ),
+        );
         router.push(`/boards/${response.data.result.tripBoardId}/lists`);
       } else {
         console.error(response.data);

@@ -342,6 +342,7 @@ export interface OauthLoginResponse {
   email?: string;
   /** 토큰 정보 */
   token?: TokenSuccessResponse;
+  newUser?: boolean;
 }
 
 /**
@@ -363,7 +364,10 @@ export interface StandardResponseOauthLoginResponse {
 export interface CreateComparisonTableRequest {
   tripBoardId: number;
   tableName?: string;
-  /** @minItems 1 */
+  /**
+   * @minItems 1
+   * @maxItems 10
+   */
   accommodationIdList?: number[];
   factorList?: string[];
 }
@@ -401,6 +405,7 @@ export interface AccommodationRegisterRequest {
 
 export interface AccommodationRegisterResponse {
   accommodationId?: number;
+  accommodationName?: string;
 }
 
 /**
@@ -701,6 +706,7 @@ export interface StandardResponseTripBoardPageResponse {
 export interface TripBoardPageResponse {
   tripBoards?: TripBoardSummaryResponse[];
   hasNext?: boolean;
+  totalCnt?: number;
 }
 
 /**

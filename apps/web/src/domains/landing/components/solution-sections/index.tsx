@@ -68,27 +68,57 @@ const SolutionSections = () => {
   ];
 
   return (
-    <LandingSectionContainer className="bg-white [&>div]:flex [&>div]:flex-col [&>div]:gap-[16rem] [&>div]:py-[10.4rem]">
+    <LandingSectionContainer
+      className={cn(
+        "bg-white [&>div]:flex [&>div]:flex-col",
+        "xl:[&>div]:gap-[16rem] xl:[&>div]:py-[10.4rem]",
+        "max-xl:[&>div]:gap-[9.6rem] max-xl:[&>div]:py-[4.8rem]",
+      )}
+    >
       {solutions.map((solution) => (
-        <div key={solution.id} className="flex w-full flex-col gap-[4.8rem]">
-          <div className="flex flex-col gap-[1.6rem]">
-            <div className="flex flex-col gap-[0.2rem]">
+        <div
+          key={solution.id}
+          className={cn(
+            "flex w-full flex-col gap-[4.8rem]",
+            "max-xl:gap-[2.4rem]",
+          )}
+        >
+          <div
+            className={cn("flex flex-col max-xl:gap-[0.8rem] xl:gap-[1.6rem]")}
+          >
+            <div className={cn("flex flex-col")}>
               {solution.title.map(({ id, text }) => (
-                <h3 key={id} className="text-display1-bold56 text-secondary-15">
+                <h3
+                  key={id}
+                  className={cn(
+                    "text-display1-bold56 text-secondary-15",
+                    "max-xl:text-title3-bold24",
+                  )}
+                >
                   {text}
                 </h3>
               ))}
             </div>
-            {solution.description.map(({ id, text }) => (
-              <p key={id} className="text-neutral-20 text-title4-medi22">
-                {text}
-              </p>
-            ))}
+            <div className="flex flex-col xl:gap-[1.6rem]">
+              {solution.description.map(({ id, text }) => (
+                <p
+                  key={id}
+                  className={cn(
+                    "text-neutral-20 text-title4-medi22",
+                    "max-xl:text-body2-semi14",
+                  )}
+                >
+                  {text}
+                </p>
+              ))}
+            </div>
           </div>
 
           <div
             className={cn(
-              "w-full overflow-hidden rounded-[2.4rem] border-2 border-neutral-90",
+              "w-full overflow-hidden border-2 border-neutral-90",
+              "rounded-[2.4rem]",
+              "max-xl:rounded-[1.2rem]",
               solution.background,
             )}
           >

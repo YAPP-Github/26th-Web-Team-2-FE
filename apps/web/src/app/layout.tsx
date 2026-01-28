@@ -1,10 +1,8 @@
 import "./app.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Suspense } from "react";
 import MazeUs from "@/shared/components/maze-us";
 import Providers from "@/shared/providers";
-import DialogProvider from "@/shared/providers/modules/dialog-provider";
 
 const Pretendard = localFont({
   src: "../../node_modules/pretendard/dist/web/variable/woff2/PretendardVariable.woff2",
@@ -29,9 +27,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <Providers>
           {children}
           {/* TODO: fallback UI 수정 */}
-          <Suspense fallback={null}>
+          {/* <Suspense fallback={null}>
             <DialogProvider />
-          </Suspense>
+          </Suspense> */}
         </Providers>
       </body>
     </html>

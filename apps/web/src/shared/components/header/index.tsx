@@ -28,14 +28,27 @@ const Header = ({ className }: HeaderProps) => {
     <header
       className={cn(
         "flex h-[6.5rem] w-full items-center justify-between border-neutral-90 border-b bg-white px-[10.4rem]",
+        "max-xl:h-auto max-xl:px-[1.6rem] max-xl:py-[1.2rem]",
         className,
       )}
     >
-      <div className="flex items-center gap-[6.4rem]">
+      <div
+        className={cn(
+          "flex items-center",
+          "max-xl:gap-[2.4rem] xl:gap-[6.4rem]",
+        )}
+      >
         <Link href="/" className="flex items-center">
-          <SsokLogo className="h-[3.2rem] w-[8rem]" />
+          <div className={cn("max-xl:w-[6.4rem] xl:w-[8rem]")}>
+            <SsokLogo className="h-auto w-full" />
+          </div>
         </Link>
-        <nav className="flex items-center gap-[4rem]">
+        <nav
+          className={cn(
+            "flex items-center",
+            "max-xl:gap-[2.4rem] xl:gap-[4rem]",
+          )}
+        >
           {navItems.map((item) => (
             <Link
               key={item.href}

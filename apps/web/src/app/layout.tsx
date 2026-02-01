@@ -24,13 +24,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <MazeUs />
       </head>
       <body className={Pretendard.variable}>
-        <Providers>
-          {children}
-          {/* TODO: fallback UI 수정 */}
-          {/* <Suspense fallback={null}>
-            <DialogProvider />
-          </Suspense> */}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

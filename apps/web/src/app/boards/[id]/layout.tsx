@@ -3,23 +3,26 @@ import AccommodationDataProvider from "@/domains/list/contexts/accomodation-data
 import PanelProvider from "@/domains/list/contexts/pannel-context";
 import PlaceSelectionProvider from "@/domains/list/contexts/place-select-context";
 import MapComponent from "@/shared/components/map-component";
+import MobileIncompatibleLayout from "@/shared/components/mobile-incompatible-layout";
 import SideNavigation from "@/shared/components/side-navigation";
 
-const BoardsIdLayout = async ({ children }: PropsWithChildren) => {
+const BoardsIdLayout = ({ children }: PropsWithChildren) => {
   return (
-    <AccommodationDataProvider>
-      <PanelProvider>
-        <PlaceSelectionProvider>
-          <div className="flex h-screen w-full overflow-hidden">
-            <SideNavigation />
-            <div className="relative flex min-w-0 flex-1">
-              {children}
-              <MapComponent className="transition-all duration-500 ease-in-out" />
+    <MobileIncompatibleLayout>
+      <AccommodationDataProvider>
+        <PanelProvider>
+          <PlaceSelectionProvider>
+            <div className="flex h-screen w-full overflow-hidden">
+              <SideNavigation />
+              <div className="relative flex min-w-0 flex-1">
+                {children}
+                <MapComponent className="transition-all duration-500 ease-in-out" />
+              </div>
             </div>
-          </div>
-        </PlaceSelectionProvider>
-      </PanelProvider>
-    </AccommodationDataProvider>
+          </PlaceSelectionProvider>
+        </PanelProvider>
+      </AccommodationDataProvider>
+    </MobileIncompatibleLayout>
   );
 };
 

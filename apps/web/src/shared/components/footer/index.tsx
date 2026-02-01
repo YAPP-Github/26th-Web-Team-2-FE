@@ -18,7 +18,7 @@ const Footer = () => {
           "xl:flex-row xl:items-center xl:gap-[5.6rem]",
         )}
       >
-        <div className={cn("w-[8.9rem]", "xl:w-[9.7rem]")}>
+        <div className={cn("max-xl:w-[8.9rem] xl:w-[9.7rem]")}>
           <SsokLogoWithIcon className="h-auto w-full" />
         </div>
 

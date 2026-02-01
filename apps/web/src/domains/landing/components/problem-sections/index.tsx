@@ -56,36 +56,63 @@ const ProblemSections = () => {
         <LandingSectionContainer
           key={problem.id}
           className={cn(
-            "[&>div]:flex [&>div]:w-full [&>div]:items-start [&>div]:justify-between [&>div]:gap-[4rem] [&>div]:py-[16rem]",
-            "[&>div]:max-md:flex-col",
+            "[&>div]:flex [&>div]:w-full [&>div]:items-start [&>div]:justify-between",
+            "[&>div]:gap-[4rem] [&>div]:py-[16rem]",
+            "max-xl:[&>div]:flex-col max-xl:[&>div]:gap-[2.4rem] max-xl:[&>div]:py-[4.8rem]",
             problem.background,
           )}
         >
-          <div className="flex w-full flex-col gap-[1.6rem] max-md:items-center">
+          <div
+            className={cn(
+              "flex w-full flex-col",
+              "max-xl:gap-[0.8rem] xl:gap-[1.6rem]",
+            )}
+          >
             <span
               className={cn(
-                "flex w-fit items-center justify-center rounded-[0.8rem] px-[1.6rem] py-[0.8rem] text-heading2-semi18 text-secondary-40",
+                "items-center justify-center rounded-[0.8rem] px-[1.6rem] py-[0.8rem] text-secondary-40",
+                "text-heading2-semi18",
+                "max-xl:hidden",
+                "xl:flex xl:w-fit",
                 problem.tag,
               )}
             >
               여행 준비할 때, 이런 경험 없으셨나요?
             </span>
-            <div className="flex flex-col gap-[0.2rem]">
+            <div className={cn("flex flex-col gap-[0.2rem]")}>
               {problem.title.map(({ id, text }) => (
-                <h3 key={id} className="text-display1-bold56 text-secondary-15">
+                <h3
+                  key={id}
+                  className={cn(
+                    "text-display1-bold56 text-secondary-15",
+                    "max-xl:text-title3-bold24",
+                  )}
+                >
                   {text}
                 </h3>
               ))}
             </div>
-            <div className="flex flex-col">
+            <div className={cn("flex flex-col")}>
               {problem.description.map(({ id, text }) => (
-                <p key={id} className="text-secondary-20 text-title3-semi24">
+                <p
+                  key={id}
+                  className={cn(
+                    "text-secondary-20",
+                    "max-xl:text-body2-semi14",
+                    "xl:text-title3-semi24",
+                  )}
+                >
                   {text}
                 </p>
               ))}
             </div>
           </div>
-          <div className="w-full max-w-[76.6rem] overflow-hidden rounded-[2.4rem]">
+          <div
+            className={cn(
+              "w-full max-w-[76.6rem] overflow-hidden rounded-[2.4rem]",
+              "max-xl:max-w-full max-xl:rounded-[1.2rem]",
+            )}
+          >
             <video
               autoPlay
               loop

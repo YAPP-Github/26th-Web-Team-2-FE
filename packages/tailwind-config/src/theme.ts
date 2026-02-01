@@ -11,6 +11,10 @@ export const theme: Config["theme"] = {
       "3.6rem",
       { fontWeight: "700", lineHeight: "1.4", letterSpacing: "-0.06rem" },
     ],
+    "display4-bold32": [
+      "3.2rem",
+      { fontWeight: "700", lineHeight: "1.4", letterSpacing: "-0.06rem" },
+    ],
 
     // Title styles
     "title1-semi36": [

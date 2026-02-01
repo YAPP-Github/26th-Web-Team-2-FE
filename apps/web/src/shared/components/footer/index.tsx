@@ -1,13 +1,34 @@
+import { cn } from "@ssok/ui";
 import Link from "next/link";
 import SsokLogoWithIcon from "@/shared/assets/ssok-logo-with-icon.svg";
 
 const Footer = () => {
   return (
-    <footer className="flex w-full items-center justify-between border-neutral-90 border-t bg-white px-[10.4rem] py-[4.8rem]">
-      <div className="flex items-center gap-[5.6rem]">
-        <SsokLogoWithIcon className="h-[3.3rem] w-[9.7rem]" />
+    <footer
+      className={cn(
+        "flex w-full border-neutral-90 border-t bg-white",
+        "max-xl:flex-col max-xl:items-start max-xl:gap-[3.6rem] max-xl:px-[1.6rem] max-xl:pt-[4.8rem] max-xl:pb-[7.2rem]",
+        "xl:items-center xl:justify-between xl:px-[10.4rem] xl:py-[4.8rem]",
+      )}
+    >
+      <div
+        className={cn(
+          "flex",
+          "max-xl:flex-col max-xl:items-start max-xl:gap-[3.6rem]",
+          "xl:flex-row xl:items-center xl:gap-[5.6rem]",
+        )}
+      >
+        <div className={cn("w-[8.9rem]", "xl:w-[9.7rem]")}>
+          <SsokLogoWithIcon className="h-auto w-full" />
+        </div>
 
-        <div className="flex gap-[5.6rem]">
+        <div
+          className={cn(
+            "flex",
+            "max-xl:flex-col max-xl:gap-[0.8rem]",
+            "xl:flex-row xl:gap-[5.6rem]",
+          )}
+        >
           <Link
             href="https://jisuuuu.notion.site/248ca0b46ff280448723de5730098904?pvs=143"
             className="text-body3-semi15 text-neutral-15 transition-colors hover:text-neutral-40"
@@ -34,7 +55,13 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="text-[1.6rem] text-body1-medi16 text-neutral-70">
+      <div
+        className={cn(
+          "text-neutral-70",
+          "max-xl:text-body2-medi14",
+          "xl:text-body1-medi16",
+        )}
+      >
         Copyright © 2025 SSOK All rights reserved.
       </div>
     </footer>

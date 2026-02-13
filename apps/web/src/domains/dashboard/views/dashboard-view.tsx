@@ -45,20 +45,17 @@ const DashboardView = () => {
       {/* 페이지 헤더 */}
       <Header />
       {/* 제목 + 여행 보드 목록 */}
-      <section className="px-[10.4rem] pt-[7.2rem]">
-        <h1 className="mb-[3.6rem] text-neutral-10 text-title1-semi36">
+      <section className="px-[10.4rem] pt-[7.2rem] max-lg:px-[1.6rem] max-lg:pt-[2.4rem]">
+        <h1 className="mb-[3.6rem] text-neutral-10 text-title2-medi28 max-lg:mb-[2.4rem]">
           나의 여행
         </h1>
-        <ul className="grid gap-[4rem] max-lg:gap-[2rem] max-xl:grid-cols-2 xl:grid-cols-3">
-          <li>
-            <ActionCard
-              onClick={() => setShowCreateModal(true)}
-              className="w-full"
-            />
+        <ul className="grid grid-cols-1 justify-items-center gap-[4rem] max-lg:gap-[2rem] md:grid-cols-2 xl:grid-cols-3">
+          <li className="w-full">
+            <ActionCard onClick={() => setShowCreateModal(true)} />
           </li>
           {allTripBoards.map((tripBoard) => (
-            <li key={tripBoard.tripBoardId}>
-              <DashboardTripBoard data={tripBoard} className="w-full" />
+            <li key={tripBoard.tripBoardId} className="w-full">
+              <DashboardTripBoard data={tripBoard} />
             </li>
           ))}
         </ul>

@@ -75,10 +75,11 @@ const TravelBoard = ({
   return (
     <section
       className={cn(
-        "relative flex min-h-[24.2rem] flex-col rounded-[1.6rem] py-[2.4rem] pr-[2.8rem] pl-[3.2rem]",
+        "relative flex min-h-[24.2rem] flex-col rounded-[1.6rem] py-[2.4rem] pr-[2.8rem] pl-[3.2rem] max-lg:min-h-0 max-lg:p-[2.4rem]",
         "border border-neutral-90 bg-neutral-99",
         "hover:border-neutral-80 hover:bg-neutral-98",
-        moreHover && "border hover:border-secondary-90 hover:bg-neutral-99",
+        moreHover && "border hover:border-secondary-90 hover:bg-neutral-99 ",
+        "max-lg:w-full",
         className,
       )}
     >
@@ -158,7 +159,7 @@ const TravelBoard = ({
         </TextWithIcon>
       </div>
       {/* 참여자 */}
-      <div className="mt-[3.6rem]">
+      <div className="mt-[3.6rem] max-lg:mt-[1.6rem]">
         <ProfileGroup size={40} profiles={participants} />
       </div>
     </section>

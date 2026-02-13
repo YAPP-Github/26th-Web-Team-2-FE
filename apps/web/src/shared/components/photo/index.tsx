@@ -72,7 +72,7 @@ const Photo = ({
 
       <div
         className={cn(
-          "absolute bottom-0 z-10 w-full translate-y-full rounded-b-[1.2rem] bg-gradient-to-r from-neutral-0/36 to-[#272727]/48 px-[1.2rem] py-[0.8rem]",
+          "absolute bottom-0 z-screen w-full translate-y-full rounded-b-[1.2rem] bg-gradient-to-r from-neutral-0/36 to-[#272727]/48 px-[1.2rem] py-[0.8rem]",
           "transition-transform duration-300 ease-out group-hover:pointer-events-auto group-hover:translate-y-0",
           state === "active" && "translate-y-0",
         )}

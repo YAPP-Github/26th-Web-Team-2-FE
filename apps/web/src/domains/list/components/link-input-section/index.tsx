@@ -89,10 +89,10 @@ const LinkInputSection = ({
       </div>
       {isDragging && (
         <>
-          <div className="absolute top-0 left-0 z-1 h-full w-full rounded-2xl border-2 border-primary-70 bg-[rgba(232,255,239,0.4)]" />
+          <div className="absolute top-0 left-0 z-overlay h-full w-full rounded-2xl border-2 border-primary-70 bg-[rgba(232,255,239,0.4)]" />
           <div
             className={cn(
-              "absolute top-0 right-[-60%] z-2",
+              "absolute top-0 right-[-60%] z-overlay-elevated",
               "flex flex-col items-center justify-center gap-[0.8rem]",
               "rounded-2xl border border-neutral-0 bg-neutral-variant-5",
               "px-[6.8rem] pt-[2rem] pb-[3.6rem]",

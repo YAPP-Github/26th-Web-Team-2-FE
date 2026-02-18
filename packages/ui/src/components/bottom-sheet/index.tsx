@@ -29,6 +29,8 @@ export interface BottomSheetProps
     showBackdrop?: boolean;
     closeOnBackdropClick?: boolean;
     className?: string;
+    /** 시트+배경 래퍼에 적용 (다중 시트 시 z-index 등) */
+    containerClassName?: string;
   }> {}
 
 const BottomSheetRoot = ({
@@ -38,6 +40,7 @@ const BottomSheetRoot = ({
   showBackdrop = true,
   closeOnBackdropClick = true,
   className,
+  containerClassName,
 }: BottomSheetProps) => {
   const handleBackdropClick = useCallback(() => {
     if (closeOnBackdropClick && showBackdrop) onClose();
@@ -65,7 +68,7 @@ const BottomSheetRoot = ({
 
   if (showBackdrop) {
     return (
-      <div className="fixed inset-0 z-modal">
+      <div className={cn("fixed inset-0 z-modal", containerClassName)}>
         <div
           role="presentation"
           aria-hidden

@@ -1,6 +1,8 @@
 import type { Meta, StoryFn } from "@storybook/react-vite";
 import { useState } from "react";
+import Calendar from "@/components/calendar";
 import DateRangePicker, {
+  DateRangePickerMobile,
   type DateRangePickerProps,
   type DateRangeValue,
 } from "./";
@@ -88,6 +90,37 @@ export const Disabled: StoryFn = () => {
         </div>
       )}
     />
+  );
+};
+
+// 모바일 (바텀시트 Body에 캘린더 렌더)
+export const Mobile: StoryFn = () => {
+  const [value, setValue] = useState<DateRangeValue>({});
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="w-full max-w-[35.9rem] space-y-4">
+      <DateRangePickerMobile
+        open={open}
+        onOpenChange={setOpen}
+        value={value}
+        onChange={setValue}
+        placeholder={{ from: "출발일 선택", to: "도착일 선택" }}
+        render={({ trigger, calendarProps }) =>
+          open ? (
+            <Calendar {...calendarProps} />
+          ) : (
+            <>
+              {trigger}
+              <div className="rounded-lg bg-neutral-95 p-4 text-caption1-medi12 text-neutral-50">
+                선택된 범위: {value.from?.toLocaleDateString("ko-KR")} ~{" "}
+                {value.to?.toLocaleDateString("ko-KR")}
+              </div>
+            </>
+          )
+        }
+      />
+    </div>
   );
 };
 

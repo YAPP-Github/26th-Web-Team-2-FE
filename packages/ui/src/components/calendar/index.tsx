@@ -12,13 +12,20 @@ interface CalendarProps {
   selectedDate: DateRange | undefined;
   onDateSelect: (date: DateRange | undefined) => void;
   onApplyDate: () => void;
+  /** 적용 버튼 라벨 (함수로 전달 시 선택된 날짜 범위 기반) */
+  applyButtonLabel?: string | ((range: DateRange | undefined) => string);
 }
 
 const Calendar = ({
   selectedDate,
   onDateSelect,
   onApplyDate,
+  applyButtonLabel = "적용",
 }: CalendarProps) => {
+  const label =
+    typeof applyButtonLabel === "function"
+      ? applyButtonLabel(selectedDate)
+      : applyButtonLabel;
   const defaultClassNames = getDefaultClassNames();
   // TODO: 년도 / 월 선택 컴포넌트 커스터마이징
   return (
@@ -53,10 +60,10 @@ const Calendar = ({
       <div className="px-[1.2rem] py-[1rem]">
         <button
           type="button"
-          className="flex w-full justify-end px-[0.4rem] py-[0.7rem] text-body2-semi14 text-primary"
+          className="flex w-full justify-center rounded-[0.8rem] bg-primary px-[1.6rem] py-[1.2rem] text-body1-semi16 text-primary-100"
           onClick={onApplyDate}
         >
-          적용
+          {label}
         </button>
       </div>
     </section>

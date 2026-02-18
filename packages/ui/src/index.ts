@@ -74,6 +74,10 @@ export {
   default as DateButton,
 } from "@/components/date-button";
 export {
+  DateRangePickerMobile,
+  type DateRangePickerMobileCalendarProps,
+  type DateRangePickerMobileProps,
+  type DateRangePickerMobileRenderProps,
   type DateRangePickerProps,
   type DateRangePickerRenderProps,
   type DateRangeValue,

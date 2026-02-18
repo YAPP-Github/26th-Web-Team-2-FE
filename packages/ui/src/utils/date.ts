@@ -70,3 +70,20 @@ export const formatDate = (date: Date): string => {
   const dayOfWeek = ["일", "월", "화", "수", "목", "금", "토"][date.getDay()];
   return `${year}. ${month}. ${day}(${dayOfWeek})`;
 };
+
+/**
+ * @param from - 시작일
+ * @param to - 종료일 (없으면 from과 동일 처리)
+ * @returns "M월 D일 (N일)" 또는 "M월 D일 → M월 D일 (N일)" 형식
+ */
+export const formatDateRangeForButton = (from: Date, to?: Date): string => {
+  const toDate = to ?? from;
+  const dayCount =
+    Math.ceil((toDate.getTime() - from.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+  const formatPart = (d: Date) => `${d.getMonth() + 1}월 ${d.getDate()}일`;
+
+  if (dayCount <= 1) {
+    return `${formatPart(from)} (1일)`;
+  }
+  return `${formatPart(from)} → ${formatPart(toDate)} (${dayCount}일)`;
+};

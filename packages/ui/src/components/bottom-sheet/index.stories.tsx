@@ -191,7 +191,6 @@ export const TripBoardCreationMobile: Story = {
           onClose={() => setDatePickerOpen(false)}
           showBackdrop={true}
           closeOnBackdropClick={true}
-          containerClassName="z-[101]"
         >
           <BottomSheet.Body className="pt-[2.4rem]">
             <DateRangePickerMobile

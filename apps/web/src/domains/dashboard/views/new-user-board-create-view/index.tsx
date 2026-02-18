@@ -1,13 +1,12 @@
 "use client";
 
-import Header from "@/shared/components/header";
+import HeaderLayout from "@/shared/components/header-layout";
 import BoardCreateForm from "../../components/board-create-form";
 import DashboardVideoBackground from "../../components/dashboard-video-background";
 
 const NewUserBoardCreateView = () => {
   return (
-    <div className="flex h-screen flex-col bg-neutral-98">
-      <Header className="shrink-0 grow-0" />
+    <HeaderLayout className="flex h-screen flex-col bg-neutral-98">
       <div className="flex flex-1">
         <DashboardVideoBackground className="h-full w-full max-w-[min(calc(100%-52rem),81.6rem)] max-md:hidden" />
 
@@ -23,7 +22,7 @@ const NewUserBoardCreateView = () => {
           <BoardCreateForm className="mr-auto w-full max-w-[45.6rem]" />
         </section>
       </div>
-    </div>
+    </HeaderLayout>
   );
 };
 

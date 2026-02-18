@@ -232,6 +232,13 @@ export const theme: Config["theme"] = {
       100: "#ffffff",
     },
   },
+  spacing: {
+    header: "6.5rem",
+    "header-mobile": "4.8rem",
+  },
+  height: {
+    header: "6.5rem",
+  },
   zIndex: {
     base: "0",
     elevated: "1",

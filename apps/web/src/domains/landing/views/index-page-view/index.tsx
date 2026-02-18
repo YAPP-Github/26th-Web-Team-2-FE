@@ -5,20 +5,21 @@ import ProblemBannerSection from "@/domains/landing/components/problem-banner-se
 import ProblemSections from "@/domains/landing/components/problem-sections";
 import SolutionSections from "@/domains/landing/components/solution-sections";
 import Footer from "@/shared/components/footer";
-import Header from "@/shared/components/header";
+import HeaderLayout from "@/shared/components/header-layout";
 
 const IndexPageView = () => {
   return (
     <>
-      <Header />
-      <div className="flex min-h-screen flex-col items-center">
-        <HeroSection />
-        <ProblemBannerSection />
-        <ProblemSections />
-        <GallerySection />
-        <SolutionSections />
-        <CTASection />
-      </div>
+      <HeaderLayout>
+        <div className="flex min-h-screen flex-col items-center">
+          <HeroSection />
+          <ProblemBannerSection />
+          <ProblemSections />
+          <GallerySection />
+          <SolutionSections />
+          <CTASection />
+        </div>
+      </HeaderLayout>
       <Footer />
     </>
   );

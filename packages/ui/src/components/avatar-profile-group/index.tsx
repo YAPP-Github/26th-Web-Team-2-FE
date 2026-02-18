@@ -23,7 +23,7 @@ const ProfileGroup = ({ size, profiles }: ProfileGroupProps) => {
       ))}
       <span
         className={cn(
-          "absolute top-[-10%] right-[-1.8rem] z-11",
+          "absolute top-[-10%] right-[-1.8rem] z-stack",
           "rounded-[10rem] bg-primary-70 px-[0.8rem] py-[0.2rem] text-caption1-semi12 text-primary-100",
         )}
       >

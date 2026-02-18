@@ -41,7 +41,7 @@ const IconTabs = <T extends string>({
           key={option.value}
           type="button"
           className={cn(
-            "relative z-10 flex h-[2.4rem] w-[2.4rem] items-center justify-center p-0",
+            "relative z-dropdown flex h-[2.4rem] w-[2.4rem] items-center justify-center p-0",
             "rounded-full border-none bg-transparent text-neutral-60 outline-none",
             "cursor-pointer",
             "rounded-full transition-all duration-200",

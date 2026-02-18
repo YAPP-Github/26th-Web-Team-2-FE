@@ -10,7 +10,7 @@ export interface ActionCardProps {
 
 const ActionCard = ({
   onClick,
-  icon = <IcAdd width={32} height={32} className="text-neutral-70" />,
+  icon = <IcAdd className="size-8 shrink-0 text-neutral-70 max-xl:size-6" />,
   text = "새 여행 만들기",
   className,
 }: ActionCardProps) => {
@@ -19,12 +19,13 @@ const ActionCard = ({
       type="button"
       onClick={onClick}
       className={cn(
-        `flex min-h-[24.2rem] flex-col items-center justify-center gap-[0.8rem] rounded-[1.6rem]`,
+        `flex min-h-[24.2rem] w-full flex-col items-center justify-center gap-[0.8rem] rounded-[1.6rem]`,
         `border border-dashed`,
         `border-neutral-80 bg-neutral-98`,
         `hover:border-neutral-70 hover:bg-neutral-95`,
         `focus:border-neutral-70 focus:bg-neutral-95`,
         `active:border-neutral-variant-70 active:bg-neutral-variant-95`,
+        `max-xl:h-[59px] max-xl:min-h-0 max-xl:flex-row`,
         className,
       )}
     >

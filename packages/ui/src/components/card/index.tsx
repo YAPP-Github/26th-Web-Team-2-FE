@@ -85,10 +85,10 @@ const Card = ({
           height={164}
           alt="thumb-nail-img"
         />
-        <span className="absolute top-[0.8rem] right-[0.8rem] z-1 rounded-[0.4rem] bg-[rgba(21,29,25,0.70)] px-[0.6rem] py-[0.4rem] text-caption1-medi12 text-primary-100">
+        <span className="absolute top-[0.8rem] right-[0.8rem] z-elevated rounded-[0.4rem] bg-[rgba(21,29,25,0.70)] px-[0.6rem] py-[0.4rem] text-caption1-medi12 text-primary-100">
           {savedByText}
         </span>
-        <div className="absolute bottom-0 z-1 w-[-webkit-fill-available] rounded-br-[1.2rem] rounded-bl-[1.2rem] bg-[linear-gradient(87deg,_rgba(0,0,0,0.6)_0%,_rgba(72,72,72,0.6)_100%)] px-[1.2rem] py-[0.8rem]">
+        <div className="absolute bottom-0 z-elevated w-[-webkit-fill-available] rounded-br-[1.2rem] rounded-bl-[1.2rem] bg-[linear-gradient(87deg,_rgba(0,0,0,0.6)_0%,_rgba(72,72,72,0.6)_100%)] px-[1.2rem] py-[0.8rem]">
           <a
             target="_blank"
             rel="noopener noreferrer"

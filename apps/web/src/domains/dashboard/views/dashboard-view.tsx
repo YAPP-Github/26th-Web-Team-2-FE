@@ -4,7 +4,7 @@ import { useGetTripBoardsInfinite } from "@ssok/api";
 
 import { ActionCard, LoadingIndicator, Popup } from "@ssok/ui";
 import { useEffect, useState } from "react";
-import Header from "@/shared/components/header";
+import HeaderLayout from "@/shared/components/header-layout";
 import useSession from "@/shared/hooks/use-session";
 import BoardCreateForm from "../components/board-create-form";
 import DashboardTripBoard from "../components/dashboard-trip-board";
@@ -42,28 +42,25 @@ const DashboardView = () => {
 
   return (
     <main>
-      {/* 페이지 헤더 */}
-      <Header />
-      {/* 제목 + 여행 보드 목록 */}
-      <section className="px-[10.4rem] pt-[7.2rem]">
-        <h1 className="mb-[3.6rem] text-neutral-10 text-title1-semi36">
-          나의 여행
-        </h1>
-        <ul className="grid gap-[4rem] max-lg:gap-[2rem] max-xl:grid-cols-2 xl:grid-cols-3">
-          <li>
-            <ActionCard
-              onClick={() => setShowCreateModal(true)}
-              className="w-full"
-            />
-          </li>
-          {allTripBoards.map((tripBoard) => (
-            <li key={tripBoard.tripBoardId}>
-              <DashboardTripBoard data={tripBoard} className="w-full" />
+      <HeaderLayout>
+        {/* 제목 + 여행 보드 목록 */}
+        <section className="px-[10.4rem] pt-[7.1rem] max-lg:px-[1.6rem] max-lg:pt-[2.4rem]">
+          <h1 className="mb-[3.6rem] text-neutral-10 text-title2-medi28 max-lg:mb-[2.4rem]">
+            나의 여행
+          </h1>
+          <ul className="grid grid-cols-1 justify-items-center gap-[4rem] max-lg:gap-[2rem] xl:grid-cols-3">
+            <li className="w-full">
+              <ActionCard onClick={() => setShowCreateModal(true)} />
             </li>
-          ))}
-        </ul>
-        <LoadingIndicator active={isFetching} />
-      </section>
+            {allTripBoards.map((tripBoard) => (
+              <li key={tripBoard.tripBoardId} className="w-full">
+                <DashboardTripBoard data={tripBoard} />
+              </li>
+            ))}
+          </ul>
+          <LoadingIndicator active={isFetching} />
+        </section>
+      </HeaderLayout>
       <Popup
         title="새 여행 만들기"
         active={showCreateModal}

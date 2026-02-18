@@ -27,7 +27,7 @@ const Header = ({ className }: HeaderProps) => {
   return (
     <header
       className={cn(
-        "flex h-[6.5rem] w-full items-center justify-between border-neutral-90 border-b bg-white px-[10.4rem]",
+        "fixed top-0 right-0 left-0 z-header flex h-header w-full items-center justify-between border-neutral-90 border-b bg-white px-[10.4rem]",
         "max-xl:h-auto max-xl:px-[1.6rem] max-xl:py-[1.2rem]",
         className,
       )}

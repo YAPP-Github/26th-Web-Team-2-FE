@@ -43,11 +43,11 @@ const CardSkeleton: React.FC<CardSkeletonProps> = ({
       <div className="relative h-[16.4rem] w-[19.9rem] rounded-[1.2rem] border-[rgba(152,152,152,0.10)]">
         <div className="h-full w-full animate-pulse rounded-[1.2rem] bg-neutral-90" />
 
-        <div className="absolute top-[0.8rem] right-[0.8rem] z-1 rounded-[0.4rem] bg-[rgba(84,84,84,0.7)] px-[0.6rem] py-[0.4rem]">
+        <div className="absolute top-[0.8rem] right-[0.8rem] z-elevated rounded-[0.4rem] bg-[rgba(84,84,84,0.7)] px-[0.6rem] py-[0.4rem]">
           <div className="h-[1.6rem] w-[5.8rem]" />
         </div>
 
-        <div className="absolute bottom-0 z-1 flex w-[-webkit-fill-available] items-center gap-[0.8rem] rounded-b-[1.2rem] bg-[linear-gradient(87deg,_rgba(0,0,0,0.6)_0%,_rgba(72,72,72,0.6)_100%)] px-[1.2rem] py-[0.8rem]">
+        <div className="absolute bottom-0 z-elevated flex w-[-webkit-fill-available] items-center gap-[0.8rem] rounded-b-[1.2rem] bg-[linear-gradient(87deg,_rgba(0,0,0,0.6)_0%,_rgba(72,72,72,0.6)_100%)] px-[1.2rem] py-[0.8rem]">
           <Circle className="h-[3.2rem] w-[3.2rem]" />
         </div>
       </div>

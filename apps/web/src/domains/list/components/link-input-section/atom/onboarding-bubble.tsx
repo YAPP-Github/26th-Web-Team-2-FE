@@ -45,7 +45,7 @@ const OnboardingBubble = () => {
       aria-labelledby="onboarding-title"
       aria-describedby="onboarding-description"
       className={cn(
-        "absolute z-10 inline-block",
+        "absolute z-screen inline-block",
         onboardStep === "init" && "bottom-[-12rem] left-[0rem]",
         onboardStep === "saveLink" && "bottom-[-20rem] left-[84%] w-max",
       )}

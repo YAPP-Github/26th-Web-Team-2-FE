@@ -1,4 +1,5 @@
 "use client";
+import { theme } from "@ssok/tailwind-config";
 import {
   type CSSProperties,
   type RefObject,
@@ -63,7 +64,7 @@ const useFloating = <R extends HTMLElement, F extends HTMLElement>({
       position: "absolute",
       left,
       maxHeight: `${Math.max(maxHeight - offset, offset * 2)}px`,
-      zIndex: 50,
+      zIndex: theme?.zIndex?.dropdown ?? 10,
       [placement === "top" ? "bottom" : "top"]: `calc(100% + ${offset}px)`,
     } satisfies CSSProperties;
   }, [placement, offset, maxHeight, left]);

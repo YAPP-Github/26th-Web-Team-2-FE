@@ -232,6 +232,26 @@ export const theme: Config["theme"] = {
       100: "#ffffff",
     },
   },
+  spacing: {
+    header: "6.5rem",
+    "header-mobile": "4.8rem",
+  },
+  height: {
+    header: "6.5rem",
+  },
+  zIndex: {
+    base: "0",
+    elevated: "1",
+    dropdown: "10",
+    stack: "11",
+    popover: "20",
+    overlay: "30",
+    "overlay-elevated": "40",
+    header: "50",
+    modal: "100",
+    screen: "100",
+    toast: "9999",
+  },
   boxShadow: {
     floating:
       "0px -0.5px 1px 0px #fff inset, 0px 0.5px 1px 0px var(--neutral-variant-100, #fff) inset",

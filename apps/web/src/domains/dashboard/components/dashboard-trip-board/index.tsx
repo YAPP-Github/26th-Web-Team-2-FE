@@ -114,7 +114,11 @@ const DashboardTripBoard = ({ data, className }: DashboardTripBoardProps) => {
 
   return (
     <>
-      <Link href={`/boards/${data.tripBoardId || 0}/lists`} prefetch>
+      <Link
+        href={`/boards/${data.tripBoardId || 0}/lists`}
+        prefetch
+        className="w-full"
+      >
         <TravelBoard
           data={travelBoardData}
           onDeleteClick={() => deleteModal.activate()}

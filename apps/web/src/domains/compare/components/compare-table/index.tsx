@@ -250,7 +250,7 @@ const CompareTable = ({
         {rows.map((row) => (
           <Fragment key={row.key}>
             {row.label && (
-              <h3 className="sticky left-[2.4rem] z-10 mt-[2.4rem] mb-[0.8rem] text-heading2-semi18 text-neutral-35">
+              <h3 className="sticky left-[2.4rem] z-screen mt-[2.4rem] mb-[0.8rem] text-heading2-semi18 text-neutral-35">
                 {row.label}
               </h3>
             )}

@@ -33,7 +33,7 @@ const MemoInputBox = <T extends { memo?: string }>({
     <section
       ref={memoRef}
       className={cn(
-        "absolute z-5 flex w-[33.2rem] flex-col gap-[1.2rem] rounded-[1.2rem] border px-[1.6rem] py-[1.2rem] focus:outline-none",
+        "absolute z-popover flex w-[33.2rem] flex-col gap-[1.2rem] rounded-[1.2rem] border px-[1.6rem] py-[1.2rem] focus:outline-none",
         " border-primary-60 bg-neutral-100",
         isListMemo ? "bottom-[-10rem] left-[36%]" : "bottom-[-12.5rem] left-0",
       )}

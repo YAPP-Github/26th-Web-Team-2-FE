@@ -37,7 +37,7 @@ const DropDown = ({
       {isOpen && (
         <ul
           aria-label="정렬 기준"
-          className="absolute bottom-[-14.8rem] z-100 flex flex-col rounded-[1.2rem] border border-neutral-70 bg-neutral-100 p-[0.8rem]"
+          className="absolute bottom-[-14.8rem] z-dropdown flex flex-col rounded-[1.2rem] border border-neutral-70 bg-neutral-100 p-[0.8rem]"
         >
           <span className="px-[1.6rem] py-[0.8rem]">
             <p className="text-body2-regular14 text-neutral-30">정렬 기준</p>

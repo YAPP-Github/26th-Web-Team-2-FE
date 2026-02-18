@@ -206,7 +206,7 @@ const PlaceListView = () => {
         collapse={!isPanelExpanded}
         onClick={handlePanelToggle}
         className={cn(
-          "absolute top-[50%] z-2",
+          "absolute top-[50%] z-overlay-elevated",
           isPanelExpanded ? "right-[-5.5%]" : "right-[-4rem]",
         )}
       />

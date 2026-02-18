@@ -48,7 +48,7 @@ const DashboardView = () => {
           <h1 className="mb-[3.6rem] text-neutral-10 text-title2-medi28 max-lg:mb-[2.4rem]">
             나의 여행
           </h1>
-          <ul className="grid grid-cols-1 justify-items-center gap-[4rem] max-lg:gap-[2rem] md:grid-cols-2 xl:grid-cols-3">
+          <ul className="grid grid-cols-1 justify-items-center gap-[4rem] max-lg:gap-[2rem] xl:grid-cols-3">
             <li className="w-full">
               <ActionCard onClick={() => setShowCreateModal(true)} />
             </li>

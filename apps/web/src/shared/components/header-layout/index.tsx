@@ -10,7 +10,7 @@ const HeaderLayout = ({ children, className }: HeaderLayoutProps) => {
   return (
     <>
       <Header />
-      <div className={cn("Fax-xl:pt-header-mobile pt-header", className)}>
+      <div className={cn("pt-header max-xl:pt-header-mobile", className)}>
         {children}
       </div>
     </>

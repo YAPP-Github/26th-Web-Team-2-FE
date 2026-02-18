@@ -52,7 +52,7 @@ const Backdrop = ({
     // biome-ignore lint/a11y/useKeyWithClickEvents: onClick 사용하여 팝업 닫기 구현
     <div
       className={cn(
-        "fixed inset-0 z-50 flex items-center justify-center bg-black/50",
+        "fixed inset-0 z-modal flex items-center justify-center bg-black/50",
         className,
       )}
       onClick={handleBackdropClick}

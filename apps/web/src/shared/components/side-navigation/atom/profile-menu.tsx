@@ -94,7 +94,7 @@ const ProfileMenu = () => {
         {isMenuOpen && (
           <section
             className={cn(
-              "absolute bottom-0 left-[150%] z-[3] flex w-[30.2rem] flex-col gap-[2rem] rounded-[1.6rem] border border-neutral-90",
+              "absolute bottom-0 left-[150%] z-dropdown flex w-[30.2rem] flex-col gap-[2rem] rounded-[1.6rem] border border-neutral-90",
               "bg-neutral-100 px-[0.8rem] py-[2.4rem] shadow-[4px_4px_8px_0_rgba(0,0,0,0.15)]",
             )}
           >

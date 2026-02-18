@@ -8,7 +8,7 @@ const LoadingIndicator = ({ active }: LoadingIndicatorProps) => {
   if (!active) return null;
 
   return (
-    <main className="fixed inset-0 z-10 flex h-full w-full items-center justify-center">
+    <main className="fixed inset-0 z-modal flex h-full w-full items-center justify-center">
       {/* 배경 */}
       <div className="absolute inset-0 bg-neutral-5/30" />
 

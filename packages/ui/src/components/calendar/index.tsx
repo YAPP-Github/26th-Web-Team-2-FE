@@ -51,7 +51,7 @@ const Calendar = ({
           Chevron: Chevron,
         }}
         classNames={{
-          root: `${defaultClassNames.root} flex item-center`,
+          root: `${defaultClassNames.root} flex justify-center`,
           nav: `${defaultClassNames.nav} gap-[0.8rem]`,
           month: `flex flex-col gap-[1rem]`,
           month_caption: variant === "minimal" ? "" : "px-[1.2rem]",

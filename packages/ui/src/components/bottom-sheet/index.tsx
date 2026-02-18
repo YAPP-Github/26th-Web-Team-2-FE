@@ -1,7 +1,14 @@
 "use client";
 
 import type { PropsWithChildren } from "react";
-import { createContext, useCallback, useContext } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import IcClose from "@/assets/icons/ic_close.svg?react";
 import { cn } from "@/utils";
 
@@ -31,6 +38,8 @@ export interface BottomSheetProps
     className?: string;
   }> {}
 
+const CLOSE_DURATION_MS = 500;
+
 const BottomSheetRoot = ({
   children,
   active = false,
@@ -39,23 +48,45 @@ const BottomSheetRoot = ({
   closeOnBackdropClick = true,
   className,
 }: BottomSheetProps) => {
+  const [isClosing, setIsClosing] = useState(false);
+  const wasActiveRef = useRef(false);
+
+  useEffect(() => {
+    if (active) {
+      wasActiveRef.current = true;
+      setIsClosing(false);
+    } else if (wasActiveRef.current) {
+      wasActiveRef.current = false;
+      setIsClosing(true);
+    }
+  }, [active]);
+
+  useEffect(() => {
+    if (!isClosing) return;
+    const id = setTimeout(() => setIsClosing(false), CLOSE_DURATION_MS);
+    return () => clearTimeout(id);
+  }, [isClosing]);
+
   const handleBackdropClick = useCallback(() => {
     if (closeOnBackdropClick && showBackdrop) onClose();
   }, [closeOnBackdropClick, showBackdrop, onClose]);
 
-  if (!active) return null;
+  const shouldRender = active || isClosing || wasActiveRef.current;
+  if (!shouldRender) return null;
 
-  const contextValue: BottomSheetContextValue = { onClose, active };
+  const contextValue: BottomSheetContextValue = { onClose, active: !isClosing };
 
   const sheetContent = (
     // biome-ignore lint/a11y/noStaticElementInteractions: 시트 클릭 시 배경으로 이벤트 전파 방지
     // biome-ignore lint/a11y/useKeyWithClickEvents: 클릭 전파 방지용, 모바일 터치만 지원
     <div
       className={cn(
-        "fixed right-0 bottom-0 left-0 z-modal flex max-h-[90vh] flex-col rounded-t-[1.6rem] border border-neutral-90 border-b-0 bg-white",
+        "fixed right-0 bottom-0 left-0 z-modal flex max-h-[90vh] flex-col rounded-t-[1.6rem] border border-neutral-90 border-b-0 bg-white transition-transform ease-out",
+        isClosing ? "translate-y-full" : "translate-y-0",
         className,
       )}
       onClick={(e) => e.stopPropagation()}
+      style={{ transitionDuration: `${CLOSE_DURATION_MS}ms` }}
     >
       <BottomSheetContext.Provider value={contextValue}>
         {children}
@@ -69,7 +100,8 @@ const BottomSheetRoot = ({
         <div
           role="presentation"
           aria-hidden
-          className="fixed inset-0 bg-black/50"
+          className={cn("fixed inset-0 bg-neutral-0 opacity-5 ease-out")}
+          style={{ transitionDuration: `${CLOSE_DURATION_MS}ms` }}
           onClick={handleBackdropClick}
         />
         {sheetContent}
@@ -131,7 +163,7 @@ const BottomSheetBody = ({ children, className }: BottomSheetBodyProps) => {
   return (
     <div
       className={cn(
-        "item-center flex-1 overflow-y-auto overscroll-contain px-[1.6rem] pt-[0.8rem] pb-[2rem]",
+        "flex flex-1 flex-col overflow-y-auto overscroll-contain px-[1.6rem] pt-[0.8rem] pb-[2rem]",
         className,
       )}
     >

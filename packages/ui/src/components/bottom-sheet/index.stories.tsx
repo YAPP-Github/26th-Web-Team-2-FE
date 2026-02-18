@@ -99,7 +99,22 @@ export const Default: Story = {
   },
 };
 
-export const 여행보드생성_모바일: Story = {
+export const TripBoardCreationMobile: Story = {
+  parameters: {
+    viewport: {
+      defaultViewport: "mobile1",
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div
+        className="mx-auto min-h-screen w-[375px] max-w-full"
+        style={{ transform: "translateZ(0)" }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
   render: (args) => {
     const [active, setActive] = useState(false);
     const [datePickerOpen, setDatePickerOpen] = useState(false);
@@ -162,7 +177,7 @@ export const 여행보드생성_모바일: Story = {
             <Button
               variant="primary"
               size="lg"
-              className="w-full"
+              className="flex w-full justify-center text-body1-bold16 text-primary-100"
               onClick={() => setActive(false)}
             >
               보드 생성하기
@@ -170,7 +185,7 @@ export const 여행보드생성_모바일: Story = {
           </BottomSheet.Footer>
         </BottomSheet>
 
-        {/* Date Picker 바텀시트 (날짜 버튼 터치 시 위 시트 위에 표시) */}
+        {/* Date Picker 바텀시트  */}
         <BottomSheet
           active={active && datePickerOpen}
           onClose={() => setDatePickerOpen(false)}
@@ -188,15 +203,27 @@ export const 여행보드생성_모바일: Story = {
               render={({ calendarProps }) => (
                 <Calendar
                   {...calendarProps}
-                  applyButtonLabel={(range) =>
-                    range?.from
-                      ? formatDateRangeForButton(range.from, range.to)
-                      : "날짜 선택"
-                  }
+                  variant="minimal"
+                  className="w-full"
+                  hideApplyButton
                 />
               )}
             />
           </BottomSheet.Body>
+          <BottomSheet.Footer>
+            <Button
+              variant="primary"
+              size="lg"
+              className="flex w-full justify-center text-body1-bold16 text-primary-100"
+              onClick={() => {
+                setDatePickerOpen(false);
+              }}
+            >
+              {dateRange?.from
+                ? formatDateRangeForButton(dateRange.from, dateRange.to)
+                : "날짜 선택"}
+            </Button>
+          </BottomSheet.Footer>
         </BottomSheet>
       </>
     );

@@ -134,7 +134,7 @@ const BottomSheetBody = ({ children, className }: BottomSheetBodyProps) => {
   return (
     <div
       className={cn(
-        "flex-1 overflow-y-auto overscroll-contain px-[1.6rem] pt-[0.8rem] pb-[2rem]",
+        "item-center flex-1 overflow-y-auto overscroll-contain px-[1.6rem] pt-[0.8rem] pb-[2rem]",
         className,
       )}
     >
@@ -151,7 +151,10 @@ export interface BottomSheetFooterProps
 const BottomSheetFooter = ({ children, className }: BottomSheetFooterProps) => {
   return (
     <footer
-      className={cn("shrink-0 px-[1.6rem] pt-[1.2rem] pb-[3.4rem]", className)}
+      className={cn(
+        "flex shrink-0 items-center px-[1.6rem] pt-[2rem] pb-[3.4rem]",
+        className,
+      )}
     >
       {children}
     </footer>

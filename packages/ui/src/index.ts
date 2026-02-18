@@ -54,6 +54,13 @@ export { default as IcVariant } from "@/assets/icons/ic_variant.svg?react";
 export { default as IcWalker } from "@/assets/icons/ic_walker.svg?react";
 export { default as IcWifi } from "@/assets/icons/ic_wifi.svg?react";
 export { type BackdropProps, default as Backdrop } from "@/components/backdrop";
+export {
+  type BottomSheetBodyProps,
+  type BottomSheetFooterProps,
+  type BottomSheetHeaderProps,
+  type BottomSheetProps,
+  default as BottomSheet,
+} from "@/components/bottom-sheet";
 export { type ButtonProps, default as Button } from "@/components/button";
 export {
   type Attraction,
@@ -67,6 +74,10 @@ export {
   default as DateButton,
 } from "@/components/date-button";
 export {
+  DateRangePickerMobile,
+  type DateRangePickerMobileCalendarProps,
+  type DateRangePickerMobileProps,
+  type DateRangePickerMobileRenderProps,
   type DateRangePickerProps,
   type DateRangePickerRenderProps,
   type DateRangeValue,

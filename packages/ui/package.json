@@ -56,6 +56,10 @@
       "import": "./dist/components/chip.js",
       "types": "./dist/components/chip.d.ts"
     },
+    "./components/bottom-sheet": {
+      "import": "./dist/components/bottom-sheet.js",
+      "types": "./dist/components/bottom-sheet.d.ts"
+    },
     "./components/confirm": {
       "import": "./dist/components/confirm.js",
       "types": "./dist/components/confirm.d.ts"

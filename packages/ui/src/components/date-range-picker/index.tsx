@@ -165,4 +165,11 @@ const DateRangePicker = ({
   );
 };
 
+export type {
+  DateRangePickerMobileCalendarProps,
+  DateRangePickerMobileProps,
+  DateRangePickerMobileRenderProps,
+} from "./mobile-date-range-picker";
+export { default as DateRangePickerMobile } from "./mobile-date-range-picker";
+
 export default DateRangePicker;
